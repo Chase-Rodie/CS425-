@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9AC81DD12CA57BCF00A0472C /* Capstone_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */; };
-		9AC81DD32CA57BCF00A0472C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* ContentView.swift */; };
+		9AC81DD32CA57BCF00A0472C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* MainView.swift */; };
 		9AC81DD52CA57BD000A0472C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD42CA57BD000A0472C /* Assets.xcassets */; };
 		9AC81DD82CA57BD000A0472C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */; };
 		9AC81DE22CA57BD000A0472C /* Capstone_ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */; };
@@ -36,7 +36,7 @@
 /* Begin PBXFileReference section */
 		9AC81DCD2CA57BCF00A0472C /* Capstone Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Capstone Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectApp.swift; sourceTree = "<group>"; };
-		9AC81DD22CA57BCF00A0472C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9AC81DD22CA57BCF00A0472C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		9AC81DD42CA57BD000A0472C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9AC81DDD2CA57BD000A0472C /* Capstone ProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Capstone ProjectTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */,
-				9AC81DD22CA57BCF00A0472C /* ContentView.swift */,
+				9AC81DD22CA57BCF00A0472C /* MainView.swift */,
 				9AC81DD42CA57BD000A0472C /* Assets.xcassets */,
 				9AC81DD62CA57BD000A0472C /* Preview Content */,
 			);
@@ -257,7 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AC81DD32CA57BCF00A0472C /* ContentView.swift in Sources */,
+				9AC81DD32CA57BCF00A0472C /* MainView.swift in Sources */,
 				9AC81DD12CA57BCF00A0472C /* Capstone_ProjectApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
