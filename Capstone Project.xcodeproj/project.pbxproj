@@ -3,13 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A1953162CCABFA000947003 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1953152CCABFA000947003 /* FirebaseAuth */; };
 		9ABD96262CBF01D700CB9922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */; };
 		9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */; };
+		9AC81DD12CA57BCF00A0472C /* Capstone_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */; };
+		9AC81DD32CA57BCF00A0472C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* MainView.swift */; };
+		9AC81DD52CA57BD000A0472C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD42CA57BD000A0472C /* Assets.xcassets */; };
+		9AC81DD82CA57BD000A0472C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */; };
+		9AC81DE22CA57BD000A0472C /* Capstone_ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */; };
+		9AC81DEC2CA57BD000A0472C /* Capstone_ProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */; };
+		9AC81DEE2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,51 +38,16 @@
 /* Begin PBXFileReference section */
 		9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9AC81DCD2CA57BCF00A0472C /* Capstone Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Capstone Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectApp.swift; sourceTree = "<group>"; };
+		9AC81DD22CA57BCF00A0472C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9AC81DD42CA57BD000A0472C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9AC81DDD2CA57BD000A0472C /* Capstone ProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Capstone ProjectTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectTests.swift; sourceTree = "<group>"; };
 		9AC81DE72CA57BD000A0472C /* Capstone ProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Capstone ProjectUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectUITests.swift; sourceTree = "<group>"; };
+		9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9A19535C2CCAD49B00947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Tests/Capstone ProjectTests/Capstone_ProjectTests.swift",
-				"Tests/Capstone ProjectUITests/Capstone_ProjectUITests.swift",
-				"Tests/Capstone ProjectUITests/Capstone_ProjectUITestsLaunchTests.swift",
-			);
-			target = 9AC81DCC2CA57BCF00A0472C /* Capstone Project */;
-		};
-		9A19535D2CCAD49B00947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Tests/Capstone ProjectTests/Capstone_ProjectTests.swift",
-			);
-			target = 9AC81DDC2CA57BD000A0472C /* Capstone ProjectTests */;
-		};
-		9A19535E2CCAD49B00947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Tests/Capstone ProjectUITests/Capstone_ProjectUITests.swift",
-				"Tests/Capstone ProjectUITests/Capstone_ProjectUITestsLaunchTests.swift",
-			);
-			target = 9AC81DE62CA57BD000A0472C /* Capstone ProjectUITests */;
-		};
-		9A1953752CCAD5C100947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Authentication/LoginView.swift,
-			);
-			target = 9AC81DCC2CA57BCF00A0472C /* Capstone Project */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		9A1953382CCAD2BE00947003 /* App  */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "App "; sourceTree = "<group>"; };
-		9A1953392CCAD2BE00947003 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
-		9A19533A2CCAD2BE00947003 /* Core */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9A1953752CCAD5C100947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Core; sourceTree = "<group>"; };
-		9A19533B2CCAD2BE00947003 /* Model */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Model; sourceTree = "<group>"; };
-		9A19534A2CCAD47300947003 /* Everything Else */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (9A19535C2CCAD49B00947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 9A19535D2CCAD49B00947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 9A19535E2CCAD49B00947003 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Everything Else"; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		9AC81DCA2CA57BCF00A0472C /* Frameworks */ = {
@@ -84,7 +55,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */,
-				9A1953162CCABFA000947003 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,12 +78,10 @@
 		9AC81DC42CA57BCF00A0472C = {
 			isa = PBXGroup;
 			children = (
-				9A19534A2CCAD47300947003 /* Everything Else */,
+				9AC81DCF2CA57BCF00A0472C /* Capstone Project */,
+				9AC81DE02CA57BD000A0472C /* Capstone ProjectTests */,
+				9AC81DEA2CA57BD000A0472C /* Capstone ProjectUITests */,
 				9AC81DCE2CA57BCF00A0472C /* Products */,
-				9A1953382CCAD2BE00947003 /* App  */,
-				9A1953392CCAD2BE00947003 /* Components */,
-				9A19533A2CCAD2BE00947003 /* Core */,
-				9A19533B2CCAD2BE00947003 /* Model */,
 				9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
@@ -128,6 +96,42 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9AC81DCF2CA57BCF00A0472C /* Capstone Project */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */,
+				9AC81DD22CA57BCF00A0472C /* MainView.swift */,
+				9AC81DD42CA57BD000A0472C /* Assets.xcassets */,
+				9AC81DD62CA57BD000A0472C /* Preview Content */,
+			);
+			path = "Capstone Project";
+			sourceTree = "<group>";
+		};
+		9AC81DD62CA57BD000A0472C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9AC81DE02CA57BD000A0472C /* Capstone ProjectTests */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */,
+			);
+			path = "Capstone ProjectTests";
+			sourceTree = "<group>";
+		};
+		9AC81DEA2CA57BD000A0472C /* Capstone ProjectUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */,
+				9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */,
+			);
+			path = "Capstone ProjectUITests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,7 +139,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AC81DF12CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone Project" */;
 			buildPhases = (
-				D834938C528663EF27DC304D /* [CP] Check Pods Manifest.lock */,
 				9AC81DC92CA57BCF00A0472C /* Sources */,
 				9AC81DCA2CA57BCF00A0472C /* Frameworks */,
 				9AC81DCB2CA57BCF00A0472C /* Resources */,
@@ -143,10 +146,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				9A1953382CCAD2BE00947003 /* App  */,
-				9A19534A2CCAD47300947003 /* Everything Else */,
 			);
 			name = "Capstone Project";
 			productName = "Capstone Project";
@@ -157,7 +156,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AC81DF42CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone ProjectTests" */;
 			buildPhases = (
-				531F09039C2602D0D0404D40 /* [CP] Check Pods Manifest.lock */,
 				9AC81DD92CA57BD000A0472C /* Sources */,
 				9AC81DDA2CA57BD000A0472C /* Frameworks */,
 				9AC81DDB2CA57BD000A0472C /* Resources */,
@@ -176,7 +174,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AC81DF72CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone ProjectUITests" */;
 			buildPhases = (
-				F8E46F0AC0D584E2320C275D /* [CP] Check Pods Manifest.lock */,
 				9AC81DE32CA57BD000A0472C /* Sources */,
 				9AC81DE42CA57BD000A0472C /* Frameworks */,
 				9AC81DE52CA57BD000A0472C /* Resources */,
@@ -242,6 +239,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AC81DD82CA57BD000A0472C /* Preview Assets.xcassets in Resources */,
+				9AC81DD52CA57BD000A0472C /* Assets.xcassets in Resources */,
 				9ABD96262CBF01D700CB9922 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,80 +261,13 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		531F09039C2602D0D0404D40 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Capstone ProjectTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D834938C528663EF27DC304D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Capstone Project-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F8E46F0AC0D584E2320C275D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Capstone Project-Capstone ProjectUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		9AC81DC92CA57BCF00A0472C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AC81DD32CA57BCF00A0472C /* MainView.swift in Sources */,
+				9AC81DD12CA57BCF00A0472C /* Capstone_ProjectApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AC81DE22CA57BD000A0472C /* Capstone_ProjectTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +283,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AC81DEC2CA57BD000A0472C /* Capstone_ProjectUITests.swift in Sources */,
+				9AC81DEE2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,11 +606,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9A1953152CCABFA000947003 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
 		9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
