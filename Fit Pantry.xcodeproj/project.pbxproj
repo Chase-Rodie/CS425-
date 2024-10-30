@@ -37,14 +37,14 @@
 
 /* Begin PBXFileReference section */
 		9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		9AC81DCD2CA57BCF00A0472C /* Capstone Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Capstone Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fit Pantry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectApp.swift; sourceTree = "<group>"; };
 		9AC81DD22CA57BCF00A0472C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		9AC81DD42CA57BD000A0472C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		9AC81DDD2CA57BD000A0472C /* Capstone ProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Capstone ProjectTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectTests.swift; sourceTree = "<group>"; };
-		9AC81DE72CA57BD000A0472C /* Capstone ProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Capstone ProjectUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectUITests.swift; sourceTree = "<group>"; };
 		9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,9 +78,9 @@
 		9AC81DC42CA57BCF00A0472C = {
 			isa = PBXGroup;
 			children = (
-				9AC81DCF2CA57BCF00A0472C /* Capstone Project */,
-				9AC81DE02CA57BD000A0472C /* Capstone ProjectTests */,
-				9AC81DEA2CA57BD000A0472C /* Capstone ProjectUITests */,
+				9AC81DCF2CA57BCF00A0472C /* Fit Pantry */,
+				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
+				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
 				9AC81DCE2CA57BCF00A0472C /* Products */,
 				9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */,
 			);
@@ -89,14 +89,14 @@
 		9AC81DCE2CA57BCF00A0472C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9AC81DCD2CA57BCF00A0472C /* Capstone Project.app */,
-				9AC81DDD2CA57BD000A0472C /* Capstone ProjectTests.xctest */,
-				9AC81DE72CA57BD000A0472C /* Capstone ProjectUITests.xctest */,
+				9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */,
+				9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */,
+				9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9AC81DCF2CA57BCF00A0472C /* Capstone Project */ = {
+		9AC81DCF2CA57BCF00A0472C /* Fit Pantry */ = {
 			isa = PBXGroup;
 			children = (
 				9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */,
@@ -104,7 +104,7 @@
 				9AC81DD42CA57BD000A0472C /* Assets.xcassets */,
 				9AC81DD62CA57BD000A0472C /* Preview Content */,
 			);
-			path = "Capstone Project";
+			path = "Fit Pantry";
 			sourceTree = "<group>";
 		};
 		9AC81DD62CA57BD000A0472C /* Preview Content */ = {
@@ -115,29 +115,29 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		9AC81DE02CA57BD000A0472C /* Capstone ProjectTests */ = {
+		9AC81DE02CA57BD000A0472C /* Fit PantryTests */ = {
 			isa = PBXGroup;
 			children = (
 				9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */,
 			);
-			path = "Capstone ProjectTests";
+			path = "Fit PantryTests";
 			sourceTree = "<group>";
 		};
-		9AC81DEA2CA57BD000A0472C /* Capstone ProjectUITests */ = {
+		9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */ = {
 			isa = PBXGroup;
 			children = (
 				9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */,
 				9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */,
 			);
-			path = "Capstone ProjectUITests";
+			path = "Fit PantryUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9AC81DCC2CA57BCF00A0472C /* Capstone Project */ = {
+		9AC81DCC2CA57BCF00A0472C /* Fit Pantry */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9AC81DF12CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone Project" */;
+			buildConfigurationList = 9AC81DF12CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Fit Pantry" */;
 			buildPhases = (
 				9AC81DC92CA57BCF00A0472C /* Sources */,
 				9AC81DCA2CA57BCF00A0472C /* Frameworks */,
@@ -147,14 +147,14 @@
 			);
 			dependencies = (
 			);
-			name = "Capstone Project";
+			name = "Fit Pantry";
 			productName = "Capstone Project";
-			productReference = 9AC81DCD2CA57BCF00A0472C /* Capstone Project.app */;
+			productReference = 9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9AC81DDC2CA57BD000A0472C /* Capstone ProjectTests */ = {
+		9AC81DDC2CA57BD000A0472C /* Fit PantryTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9AC81DF42CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone ProjectTests" */;
+			buildConfigurationList = 9AC81DF42CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Fit PantryTests" */;
 			buildPhases = (
 				9AC81DD92CA57BD000A0472C /* Sources */,
 				9AC81DDA2CA57BD000A0472C /* Frameworks */,
@@ -165,14 +165,14 @@
 			dependencies = (
 				9AC81DDF2CA57BD000A0472C /* PBXTargetDependency */,
 			);
-			name = "Capstone ProjectTests";
+			name = "Fit PantryTests";
 			productName = "Capstone ProjectTests";
-			productReference = 9AC81DDD2CA57BD000A0472C /* Capstone ProjectTests.xctest */;
+			productReference = 9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9AC81DE62CA57BD000A0472C /* Capstone ProjectUITests */ = {
+		9AC81DE62CA57BD000A0472C /* Fit PantryUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9AC81DF72CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone ProjectUITests" */;
+			buildConfigurationList = 9AC81DF72CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Fit PantryUITests" */;
 			buildPhases = (
 				9AC81DE32CA57BD000A0472C /* Sources */,
 				9AC81DE42CA57BD000A0472C /* Frameworks */,
@@ -183,9 +183,9 @@
 			dependencies = (
 				9AC81DE92CA57BD000A0472C /* PBXTargetDependency */,
 			);
-			name = "Capstone ProjectUITests";
+			name = "Fit PantryUITests";
 			productName = "Capstone ProjectUITests";
-			productReference = 9AC81DE72CA57BD000A0472C /* Capstone ProjectUITests.xctest */;
+			productReference = 9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -211,7 +211,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9AC81DC82CA57BCF00A0472C /* Build configuration list for PBXProject "Capstone Project" */;
+			buildConfigurationList = 9AC81DC82CA57BCF00A0472C /* Build configuration list for PBXProject "Fit Pantry" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -227,9 +227,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9AC81DCC2CA57BCF00A0472C /* Capstone Project */,
-				9AC81DDC2CA57BD000A0472C /* Capstone ProjectTests */,
-				9AC81DE62CA57BD000A0472C /* Capstone ProjectUITests */,
+				9AC81DCC2CA57BCF00A0472C /* Fit Pantry */,
+				9AC81DDC2CA57BD000A0472C /* Fit PantryTests */,
+				9AC81DE62CA57BD000A0472C /* Fit PantryUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -293,12 +293,12 @@
 /* Begin PBXTargetDependency section */
 		9AC81DDF2CA57BD000A0472C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9AC81DCC2CA57BCF00A0472C /* Capstone Project */;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
 			targetProxy = 9AC81DDE2CA57BD000A0472C /* PBXContainerItemProxy */;
 		};
 		9AC81DE92CA57BD000A0472C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9AC81DCC2CA57BCF00A0472C /* Capstone Project */;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
 			targetProxy = 9AC81DE82CA57BD000A0472C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -430,7 +430,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Capstone Project/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Fit Pantry/Preview Content\"";
 				DEVELOPMENT_TEAM = 4UH375AT7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -459,7 +459,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Capstone Project/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Fit Pantry/Preview Content\"";
 				DEVELOPMENT_TEAM = 4UH375AT7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -496,7 +496,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Capstone Project.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Capstone Project";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fit Pantry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fit Pantry";
 			};
 			name = Debug;
 		};
@@ -515,7 +515,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Capstone Project.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Capstone Project";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fit Pantry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fit Pantry";
 			};
 			name = Release;
 		};
@@ -556,7 +556,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9AC81DC82CA57BCF00A0472C /* Build configuration list for PBXProject "Capstone Project" */ = {
+		9AC81DC82CA57BCF00A0472C /* Build configuration list for PBXProject "Fit Pantry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AC81DEF2CA57BD000A0472C /* Debug */,
@@ -565,7 +565,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9AC81DF12CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone Project" */ = {
+		9AC81DF12CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Fit Pantry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AC81DF22CA57BD000A0472C /* Debug */,
@@ -574,7 +574,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9AC81DF42CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone ProjectTests" */ = {
+		9AC81DF42CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Fit PantryTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AC81DF52CA57BD000A0472C /* Debug */,
@@ -583,7 +583,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9AC81DF72CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Capstone ProjectUITests" */ = {
+		9AC81DF72CA57BD000A0472C /* Build configuration list for PBXNativeTarget "Fit PantryUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AC81DF82CA57BD000A0472C /* Debug */,
