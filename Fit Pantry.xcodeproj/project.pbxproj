@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89A2CD3E8E90019266C /* MainView.swift */; };
+		9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89C2CD3F6700019266C /* Auth.swift */; };
+		9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89E2CD3F6840019266C /* WorkoutView.swift */; };
+		9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
+		9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A22CD3F69E0019266C /* PantryView.swift */; };
 		9ABD96262CBF01D700CB9922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */; };
 		9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */; };
 		9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* FitPantry.swift */; };
@@ -37,6 +41,10 @@
 
 /* Begin PBXFileReference section */
 		9A3FB89A2CD3E8E90019266C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9A3FB89C2CD3F6700019266C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		9A3FB89E2CD3F6840019266C /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
+		9A3FB8A02CD3F68F0019266C /* MealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealView.swift; sourceTree = "<group>"; };
+		9A3FB8A22CD3F69E0019266C /* PantryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryView.swift; sourceTree = "<group>"; };
 		9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fit Pantry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DD22CA57BCF00A0472C /* FitPantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitPantry.swift; sourceTree = "<group>"; };
@@ -78,6 +86,7 @@
 		9A3FB8932CD3E53C0019266C /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				9A3FB89C2CD3F6700019266C /* Auth.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -85,6 +94,7 @@
 		9A3FB8942CD3E56C0019266C /* Pantry */ = {
 			isa = PBXGroup;
 			children = (
+				9A3FB8A22CD3F69E0019266C /* PantryView.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -92,6 +102,7 @@
 		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
 			isa = PBXGroup;
 			children = (
+				9A3FB8A02CD3F68F0019266C /* MealView.swift */,
 			);
 			path = "Meal Planning";
 			sourceTree = "<group>";
@@ -99,6 +110,7 @@
 		9A3FB8962CD3E57B0019266C /* WorkoutPlanner */ = {
 			isa = PBXGroup;
 			children = (
+				9A3FB89E2CD3F6840019266C /* WorkoutView.swift */,
 			);
 			path = WorkoutPlanner;
 			sourceTree = "<group>";
@@ -314,8 +326,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */,
+				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
+				9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */,
+				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
