@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Capstone_ProjectApp: App {
+struct Fit_PantryApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()

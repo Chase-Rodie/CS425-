@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Capstone_Project
+@testable import Fit_Pantry
 
 final class Capstone_ProjectTests: XCTestCase {
 
