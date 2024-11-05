@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89A2CD3E8E90019266C /* MainView.swift */; };
+		9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89C2CD3F6700019266C /* Auth.swift */; };
+		9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89E2CD3F6840019266C /* WorkoutView.swift */; };
+		9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
+		9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A22CD3F69E0019266C /* PantryView.swift */; };
 		9ABD96262CBF01D700CB9922 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */; };
 		9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */; };
-		9AC81DD12CA57BCF00A0472C /* Capstone_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */; };
-		9AC81DD32CA57BCF00A0472C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* MainView.swift */; };
+		9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* FitPantry.swift */; };
 		9AC81DD52CA57BD000A0472C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD42CA57BD000A0472C /* Assets.xcassets */; };
 		9AC81DD82CA57BD000A0472C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */; };
-		9AC81DE22CA57BD000A0472C /* Capstone_ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */; };
-		9AC81DEC2CA57BD000A0472C /* Capstone_ProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */; };
-		9AC81DEE2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */; };
+		9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */; };
+		9AC81DEC2CA57BD000A0472C /* Fit_PantryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */; };
+		9AC81DEE2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,17 +40,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A3FB89A2CD3E8E90019266C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9A3FB89C2CD3F6700019266C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		9A3FB89E2CD3F6840019266C /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
+		9A3FB8A02CD3F68F0019266C /* MealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealView.swift; sourceTree = "<group>"; };
+		9A3FB8A22CD3F69E0019266C /* PantryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryView.swift; sourceTree = "<group>"; };
 		9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fit Pantry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectApp.swift; sourceTree = "<group>"; };
-		9AC81DD22CA57BCF00A0472C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9AC81DD22CA57BCF00A0472C /* FitPantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitPantry.swift; sourceTree = "<group>"; };
 		9AC81DD42CA57BD000A0472C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectTests.swift; sourceTree = "<group>"; };
+		9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryTests.swift; sourceTree = "<group>"; };
 		9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectUITests.swift; sourceTree = "<group>"; };
-		9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capstone_ProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITests.swift; sourceTree = "<group>"; };
+		9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,12 +83,75 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A3FB8932CD3E53C0019266C /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				9A3FB89C2CD3F6700019266C /* Auth.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		9A3FB8942CD3E56C0019266C /* Pantry */ = {
+			isa = PBXGroup;
+			children = (
+				9A3FB8A22CD3F69E0019266C /* PantryView.swift */,
+			);
+			path = Pantry;
+			sourceTree = "<group>";
+		};
+		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
+			isa = PBXGroup;
+			children = (
+				9A3FB8A02CD3F68F0019266C /* MealView.swift */,
+			);
+			path = "Meal Planning";
+			sourceTree = "<group>";
+		};
+		9A3FB8962CD3E57B0019266C /* WorkoutPlanner */ = {
+			isa = PBXGroup;
+			children = (
+				9A3FB89E2CD3F6840019266C /* WorkoutView.swift */,
+			);
+			path = WorkoutPlanner;
+			sourceTree = "<group>";
+		};
+		9A3FB8972CD3E5840019266C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DD42CA57BD000A0472C /* Assets.xcassets */,
+				9AC81DD62CA57BD000A0472C /* Preview Content */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		9A3FB8982CD3E5900019266C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DD22CA57BCF00A0472C /* FitPantry.swift */,
+				9A3FB89A2CD3E8E90019266C /* MainView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		9A3FB8992CD3E6220019266C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
+				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		9AC81DC42CA57BCF00A0472C = {
 			isa = PBXGroup;
 			children = (
-				9AC81DCF2CA57BCF00A0472C /* Fit Pantry */,
-				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
-				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
+				9A3FB8982CD3E5900019266C /* App */,
+				9A3FB8932CD3E53C0019266C /* Authentication */,
+				9A3FB8972CD3E5840019266C /* Shared */,
+				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
+				9A3FB8952CD3E5720019266C /* Meal Planning */,
+				9A3FB8942CD3E56C0019266C /* Pantry */,
+				9A3FB8992CD3E6220019266C /* Tests */,
 				9AC81DCE2CA57BCF00A0472C /* Products */,
 				9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */,
 			);
@@ -96,17 +167,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9AC81DCF2CA57BCF00A0472C /* Fit Pantry */ = {
-			isa = PBXGroup;
-			children = (
-				9AC81DD02CA57BCF00A0472C /* Capstone_ProjectApp.swift */,
-				9AC81DD22CA57BCF00A0472C /* MainView.swift */,
-				9AC81DD42CA57BD000A0472C /* Assets.xcassets */,
-				9AC81DD62CA57BD000A0472C /* Preview Content */,
-			);
-			path = "Fit Pantry";
-			sourceTree = "<group>";
-		};
 		9AC81DD62CA57BD000A0472C /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,7 +178,7 @@
 		9AC81DE02CA57BD000A0472C /* Fit PantryTests */ = {
 			isa = PBXGroup;
 			children = (
-				9AC81DE12CA57BD000A0472C /* Capstone_ProjectTests.swift */,
+				9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */,
 			);
 			path = "Fit PantryTests";
 			sourceTree = "<group>";
@@ -126,8 +186,8 @@
 		9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */ = {
 			isa = PBXGroup;
 			children = (
-				9AC81DEB2CA57BD000A0472C /* Capstone_ProjectUITests.swift */,
-				9AC81DED2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift */,
+				9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */,
+				9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */,
 			);
 			path = "Fit PantryUITests";
 			sourceTree = "<group>";
@@ -266,8 +326,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AC81DD32CA57BCF00A0472C /* MainView.swift in Sources */,
-				9AC81DD12CA57BCF00A0472C /* Capstone_ProjectApp.swift in Sources */,
+				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
+				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
+				9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */,
+				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
+				9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */,
+				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +339,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AC81DE22CA57BD000A0472C /* Capstone_ProjectTests.swift in Sources */,
+				9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,8 +347,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AC81DEC2CA57BD000A0472C /* Capstone_ProjectUITests.swift in Sources */,
-				9AC81DEE2CA57BD000A0472C /* Capstone_ProjectUITestsLaunchTests.swift in Sources */,
+				9AC81DEC2CA57BD000A0472C /* Fit_PantryUITests.swift in Sources */,
+				9AC81DEE2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,7 +494,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Fit Pantry/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
 				DEVELOPMENT_TEAM = 4UH375AT7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -460,7 +524,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Fit Pantry/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
 				DEVELOPMENT_TEAM = 4UH375AT7K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -491,7 +555,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4UH375AT7K;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "name.chaserodie.Capstone-ProjectTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -510,7 +574,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4UH375AT7K;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "name.chaserodie.Capstone-ProjectTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
