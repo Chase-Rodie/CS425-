@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EF9690C2CDFE01D001F25BD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9690B2CDFE01D001F25BD /* HomeView.swift */; };
 		9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89A2CD3E8E90019266C /* MainView.swift */; };
 		9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89C2CD3F6700019266C /* Auth.swift */; };
 		9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89E2CD3F6840019266C /* WorkoutView.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5EF9690B2CDFE01D001F25BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = SOURCE_ROOT; };
 		9A3FB89A2CD3E8E90019266C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		9A3FB89C2CD3F6700019266C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		9A3FB89E2CD3F6840019266C /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
@@ -83,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5EF9690A2CDFDFB3001F25BD /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				5EF9690B2CDFE01D001F25BD /* HomeView.swift */,
+			);
+			name = HomePage;
+			path = Home;
+			sourceTree = "<group>";
+		};
 		9A3FB8932CD3E53C0019266C /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +159,7 @@
 				9A3FB8982CD3E5900019266C /* App */,
 				9A3FB8932CD3E53C0019266C /* Authentication */,
 				9A3FB8972CD3E5840019266C /* Shared */,
+				5EF9690A2CDFDFB3001F25BD /* HomePage */,
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8952CD3E5720019266C /* Meal Planning */,
 				9A3FB8942CD3E56C0019266C /* Pantry */,
@@ -327,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
+				5EF9690C2CDFE01D001F25BD /* HomeView.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,

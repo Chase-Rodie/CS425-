@@ -16,10 +16,11 @@ struct WorkoutView: View {
                 .foregroundStyle(.tint)
             Text("WorkoutView Test")
             Button(/*@START_MENU_TOKEN@*/"Button"/*@END_MENU_TOKEN@*/) {
-                /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/ /*@END_MENU_TOKEN@*/
+                print("Hello")
             }
         }
         .padding()
+       
     }
 }
 
