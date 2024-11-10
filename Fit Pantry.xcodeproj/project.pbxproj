@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09F61C4D2CE0418F00F41CA8 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F61C4C2CE0418F00F41CA8 /* ViewModel.swift */; };
+		09F61C502CE0433D00F41CA8 /* Foods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F61C4F2CE0433D00F41CA8 /* Foods.swift */; };
+		09F61C532CE046D000F41CA8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 09F61C522CE046D000F41CA8 /* FirebaseFirestore */; };
 		9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89A2CD3E8E90019266C /* MainView.swift */; };
 		9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89C2CD3F6700019266C /* Auth.swift */; };
 		9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89E2CD3F6840019266C /* WorkoutView.swift */; };
@@ -40,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		09F61C4C2CE0418F00F41CA8 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		09F61C4F2CE0433D00F41CA8 /* Foods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foods.swift; sourceTree = "<group>"; };
 		9A3FB89A2CD3E8E90019266C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		9A3FB89C2CD3F6700019266C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		9A3FB89E2CD3F6840019266C /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
@@ -63,6 +68,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */,
+				09F61C532CE046D000F41CA8 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +89,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09F61C4E2CE042D000F41CA8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				09F61C4F2CE0433D00F41CA8 /* Foods.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		09F61C512CE046D000F41CA8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9A3FB8932CD3E53C0019266C /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				9A3FB8A22CD3F69E0019266C /* PantryView.swift */,
+				09F61C4C2CE0418F00F41CA8 /* ViewModel.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -147,6 +169,7 @@
 			children = (
 				9A3FB8982CD3E5900019266C /* App */,
 				9A3FB8932CD3E53C0019266C /* Authentication */,
+				09F61C4E2CE042D000F41CA8 /* Models */,
 				9A3FB8972CD3E5840019266C /* Shared */,
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8952CD3E5720019266C /* Meal Planning */,
@@ -154,6 +177,7 @@
 				9A3FB8992CD3E6220019266C /* Tests */,
 				9AC81DCE2CA57BCF00A0472C /* Products */,
 				9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */,
+				09F61C512CE046D000F41CA8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -208,6 +232,9 @@
 			dependencies = (
 			);
 			name = "Fit Pantry";
+			packageProductDependencies = (
+				09F61C522CE046D000F41CA8 /* FirebaseFirestore */,
+			);
 			productName = "Capstone Project";
 			productReference = 9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */;
 			productType = "com.apple.product-type.application";
@@ -327,11 +354,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
+				09F61C502CE0433D00F41CA8 /* Foods.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
 				9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
+				09F61C4D2CE0418F00F41CA8 /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,6 +701,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		09F61C522CE046D000F41CA8 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
