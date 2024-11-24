@@ -4,12 +4,14 @@
 //
 //  Created by Zach Greenhill on 11/9/24.
 //
-
+/*
 import Foundation
 import Firebase
 import FirebaseFirestore
 
 class ViewModel: ObservableObject {
+    
+    // Create a list of Foods structs
     @Published var list = [Food]()
     
     func getData() {
@@ -18,18 +20,7 @@ class ViewModel: ObservableObject {
         // Get a reference to the database
         let db = Firestore.firestore()
         
-        /*
-        do {
-            let snapshot = try await db.collection("test").getDocuments()
-            for document in snapshot.documents {
-                print("\(document.documentID) => \(document.data())")
-            }
-        } catch {
-           print("Error getting documents: \(error)")
-        }
-        */
-        // Read documents at a specified path
-        //db.collection("test").getDocuments(source: <#T##FirestoreSource#>, completion: <#T##(QuerySnapshot?, Error?) -> Void#>)
+        // Get the collection from the database
         db.collection("test").getDocuments { snapshot, error in
         
             // Check for errors
@@ -54,6 +45,7 @@ class ViewModel: ObservableObject {
                     
                 }
             }
+            // If there are errors
             else {
                 print("Error getting documents: \(error as Optional)")
             }
@@ -62,3 +54,4 @@ class ViewModel: ObservableObject {
         
     }
 }
+*/

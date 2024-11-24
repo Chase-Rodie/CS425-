@@ -11,16 +11,27 @@ import FirebaseCore
 
 struct ContentView: View {
     
-    @ObservedObject var model = ViewModel()
+    @ObservedObject var model = GetData()
+    // var food: FoodTest
     
     var body: some View {
+        /*
+        VStack {
+            Text(food.id)
+        }
+         */
         List (model.list) { item in
+            //Text(item.name)
             Text(item.name)
+            Text("ID: \(item.food_id)")
+            Text("")
         }
     }
     
     init() {
-        model.getData()
+        model.query()
+        //food = model.list.first!
+        //food = model.list[0]
     }
 }
 
