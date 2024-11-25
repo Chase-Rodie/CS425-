@@ -8,7 +8,6 @@
 import Foundation
 
 struct Food: Identifiable {
-    
     var id: String
     var name: String
     var food_id: Int32
