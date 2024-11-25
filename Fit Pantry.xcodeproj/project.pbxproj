@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,8 @@
 		9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */; };
 		9AC81DEC2CA57BD000A0472C /* Fit_PantryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */; };
 		9AC81DEE2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */; };
+		F8DB56C92CF47EA800A98B13 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DB56C82CF47E9600A98B13 /* User.swift */; };
+		F8DB56CB2CF47EC200A98B13 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DB56CA2CF47EBE00A98B13 /* HelperFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
 			remoteInfo = "Capstone Project";
+		};
+		F8DB56D62CF47EE100A98B13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -55,7 +64,14 @@
 		9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITests.swift; sourceTree = "<group>"; };
 		9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F8DB56C82CF47E9600A98B13 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F8DB56CA2CF47EBE00A98B13 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		F8DB56D02CF47EE100A98B13 /* MealPlannerTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlannerTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F8DB56D12CF47EE100A98B13 /* MealPlannerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealPlannerTest; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		9AC81DCA2CA57BCF00A0472C /* Frameworks */ = {
@@ -74,6 +90,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9AC81DE42CA57BD000A0472C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8DB56CD2CF47EE100A98B13 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -102,6 +125,8 @@
 		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
 			isa = PBXGroup;
 			children = (
+				F8DB56CA2CF47EBE00A98B13 /* HelperFunctions.swift */,
+				F8DB56C82CF47E9600A98B13 /* User.swift */,
 				9A3FB8A02CD3F68F0019266C /* MealView.swift */,
 			);
 			path = "Meal Planning";
@@ -138,6 +163,7 @@
 			children = (
 				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
+				F8DB56D12CF47EE100A98B13 /* MealPlannerTest */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -163,6 +189,7 @@
 				9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */,
 				9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */,
 				9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */,
+				F8DB56D02CF47EE100A98B13 /* MealPlannerTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -248,6 +275,29 @@
 			productReference = 9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		F8DB56CF2CF47EE100A98B13 /* MealPlannerTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8DB56D82CF47EE100A98B13 /* Build configuration list for PBXNativeTarget "MealPlannerTest" */;
+			buildPhases = (
+				F8DB56CC2CF47EE100A98B13 /* Sources */,
+				F8DB56CD2CF47EE100A98B13 /* Frameworks */,
+				F8DB56CE2CF47EE100A98B13 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8DB56D72CF47EE100A98B13 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F8DB56D12CF47EE100A98B13 /* MealPlannerTest */,
+			);
+			name = MealPlannerTest;
+			packageProductDependencies = (
+			);
+			productName = MealPlannerTest;
+			productReference = F8DB56D02CF47EE100A98B13 /* MealPlannerTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -255,7 +305,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					9AC81DCC2CA57BCF00A0472C = {
@@ -267,6 +317,10 @@
 					};
 					9AC81DE62CA57BD000A0472C = {
 						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F8DB56CF2CF47EE100A98B13 = {
+						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
 					};
 				};
@@ -290,6 +344,7 @@
 				9AC81DCC2CA57BCF00A0472C /* Fit Pantry */,
 				9AC81DDC2CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DE62CA57BD000A0472C /* Fit PantryUITests */,
+				F8DB56CF2CF47EE100A98B13 /* MealPlannerTest */,
 			);
 		};
 /* End PBXProject section */
@@ -319,6 +374,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8DB56CE2CF47EE100A98B13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -327,11 +389,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
+				F8DB56CB2CF47EC200A98B13 /* HelperFunctions.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
 				9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
+				F8DB56C92CF47EA800A98B13 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +416,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8DB56CC2CF47EE100A98B13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -364,6 +435,11 @@
 			isa = PBXTargetDependency;
 			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
 			targetProxy = 9AC81DE82CA57BD000A0472C /* PBXContainerItemProxy */;
+		};
+		F8DB56D72CF47EE100A98B13 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F8DB56D62CF47EE100A98B13 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -619,6 +695,40 @@
 			};
 			name = Release;
 		};
+		F8DB56D92CF47EE100A98B13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlannerTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F8DB56DA2CF47EE100A98B13 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlannerTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -654,6 +764,15 @@
 			buildConfigurations = (
 				9AC81DF82CA57BD000A0472C /* Debug */,
 				9AC81DF92CA57BD000A0472C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8DB56D82CF47EE100A98B13 /* Build configuration list for PBXNativeTarget "MealPlannerTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8DB56D92CF47EE100A98B13 /* Debug */,
+				F8DB56DA2CF47EE100A98B13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
