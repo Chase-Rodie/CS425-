@@ -7,13 +7,24 @@
 
 import SwiftUI
 import Foundation
+import FirebaseFirestore
+
+
 
 struct WorkoutView: View {
+    @ObservedObject var exerciseModel = RetrieveWorkoutData()
+    
     var body: some View {
-        
-        
+    
 //Horizontal stack for weekly list/view.
         VStack{
+    
+            if let exercise = exerciseModel.exercise{
+                Text("Name: \(exercise.name)")
+            } else {
+                Text("Failed")
+            }
+            
             Button("hello"){
                 print("test")
             }
@@ -118,8 +129,13 @@ struct WorkoutView: View {
             }
             
         }
-        
     }
+    
+    init(){
+        exerciseModel.queryExercises()
+    
+    }
+    
 }
 
 #Preview {

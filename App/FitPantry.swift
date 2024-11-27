@@ -1,45 +1,36 @@
 //
-//  Capstone_ProjectApp.swift
-//  Capstone Project
+//  FitPantryApp.swift
+//  Fit Pantry
 //
 //  Created by Chase Rodie on 9/26/24.
 //
 
 import SwiftUI
+import Firebase
+import FirebaseCore
 
 @main
 struct Fit_PantryApp: App {
+
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
     var body: some Scene {
         WindowGroup {
-            MainView()
+            NavigationStack {
+                //AuthenticationView()
+               // WorkoutView()
+            }
         }
     }
 }
 
-//import SwiftUI
-//import FirebaseCore
-//
-//
-//class AppDelegate: NSObject, UIApplicationDelegate {
-//  func application(_ application: UIApplication,
-//                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//    FirebaseApp.configure()
-//
-//    return true
-//  }
-//}
-//
-//@main
-//struct YourApp: App {
-//  // register app delegate for Firebase setup
-//  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-//
-//
-//  var body: some Scene {
-//    WindowGroup {
-//      NavigationView {
-//        ContentView()
-//      }
-//    }
-//  }
-//}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application( application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+
+        return true
+    }
+}
+

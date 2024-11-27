@@ -15,34 +15,8 @@ struct MainView: View {
                 .foregroundStyle(.tint)
             Text("This is a test!")
         }
-        TabView{
-            HomeView()
-                .tabItem(){
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-            WorkoutView()
-                .tabItem(){
-                    Image(systemName: "figure.run")
-                    Text("Exercise")
-                }
-            WorkoutView()
-                .tabItem(){
-                    Image(systemName: "fork.knife.circle.fill")
-                    Text("Pantry")
-                }
-            WorkoutView()
-                .tabItem(){
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
-            WorkoutView()
-                .tabItem(){
-                    Image(systemName: "person.fill")
-                    Text("Scan")
-                }
-        }
         
+
         .padding()
     }
 }
