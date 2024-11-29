@@ -1,13 +1,13 @@
 //
 //  ContentView.swift
-//  Capstone Project
+//  Fit Pantry
 //
 //  Created by Chase Rodie on 9/26/24.
 //
 
 import SwiftUI
 
-struct MainView: View {
+struct ContentView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +20,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    ContentView()
 }
