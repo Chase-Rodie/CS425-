@@ -18,7 +18,7 @@ class RetrieveWorkoutData : ObservableObject {
     
     
     func queryExercises(type: [String], maxExercises: Int = 4)  {
-        FirebaseApp.configure()
+      //  FirebaseApp.configure()
         let db = Firestore.firestore()
         
         var tempExercises: [[Exercise]] = Array(repeating: [], count: type.count)

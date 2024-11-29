@@ -17,7 +17,8 @@ struct Fit_PantryApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                RootView()
+                //RootView()
+                WorkoutView()
             }
         }
     }
