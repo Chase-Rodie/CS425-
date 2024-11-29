@@ -22,13 +22,12 @@ struct WorkoutView: View {
                     }
                     VStack(alignment: .leading, spacing: 20){
                         Button("delete"){
-                            print("pressed")
-                            let domain = Bundle.main.bundleIdentifier!
-                            UserDefaults.standard.removePersistentDomain(forName: domain)
+                            UserDefaults.standard.removeObject(forKey: "workoutPlan")
+                            print("Workout Plan Deleted.")
+                            hasWorkoutPlan = workoutPlanModel.loadWorkoutPlan()
+                            }
 
-                            print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
-
-                        }
+                        
                         
                         ForEach(0..<workoutPlanModel.workoutPlan.count, id: \.self){
                             typeIndex in
@@ -62,7 +61,9 @@ struct WorkoutView: View {
                     workoutPlanModel.queryExercises(type: ["pull", "push", "pull"])
                 }
             }  else{
-                GenerateWorkoutPlanView()
+                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan)
+               
+                
             }
         }
         .onAppear(){
@@ -97,6 +98,7 @@ struct WorkoutView: View {
 
 struct GenerateWorkoutPlanView: View {
     @ObservedObject var makeWPModel = RetrieveWorkoutData()
+    @Binding var hasWorkoutPlan: Bool
     
     @State var days = 0
     let numDays = ["1", "2", "3"]
@@ -108,7 +110,7 @@ struct GenerateWorkoutPlanView: View {
     let difficulty = ["Beginner", "Intermediate", "Expert"]
     
     var body: some View {
-        //Text("Hello, You do not currenly have a workout plan!")
+        
         Form{
             Section(header: Text("Workout Duration In Minutes")){
                 Picker("Minutes", selection: $dur){
@@ -131,8 +133,10 @@ struct GenerateWorkoutPlanView: View {
             
             Section(header: Text("Get Workout Plan")){
                 Button("Get Workout Plan"){
-                    print("Test")
+                    print("Generating Workout Plan")
                     makeWPModel.queryExercises(type: ["pull", "push", "pull"])
+                    hasWorkoutPlan = true
+                    
                     //makeWPModel.queryExercises()
                     //need to have parameters of types, days, and difficulty & amount
                     //if time is 30: 3 exercises, 60: 4
@@ -142,10 +146,7 @@ struct GenerateWorkoutPlanView: View {
             
         }
         
-        
-//        Button(action: generateWorkoutPlan){
-//            Text("Get Workout Plan")
-//        }
+    
     }
 }
 
