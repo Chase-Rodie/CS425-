@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */; };
 		5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437742CF9A99900C8B75F /* Exercise.swift */; };
 		5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */; };
 		5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5EB437782CF9AA3000C8B75F /* FirebaseFirestore */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		5EB437742CF9A99900C8B75F /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
 		9A1708C52CF2E08300746B91 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
@@ -103,6 +105,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5EB2C7602CFABFB300EA8E8D /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */,
+			);
+			path = HomePage;
+			sourceTree = "<group>";
+		};
 		9A1708C22CF2E01D00746B91 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +193,7 @@
 				9A3FB8982CD3E5900019266C /* App */,
 				9A3FB8932CD3E53C0019266C /* Authentication */,
 				9A3FB8972CD3E5840019266C /* Shared */,
+				5EB2C7602CFABFB300EA8E8D /* HomePage */,
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8952CD3E5720019266C /* Meal Planning */,
 				9A3FB8942CD3E56C0019266C /* Pantry */,
@@ -366,6 +377,7 @@
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
 				9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
+				5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
