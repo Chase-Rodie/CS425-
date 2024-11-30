@@ -56,10 +56,7 @@ struct WorkoutView: View {
                     
                 }
                 
-                .onAppear {
-                    // Query exercises when the view appears
-                    workoutPlanModel.queryExercises(type: ["pull", "push", "pull"])
-                }
+    
             }  else{
                 GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan)
                
@@ -67,7 +64,11 @@ struct WorkoutView: View {
             }
         }
         .onAppear(){
-            hasWorkoutPlan = workoutPlanModel.loadWorkoutPlan()
+            
+            if workoutPlanModel.loadWorkoutPlan(){
+                hasWorkoutPlan = true;
+            }
+               
         }
     }
       
@@ -101,7 +102,8 @@ struct GenerateWorkoutPlanView: View {
     @Binding var hasWorkoutPlan: Bool
     
     @State var days = 0
-    let numDays = ["1", "2", "3"]
+    let numDays = ["3", "4", "5"]
+    
     
     @State var dur = 0
     let duration = ["30", "60"]
@@ -109,8 +111,11 @@ struct GenerateWorkoutPlanView: View {
     @State var diff = 0
     let difficulty = ["Beginner", "Intermediate", "Expert"]
     
+    
+    
+    
     var body: some View {
-        
+    
         Form{
             Section(header: Text("Workout Duration In Minutes")){
                 Picker("Minutes", selection: $dur){
@@ -134,13 +139,63 @@ struct GenerateWorkoutPlanView: View {
             Section(header: Text("Get Workout Plan")){
                 Button("Get Workout Plan"){
                     print("Generating Workout Plan")
-                    makeWPModel.queryExercises(type: ["pull", "push", "pull"])
-                    hasWorkoutPlan = true
+//                    makeWPModel.queryExercises(days: [
+//                        ("push", "chest"),
+//                        ("pull", "shoulders"),
+//                        ("pull", "chest")
+//                    ], maxExercises: 5, level: "beginner")
+//                    
+//                    DispatchQueue.main.async {
+//                            hasWorkoutPlan = true
+//                        }
                     
                     //makeWPModel.queryExercises()
                     //need to have parameters of types, days, and difficulty & amount
                     //if time is 30: 3 exercises, 60: 4
+                   // var queryDays: Int
+//                    print(days)
                     
+                    //0 in index is 3 days
+                    if days == 0 {
+                        print("3 days")
+                        makeWPModel.queryExercises(days: [
+                            ("push", "chest"),
+                            ("pull", "shoulders"),
+                            ("pull", "glutes")
+                        ], maxExercises: 5, level: "beginner")
+                        
+                        DispatchQueue.main.async {
+                                hasWorkoutPlan = true
+                            }
+    
+                    }else if days == 1 {
+                        print("4 days")
+                        makeWPModel.queryExercises(days: [
+                            ("push", "chest"),
+                            ("pull", "glutes"),
+                            ("pull", "biceps"),
+                            ("push", "hamstrings")
+                        ], maxExercises: 5, level: "beginner")
+                        
+                        DispatchQueue.main.async {
+                                hasWorkoutPlan = true
+                            }
+                    }else if days == 2 {
+                        print("5 days")
+                        makeWPModel.queryExercises(days: [
+                            ("push", "chest"),
+                            ("pull", "glutes"),
+                            ("pull", "biceps"),
+                            ("push", "hamstrings"),
+                            ("push", "abdominals")
+                        ], maxExercises: 5, level: "beginner")
+                        
+                        DispatchQueue.main.async {
+                                hasWorkoutPlan = true
+                            }
+                    }
+                    
+
                 }
             }
             
