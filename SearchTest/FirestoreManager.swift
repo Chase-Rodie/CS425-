@@ -1,29 +1,28 @@
 //
-//  GetData.swift
+//  FirestoreManager.swift
 //  Fit Pantry
 //
-//  Created by Zach Greenhill on 11/23/24.
+//  Created by Zach Greenhill on 11/29/24.
 //
 
-import Foundation
-import Firebase
-import FirebaseFirestore
 
-class GetData: ObservableObject {
+import Foundation
+import FirebaseFirestore
+import Combine
+
+class FirestoreManager: ObservableObject {
+    private var db = Firestore.firestore()
     
-    // Create a list of Foods structs
-    //@Published var list = [Food]()
-    @Published var list = [FoodTest]()
+    @Published var items : [FoodTest] = []
     
-    func query() {
-        
-        //FirebaseApp.configure()
-        // Get a reference to the database
-        let db = Firestore.firestore()
+    func fetchItems(searchQuery: String) {
+        print(searchQuery)
         
         // Get the collection from the database
-        db.collection("test").getDocuments { snapshot, error in
-        
+        db.collection("test")
+        .whereField("name", isEqualTo: searchQuery) // Where searching occurs
+        .getDocuments { snapshot, error in
+            
             // Check for errors
             if error == nil {
                 // No errors
@@ -34,7 +33,7 @@ class GetData: ObservableObject {
                     DispatchQueue.main.async {
                         
                         // Get all documents
-                        self.list = snapshot.documents.map { d in
+                        self.items = snapshot.documents.map { d in
                             
                             // Create an item for each document
                             return FoodTest(id: d.documentID,
@@ -46,16 +45,6 @@ class GetData: ObservableObject {
                                             carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
                                             protein: d["Protein (g)"] as? Float32 ?? 0.0
                             )
-                            /*
-                             var id: String
-                             var name: String
-                             var foodGroup: String
-                             var food_id: Int32
-                             var calories: Int32
-                             var fat: Float32
-                             var carbohydrates: Float32
-                             var protein: Float32
-                             */
                         }
                     }
                     
@@ -66,8 +55,32 @@ class GetData: ObservableObject {
             else {
                 print("Error getting documents: \(error as Optional)")
             }
-        
         }
         
+        
+        // Tutorial code, doesn't work
+        /*
+         func fetchItems(searchQuery: String) {
+         print(searchQuery)
+         db.collection("test")
+         .whereField("Calories", isGreaterThanOrEqualTo: 50)
+         //.whereField("name", isEqualTo: searchQuery)
+         .getDocuments { snapshot, error in
+         if let error = error {
+         print("Error fetching data: \(error)")
+         return
+         }
+         
+         
+         
+         
+         self.items = snapshot?.documents.compactMap { document in
+         try? document.data(as: FoodTest.self)
+         } ?? []
+         print(self.items)
+         }
+         
+         }
+         */
     }
 }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0956BED92CF2DC9F00930C92 /* ModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956BED82CF2DC9F00930C92 /* ModelTest.swift */; };
 		096BDCD22CF4241E0061C5EE /* FoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BDCD12CF4241E0061C5EE /* FoodView.swift */; };
+		097FB50D2CFA96F500F58B67 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB50C2CFA96F500F58B67 /* FirestoreManager.swift */; };
+		097FB5112CFA9C9000F58B67 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB5102CFA9C9000F58B67 /* SearchView.swift */; };
 		09CF71022CF2BE450083E4C5 /* GetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CF71012CF2BE450083E4C5 /* GetData.swift */; };
 		09F61C502CE0433D00F41CA8 /* Foods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F61C4F2CE0433D00F41CA8 /* Foods.swift */; };
 		09F61C532CE046D000F41CA8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 09F61C522CE046D000F41CA8 /* FirebaseFirestore */; };
@@ -47,6 +49,8 @@
 /* Begin PBXFileReference section */
 		0956BED82CF2DC9F00930C92 /* ModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTest.swift; sourceTree = "<group>"; };
 		096BDCD12CF4241E0061C5EE /* FoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodView.swift; sourceTree = "<group>"; };
+		097FB50C2CFA96F500F58B67 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		097FB5102CFA9C9000F58B67 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		09CF71012CF2BE450083E4C5 /* GetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetData.swift; sourceTree = "<group>"; };
 		09F61C4F2CE0433D00F41CA8 /* Foods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foods.swift; sourceTree = "<group>"; };
 		9A3FB89A2CD3E8E90019266C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -93,6 +97,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		097FB50F2CFA9BC700F58B67 /* SearchTest */ = {
+			isa = PBXGroup;
+			children = (
+				097FB50C2CFA96F500F58B67 /* FirestoreManager.swift */,
+				097FB5102CFA9C9000F58B67 /* SearchView.swift */,
+			);
+			path = SearchTest;
+			sourceTree = "<group>";
+		};
 		09F61C4E2CE042D000F41CA8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +192,7 @@
 				9A3FB8972CD3E5840019266C /* Shared */,
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8952CD3E5720019266C /* Meal Planning */,
+				097FB50F2CFA9BC700F58B67 /* SearchTest */,
 				9A3FB8942CD3E56C0019266C /* Pantry */,
 				9A3FB8992CD3E6220019266C /* Tests */,
 				9AC81DCE2CA57BCF00A0472C /* Products */,
@@ -363,12 +377,14 @@
 				09F61C502CE0433D00F41CA8 /* Foods.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* MainView.swift in Sources */,
+				097FB5112CFA9C9000F58B67 /* SearchView.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
 				9A3FB89D2CD3F6700019266C /* Auth.swift in Sources */,
 				096BDCD22CF4241E0061C5EE /* FoodView.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				09CF71022CF2BE450083E4C5 /* GetData.swift in Sources */,
 				0956BED92CF2DC9F00930C92 /* ModelTest.swift in Sources */,
+				097FB50D2CFA96F500F58B67 /* FirestoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

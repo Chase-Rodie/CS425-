@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
+
 
 @main
 struct Fit_PantryApp: App {
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             MainView()
