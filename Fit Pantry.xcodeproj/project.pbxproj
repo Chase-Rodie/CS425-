@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		097FB5202CFAD08B00F58B67 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB51F2CFAD08B00F58B67 /* Food.swift */; };
+		097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB5212CFAD0C200F58B67 /* AddFoodView.swift */; };
+		097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB5232CFAD0E300F58B67 /* SearchManager.swift */; };
 		5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */; };
 		5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437742CF9A99900C8B75F /* Exercise.swift */; };
 		5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */; };
@@ -51,6 +54,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		097FB51F2CFAD08B00F58B67 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		097FB5212CFAD0C200F58B67 /* AddFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodView.swift; sourceTree = "<group>"; };
+		097FB5232CFAD0E300F58B67 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		5EB437742CF9A99900C8B75F /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
@@ -105,6 +111,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		097FB51E2CFAD07100F58B67 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				097FB51F2CFAD08B00F58B67 /* Food.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		5EB2C7602CFABFB300EA8E8D /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				9A3FB8A22CD3F69E0019266C /* PantryView.swift */,
+				097FB5212CFAD0C200F58B67 /* AddFoodView.swift */,
+				097FB5232CFAD0E300F58B67 /* SearchManager.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -197,6 +213,7 @@
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8952CD3E5720019266C /* Meal Planning */,
 				9A3FB8942CD3E56C0019266C /* Pantry */,
+				097FB51E2CFAD07100F58B67 /* Models */,
 				9A3FB8992CD3E6220019266C /* Tests */,
 				9AC81DCE2CA57BCF00A0472C /* Products */,
 				9ABD96252CBF01D700CB9922 /* GoogleService-Info.plist */,
@@ -386,7 +403,10 @@
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
 				5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
+				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
+				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
+				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
 				9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
