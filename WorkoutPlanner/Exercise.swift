@@ -18,5 +18,6 @@ struct Exercise: Decodable,Encodable,Identifiable{
     var name: String
     var primaryMuscles: Array<String>
     var secondaryMuscles: Array<String>
+    var isComplete: Bool = false
 }
 

@@ -9,11 +9,12 @@ import SwiftUI
 
 struct WorkoutView: View {
     
-    @ObservedObject var workoutPlanModel = RetrieveWorkoutData()
+    @StateObject var workoutPlanModel = RetrieveWorkoutData()
     @State private var hasWorkoutPlan: Bool = false
     
     var body: some View {
         NavigationView{
+            
             if hasWorkoutPlan{
                 ScrollView{
                     Text("Weekly Summary")
@@ -36,20 +37,7 @@ struct WorkoutView: View {
                             
                             
                             ForEach(dayWorkoutPlan){exercise in
-                                HStack{
-                                    Image("workout")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                    VStack(alignment: .leading) {
-                                        NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
-                                            .font(.subheadline)
-                                        Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
-                                            .font(.footnote)
-                                    }
-                                    
-                                }
-                                
+                                ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                             }
                         }
                     }
@@ -63,14 +51,41 @@ struct WorkoutView: View {
                 
             }
         }
-        .onAppear(){
-            
-            if workoutPlanModel.loadWorkoutPlan(){
-                hasWorkoutPlan = true;
+        .onAppear {
+            if workoutPlanModel.loadWorkoutPlan() {
+                hasWorkoutPlan = true
+            } else {
+                hasWorkoutPlan = false
             }
-               
         }
     }
+    
+    
+    
+    struct ExerciseRowView: View {
+        let exercise: Exercise
+        let workoutPlanModel: RetrieveWorkoutData
+
+        var body: some View {
+            HStack {
+                Image("workout")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50, height: 50)
+                VStack(alignment: .leading) {
+                    NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
+                        .font(.subheadline)
+                    Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
+                        .font(.footnote)
+                }
+                Button(action: { workoutPlanModel.markComplete(for: exercise) }) {
+                    Image(systemName: exercise.isComplete ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(exercise.isComplete ? .green : .gray)
+                }
+            }
+        }
+    }
+
       
     
     struct DetailedExercise: View {
@@ -139,23 +154,7 @@ struct GenerateWorkoutPlanView: View {
             Section(header: Text("Get Workout Plan")){
                 Button("Get Workout Plan"){
                     print("Generating Workout Plan")
-//                    makeWPModel.queryExercises(days: [
-//                        ("push", "chest"),
-//                        ("pull", "shoulders"),
-//                        ("pull", "chest")
-//                    ], maxExercises: 5, level: "beginner")
-//                    
-//                    DispatchQueue.main.async {
-//                            hasWorkoutPlan = true
-//                        }
-                    
-                    //makeWPModel.queryExercises()
-                    //need to have parameters of types, days, and difficulty & amount
-                    //if time is 30: 3 exercises, 60: 4
-                   // var queryDays: Int
-//                    print(days)
-                    
-                    //0 in index is 3 days
+
                     if days == 0 {
                         print("3 days")
                         makeWPModel.queryExercises(days: [
@@ -204,6 +203,8 @@ struct GenerateWorkoutPlanView: View {
     
     }
 }
+
+
 
 
 
