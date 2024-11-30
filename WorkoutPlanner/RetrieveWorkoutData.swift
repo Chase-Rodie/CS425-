@@ -17,17 +17,17 @@ class RetrieveWorkoutData : ObservableObject {
     @Published var workoutPlan : [[Exercise]] = []
     
     
-    func queryExercises(type: [String], maxExercises: Int = 4)  {
+    func queryExercises(days: [(String, String)], maxExercises: Int = 4, level: String)  {
       //  FirebaseApp.configure()
         let db = Firestore.firestore()
         
-        var tempExercises: [[Exercise]] = Array(repeating: [], count: type.count)
+        var tempExercises: [[Exercise]] = Array(repeating: [], count: days.count)
         
         let group = DispatchGroup()
         
-        for(index, type) in type.enumerated(){
+        for(index,(type, primaryMuscle)) in days.enumerated(){
             group.enter()
-            db.collection("exercises").whereField("force", isEqualTo: type).limit(to: maxExercises).getDocuments{ snapshot, error in
+            db.collection("exercises").whereField("force", isEqualTo: type).whereField("level", isEqualTo: level ).whereField("primaryMuscles", arrayContains: primaryMuscle).limit(to: maxExercises).getDocuments{ snapshot, error in
                 
                 if error == nil{
                     print("No errors")
