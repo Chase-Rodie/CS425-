@@ -24,7 +24,7 @@ final class SettingsViewModel: ObservableObject {
     }
     
     func signOut() throws {
-         try AuthenticationManager.shared.signOut()
+        try AuthenticationManager.shared.signOut()
     }
     
     func resetPassword() async throws {
@@ -33,7 +33,7 @@ final class SettingsViewModel: ObservableObject {
         guard let email = authUser.email else {
             throw URLError(.fileDoesNotExist)
         }
-                
+        
         try await AuthenticationManager.shared.resetPassword(email: email)
     }
     
@@ -50,7 +50,28 @@ final class SettingsViewModel: ObservableObject {
     func linkGoogleAccount() async throws {
         let helper = SignInGoogleHelper()
         let tokens = try await helper.signIn()
-        try await AuthenticationManager.shared.linkGoogle(tokens: GoogleSignInResultModel)
+        let authDataResult = try await AuthenticationManager.shared.linkGoogle(tokens: tokens)
+        self.authUser = authDataResult
+    }
+    
+    func linkAppleAccount() async throws {
+        let helper = SignInAppleHelper()
+        let tokens = try await helper.startSignInWithAppleFlow()
+        let authDataResult = try await AuthenticationManager.shared.linkApple(tokens: tokens)
+        self.authUser = authDataResult
+    }
+    
+    //Create UI for email, text fields with whole other screen
+    func linkEmailAccount() async throws {
+        let email = "hello234@gmail.com"
+        let password = "Hello234@"
+        let authDataResult = try await AuthenticationManager.shared.linkEmail(email: email, password: password)
+        self.authUser = authDataResult
+    }
+    
+    //Give user a warning to warn user action is permanent / reauthenticate (login)
+    func deleteAccount() async throws {
+        try await AuthenticationManager.shared.deleteUser()
     }
 }
 
@@ -70,6 +91,19 @@ struct SettingsView: View {
                         print(error)
                     }
                 }
+            }
+            
+            Button(role: .destructive) {
+                    Task {
+                        do {
+                            try await viewModel.deleteAccount()
+                            print("Account Deleted")
+                        }catch {
+                            print(error)
+                        }
+                    }
+            } label: {
+                Text("Delete Account")
             }
            
             if viewModel.authProviders.contains(.email) {
@@ -142,8 +176,8 @@ extension SettingsView {
             Button("Link Email Account") {
                 Task {
                     do {
-                        try await viewModel.resetPassword()
-                        print("PASSWORD RESET")
+                        try await viewModel.linkEmailAccount()
+                        print("Linked Email Account")
                     } catch {
                         print(error)
                     }
@@ -153,8 +187,8 @@ extension SettingsView {
             Button("Link Google Account") {
                 Task {
                     do {
-                        try await viewModel.updatePassword()
-                        print("Updated Password")
+                        try await viewModel.linkGoogleAccount()
+                        print("Linked Google Account")
                     }catch {
                         print(error)
                     }
@@ -164,8 +198,8 @@ extension SettingsView {
             Button("Link Apple Account") {
                 Task {
                     do {
-                        try await viewModel.updateEmail()
-                        print("Updated Email")
+                        try await viewModel.linkAppleAccount()
+                        print("Linked Apple Account")
                     }catch {
                         print(error)
                     }
