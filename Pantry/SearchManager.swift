@@ -15,11 +15,20 @@ class SearchManager: ObservableObject {
     @Published var items : [Food] = []
     
     func fetchItems(searchQuery: String) {
-        print(searchQuery)
-        
+        //print(searchQuery)
+
         // Get the collection from the database
         db.collection("test")
-        .whereField("name", isEqualTo: searchQuery) // Where searching occurs
+        .whereField("name", isGreaterThanOrEqualTo: searchQuery)
+        .whereField("name", isLessThanOrEqualTo: searchQuery + "\u{f7ff}")
+        
+        /*
+        .whereField("name", isGreaterThanOrEqualTo: "A")
+        .whereField("name", isLessThanOrEqualTo: "A\u{f7ff}")
+        */
+        //.whereField("name", in: ["Apples"])
+        //.whereField("name", arrayContains: searchQuery)
+        //.whereField("name", isEqualTo: searchQuery) // Where searching occurs
         .getDocuments { snapshot, error in
             
             // Check for errors
@@ -83,3 +92,4 @@ class SearchManager: ObservableObject {
          */
     }
 }
+
