@@ -11,11 +11,16 @@ import SwiftUI
 final class SettingsViewModel: ObservableObject {
     
     @Published var authProviders: [AuthProviderOption] = []
+    @Published var authUser: AuthDataResultModel? = nil
     
     func loadAuthProviders() {
         if let providers = try? AuthenticationManager.shared.getcurrentEmailProvider() {
             authProviders = providers
         }
+    }
+    
+    func loadAuthUser() {
+        self.authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
     }
     
     func signOut() throws {
@@ -41,6 +46,12 @@ final class SettingsViewModel: ObservableObject {
         let password = "hello456"
         try await AuthenticationManager.shared.updatePassword(password: password)
     }
+    
+    func linkGoogleAccount() async throws {
+        let helper = SignInGoogleHelper()
+        let tokens = try await helper.signIn()
+        try await AuthenticationManager.shared.linkGoogle(tokens: GoogleSignInResultModel)
+    }
 }
 
 struct SettingsView: View {
@@ -65,9 +76,13 @@ struct SettingsView: View {
                 emailSection
             }
             
+            if viewModel.authUser?.isAnonymous == true {
+                anonymousSection
+            }
         }
         .onAppear {
             viewModel.loadAuthProviders()
+            viewModel.loadAuthUser()
         }
         .navigationBarTitle("Settings")
     }
@@ -81,7 +96,7 @@ struct SettingsView_Previews: PreviewProvider {
     }
 }
 
-
+//Instead of link buttons use actual UI sign in buttons that are on sign in screen (future implementation)
 extension SettingsView {
     
     private var emailSection: some View{
@@ -119,6 +134,45 @@ extension SettingsView {
             }
             } header: {
                 Text("Email functions")
+        }
+    }
+    
+    private var anonymousSection: some View{
+        Section {
+            Button("Link Email Account") {
+                Task {
+                    do {
+                        try await viewModel.resetPassword()
+                        print("PASSWORD RESET")
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        
+            Button("Link Google Account") {
+                Task {
+                    do {
+                        try await viewModel.updatePassword()
+                        print("Updated Password")
+                    }catch {
+                        print(error)
+                    }
+                }
+            }
+            
+            Button("Link Apple Account") {
+                Task {
+                    do {
+                        try await viewModel.updateEmail()
+                        print("Updated Email")
+                    }catch {
+                        print(error)
+                    }
+                }
+            }
+            } header: {
+                Text("Create account")
         }
     }
 }
