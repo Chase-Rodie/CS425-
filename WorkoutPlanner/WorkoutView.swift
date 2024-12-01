@@ -162,13 +162,22 @@ struct GenerateWorkoutPlanView: View {
                 Button("Get Workout Plan"){
                     print("Generating Workout Plan")
                     isLoading = true
+                    var passMax: Int = 0
+                    
+                    if dur == 0{
+                        passMax = 3
+                    }else{
+                        passMax = 5
+                    }
+                    
+                    
                     if days == 0 {
                         print("3 days")
                         makeWPModel.queryExercises(days: [
                             ("push", "chest"),
                             ("pull", "shoulders"),
                             ("pull", "glutes")
-                        ], maxExercises: 5, level: "beginner")
+                        ], maxExercises: passMax, level: "beginner")
                         
                         DispatchQueue.main.async {
                                 isLoading = false
@@ -184,7 +193,7 @@ struct GenerateWorkoutPlanView: View {
                             ("pull", "glutes"),
                             ("pull", "biceps"),
                             ("push", "hamstrings")
-                        ], maxExercises: 5, level: "beginner")
+                        ], maxExercises: passMax, level: "beginner")
                         
                         DispatchQueue.main.async {
                                 isLoading = false
@@ -199,7 +208,7 @@ struct GenerateWorkoutPlanView: View {
                             ("pull", "biceps"),
                             ("push", "hamstrings"),
                             ("push", "abdominals")
-                        ], maxExercises: 5, level: "beginner")
+                        ], maxExercises: passMax, level: "beginner")
                         
                         DispatchQueue.main.async {
                                 isLoading = false

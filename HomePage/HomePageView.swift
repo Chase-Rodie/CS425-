@@ -61,21 +61,43 @@ struct HomePageView: View {
                             HStack{
                                 VStack(spacing: 20) {
                                     // Progress Ring
-                                    TempRingsView(progress: currentProgress, ringWidth: 15)
+                                    ProgressRingView(progress: currentProgress, ringWidth: 15)
                                     
                                         .padding()
                                         .background(Color("BackgroundColor"))
                                         .foregroundColor(.white)
                                         .cornerRadius(10)
+                                    Text("Day 1")
                                 }
                                 VStack(spacing: 20) {
                                     // Progress Ring
-                                    TempRingsView(progress: currentProgress, ringWidth: 15)
+                                   ProgressRingView(progress: currentProgress, ringWidth: 15)
                                     
                                         .padding()
                                         .background(Color("BackgroundColor"))
                                         .foregroundColor(.white)
                                         .cornerRadius(10)
+                                    Text("Day 2")
+                                }
+                                VStack(spacing: 20) {
+                                    // Progress Ring
+                                    ProgressRingView(progress: currentProgress, ringWidth: 15)
+                                    
+                                        .padding()
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                    Text("Day 3")
+                                }
+                                VStack(spacing: 20) {
+                                    // Progress Ring
+                                    ProgressRingView(progress: currentProgress, ringWidth: 15)
+                                    
+                                        .padding()
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                    Text("Day 4")
                                 }
                             }.padding(.leading, 20)
                         }
@@ -107,7 +129,7 @@ struct HomePageView: View {
                                 }
                             }
                         }
-                        NavigationLink("Progress", destination: ProgressView())
+                        NavigationLink("Progress Calendar", destination: ProgressTrackerView())
                             .font(.largeTitle)
                     }
                 }

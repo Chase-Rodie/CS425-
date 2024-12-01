@@ -13,7 +13,8 @@
 		5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5EB437782CF9AA3000C8B75F /* FirebaseFirestore */; };
 		5EF863242CFC21F70063EAE1 /* TempContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF863232CFC21F70063EAE1 /* TempContentView.swift */; };
 		5EF863262CFC391B0063EAE1 /* HamburgerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF863252CFC391B0063EAE1 /* HamburgerMenuView.swift */; };
-		5EF863282CFC5AC70063EAE1 /* TempRingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF863272CFC5AC60063EAE1 /* TempRingsView.swift */; };
+		5EF863282CFC5AC70063EAE1 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF863272CFC5AC60063EAE1 /* ProgressRingView.swift */; };
+		5EF8632D2CFC69DA0063EAE1 /* ProgressTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF8632C2CFC69DA0063EAE1 /* ProgressTrackerView.swift */; };
 		9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1708C32CF2E01D00746B91 /* FirebaseAuth */; };
 		9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C52CF2E08300746B91 /* AuthenticationView.swift */; };
 		9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C72CF2E51200746B91 /* SignInEmailView.swift */; };
@@ -59,7 +60,8 @@
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
 		5EF863232CFC21F70063EAE1 /* TempContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempContentView.swift; sourceTree = "<group>"; };
 		5EF863252CFC391B0063EAE1 /* HamburgerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerMenuView.swift; sourceTree = "<group>"; };
-		5EF863272CFC5AC60063EAE1 /* TempRingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempRingsView.swift; sourceTree = "<group>"; };
+		5EF863272CFC5AC60063EAE1 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
+		5EF8632C2CFC69DA0063EAE1 /* ProgressTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTrackerView.swift; sourceTree = "<group>"; };
 		9A1708C52CF2E08300746B91 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		9A1708C72CF2E51200746B91 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		9A3FB89A2CD3E8E90019266C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -117,7 +119,8 @@
 				5EB2C7642CFB130E00EA8E8D /* HomePageView.swift */,
 				5EF863252CFC391B0063EAE1 /* HamburgerMenuView.swift */,
 				5EF863232CFC21F70063EAE1 /* TempContentView.swift */,
-				5EF863272CFC5AC60063EAE1 /* TempRingsView.swift */,
+				5EF863272CFC5AC60063EAE1 /* ProgressRingView.swift */,
+				5EF8632C2CFC69DA0063EAE1 /* ProgressTrackerView.swift */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -388,10 +391,11 @@
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				5EB2C7662CFB130E00EA8E8D /* HomePageView.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */,
-				5EF863282CFC5AC70063EAE1 /* TempRingsView.swift in Sources */,
+				5EF863282CFC5AC70063EAE1 /* ProgressRingView.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
 				9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */,
+				5EF8632D2CFC69DA0063EAE1 /* ProgressTrackerView.swift in Sources */,
 				9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
 				5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */,

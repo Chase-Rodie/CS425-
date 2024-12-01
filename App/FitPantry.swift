@@ -18,7 +18,8 @@ struct Fit_PantryApp: App {
         WindowGroup {
             NavigationStack {
                 //RootView()
-                WorkoutView()
+               // WorkoutView()
+                TempContentView()
             }
         }
     }

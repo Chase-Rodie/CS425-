@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TempRingsView: View {
+struct ProgressRingView: View {
     
     var progress: Double // Progress value between 0.0 and 1.0
     var ringColor: Color = Color("LighterColor")
