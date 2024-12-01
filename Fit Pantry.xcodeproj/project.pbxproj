@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -37,6 +37,14 @@
 		9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */; };
 		9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888FB2CF2936600E83A3A /* RootView.swift */; };
 		9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888FD2CF294A900E83A3A /* SettingsView.swift */; };
+		F80C289F2CFD24E00070B172 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* User.swift */; };
+		F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
+		F80C28A32CFD25380070B172 /* MealPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A22CFD25310070B172 /* MealPlanner.swift */; };
+		F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A42CFD253C0070B172 /* MealSuggestions.swift */; };
+		F80C28A72CFD25560070B172 /* NutritionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A62CFD254A0070B172 /* NutritionManager.swift */; };
+		F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A82CFD255A0070B172 /* ShoppingList.swift */; };
+		F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AA2CFD256A0070B172 /* UserPreferences.swift */; };
+		F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AC2CFD25780070B172 /* MealPlanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +61,48 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
 			remoteInfo = "Capstone Project";
+		};
+		F80C28B82CFD2B950070B172 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
+		};
+		F80C28C72CFD2BC30070B172 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
+		};
+		F80C28D62CFD2BEF0070B172 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
+		};
+		F80C28E52CFD2C250070B172 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
+		};
+		F80C28F42CFD2C360070B172 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
+		};
+		F80C29032CFD2C570070B172 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
+			remoteInfo = "Fit Pantry";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -87,7 +137,29 @@
 		9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		9AF888FB2CF2936600E83A3A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		9AF888FD2CF294A900E83A3A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F80C289E2CFD24DA0070B172 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F80C28A02CFD24F70070B172 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		F80C28A22CFD25310070B172 /* MealPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanner.swift; sourceTree = "<group>"; };
+		F80C28A42CFD253C0070B172 /* MealSuggestions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealSuggestions.swift; sourceTree = "<group>"; };
+		F80C28A62CFD254A0070B172 /* NutritionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionManager.swift; sourceTree = "<group>"; };
+		F80C28A82CFD255A0070B172 /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
+		F80C28AA2CFD256A0070B172 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
+		F80C28AC2CFD25780070B172 /* MealPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanView.swift; sourceTree = "<group>"; };
+		F80C28B22CFD2B950070B172 /* MealPlanner.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlanner.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80C28C12CFD2BC30070B172 /* MealSuggestionsTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealSuggestionsTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80C28D02CFD2BEF0070B172 /* MealPlannerTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlannerTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutritionManagerTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShoppingListTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80C28FD2CFD2C570070B172 /* UserPreferenceTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UserPreferenceTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealSuggestionsTest; sourceTree = "<group>"; };
+		F80C28D12CFD2BEF0070B172 /* MealPlannerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealPlannerTest; sourceTree = "<group>"; };
+		F80C28E02CFD2C250070B172 /* NutritionManagerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NutritionManagerTest; sourceTree = "<group>"; };
+		F80C28EF2CFD2C360070B172 /* ShoppingListTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ShoppingListTest; sourceTree = "<group>"; };
+		F80C28FE2CFD2C570070B172 /* UserPreferenceTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserPreferenceTest; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		9AC81DCA2CA57BCF00A0472C /* Frameworks */ = {
@@ -110,6 +182,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9AC81DE42CA57BD000A0472C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28AF2CFD2B950070B172 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28BE2CFD2BC30070B172 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28CD2CFD2BEF0070B172 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28DC2CFD2C250070B172 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28EB2CFD2C360070B172 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28FA2CFD2C570070B172 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -169,6 +283,14 @@
 		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
 			isa = PBXGroup;
 			children = (
+				F80C28AC2CFD25780070B172 /* MealPlanView.swift */,
+				F80C28AA2CFD256A0070B172 /* UserPreferences.swift */,
+				F80C28A82CFD255A0070B172 /* ShoppingList.swift */,
+				F80C28A62CFD254A0070B172 /* NutritionManager.swift */,
+				F80C28A42CFD253C0070B172 /* MealSuggestions.swift */,
+				F80C28A22CFD25310070B172 /* MealPlanner.swift */,
+				F80C28A02CFD24F70070B172 /* HelperFunctions.swift */,
+				F80C289E2CFD24DA0070B172 /* User.swift */,
 				9A3FB8A02CD3F68F0019266C /* MealView.swift */,
 			);
 			path = "Meal Planning";
@@ -207,6 +329,11 @@
 			children = (
 				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
+				F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */,
+				F80C28D12CFD2BEF0070B172 /* MealPlannerTest */,
+				F80C28E02CFD2C250070B172 /* NutritionManagerTest */,
+				F80C28EF2CFD2C360070B172 /* ShoppingListTest */,
+				F80C28FE2CFD2C570070B172 /* UserPreferenceTest */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -246,6 +373,12 @@
 				9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */,
 				9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */,
 				9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */,
+				F80C28B22CFD2B950070B172 /* MealPlanner.xctest */,
+				F80C28C12CFD2BC30070B172 /* MealSuggestionsTest.xctest */,
+				F80C28D02CFD2BEF0070B172 /* MealPlannerTest.xctest */,
+				F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */,
+				F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */,
+				F80C28FD2CFD2C570070B172 /* UserPreferenceTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -331,6 +464,141 @@
 			productReference = 9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		F80C28B12CFD2B950070B172 /* MealPlanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F80C28BA2CFD2B950070B172 /* Build configuration list for PBXNativeTarget "MealPlanner" */;
+			buildPhases = (
+				F80C28AE2CFD2B950070B172 /* Sources */,
+				F80C28AF2CFD2B950070B172 /* Frameworks */,
+				F80C28B02CFD2B950070B172 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80C28B92CFD2B950070B172 /* PBXTargetDependency */,
+			);
+			name = MealPlanner;
+			packageProductDependencies = (
+			);
+			productName = MealPlanner;
+			productReference = F80C28B22CFD2B950070B172 /* MealPlanner.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F80C28C02CFD2BC30070B172 /* MealSuggestionsTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F80C28C92CFD2BC30070B172 /* Build configuration list for PBXNativeTarget "MealSuggestionsTest" */;
+			buildPhases = (
+				F80C28BD2CFD2BC30070B172 /* Sources */,
+				F80C28BE2CFD2BC30070B172 /* Frameworks */,
+				F80C28BF2CFD2BC30070B172 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80C28C82CFD2BC30070B172 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */,
+			);
+			name = MealSuggestionsTest;
+			packageProductDependencies = (
+			);
+			productName = MealSuggestionsTest;
+			productReference = F80C28C12CFD2BC30070B172 /* MealSuggestionsTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F80C28CF2CFD2BEF0070B172 /* MealPlannerTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F80C28D82CFD2BEF0070B172 /* Build configuration list for PBXNativeTarget "MealPlannerTest" */;
+			buildPhases = (
+				F80C28CC2CFD2BEF0070B172 /* Sources */,
+				F80C28CD2CFD2BEF0070B172 /* Frameworks */,
+				F80C28CE2CFD2BEF0070B172 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80C28D72CFD2BEF0070B172 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F80C28D12CFD2BEF0070B172 /* MealPlannerTest */,
+			);
+			name = MealPlannerTest;
+			packageProductDependencies = (
+			);
+			productName = MealPlannerTest;
+			productReference = F80C28D02CFD2BEF0070B172 /* MealPlannerTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F80C28DE2CFD2C250070B172 /* NutritionManagerTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F80C28E72CFD2C250070B172 /* Build configuration list for PBXNativeTarget "NutritionManagerTest" */;
+			buildPhases = (
+				F80C28DB2CFD2C250070B172 /* Sources */,
+				F80C28DC2CFD2C250070B172 /* Frameworks */,
+				F80C28DD2CFD2C250070B172 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80C28E62CFD2C250070B172 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F80C28E02CFD2C250070B172 /* NutritionManagerTest */,
+			);
+			name = NutritionManagerTest;
+			packageProductDependencies = (
+			);
+			productName = NutritionManagerTest;
+			productReference = F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F80C28ED2CFD2C360070B172 /* ShoppingListTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F80C28F62CFD2C360070B172 /* Build configuration list for PBXNativeTarget "ShoppingListTest" */;
+			buildPhases = (
+				F80C28EA2CFD2C360070B172 /* Sources */,
+				F80C28EB2CFD2C360070B172 /* Frameworks */,
+				F80C28EC2CFD2C360070B172 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80C28F52CFD2C360070B172 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F80C28EF2CFD2C360070B172 /* ShoppingListTest */,
+			);
+			name = ShoppingListTest;
+			packageProductDependencies = (
+			);
+			productName = ShoppingListTest;
+			productReference = F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F80C28FC2CFD2C570070B172 /* UserPreferenceTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F80C29052CFD2C570070B172 /* Build configuration list for PBXNativeTarget "UserPreferenceTest" */;
+			buildPhases = (
+				F80C28F92CFD2C570070B172 /* Sources */,
+				F80C28FA2CFD2C570070B172 /* Frameworks */,
+				F80C28FB2CFD2C570070B172 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80C29042CFD2C570070B172 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F80C28FE2CFD2C570070B172 /* UserPreferenceTest */,
+			);
+			name = UserPreferenceTest;
+			packageProductDependencies = (
+			);
+			productName = UserPreferenceTest;
+			productReference = F80C28FD2CFD2C570070B172 /* UserPreferenceTest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -338,7 +606,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					9AC81DCC2CA57BCF00A0472C = {
@@ -350,6 +618,30 @@
 					};
 					9AC81DE62CA57BD000A0472C = {
 						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F80C28B12CFD2B950070B172 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F80C28C02CFD2BC30070B172 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F80C28CF2CFD2BEF0070B172 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F80C28DE2CFD2C250070B172 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F80C28ED2CFD2C360070B172 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
+					};
+					F80C28FC2CFD2C570070B172 = {
+						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
 					};
 				};
@@ -374,6 +666,12 @@
 				9AC81DCC2CA57BCF00A0472C /* Fit Pantry */,
 				9AC81DDC2CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DE62CA57BD000A0472C /* Fit PantryUITests */,
+				F80C28B12CFD2B950070B172 /* MealPlanner */,
+				F80C28C02CFD2BC30070B172 /* MealSuggestionsTest */,
+				F80C28CF2CFD2BEF0070B172 /* MealPlannerTest */,
+				F80C28DE2CFD2C250070B172 /* NutritionManagerTest */,
+				F80C28ED2CFD2C360070B172 /* ShoppingListTest */,
+				F80C28FC2CFD2C570070B172 /* UserPreferenceTest */,
 			);
 		};
 /* End PBXProject section */
@@ -403,6 +701,48 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F80C28B02CFD2B950070B172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28BF2CFD2BC30070B172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28CE2CFD2BEF0070B172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28DD2CFD2C250070B172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28EC2CFD2C360070B172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28FB2CFD2C570070B172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -410,23 +750,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F80C28A72CFD25560070B172 /* NutritionManager.swift in Sources */,
 				9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */,
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
 				9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */,
+				F80C28A32CFD25380070B172 /* MealPlanner.swift in Sources */,
 				9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */,
+				F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
+				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
+				F80C289F2CFD24E00070B172 /* User.swift in Sources */,
+				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
 				9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */,
 				9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
 				5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */,
+				F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
+				F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */,
 				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
 				9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */,
 			);
@@ -449,6 +797,48 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F80C28AE2CFD2B950070B172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28BD2CFD2BC30070B172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28CC2CFD2BEF0070B172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28DB2CFD2C250070B172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28EA2CFD2C360070B172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80C28F92CFD2C570070B172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -461,6 +851,36 @@
 			isa = PBXTargetDependency;
 			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
 			targetProxy = 9AC81DE82CA57BD000A0472C /* PBXContainerItemProxy */;
+		};
+		F80C28B92CFD2B950070B172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F80C28B82CFD2B950070B172 /* PBXContainerItemProxy */;
+		};
+		F80C28C82CFD2BC30070B172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F80C28C72CFD2BC30070B172 /* PBXContainerItemProxy */;
+		};
+		F80C28D72CFD2BEF0070B172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F80C28D62CFD2BEF0070B172 /* PBXContainerItemProxy */;
+		};
+		F80C28E62CFD2C250070B172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F80C28E52CFD2C250070B172 /* PBXContainerItemProxy */;
+		};
+		F80C28F52CFD2C360070B172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F80C28F42CFD2C360070B172 /* PBXContainerItemProxy */;
+		};
+		F80C29042CFD2C570070B172 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
+			targetProxy = F80C29032CFD2C570070B172 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -720,6 +1140,210 @@
 			};
 			name = Release;
 		};
+		F80C28BB2CFD2B950070B172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F80C28BC2CFD2B950070B172 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
+		F80C28CA2CFD2BC30070B172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealSuggestionsTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F80C28CB2CFD2BC30070B172 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealSuggestionsTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
+		F80C28D92CFD2BEF0070B172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlannerTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F80C28DA2CFD2BEF0070B172 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlannerTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
+		F80C28E82CFD2C250070B172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.NutritionManagerTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F80C28E92CFD2C250070B172 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.NutritionManagerTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
+		F80C28F72CFD2C360070B172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.ShoppingListTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F80C28F82CFD2C360070B172 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.ShoppingListTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
+		F80C29062CFD2C570070B172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.UserPreferenceTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Debug;
+		};
+		F80C29072CFD2C570070B172 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.UserPreferenceTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Fit Pantry";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -755,6 +1379,60 @@
 			buildConfigurations = (
 				9AC81DF82CA57BD000A0472C /* Debug */,
 				9AC81DF92CA57BD000A0472C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F80C28BA2CFD2B950070B172 /* Build configuration list for PBXNativeTarget "MealPlanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F80C28BB2CFD2B950070B172 /* Debug */,
+				F80C28BC2CFD2B950070B172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F80C28C92CFD2BC30070B172 /* Build configuration list for PBXNativeTarget "MealSuggestionsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F80C28CA2CFD2BC30070B172 /* Debug */,
+				F80C28CB2CFD2BC30070B172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F80C28D82CFD2BEF0070B172 /* Build configuration list for PBXNativeTarget "MealPlannerTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F80C28D92CFD2BEF0070B172 /* Debug */,
+				F80C28DA2CFD2BEF0070B172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F80C28E72CFD2C250070B172 /* Build configuration list for PBXNativeTarget "NutritionManagerTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F80C28E82CFD2C250070B172 /* Debug */,
+				F80C28E92CFD2C250070B172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F80C28F62CFD2C360070B172 /* Build configuration list for PBXNativeTarget "ShoppingListTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F80C28F72CFD2C360070B172 /* Debug */,
+				F80C28F82CFD2C360070B172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F80C29052CFD2C570070B172 /* Build configuration list for PBXNativeTarget "UserPreferenceTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F80C29062CFD2C570070B172 /* Debug */,
+				F80C29072CFD2C570070B172 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
