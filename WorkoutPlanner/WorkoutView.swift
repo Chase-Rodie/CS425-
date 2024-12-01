@@ -11,12 +11,14 @@ struct WorkoutView: View {
     
     @StateObject var workoutPlanModel = RetrieveWorkoutData()
     @State private var hasWorkoutPlan: Bool = false
+    @State private var isLoading: Bool = false
     
     var body: some View {
         NavigationView{
             
-            if hasWorkoutPlan{
+            if hasWorkoutPlan && !isLoading{
                 ScrollView{
+                    
                     Text("Weekly Summary")
                     HStack{
                         
@@ -24,8 +26,12 @@ struct WorkoutView: View {
                     VStack(alignment: .leading, spacing: 20){
                         Button("delete"){
                             UserDefaults.standard.removeObject(forKey: "workoutPlan")
-                            print("Workout Plan Deleted.")
-                            hasWorkoutPlan = workoutPlanModel.loadWorkoutPlan()
+                                print("Workout plan successfully removed.")
+                            hasWorkoutPlan = false
+                           // workoutPlanModel.workoutPlan = []
+                            //workoutPlanModel.resetWorkoutPlan()
+                           
+                            
                             }
 
                         
@@ -46,18 +52,18 @@ struct WorkoutView: View {
                 
     
             }  else{
-                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan)
+                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan, isLoading: $isLoading)
                
                 
             }
         }
-        .onAppear {
-            if workoutPlanModel.loadWorkoutPlan() {
-                hasWorkoutPlan = true
-            } else {
-                hasWorkoutPlan = false
+        .onChange(of: hasWorkoutPlan) {
+            print("finally it works ")
+            if hasWorkoutPlan && workoutPlanModel.workoutPlan.isEmpty {
+                workoutPlanModel.loadWorkoutPlan()
             }
         }
+        
     }
     
     
@@ -115,6 +121,7 @@ struct WorkoutView: View {
 struct GenerateWorkoutPlanView: View {
     @ObservedObject var makeWPModel = RetrieveWorkoutData()
     @Binding var hasWorkoutPlan: Bool
+    @Binding  var isLoading: Bool
     
     @State var days = 0
     let numDays = ["3", "4", "5"]
@@ -154,7 +161,7 @@ struct GenerateWorkoutPlanView: View {
             Section(header: Text("Get Workout Plan")){
                 Button("Get Workout Plan"){
                     print("Generating Workout Plan")
-
+                    isLoading = true
                     if days == 0 {
                         print("3 days")
                         makeWPModel.queryExercises(days: [
@@ -164,11 +171,14 @@ struct GenerateWorkoutPlanView: View {
                         ], maxExercises: 5, level: "beginner")
                         
                         DispatchQueue.main.async {
+                                isLoading = false
                                 hasWorkoutPlan = true
                             }
+                        print("Generated Workout Plan: \(makeWPModel.workoutPlan)")
     
                     }else if days == 1 {
                         print("4 days")
+                       
                         makeWPModel.queryExercises(days: [
                             ("push", "chest"),
                             ("pull", "glutes"),
@@ -177,10 +187,12 @@ struct GenerateWorkoutPlanView: View {
                         ], maxExercises: 5, level: "beginner")
                         
                         DispatchQueue.main.async {
+                                isLoading = false
                                 hasWorkoutPlan = true
                             }
                     }else if days == 2 {
                         print("5 days")
+                        
                         makeWPModel.queryExercises(days: [
                             ("push", "chest"),
                             ("pull", "glutes"),
@@ -190,6 +202,7 @@ struct GenerateWorkoutPlanView: View {
                         ], maxExercises: 5, level: "beginner")
                         
                         DispatchQueue.main.async {
+                                isLoading = false
                                 hasWorkoutPlan = true
                             }
                     }

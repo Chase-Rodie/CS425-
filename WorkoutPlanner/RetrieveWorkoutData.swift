@@ -16,6 +16,11 @@ class RetrieveWorkoutData : ObservableObject {
     //2D array for workoutplan
     @Published var workoutPlan : [[Exercise]] = []
     
+//    func resetWorkoutPlan() {
+//         self.workoutPlan = []  // Clear the in-memory workout plan
+//         print("In-memory workoutPlan cleared.")
+//     }
+    
     func markComplete(for exercise: Exercise){
         //find the exercise
         
@@ -70,6 +75,7 @@ class RetrieveWorkoutData : ObservableObject {
             DispatchQueue.main.async{
                 self.workoutPlan = tempExercises
                 self.saveWorkoutPlan()
+                
             }
         }
     }
