@@ -15,13 +15,15 @@ struct RootView: View {
         ZStack {
             if !showSignInView {
                 NavigationStack {
-                    SettingsView(showSignInView: $showSignInView)
+                    //HomePageView()
+                    //SettingsView(showSignInView: $showSignInView)
                 }
             }
         }
         .onAppear {
-            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
-            self.showSignInView = authUser == nil
+            // Force logout by clearing the authenticated user
+            try? AuthenticationManager.shared.signOut() // Ensure this method exists to handle logout
+            self.showSignInView = true
         }
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {

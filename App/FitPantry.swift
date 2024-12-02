@@ -18,6 +18,8 @@ struct Fit_PantryApp: App {
         WindowGroup {
             NavigationStack {
                 RootView()
+                //HomePageView()
+
             }
         }
     }
