@@ -39,7 +39,6 @@
 		9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888FD2CF294A900E83A3A /* SettingsView.swift */; };
 		F80C289F2CFD24E00070B172 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* User.swift */; };
 		F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
-		F80C28A32CFD25380070B172 /* MealPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A22CFD25310070B172 /* MealPlanner.swift */; };
 		F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A42CFD253C0070B172 /* MealSuggestions.swift */; };
 		F80C28A72CFD25560070B172 /* NutritionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A62CFD254A0070B172 /* NutritionManager.swift */; };
 		F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A82CFD255A0070B172 /* ShoppingList.swift */; };
@@ -139,7 +138,6 @@
 		9AF888FD2CF294A900E83A3A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F80C289E2CFD24DA0070B172 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F80C28A02CFD24F70070B172 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
-		F80C28A22CFD25310070B172 /* MealPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanner.swift; sourceTree = "<group>"; };
 		F80C28A42CFD253C0070B172 /* MealSuggestions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealSuggestions.swift; sourceTree = "<group>"; };
 		F80C28A62CFD254A0070B172 /* NutritionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionManager.swift; sourceTree = "<group>"; };
 		F80C28A82CFD255A0070B172 /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
@@ -288,7 +286,6 @@
 				F80C28A82CFD255A0070B172 /* ShoppingList.swift */,
 				F80C28A62CFD254A0070B172 /* NutritionManager.swift */,
 				F80C28A42CFD253C0070B172 /* MealSuggestions.swift */,
-				F80C28A22CFD25310070B172 /* MealPlanner.swift */,
 				F80C28A02CFD24F70070B172 /* HelperFunctions.swift */,
 				F80C289E2CFD24DA0070B172 /* User.swift */,
 				9A3FB8A02CD3F68F0019266C /* MealView.swift */,
@@ -754,7 +751,6 @@
 				9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */,
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
 				9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */,
-				F80C28A32CFD25380070B172 /* MealPlanner.swift in Sources */,
 				9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */,
