@@ -16,6 +16,24 @@ class RetrieveWorkoutData : ObservableObject {
     //2D array for workoutplan
     @Published var workoutPlan : [[Exercise]] = []
     
+//    func resetWorkoutPlan() {
+//         self.workoutPlan = []  // Clear the in-memory workout plan
+//         print("In-memory workoutPlan cleared.")
+//     }
+    
+    func markComplete(for exercise: Exercise){
+        //find the exercise
+        
+        for dayIndex in workoutPlan.indices{
+            if let exerciseIndex = workoutPlan[dayIndex].firstIndex(where: { $0.id == exercise.id }){
+                workoutPlan[dayIndex][exerciseIndex].isComplete.toggle()
+                
+                saveWorkoutPlan()
+                break
+            }
+        }
+        
+    }
     
     func queryExercises(days: [(String, String)], maxExercises: Int = 4, level: String)  {
       //  FirebaseApp.configure()
@@ -57,6 +75,7 @@ class RetrieveWorkoutData : ObservableObject {
             DispatchQueue.main.async{
                 self.workoutPlan = tempExercises
                 self.saveWorkoutPlan()
+                
             }
         }
     }
@@ -75,7 +94,9 @@ class RetrieveWorkoutData : ObservableObject {
             let decoder = JSONDecoder()
             if let savedData = UserDefaults.standard.data(forKey: "workoutPlan"),
                let decodedData = try? decoder.decode([[Exercise]].self, from: savedData) {
-                self.workoutPlan = decodedData
+                DispatchQueue.main.async{
+                    self.workoutPlan = decodedData
+                }
                 return true
             } else {
                 print("No saved exercises found.")
@@ -85,3 +106,6 @@ class RetrieveWorkoutData : ObservableObject {
     
     
 }
+
+
+

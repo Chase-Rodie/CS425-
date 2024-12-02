@@ -3,19 +3,22 @@
 //  Fit Pantry
 //
 //  Created by Lexie Reddon on 11/28/24.
-//Test
+//
 
 import SwiftUI
 
 struct WorkoutView: View {
     
-    @ObservedObject var workoutPlanModel = RetrieveWorkoutData()
+    @StateObject var workoutPlanModel = RetrieveWorkoutData()
     @State private var hasWorkoutPlan: Bool = false
+    @State private var isLoading: Bool = false
     
     var body: some View {
         NavigationView{
-            if hasWorkoutPlan{
+            
+            if hasWorkoutPlan && !isLoading{
                 ScrollView{
+                    
                     Text("Weekly Summary")
                     HStack{
                         
@@ -23,8 +26,12 @@ struct WorkoutView: View {
                     VStack(alignment: .leading, spacing: 20){
                         Button("delete"){
                             UserDefaults.standard.removeObject(forKey: "workoutPlan")
-                            print("Workout Plan Deleted.")
-                            hasWorkoutPlan = workoutPlanModel.loadWorkoutPlan()
+                                print("Workout plan successfully removed.")
+                            hasWorkoutPlan = false
+                           // workoutPlanModel.workoutPlan = []
+                            //workoutPlanModel.resetWorkoutPlan()
+                           
+                            
                             }
 
                         
@@ -36,20 +43,7 @@ struct WorkoutView: View {
                             
                             
                             ForEach(dayWorkoutPlan){exercise in
-                                HStack{
-                                    Image("workout")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 50, height: 50)
-                                    VStack(alignment: .leading) {
-                                        NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
-                                            .font(.subheadline)
-                                        Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
-                                            .font(.footnote)
-                                    }
-                                    
-                                }
-                                
+                                ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                             }
                         }
                     }
@@ -58,19 +52,46 @@ struct WorkoutView: View {
                 
     
             }  else{
-                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan)
+                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan, isLoading: $isLoading)
                
                 
             }
         }
-        .onAppear(){
-            
-            if workoutPlanModel.loadWorkoutPlan(){
-                hasWorkoutPlan = true;
+        .onChange(of: hasWorkoutPlan) {
+            print("finally it works ")
+            if hasWorkoutPlan && workoutPlanModel.workoutPlan.isEmpty {
+                workoutPlanModel.loadWorkoutPlan()
             }
-               
+        }
+        
+    }
+    
+    
+    
+    struct ExerciseRowView: View {
+        let exercise: Exercise
+        let workoutPlanModel: RetrieveWorkoutData
+
+        var body: some View {
+            HStack {
+                Image("workout")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50, height: 50)
+                VStack(alignment: .leading) {
+                    NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
+                        .font(.subheadline)
+                    Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
+                        .font(.footnote)
+                }
+                Button(action: { workoutPlanModel.markComplete(for: exercise) }) {
+                    Image(systemName: exercise.isComplete ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(exercise.isComplete ? .green : .gray)
+                }
+            }
         }
     }
+
       
     
     struct DetailedExercise: View {
@@ -100,6 +121,7 @@ struct WorkoutView: View {
 struct GenerateWorkoutPlanView: View {
     @ObservedObject var makeWPModel = RetrieveWorkoutData()
     @Binding var hasWorkoutPlan: Bool
+    @Binding  var isLoading: Bool
     
     @State var days = 0
     let numDays = ["3", "4", "5"]
@@ -139,58 +161,57 @@ struct GenerateWorkoutPlanView: View {
             Section(header: Text("Get Workout Plan")){
                 Button("Get Workout Plan"){
                     print("Generating Workout Plan")
-//                    makeWPModel.queryExercises(days: [
-//                        ("push", "chest"),
-//                        ("pull", "shoulders"),
-//                        ("pull", "chest")
-//                    ], maxExercises: 5, level: "beginner")
-//                    
-//                    DispatchQueue.main.async {
-//                            hasWorkoutPlan = true
-//                        }
+                    isLoading = true
+                    var passMax: Int = 0
                     
-                    //makeWPModel.queryExercises()
-                    //need to have parameters of types, days, and difficulty & amount
-                    //if time is 30: 3 exercises, 60: 4
-                   // var queryDays: Int
-//                    print(days)
+                    if dur == 0{
+                        passMax = 3
+                    }else{
+                        passMax = 5
+                    }
                     
-                    //0 in index is 3 days
+                    
                     if days == 0 {
                         print("3 days")
                         makeWPModel.queryExercises(days: [
                             ("push", "chest"),
                             ("pull", "shoulders"),
                             ("pull", "glutes")
-                        ], maxExercises: 5, level: "beginner")
+                        ], maxExercises: passMax, level: "beginner")
                         
                         DispatchQueue.main.async {
+                                isLoading = false
                                 hasWorkoutPlan = true
                             }
+                        print("Generated Workout Plan: \(makeWPModel.workoutPlan)")
     
                     }else if days == 1 {
                         print("4 days")
+                       
                         makeWPModel.queryExercises(days: [
                             ("push", "chest"),
                             ("pull", "glutes"),
                             ("pull", "biceps"),
                             ("push", "hamstrings")
-                        ], maxExercises: 5, level: "beginner")
+                        ], maxExercises: passMax, level: "beginner")
                         
                         DispatchQueue.main.async {
+                                isLoading = false
                                 hasWorkoutPlan = true
                             }
                     }else if days == 2 {
                         print("5 days")
+                        
                         makeWPModel.queryExercises(days: [
                             ("push", "chest"),
                             ("pull", "glutes"),
                             ("pull", "biceps"),
                             ("push", "hamstrings"),
                             ("push", "abdominals")
-                        ], maxExercises: 5, level: "beginner")
+                        ], maxExercises: passMax, level: "beginner")
                         
                         DispatchQueue.main.async {
+                                isLoading = false
                                 hasWorkoutPlan = true
                             }
                     }
@@ -204,6 +225,8 @@ struct GenerateWorkoutPlanView: View {
     
     }
 }
+
+
 
 
 
