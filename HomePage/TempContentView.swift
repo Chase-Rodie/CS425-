@@ -10,7 +10,7 @@ import SwiftUI
 struct TempContentView: View {
     
     @State var showMenu = false
-   
+    @State private var showSignInView = false
     
     var body: some View {
         
@@ -42,8 +42,7 @@ struct TempContentView: View {
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
-            WorkoutView()
-                .tabItem {
+            SettingsView(showSignInView: $showSignInView)                .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
             
