@@ -16,4 +16,5 @@ struct Food: Identifiable, Decodable {
     var fat: Float32
     var carbohydrates: Float32
     var protein: Float32
+    var suitableFor: [String]
 }

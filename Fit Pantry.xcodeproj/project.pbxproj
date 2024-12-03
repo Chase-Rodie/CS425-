@@ -41,6 +41,13 @@
 		9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */; };
 		9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888FB2CF2936600E83A3A /* RootView.swift */; };
 		9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888FD2CF294A900E83A3A /* SettingsView.swift */; };
+		F80590B42CFE59B000A900FC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F80590B32CFE59B000A900FC /* FirebaseAnalytics */; };
+		F80590B62CFE59B900A900FC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F80590B52CFE59B900A900FC /* FirebaseAuth */; };
+		F80590B82CFE59C200A900FC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F80590B72CFE59C200A900FC /* FirebaseFirestore */; };
+		F80590B92CFE5BDC00A900FC /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
+		F80590BA2CFE5BE900A900FC /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB51F2CFAD08B00F58B67 /* Food.swift */; };
+		F80590BB2CFE5BEF00A900FC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* User.swift */; };
+		F80590BC2CFE5BFF00A900FC /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
 		F80C289F2CFD24E00070B172 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* User.swift */; };
 		F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
 		F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A42CFD253C0070B172 /* MealSuggestions.swift */; };
@@ -212,6 +219,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F80590B42CFE59B000A900FC /* FirebaseAnalytics in Frameworks */,
+				F80590B62CFE59B900A900FC /* FirebaseAuth in Frameworks */,
+				F80590B82CFE59C200A900FC /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,6 +544,9 @@
 			);
 			name = MealPlannerTest;
 			packageProductDependencies = (
+				F80590B32CFE59B000A900FC /* FirebaseAnalytics */,
+				F80590B52CFE59B900A900FC /* FirebaseAuth */,
+				F80590B72CFE59C200A900FC /* FirebaseFirestore */,
 			);
 			productName = MealPlannerTest;
 			productReference = F80C28D02CFD2BEF0070B172 /* MealPlannerTest.xctest */;
@@ -827,6 +840,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F80590BA2CFE5BE900A900FC /* Food.swift in Sources */,
+				F80590BB2CFE5BEF00A900FC /* User.swift in Sources */,
+				F80590B92CFE5BDC00A900FC /* HelperFunctions.swift in Sources */,
+				F80590BC2CFE5BFF00A900FC /* MealView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1495,6 +1512,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		F80590B32CFE59B000A900FC /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F80590B52CFE59B900A900FC /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F80590B72CFE59C200A900FC /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

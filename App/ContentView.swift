@@ -1,24 +1,24 @@
+////
+////  ContentView.swift
+////  Fit Pantry
+////
+////  Created by Chase Rodie on 9/26/24.
+////
 //
-//  ContentView.swift
-//  Fit Pantry
+//import SwiftUI
 //
-//  Created by Chase Rodie on 9/26/24.
+//struct ContentView: View {
+//    var body: some View {
+//        VStack {
+//            Image(systemName: "globe")
+//                .imageScale(.large)
+//                .foregroundStyle(.tint)
+//            Text("This is a test!")
+//        }
+//        .padding()
+//    }
+//}
 //
-
-import SwiftUI
-
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("This is a test!")
-        }
-        .padding()
-    }
-}
-
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}
