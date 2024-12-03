@@ -61,7 +61,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             let restrictionsText = dietaryRestrictionsTextField.text
             let restrictions = restrictionsText?.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) } ?? []
             
-            let user = User(
+            let user = UserMeal(
                 age: Int(age),
                 weightInLbs: weightInLbs,
                 heightInFeet: Int(heightInFeet),

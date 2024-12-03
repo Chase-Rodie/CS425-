@@ -81,13 +81,12 @@ func healthTip(for bmi: Double) -> String {
     }
 }
 
-func suggestFoods(for user: User) -> [Food] {
+func suggestFoods(for user: UserMeal) -> [Food] {
     let allFoods = [
-        Food(id: "1", name: "Avocado", foodGroup: "Healthy Fat", food_id: 1001, calories: 160, fat: 15.0, carbohydrates: 9.0, protein: 2.0, suitableFor: ["vegan", "vegetarian"]),
+        Food(id: "1", name: "Apple", foodGroup: "Fruit", food_id: 1001, calories: 160, fat: 15.0, carbohydrates: 9.0, protein: 2.0, suitableFor: ["vegan", "vegetarian"]),
         Food(id: "2", name: "Greek Yogurt", foodGroup: "Protein", food_id: 1002, calories: 100, fat: 0.0, carbohydrates: 6.0, protein: 10.0, suitableFor: ["vegetarian"]),
         Food(id: "3", name: "Chicken Breast", foodGroup: "Protein", food_id: 1003, calories: 165, fat: 3.5, carbohydrates: 0.0, protein: 31.0, suitableFor: ["nut-free"]),
-        Food(id: "4", name: "Brown Rice", foodGroup: "Whole Grain", food_id: 1004, calories: 215, fat: 1.0, carbohydrates: 45.0, protein: 5.0, suitableFor: ["vegan", "vegetarian", "nut-free"]),
-        Food(id: "5", name: "Eggs", foodGroup: "Protein", food_id: 1005, calories: 70, fat: 5.0, carbohydrates: 1.0, protein: 6.0, suitableFor: ["nut-free", "vegetarian"])
+        Food(id: "4", name: "Brown Rice", foodGroup: "Whole Grain", food_id: 1004, calories: 215, fat: 1.0, carbohydrates: 45.0, protein: 5.0, suitableFor: ["vegan", "vegetarian", "nut-free"])
     ]
     
     // Filter foods based on dietary restrictions
@@ -98,7 +97,7 @@ func suggestFoods(for user: User) -> [Food] {
     }
 }
 
-func formatUserData(user: User) -> String {
+func formatUserData(user: UserMeal) -> String {
     return """
     Age: \(user.age)
     Weight: \(user.weightInLbs) lbs

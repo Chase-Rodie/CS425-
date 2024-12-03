@@ -6,7 +6,7 @@
 //
 
 // User Model
-struct User {
+struct UserMeal {
     var age: Int
     var weightInLbs: Double
     var heightInFeet: Int

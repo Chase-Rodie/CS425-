@@ -217,7 +217,8 @@ class SearchManager: ObservableObject {
                         calories: d["Calories"] as? Int32 ?? 0,
                         fat: d["Fat (g)"] as? Float32 ?? 0.0,
                         carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
-                        protein: d["Protein (g)"] as? Float32 ?? 0.0
+                        protein: d["Protein (g)"] as? Float32 ?? 0.0,
+                        suitableFor: d["suitableFor"] as? [String] ?? []
                     )
                 }
                 
@@ -255,7 +256,8 @@ class SearchManager: ObservableObject {
                         calories: d["Calories"] as? Int32 ?? 0,
                         fat: d["Fat (g)"] as? Float32 ?? 0.0,
                         carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
-                        protein: d["Protein (g)"] as? Float32 ?? 0.0
+                        protein: d["Protein (g)"] as? Float32 ?? 0.0,
+                        suitableFor: d["suitableFor"] as? [String] ?? []
                     )
                 }
                 
@@ -292,7 +294,8 @@ class SearchManager: ObservableObject {
                         calories: d["Calories"] as? Int32 ?? 0,
                         fat: d["Fat (g)"] as? Float32 ?? 0.0,
                         carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
-                        protein: d["Protein (g)"] as? Float32 ?? 0.0
+                        protein: d["Protein (g)"] as? Float32 ?? 0.0,
+                        suitableFor: d["suitableFor"] as? [String] ?? []
                     )
                 }
                 
