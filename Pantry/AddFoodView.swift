@@ -151,7 +151,6 @@ struct AddFoodView: View {
         
         // Display popup menu
         showSheet = true
-        
     }
     
     // Get amount and validate for entry into database
@@ -194,17 +193,21 @@ struct AddFoodView: View {
         }
         */
         // Tempoarary static assignemt of user for testing
-        let userID = "IG0kz1WPQAOfI5wXFbEmyk108iV2"
+        //let userID = "IG0kz1WPQAOfI5wXFbEmyk108iV2"
+        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         //print(userID)
         
         
         // Create a refrence to the database
         let db = Firestore.firestore()
-            .collection("pantries")
+            .collection("userData_test")
             .document(userID)
+            .collection("pantry")
+            .document(item.id)
         
         let data: [String: Any] = [
-            "id": item.id,
+            "id": item.food_id,
+            "name": item.name,
             "quantity": value
         ]
         
