@@ -51,6 +51,10 @@
 		F80591262CFF973400A900FC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F80591252CFF973400A900FC /* FirebaseFirestore */; };
 		F80591282CFF97A200A900FC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = F80591272CFF97A200A900FC /* GoogleSignIn */; };
 		F805912A2CFF97A200A900FC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F80591292CFF97A200A900FC /* GoogleSignInSwift */; };
+		F80591532CFFA28100A900FC /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
+		F80591542CFFA28800A900FC /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB51F2CFAD08B00F58B67 /* Food.swift */; };
+		F80591552CFFA28F00A900FC /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
+		F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* UserMeal.swift */; };
 		F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* UserMeal.swift */; };
 		F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
 		F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A42CFD253C0070B172 /* MealSuggestions.swift */; };
@@ -910,6 +914,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F80591542CFFA28800A900FC /* Food.swift in Sources */,
+				F80591532CFFA28100A900FC /* HelperFunctions.swift in Sources */,
+				F80591552CFFA28F00A900FC /* MealView.swift in Sources */,
+				F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

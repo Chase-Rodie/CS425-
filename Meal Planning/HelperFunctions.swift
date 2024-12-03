@@ -83,7 +83,7 @@ func healthTip(for bmi: Double) -> String {
 
 func suggestFoods(for user: UserMeal) -> [Food] {
     let allFoods = [
-        Food(id: "1", name: "Apples", foodGroup: "Fruit", food_id: 171688, calories: 52, fat: 0.17, carbohydrates: 13.81, protein: 0.26, suitableFor: ["vegan", "vegetarian"]),
+        Food(id: "1", name: "Apples", foodGroup: "Fruit", food_id: 171688, calories: 52, fat: 0.17, carbohydrates: 13.81, protein: 0.26, suitableFor: ["vegan", "vegetarian", "nut-free"]),
         Food(id: "2", name: "Bread White Wheat", foodGroup: "Baked Foods", food_id: 167532, calories: 238, fat: 2.15, carbohydrates: 43.91, protein: 10.66, suitableFor: ["vegetarian", "nut-free"]),
         Food(id: "3", name: "Rice White Cooked Glutinous", foodGroup: "Grains and Pasta", food_id: 785525, calories: 96, fat: 0.19, carbohydrates: 20.97, protein: 2.01, suitableFor: ["nut-free", "vegetarian"]),
         Food(id: "4", name: "Buttermilk Low Fat (1%)", foodGroup: "Dairy and Egg Products", food_id: 781099, calories: 40, fat: 0.88, carbohydrates: 4.79, protein: 3.31, suitableFor: ["vegetarian", "nut-free"])

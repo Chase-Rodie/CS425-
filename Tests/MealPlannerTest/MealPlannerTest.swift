@@ -78,7 +78,7 @@ class MealPlannerTest: XCTestCase {
     // MARK: - Test Food Suggestions
     func testSuggestFoods() {
         // Create a test user
-        let testUser = User(
+        let testUser = UserMeal(
             age: 30,
             weightInLbs: 160.0,
             heightInFeet: 5,
@@ -106,7 +106,7 @@ class MealPlannerTest: XCTestCase {
     // MARK: - Test Format User Data
     func testFormatUserData() {
         // Create a test user
-        let testUser = User(
+        let testUser = UserMeal(
             age: 25,
             weightInLbs: 150.0,
             heightInFeet: 5,
@@ -117,7 +117,7 @@ class MealPlannerTest: XCTestCase {
             onMedications: ["Vitamin D"],
             hormoneTherapy: nil,
             activityLevel: "Lightly Active",
-            mealPreferences: ["High Protein"],
+            mealPreferences: ["Fruit"],
             allergies: ["Gluten"]
         )
         
