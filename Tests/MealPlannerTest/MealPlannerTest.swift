@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Fit_Pantry // Replace "Fit_Pantry" with your actual app module name
+@testable import Fit_Pantry
 
 class MealPlannerTest: XCTestCase {
 
@@ -22,7 +22,7 @@ class MealPlannerTest: XCTestCase {
         let activityLevel = "Active"
         
         // Expected calories for these inputs
-        let expectedCalories = 2072 // Replace with the actual calculation if needed
+        let expectedCalories = 2072
         
         // Test function
         let calculatedCalories = calculateDailyCalories(
