@@ -138,4 +138,3 @@ class MealPlannerTest: XCTestCase {
         XCTAssertEqual(formattedData, expectedOutput, "User data formatting is incorrect.")
     }
 }
-
