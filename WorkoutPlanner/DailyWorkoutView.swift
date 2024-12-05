@@ -24,7 +24,7 @@ struct DailyWorkoutView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 50, height: 50)
                     VStack(alignment: .leading) {
-                        NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
+                        NavigationLink(exercise.name, destination: IndividualExercise(exercise: exercise))
                             .font(.subheadline)
                         Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
                             .font(.footnote)
@@ -38,7 +38,7 @@ struct DailyWorkoutView: View {
         }
     }
     
-    struct DetailedExercise: View {
+    struct IndividualExercise: View {
         var exercise: Exercise
         var body: some View{
             ScrollView{

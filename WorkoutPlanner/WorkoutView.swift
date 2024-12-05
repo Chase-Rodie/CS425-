@@ -162,89 +162,109 @@ struct GenerateWorkoutPlanView: View {
     
     
     var body: some View {
+        
     
-        Form{
-            Section(header: Text("Workout Duration In Minutes")){
-                Picker("Minutes", selection: $dur){
-                    ForEach(duration.indices, id:\.self){i in                        Text(self.duration[i])
-                    }
+        VStack {
+            ZStack{
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color("BackgroundColor"))
+                    .frame(width: 370, height: 150)
+                
+                VStack {
+                    Text("Good morning.")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.white)
+                    Text("You do not currently have a workout plan.")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.white)
+                    Text("Please fill out the form below to get one!")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.white)
                 }
             }
-            Section(header: Text("Days Per Week")){
-                Picker("Days", selection: $days){
-                    ForEach(numDays.indices, id:\.self){i in                        Text(self.numDays[i])
+            Form{
+                Section(header: Text("Workout Duration In Minutes")){
+                    Picker("Minutes", selection: $dur){
+                        ForEach(duration.indices, id:\.self){i in                        Text(self.duration[i])
+                        }
                     }
                 }
-            }
-            Section(header: Text("Difficulty")){
-                Picker("Difficulty", selection: $diff){
-                    ForEach(difficulty.indices, id:\.self){i in                        Text(self.difficulty[i])
+                Section(header: Text("Days Per Week")){
+                    Picker("Days", selection: $days){
+                        ForEach(numDays.indices, id:\.self){i in                        Text(self.numDays[i])
+                        }
                     }
                 }
-            }
-            
-            Section(header: Text("Get Workout Plan")){
-                Button("Get Workout Plan"){
-                    print("Generating Workout Plan")
-                    isLoading = true
-                    var passMax: Int = 0
-                    
-                    if dur == 0{
-                        passMax = 3
-                    }else{
-                        passMax = 5
+                Section(header: Text("Difficulty")){
+                    Picker("Difficulty", selection: $diff){
+                        ForEach(difficulty.indices, id:\.self){i in                        Text(self.difficulty[i])
+                        }
                     }
-                    
-                    
-                    if days == 0 {
-                        print("3 days")
-                        makeWPModel.queryExercises(days: [
-                            ("push", "chest"),
-                            ("pull", "shoulders"),
-                            ("pull", "glutes")
-                        ], maxExercises: passMax, level: "beginner")
+                }
+                
+                Section(header: Text("Get Workout Plan")){
+                    Button("Get Workout Plan"){
+                        print("Generating Workout Plan")
+                        isLoading = true
+                        var passMax: Int = 0
                         
-                        DispatchQueue.main.async {
+                        if dur == 0{
+                            passMax = 3
+                        }else{
+                            passMax = 5
+                        }
+                        
+                        
+                        if days == 0 {
+                            print("3 days")
+                            makeWPModel.queryExercises(days: [
+                                ("push", "chest"),
+                                ("pull", "shoulders"),
+                                ("pull", "glutes")
+                            ], maxExercises: passMax, level: "beginner")
+                            
+                            DispatchQueue.main.async {
                                 isLoading = false
                                 hasWorkoutPlan = true
                             }
-                        print("Generated Workout Plan: \(makeWPModel.workoutPlan)")
-    
-                    }else if days == 1 {
-                        print("4 days")
-                       
-                        makeWPModel.queryExercises(days: [
-                            ("push", "chest"),
-                            ("pull", "glutes"),
-                            ("pull", "biceps"),
-                            ("push", "hamstrings")
-                        ], maxExercises: passMax, level: "beginner")
-                        
-                        DispatchQueue.main.async {
+                            print("Generated Workout Plan: \(makeWPModel.workoutPlan)")
+                            
+                        }else if days == 1 {
+                            print("4 days")
+                            
+                            makeWPModel.queryExercises(days: [
+                                ("push", "chest"),
+                                ("pull", "glutes"),
+                                ("pull", "biceps"),
+                                ("push", "hamstrings")
+                            ], maxExercises: passMax, level: "beginner")
+                            
+                            DispatchQueue.main.async {
                                 isLoading = false
                                 hasWorkoutPlan = true
                             }
-                    }else if days == 2 {
-                        print("5 days")
-                        
-                        makeWPModel.queryExercises(days: [
-                            ("push", "chest"),
-                            ("pull", "glutes"),
-                            ("pull", "biceps"),
-                            ("push", "hamstrings"),
-                            ("push", "abdominals")
-                        ], maxExercises: passMax, level: "beginner")
-                        
-                        DispatchQueue.main.async {
+                        }else if days == 2 {
+                            print("5 days")
+                            
+                            makeWPModel.queryExercises(days: [
+                                ("push", "chest"),
+                                ("pull", "glutes"),
+                                ("pull", "biceps"),
+                                ("push", "hamstrings"),
+                                ("push", "abdominals")
+                            ], maxExercises: passMax, level: "beginner")
+                            
+                            DispatchQueue.main.async {
                                 isLoading = false
                                 hasWorkoutPlan = true
                             }
+                        }
+                        
+                        
                     }
-                    
-
                 }
+                
             }
-            
         }
         
     

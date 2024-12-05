@@ -68,8 +68,8 @@ struct HomePageView: View {
                                             .background(Color("BackgroundColor"))
                                             .foregroundColor(.white)
                                             .cornerRadius(10)
-                                        Text("Day 1")
                                     }
+                                    Text("Day 1")
                                 }
                                 VStack(spacing: 20) {
                                     // Progress Ring
