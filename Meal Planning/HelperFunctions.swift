@@ -120,6 +120,3 @@ func mealSuggestions(for timeOfDay: String) -> [String] {
         return ["Healthy snack options"]
     }
 }
-
-
-

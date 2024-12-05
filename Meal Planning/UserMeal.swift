@@ -20,6 +20,3 @@ struct UserMeal {
     var mealPreferences: [String]
     var allergies: [String]?
 }
-
-
-

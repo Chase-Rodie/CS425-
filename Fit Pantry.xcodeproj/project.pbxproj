@@ -53,7 +53,6 @@
 		F805912A2CFF97A200A900FC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F80591292CFF97A200A900FC /* GoogleSignInSwift */; };
 		F80591532CFFA28100A900FC /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
 		F80591542CFFA28800A900FC /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB51F2CFAD08B00F58B67 /* Food.swift */; };
-		F80591552CFFA28F00A900FC /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
 		F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C289E2CFD24DA0070B172 /* UserMeal.swift */; };
 		F80591A92CFFA81F00A900FC /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A02CFD24F70070B172 /* HelperFunctions.swift */; };
 		F80591AA2D0004CF00A900FC /* MealPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AC2CFD25780070B172 /* MealPlanView.swift */; };
@@ -68,6 +67,25 @@
 		F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A82CFD255A0070B172 /* ShoppingList.swift */; };
 		F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AA2CFD256A0070B172 /* UserPreferences.swift */; };
 		F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AC2CFD25780070B172 /* MealPlanView.swift */; };
+		F892351B2D01765C00328C01 /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
+		F89235302D01876100328C01 /* NutritionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A62CFD254A0070B172 /* NutritionManager.swift */; };
+		F89235322D01886800328C01 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F89235312D01886800328C01 /* FirebaseAnalytics */; };
+		F89235342D01886E00328C01 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F89235332D01886E00328C01 /* FirebaseAuth */; };
+		F89235362D01887600328C01 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F89235352D01887600328C01 /* FirebaseFirestore */; };
+		F89235382D01887F00328C01 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = F89235372D01887F00328C01 /* GoogleSignIn */; };
+		F892353A2D01887F00328C01 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F89235392D01887F00328C01 /* GoogleSignInSwift */; };
+		F892353B2D018A2700328C01 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A82CFD255A0070B172 /* ShoppingList.swift */; };
+		F892353D2D018A2F00328C01 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F892353C2D018A2F00328C01 /* FirebaseAnalytics */; };
+		F892353F2D018A3300328C01 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F892353E2D018A3300328C01 /* FirebaseAuth */; };
+		F89235412D018A3700328C01 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F89235402D018A3700328C01 /* FirebaseFirestore */; };
+		F89235432D018A3D00328C01 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = F89235422D018A3D00328C01 /* GoogleSignIn */; };
+		F89235452D018A3D00328C01 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F89235442D018A3D00328C01 /* GoogleSignInSwift */; };
+		F89235462D018B8800328C01 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AA2CFD256A0070B172 /* UserPreferences.swift */; };
+		F89235482D018B9800328C01 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F89235472D018B9800328C01 /* FirebaseAnalytics */; };
+		F892354A2D018B9C00328C01 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F89235492D018B9C00328C01 /* FirebaseAuth */; };
+		F892354C2D018B9F00328C01 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F892354B2D018B9F00328C01 /* FirebaseFirestore */; };
+		F892354E2D018BA500328C01 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = F892354D2D018BA500328C01 /* GoogleSignIn */; };
+		F89235502D018BA500328C01 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F892354F2D018BA500328C01 /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,13 +102,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
 			remoteInfo = "Capstone Project";
-		};
-		F80C28B82CFD2B950070B172 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9AC81DC52CA57BCF00A0472C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9AC81DCC2CA57BCF00A0472C;
-			remoteInfo = "Fit Pantry";
 		};
 		F80C28C72CFD2BC30070B172 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -176,8 +187,7 @@
 		F80C28A82CFD255A0070B172 /* ShoppingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingList.swift; sourceTree = "<group>"; };
 		F80C28AA2CFD256A0070B172 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		F80C28AC2CFD25780070B172 /* MealPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanView.swift; sourceTree = "<group>"; };
-		F80C28B22CFD2B950070B172 /* MealPlanner.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlanner.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F80C28C12CFD2BC30070B172 /* MealPlanViewTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlanViewTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80C28C12CFD2BC30070B172 /* MealSugestionsTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealSugestionsTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80C28D02CFD2BEF0070B172 /* MealPlannerTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MealPlannerTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutritionManagerTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShoppingListTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,7 +195,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F80C28C22CFD2BC30070B172 /* MealPlanViewTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealPlanViewTest; sourceTree = "<group>"; };
+		F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealSuggestionsTest; sourceTree = "<group>"; };
 		F80C28D12CFD2BEF0070B172 /* MealPlannerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealPlannerTest; sourceTree = "<group>"; };
 		F80C28E02CFD2C250070B172 /* NutritionManagerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NutritionManagerTest; sourceTree = "<group>"; };
 		F80C28EF2CFD2C360070B172 /* ShoppingListTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ShoppingListTest; sourceTree = "<group>"; };
@@ -213,13 +223,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9AC81DE42CA57BD000A0472C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F80C28AF2CFD2B950070B172 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -254,6 +257,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F892353A2D01887F00328C01 /* GoogleSignInSwift in Frameworks */,
+				F89235322D01886800328C01 /* FirebaseAnalytics in Frameworks */,
+				F89235382D01887F00328C01 /* GoogleSignIn in Frameworks */,
+				F89235342D01886E00328C01 /* FirebaseAuth in Frameworks */,
+				F89235362D01887600328C01 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +269,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89235452D018A3D00328C01 /* GoogleSignInSwift in Frameworks */,
+				F892353D2D018A2F00328C01 /* FirebaseAnalytics in Frameworks */,
+				F89235432D018A3D00328C01 /* GoogleSignIn in Frameworks */,
+				F892353F2D018A3300328C01 /* FirebaseAuth in Frameworks */,
+				F89235412D018A3700328C01 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +281,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89235502D018BA500328C01 /* GoogleSignInSwift in Frameworks */,
+				F89235482D018B9800328C01 /* FirebaseAnalytics in Frameworks */,
+				F892354E2D018BA500328C01 /* GoogleSignIn in Frameworks */,
+				F892354A2D018B9C00328C01 /* FirebaseAuth in Frameworks */,
+				F892354C2D018B9F00328C01 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,7 +387,7 @@
 			children = (
 				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
-				F80C28C22CFD2BC30070B172 /* MealPlanViewTest */,
+				F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */,
 				F80C28D12CFD2BEF0070B172 /* MealPlannerTest */,
 				F80C28E02CFD2C250070B172 /* NutritionManagerTest */,
 				F80C28EF2CFD2C360070B172 /* ShoppingListTest */,
@@ -470,8 +488,7 @@
 				9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */,
 				9AC81DDD2CA57BD000A0472C /* Fit PantryTests.xctest */,
 				9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */,
-				F80C28B22CFD2B950070B172 /* MealPlanner.xctest */,
-				F80C28C12CFD2BC30070B172 /* MealPlanViewTest.xctest */,
+				F80C28C12CFD2BC30070B172 /* MealSugestionsTest.xctest */,
 				F80C28D02CFD2BEF0070B172 /* MealPlannerTest.xctest */,
 				F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */,
 				F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */,
@@ -561,29 +578,9 @@
 			productReference = 9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		F80C28B12CFD2B950070B172 /* MealPlanner */ = {
+		F80C28C02CFD2BC30070B172 /* MealSugestionsTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F80C28BA2CFD2B950070B172 /* Build configuration list for PBXNativeTarget "MealPlanner" */;
-			buildPhases = (
-				F80C28AE2CFD2B950070B172 /* Sources */,
-				F80C28AF2CFD2B950070B172 /* Frameworks */,
-				F80C28B02CFD2B950070B172 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				F80C28B92CFD2B950070B172 /* PBXTargetDependency */,
-			);
-			name = MealPlanner;
-			packageProductDependencies = (
-			);
-			productName = MealPlanner;
-			productReference = F80C28B22CFD2B950070B172 /* MealPlanner.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		F80C28C02CFD2BC30070B172 /* MealPlanViewTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F80C28C92CFD2BC30070B172 /* Build configuration list for PBXNativeTarget "MealPlanViewTest" */;
+			buildConfigurationList = F80C28C92CFD2BC30070B172 /* Build configuration list for PBXNativeTarget "MealSugestionsTest" */;
 			buildPhases = (
 				F80C28BD2CFD2BC30070B172 /* Sources */,
 				F80C28BE2CFD2BC30070B172 /* Frameworks */,
@@ -595,9 +592,9 @@
 				F80C28C82CFD2BC30070B172 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				F80C28C22CFD2BC30070B172 /* MealPlanViewTest */,
+				F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */,
 			);
-			name = MealPlanViewTest;
+			name = MealSugestionsTest;
 			packageProductDependencies = (
 				F80591AB2D0004F200A900FC /* FirebaseAnalytics */,
 				F80591AD2D00050600A900FC /* FirebaseAuth */,
@@ -606,7 +603,7 @@
 				F80591B32D00051A00A900FC /* GoogleSignInSwift */,
 			);
 			productName = MealSuggestionsTest;
-			productReference = F80C28C12CFD2BC30070B172 /* MealPlanViewTest.xctest */;
+			productReference = F80C28C12CFD2BC30070B172 /* MealSugestionsTest.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		F80C28CF2CFD2BEF0070B172 /* MealPlannerTest */ = {
@@ -655,6 +652,11 @@
 			);
 			name = NutritionManagerTest;
 			packageProductDependencies = (
+				F89235312D01886800328C01 /* FirebaseAnalytics */,
+				F89235332D01886E00328C01 /* FirebaseAuth */,
+				F89235352D01887600328C01 /* FirebaseFirestore */,
+				F89235372D01887F00328C01 /* GoogleSignIn */,
+				F89235392D01887F00328C01 /* GoogleSignInSwift */,
 			);
 			productName = NutritionManagerTest;
 			productReference = F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */;
@@ -678,6 +680,11 @@
 			);
 			name = ShoppingListTest;
 			packageProductDependencies = (
+				F892353C2D018A2F00328C01 /* FirebaseAnalytics */,
+				F892353E2D018A3300328C01 /* FirebaseAuth */,
+				F89235402D018A3700328C01 /* FirebaseFirestore */,
+				F89235422D018A3D00328C01 /* GoogleSignIn */,
+				F89235442D018A3D00328C01 /* GoogleSignInSwift */,
 			);
 			productName = ShoppingListTest;
 			productReference = F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */;
@@ -701,6 +708,11 @@
 			);
 			name = UserPreferenceTest;
 			packageProductDependencies = (
+				F89235472D018B9800328C01 /* FirebaseAnalytics */,
+				F89235492D018B9C00328C01 /* FirebaseAuth */,
+				F892354B2D018B9F00328C01 /* FirebaseFirestore */,
+				F892354D2D018BA500328C01 /* GoogleSignIn */,
+				F892354F2D018BA500328C01 /* GoogleSignInSwift */,
 			);
 			productName = UserPreferenceTest;
 			productReference = F80C28FD2CFD2C570070B172 /* UserPreferenceTest.xctest */;
@@ -725,10 +737,6 @@
 					};
 					9AC81DE62CA57BD000A0472C = {
 						CreatedOnToolsVersion = 15.3;
-						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
-					};
-					F80C28B12CFD2B950070B172 = {
-						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 9AC81DCC2CA57BCF00A0472C;
 					};
 					F80C28C02CFD2BC30070B172 = {
@@ -773,8 +781,7 @@
 				9AC81DCC2CA57BCF00A0472C /* Fit Pantry */,
 				9AC81DDC2CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DE62CA57BD000A0472C /* Fit PantryUITests */,
-				F80C28B12CFD2B950070B172 /* MealPlanner */,
-				F80C28C02CFD2BC30070B172 /* MealPlanViewTest */,
+				F80C28C02CFD2BC30070B172 /* MealSugestionsTest */,
 				F80C28CF2CFD2BEF0070B172 /* MealPlannerTest */,
 				F80C28DE2CFD2C250070B172 /* NutritionManagerTest */,
 				F80C28ED2CFD2C360070B172 /* ShoppingListTest */,
@@ -802,13 +809,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9AC81DE52CA57BD000A0472C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F80C28B02CFD2B950070B172 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -912,13 +912,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F80C28AE2CFD2B950070B172 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F80C28BD2CFD2BC30070B172 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -933,8 +926,8 @@
 			files = (
 				F80591542CFFA28800A900FC /* Food.swift in Sources */,
 				F80591532CFFA28100A900FC /* HelperFunctions.swift in Sources */,
-				F80591552CFFA28F00A900FC /* MealView.swift in Sources */,
 				F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */,
+				F892351B2D01765C00328C01 /* MealView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +935,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89235302D01876100328C01 /* NutritionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -949,6 +943,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F892353B2D018A2700328C01 /* ShoppingList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -956,6 +951,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89235462D018B8800328C01 /* UserPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -971,11 +967,6 @@
 			isa = PBXTargetDependency;
 			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
 			targetProxy = 9AC81DE82CA57BD000A0472C /* PBXContainerItemProxy */;
-		};
-		F80C28B92CFD2B950070B172 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9AC81DCC2CA57BCF00A0472C /* Fit Pantry */;
-			targetProxy = F80C28B82CFD2B950070B172 /* PBXContainerItemProxy */;
 		};
 		F80C28C82CFD2BC30070B172 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1260,40 +1251,6 @@
 			};
 			name = Release;
 		};
-		F80C28BB2CFD2B950070B172 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlanner;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Fit Pantry";
-			};
-			name = Debug;
-		};
-		F80C28BC2CFD2B950070B172 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.fitpantry.MealPlanner;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Fit Pantry";
-			};
-			name = Release;
-		};
 		F80C28CA2CFD2BC30070B172 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1503,16 +1460,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F80C28BA2CFD2B950070B172 /* Build configuration list for PBXNativeTarget "MealPlanner" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F80C28BB2CFD2B950070B172 /* Debug */,
-				F80C28BC2CFD2B950070B172 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F80C28C92CFD2BC30070B172 /* Build configuration list for PBXNativeTarget "MealPlanViewTest" */ = {
+		F80C28C92CFD2BC30070B172 /* Build configuration list for PBXNativeTarget "MealSugestionsTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F80C28CA2CFD2BC30070B172 /* Debug */,
@@ -1650,6 +1598,81 @@
 			productName = GoogleSignIn;
 		};
 		F80591B32D00051A00A900FC /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		F89235312D01886800328C01 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F89235332D01886E00328C01 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F89235352D01887600328C01 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		F89235372D01887F00328C01 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		F89235392D01887F00328C01 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		F892353C2D018A2F00328C01 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F892353E2D018A3300328C01 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F89235402D018A3700328C01 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		F89235422D018A3D00328C01 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		F89235442D018A3D00328C01 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		F89235472D018B9800328C01 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		F89235492D018B9C00328C01 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F892354B2D018B9F00328C01 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		F892354D2D018BA500328C01 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		F892354F2D018BA500328C01 /* GoogleSignInSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
