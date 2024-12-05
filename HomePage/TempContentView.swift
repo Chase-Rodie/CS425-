@@ -61,8 +61,8 @@ struct TempContentView: View {
 }
 
 
-
-
-#Preview {
-    TempContentView()
+struct TempContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        TempContentView()
+    }
 }
