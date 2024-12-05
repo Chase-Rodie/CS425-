@@ -11,26 +11,41 @@ struct RootView: View {
     
     @State private var showSignInView: Bool = false
     @State private var showMenu: Bool = false
-    
+    @State private var showPantryView: Bool = false
+    @State private var showProfileView: Bool = false
     var body: some View {
         ZStack {
             if !showSignInView {
                 NavigationStack {
-                    ProfileView(showSignInView: $showSignInView)
+                    AddFoodView()
+
+                    Button("View Pantry") {
+                        showPantryView = true
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .navigationDestination(isPresented: $showPantryView) {
+                        PantryView()
+                    }
+                    .navigationBarItems(trailing:
+                        Button(action: {
+                            showProfileView = true
+                        }) {
+                            Text("Profile")
+                                .foregroundColor(.blue)
+                        }
+                    )
+                    .navigationDestination(isPresented: $showProfileView) {
+                        ProfileView(showSignInView: $showSignInView)
+                    }
                 }
             }
         }
         .onAppear {
             let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
             self.showSignInView = authUser == nil
-            // Force logout for testing
-            /*do {
-                try AuthenticationManager.shared.signOut()
-                self.showSignInView = true
-            } catch {
-                print("Failed to sign out: \(error.localizedDescription)")
-                self.showSignInView = true // Redirect even if there's an issue
-            }*/
         }
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {

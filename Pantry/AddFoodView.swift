@@ -134,6 +134,15 @@ struct AddFoodView: View {
                 }
             }
         } // End Error sheet popup
+        /*.toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink { SettingsView(showSignInView: $showSignInView)
+                } label: {
+                    Image(systemName: "gear")
+                        .font(.headline)
+                }
+            }
+        }*/
     }
     
     // Function for what happens when a food is selected
