@@ -2,7 +2,10 @@
 //  PantryView.swift
 //  Fit Pantry
 //
+//  View to let users view and edit the contents of their Pantry
+//
 //  Created by Chase Rodie on 10/31/24.
+//  Code in this file was authored by Zach Greenhill
 //
 
 import Foundation

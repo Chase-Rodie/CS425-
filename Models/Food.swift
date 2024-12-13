@@ -2,7 +2,10 @@
 //  Foods.swift
 //  Fit Pantry
 //
-//  Created by Zach Greenhill on 11/29/24.
+//  Models to store data retrieved from Firestore
+//
+//  Created by Zach Greenhill on 11/29/24
+//  Code in this file was authored by Zach Greenhill
 //
 
 import Foundation
