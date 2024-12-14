@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
+//UI View for the users setting page
+
 import SwiftUI
 
 struct SettingsView: View {

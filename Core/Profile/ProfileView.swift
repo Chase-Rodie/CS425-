@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 12/2/24.
 //
 
+//View handles how the user views their profile and at this point it just shows their UID and if they signed in annonymously
+
 import SwiftUI
 
 @MainActor

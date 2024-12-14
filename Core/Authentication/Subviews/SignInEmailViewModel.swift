@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 12/2/24.
 //
 
+//Logic behind the email view
+
 import Foundation
 
 @MainActor

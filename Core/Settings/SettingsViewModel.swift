@@ -8,6 +8,8 @@
 //Used Firebase documentation to learn how to handle linking accounts
 //https://firebase.google.com/docs/auth/ios/account-linking
 
+//Logic for functions in the settings view relating to updating email, updating password, etc.
+
 import Foundation
 
 @MainActor

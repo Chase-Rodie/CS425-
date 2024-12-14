@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 9/26/24.
 //
 
+//Entire group worked on this to implement how the entry of the app was handled
+
 import SwiftUI
 import Firebase
 import FirebaseCore
