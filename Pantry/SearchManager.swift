@@ -2,11 +2,7 @@
 //  SearchManager.swift
 //  Fit Pantry
 //
-//  Manager to access and retrieve data from Firestore
-//  Allows writes to a users pantry in Firestore
-//
 //  Created by Zach Greenhill on 11/29/24.
-//  Code in this file was authored by Zach Greenhill
 //
 
 import Foundation
