@@ -7,13 +7,13 @@
 
 import Foundation
 
-// Error Handling
+//Error Handling
 enum InputError: Error {
     case emptyField
     case invalidInput
 }
 
-// Helper Functions
+//Helper Functions
 func calculateDailyCalories(
     age: Int,
     weightInLbs: Double,
@@ -24,11 +24,11 @@ func calculateDailyCalories(
     activityLevel: String = "Active",
     mealPreferences: [String] = []
 ) -> Int {
-    // Conversion: 1lb = 0.453592kg, 1ft = 30.48cm, 1in = 2.54cm
+    //Conversion: 1lb = 0.453592kg, 1ft = 30.48cm, 1in = 2.54cm
     let weightInKg = weightInLbs * 0.45359237
     let heightInCm = Double(heightInFeet) * 30.48 + Double(heightInInches) * 2.54
     
-    // BMR calculation using the Mifflin-St Jeor Equation
+    //BMR calculation using the Mifflin-St Jeor Equation
     let bmr: Double
     if gender == "male" {
         bmr = (10 * weightInKg) + (6.25 * heightInCm) - (5 * Double(age)) + 5
@@ -36,7 +36,7 @@ func calculateDailyCalories(
         bmr = (10 * weightInKg) + (6.25 * heightInCm) - (5 * Double(age)) - 161
     }
     
-    // Adjust BMR based on activity level
+    //Adjust BMR based on activity level
     let activityMultiplier: Double
     switch activityLevel {
     case "Sedentary":
@@ -53,7 +53,7 @@ func calculateDailyCalories(
     
     let adjustedBmr = bmr * activityMultiplier
     
-    // Adjust based on goal
+    //Adjust based on goal
     if goal == "lose" {
         return Int(adjustedBmr * 0.8)
     } else if goal == "gain" {
@@ -89,7 +89,7 @@ func suggestFoods(for user: UserMeal) -> [Food] {
         Food(id: "4", name: "Buttermilk Low Fat (1%)", foodGroup: "Dairy and Egg Products", food_id: 781099, calories: 40, fat: 0.88, carbohydrates: 4.79, protein: 3.31, suitableFor: ["vegetarian", "nut-free"])
     ]
     
-    // Filter foods based on dietary restrictions
+    //Filter foods based on dietary restrictions
     return allFoods.filter { food in
         return !user.dietaryRestrictions.contains { restriction in
             !food.suitableFor.contains(restriction)

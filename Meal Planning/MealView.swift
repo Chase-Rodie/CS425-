@@ -7,9 +7,9 @@
 
 import UIKit
 
-// ViewController Implementation
+//ViewController Implementation
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-    // Outlets
+    //Outlets
     @IBOutlet weak var ageTextField: UITextField!
     @IBOutlet weak var weightTextField: UITextField!
     @IBOutlet weak var heightFeetTextField: UITextField!
@@ -20,7 +20,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var dietaryRestrictionsTextField: UITextField!
     
-    // PickerView Data
+    //PickerView Data
     let genderOptions = ["Male", "Female", "Non-Binary", "Trans Female", "Trans Male", "Prefer not to answer"]
     let goalOptions = ["Lose", "Gain", "Maintain"]
     
@@ -34,7 +34,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         goalPickerView.dataSource = self
     }
     
-    // UIPickerView Methods
+    //UIPickerView Methods
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -47,7 +47,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return pickerView == genderPickerView ? genderOptions[row] : goalOptions[row]
     }
     
-    // Calculate Button Action
+    //Calculate Button Action
     @IBAction func calculateButtonTapped(_ sender: UIButton) {
         do {
             let age = try validateInput(ageTextField.text)

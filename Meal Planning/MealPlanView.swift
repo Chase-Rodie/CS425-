@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MealPlanView: View {
-    // Data for the meal plan
+    //Data for the meal plan
     let mealPlan = ["Apples and Toast", "Chicken and Rice", "Oatmeal with Berries"]
     
     var body: some View {

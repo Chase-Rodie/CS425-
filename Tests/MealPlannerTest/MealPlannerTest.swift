@@ -10,7 +10,7 @@ import XCTest
 
 class MealPlannerTest: XCTestCase {
 
-    // MARK: - Test Calculate Daily Calories
+    //MARK: - Test Calculate Daily Calories
     func testCalculateDailyCalories() {
         // Input values
         let age = 25
@@ -21,10 +21,10 @@ class MealPlannerTest: XCTestCase {
         let goal = "lose"
         let activityLevel = "Active"
         
-        // Expected calories for these inputs
+        //Expected calories for these inputs
         let expectedCalories = 2072
         
-        // Test function
+        //Test function
         let calculatedCalories = calculateDailyCalories(
             age: age,
             weightInLbs: weightInLbs,
@@ -35,11 +35,11 @@ class MealPlannerTest: XCTestCase {
             activityLevel: activityLevel
         )
         
-        // Assert
+        //Assert
         XCTAssertEqual(calculatedCalories, expectedCalories, "Calories calculation is incorrect.")
     }
     
-    // MARK: - Test BMI Calculation
+    //MARK: - Test BMI Calculation
     func testCalculateBMI() {
         // Input values
         let weightInLbs = 150.0
@@ -56,28 +56,28 @@ class MealPlannerTest: XCTestCase {
             heightInInches: heightInInches
         )
         
-        // Assert
+        //Assert
         XCTAssertEqual(calculatedBMI, expectedBMI, accuracy: 0.1, "BMI calculation is incorrect.")
     }
     
-    // MARK: - Test Health Tip
+    //MARK: - Test Health Tip
     func testHealthTip() {
-        // Input BMI
+        //Input BMI
         let bmi = 30.0
         
-        // Expected health tip
+        //Expected health tip
         let expectedTip = "According to your BMI you are obese."
         
-        // Test function
+        //Test function
         let healthTipResult = healthTip(for: bmi)
         
-        // Assert
+        //Assert
         XCTAssertEqual(healthTipResult, expectedTip, "Health tip generation is incorrect.")
     }
     
-    // MARK: - Test Food Suggestions
+    //MARK: - Test Food Suggestions
     func testSuggestFoods() {
-        // Create a test user
+        //Create a test user
         let testUser = UserMeal(
             age: 30,
             weightInLbs: 160.0,
@@ -93,19 +93,19 @@ class MealPlannerTest: XCTestCase {
             allergies: nil
         )
         
-        // Test function
+        //Test function
         let suggestedFoods = suggestFoods(for: testUser)
         
-        // Check that restricted foods are not included
+        //Check that restricted foods are not included
         XCTAssertFalse(
             suggestedFoods.contains { food in food.name == "Chicken Breast" || food.name == "Eggs"},
             "Suggested foods should not contain restricted items."
         )
     }
     
-    // MARK: - Test Format User Data
+    //MARK: - Test Format User Data
     func testFormatUserData() {
-        // Create a test user
+        //Create a test user
         let testUser = UserMeal(
             age: 25,
             weightInLbs: 150.0,
@@ -121,10 +121,10 @@ class MealPlannerTest: XCTestCase {
             allergies: ["Gluten"]
         )
         
-        // Test function
+        //Test function
         let formattedData = formatUserData(user: testUser)
         
-        // Expected output
+        //Expected output
         let expectedOutput = """
         Age: 25
         Weight: 150.0 lbs
@@ -134,7 +134,7 @@ class MealPlannerTest: XCTestCase {
         Activity Level: Lightly Active
         """
         
-        // Assert
+        //Assert
         XCTAssertEqual(formattedData, expectedOutput, "User data formatting is incorrect.")
     }
 }

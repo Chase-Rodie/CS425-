@@ -38,7 +38,7 @@ final class NutritionManagerTest: XCTestCase {
         //Input meal
         let meal = "Breakfast"
 
-        // Expected nutritional information
+        //Expected nutritional information
         let expectedNutritionalInfo: [String: Any] = [
             "Calories": 96,
             "Protein": 2.01,
@@ -49,7 +49,7 @@ final class NutritionManagerTest: XCTestCase {
         //Get nutritional info
         let nutritionalInfo = nutritionManager.getNutritionalInfo(for: meal)
 
-        // Assert nutritional information matches expected values
+        //Assert nutritional information matches expected values
         XCTAssertEqual(nutritionalInfo["Calories"] as? Int, expectedNutritionalInfo["Calories"] as? Int, "Calories for Breakfast are incorrect.")
         XCTAssertEqual(nutritionalInfo["Protein"] as? Double, expectedNutritionalInfo["Protein"] as? Double, "Protein for Breakfast is incorrect.")
         XCTAssertEqual(nutritionalInfo["Carbohydrates"] as? Double, expectedNutritionalInfo["Carbohydrates"] as? Double, "Carbohydrates for Breakfast are incorrect.")
