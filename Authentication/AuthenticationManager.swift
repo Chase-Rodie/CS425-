@@ -5,6 +5,9 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
+//A lot of code was grabbed from Firebase's documentation on how to support Authentication
+//https://firebase.google.com/docs/auth/ios/password-auth
+
 import Foundation
 import FirebaseAuth
 

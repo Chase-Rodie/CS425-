@@ -5,6 +5,9 @@
 //  Created by Chase Rodie on 12/2/24.
 //
 
+//Used Firebase documentation on how to manage users in the DB
+//https://firebase.google.com/docs/auth/ios/manage-users
+
 import Foundation
 import FirebaseFirestore
 

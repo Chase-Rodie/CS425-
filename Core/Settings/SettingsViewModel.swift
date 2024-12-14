@@ -5,6 +5,9 @@
 //  Created by Chase Rodie on 12/2/24.
 //
 
+//Used Firebase documentation to learn how to handle linking accounts
+//https://firebase.google.com/docs/auth/ios/account-linking
+
 import Foundation
 
 @MainActor
