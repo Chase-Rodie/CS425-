@@ -5,6 +5,11 @@
 //  Created by Chase Rodie on 9/26/24.
 //
 
+<<<<<<< Updated upstream
+=======
+//Entire group worked on this to implement how the entry of the app was handled 
+
+>>>>>>> Stashed changes
 import SwiftUI
 import Firebase
 import FirebaseCore

@@ -18,9 +18,10 @@ struct SettingsView: View {
                 Task {
                     do {
                         try viewModel.signOut()
-                        showSignInView = true
+                        print("User signed out successfully")
+                            showSignInView = true
                     } catch {
-                        print(error)
+                        print("Error signing out: \(error)")
                     }
                 }
             }
@@ -62,7 +63,7 @@ struct SettingsView_Previews: PreviewProvider {
     }
 }
 
-//Instead of link buttons use actual UI sign in buttons that are on sign in screen (future implementation)
+
 extension SettingsView {
     
     private var emailSection: some View{

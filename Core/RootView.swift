@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 //
 //  RootView.swift
 //  Fit Pantry
@@ -5,10 +6,13 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
+=======
+>>>>>>> Stashed changes
 import SwiftUI
 
 struct RootView: View {
     
+<<<<<<< Updated upstream
     @State private var showSignInView: Bool = false
     @State private var showMenu: Bool = false
     
@@ -31,11 +35,38 @@ struct RootView: View {
                 print("Failed to sign out: \(error.localizedDescription)")
                 self.showSignInView = true // Redirect even if there's an issue
             }*/
-        }
-        .fullScreenCover(isPresented: $showSignInView) {
-            NavigationStack {
+=======
+    @State private var showSignInView: Bool = false // Tracks if login is required
+    
+    var body: some View {
+        ZStack {
+            if showSignInView {
+                // If we need to show the SignIn View
                 AuthenticationView(showSignInView: $showSignInView)
+                    .onAppear {
+                        // Check the authentication status right when this view is shown
+                        checkAuthStatus()
+                    }
+            } else {
+                // Show TempContentView once logged in
+                TempContentView()
             }
+        }
+        .onAppear {
+            // Check if the user is authenticated when RootView appears
+            checkAuthStatus()
+>>>>>>> Stashed changes
+        }
+    }
+    
+    // Helper function to check user authentication
+    private func checkAuthStatus() {
+        // Check if there's an authenticated user, otherwise show the sign-in screen
+        do {
+            let authUser = try AuthenticationManager.shared.getAuthenticatedUser()
+            self.showSignInView = authUser == nil
+        } catch {
+            self.showSignInView = true // If no user is authenticated, show the sign-in view
         }
     }
 }
