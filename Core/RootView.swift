@@ -1,41 +1,13 @@
-<<<<<<< Updated upstream
 //
 //  RootView.swift
 //  Fit Pantry
 //
 //  Created by Chase Rodie on 11/23/24.
 //
-
-=======
->>>>>>> Stashed changes
 import SwiftUI
 
 struct RootView: View {
     
-<<<<<<< Updated upstream
-    @State private var showSignInView: Bool = false
-    @State private var showMenu: Bool = false
-    
-    var body: some View {
-        ZStack {
-            if !showSignInView {
-                NavigationStack {
-                    ProfileView(showSignInView: $showSignInView)
-                }
-            }
-        }
-        .onAppear {
-            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
-            self.showSignInView = authUser == nil
-            // Force logout for testing
-            /*do {
-                try AuthenticationManager.shared.signOut()
-                self.showSignInView = true
-            } catch {
-                print("Failed to sign out: \(error.localizedDescription)")
-                self.showSignInView = true // Redirect even if there's an issue
-            }*/
-=======
     @State private var showSignInView: Bool = false // Tracks if login is required
     
     var body: some View {
@@ -55,7 +27,6 @@ struct RootView: View {
         .onAppear {
             // Check if the user is authenticated when RootView appears
             checkAuthStatus()
->>>>>>> Stashed changes
         }
     }
     
