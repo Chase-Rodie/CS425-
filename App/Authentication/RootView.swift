@@ -10,20 +10,25 @@ import SwiftUI
 struct RootView: View {
     
     @State private var showSignInView: Bool = false
+    @State private var showMenu: Bool = false
     
     var body: some View {
         ZStack {
             if !showSignInView {
                 NavigationStack {
-                    //HomePageView()
-                    //SettingsView(showSignInView: $showSignInView)
+                    TempContentView()
                 }
             }
         }
         .onAppear {
-            // Force logout by clearing the authenticated user
-            try? AuthenticationManager.shared.signOut() // Ensure this method exists to handle logout
-            self.showSignInView = true
+            // Force logout for testing
+            do {
+                try AuthenticationManager.shared.signOut()
+                self.showSignInView = true
+            } catch {
+                print("Failed to sign out: \(error.localizedDescription)")
+                self.showSignInView = true // Redirect even if there's an issue
+            }
         }
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {

@@ -60,9 +60,6 @@ final class AuthenticationManager {
     
     func signOut() throws {
         try Auth.auth().signOut()
-        UserDefaults.standard.removeObject(forKey: "userSession")
-        UserDefaults.standard.synchronize()
-        print("User signed out successfully")
     }
     
     func deleteUser() async throws {
