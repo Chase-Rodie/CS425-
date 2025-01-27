@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
+//This is the UI for the various different types of authentication: email, apple, etc.
+
 import SwiftUI
 import GoogleSignIn
 import GoogleSignInSwift

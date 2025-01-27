@@ -1,9 +1,12 @@
 //
 //  RootView.swift
 //  Fit Pantry
-//
+// 
 //  Created by Chase Rodie on 11/23/24.
 //
+
+//Entire group worked on this to handle how app went from it's entry to subsequent views
+
 import SwiftUI
 
 struct RootView: View {
