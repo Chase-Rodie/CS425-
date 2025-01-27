@@ -32,6 +32,7 @@ struct SettingsView: View {
                     Task {
                         do {
                             try await viewModel.deleteAccount()
+                            showSignInView = true
                             print("Account Deleted")
                         }catch {
                             print(error)

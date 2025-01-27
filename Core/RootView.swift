@@ -15,6 +15,7 @@ struct RootView: View {
     
     var body: some View {
         ZStack {
+<<<<<<< Updated upstream
             if showSignInView {
                 // If we need to show the SignIn View
                 AuthenticationView(showSignInView: $showSignInView)
@@ -25,6 +26,12 @@ struct RootView: View {
             } else {
                 // Show TempContentView once logged in
                 TempContentView()
+=======
+            if !showSignInView {
+                NavigationStack {
+                    TempContentView(showSignInView: $showSignInView)
+                }
+>>>>>>> Stashed changes
             }
         }
         .onAppear {
