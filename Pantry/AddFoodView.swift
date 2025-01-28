@@ -37,17 +37,30 @@ struct AddFoodView: View {
     // - Popup to prompt user when entering food
     var body: some View {
         VStack{
-            
-            // Display search field
-            TextField("Search", text: $searchText)
-                .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
+            HStack {
+                // Display search field
+                TextField("Search", text: $searchText)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
                 // Update search on each character being entered
-                .onChange(of: searchText) {
-                    searchManager.fetchItems(searchQuery: searchText)
+                    .onChange(of: searchText) { oldValue, newValue in
+                        if newValue.isEmpty {
+                            searchManager.items = []
+                        } else {
+                            searchManager.fetchItems(searchQuery: newValue)
+                        }
+                    }
+                if !searchText.isEmpty {
+                    Button(action: {
+                        searchText = ""
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.trailing, 8)
                 }
-            
+            }
             // Display search results
             List(searchManager.items, id: \.id) {item in
                 //Text(item.name) //  Displays items as a list
