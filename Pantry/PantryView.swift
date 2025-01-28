@@ -98,6 +98,18 @@ struct PantryView: View {
                         .foregroundColor(.red)
                         .padding()
                 }
+                
+                Spacer()
+                
+                NavigationLink(destination: AddFoodView()) {
+                    Text("Add Food")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .padding(.horizontal)
+                }
             }
             .navigationTitle("My Pantry")
             .onAppear {
