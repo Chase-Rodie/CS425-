@@ -5,6 +5,9 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
+//A lot of code was grabbed from Firebase's documentation on how to support Authentication
+//https://firebase.google.com/docs/auth/ios/password-auth
+
 import Foundation
 import FirebaseAuth
 
@@ -22,6 +25,81 @@ struct AuthDataResultModel {
     }
 }
 
+func unlinkProvider(_ provider: AuthProviderOption) async throws {
+    guard let user = Auth.auth().currentUser else {
+        throw CustomAuthenticationErrors.userNotFound
+    }
+    do {
+        try await user.unlink(fromProvider: provider.rawValue)
+    } catch {
+        throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+    }
+}
+
+func updateUserProfile(displayName: String?, photoUrl: URL?) async throws {
+    guard let user = Auth.auth().currentUser else {
+        throw CustomAuthenticationErrors.userNotFound
+    }
+    let changeRequest = user.createProfileChangeRequest()
+    changeRequest.displayName = displayName
+    changeRequest.photoURL = photoUrl
+    do {
+        try await changeRequest.commitChanges()
+    } catch {
+        throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+    }
+}
+
+func getUserToken() async throws -> String {
+    guard let user = Auth.auth().currentUser else {
+        throw CustomAuthenticationErrors.userNotFound
+    }
+    do {
+        let token = try await user.getIDToken()
+        return token
+    } catch {
+        throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+    }
+}
+
+func reauthenticateUser(email:String, password: String) async throws {
+    guard let user = Auth.auth().currentUser else {
+        throw CustomAuthenticationErrors.userNotFound
+    }
+    let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+    do {
+        try await user.reauthenticate(with: credential)
+    } catch {
+        throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+    }
+}
+
+enum CustomAuthenticationErrors: LocalizedError {
+    case userNotFound
+    case emailVerificationFailed
+    case invalidCredentials
+    case signOutFailed
+    case providerOptionNotFound(String)
+    case unknownError(String)
+    
+    var errorDescription: String? {
+            switch self {
+            case .userNotFound:
+                return "No authenticated user was found."
+            case .emailVerificationFailed:
+                return "Failed to send email verification."
+            case .invalidCredentials:
+                return "The provided credentials are invalid."
+            case .signOutFailed:
+                return "Sign out operation failed."
+            case .providerOptionNotFound(let providerID):
+                return "Provider option not recognized: \(providerID)"
+            case .unknownError(let message):
+                return "An unknown error occurred: \(message)"
+            }
+        }
+    }
+
 enum AuthProviderOption: String {
     case email = "password"
     case google = "google.com"
@@ -35,7 +113,7 @@ final class AuthenticationManager {
     
     func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
+            throw CustomAuthenticationErrors.userNotFound
         }
         
         return AuthDataResultModel(user: user)
@@ -43,15 +121,15 @@ final class AuthenticationManager {
     
     func getcurrentEmailProvider() throws -> [AuthProviderOption] {
         guard let providerData = Auth.auth().currentUser?.providerData else{
-                throw URLError(.badServerResponse)
+            throw CustomAuthenticationErrors.userNotFound
         }
-    
+        
         var providers: [AuthProviderOption] = []
         for provider in providerData {
             if let option = AuthProviderOption(rawValue: provider.providerID) {
                 providers.append(option)
             } else {
-                assertionFailure("Provider option not found: \(provider.providerID)")
+                throw CustomAuthenticationErrors.providerOptionNotFound(provider.providerID)
             }
         }
         print(providers)
@@ -67,17 +145,30 @@ final class AuthenticationManager {
     
     func deleteUser() async throws {
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badURL)
+            throw CustomAuthenticationErrors.userNotFound
+        }
+        do {
+            try await user.delete()
+        } catch {
+            throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+        }
+    }
+    
+    
+    func sendEmailVerification() throws {
+        guard let user = Auth.auth().currentUser else {
+            throw CustomAuthenticationErrors.userNotFound
         }
         
-        try await user.delete()
+        user.sendEmailVerification { error in
+            if let error = error {
+                print("Failed to send email verification: \(error.localizedDescription)")
+            } else {
+                print("Email verification sent successfully.")
+            }
+        }
     }
-    //Implement Later
-    //func sendEmailVerification() throws {
-        
-    //}
 }
-
 
 //SignIn Email Functions
 

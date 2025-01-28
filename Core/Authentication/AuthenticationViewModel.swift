@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 12/2/24.
 //
 
+//Logic for the various different types of signing in
+
 import Foundation
 
 @MainActor

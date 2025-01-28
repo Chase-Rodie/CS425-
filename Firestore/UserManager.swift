@@ -5,6 +5,11 @@
 //  Created by Chase Rodie on 12/2/24.
 //
 
+//Used Firebase documentation on how to manage users in the DB
+//https://firebase.google.com/docs/auth/ios/manage-users
+
+//Logic for adding a user to a DB as soon as they sign in using built in Firebase functionality from the SDK
+
 import Foundation
 import FirebaseFirestore
 
