@@ -10,7 +10,7 @@ import SwiftUI
 struct TempContentView: View {
     
     @State var showMenu = false
-    @Binding var showSignInView: Bool
+    @State private var showSignInView = false
     
     var body: some View {
         
@@ -60,8 +60,8 @@ struct TempContentView: View {
 }
 
 
-struct TempContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        TempContentView(showSignInView: .constant(false))
-    }
+
+
+#Preview {
+    TempContentView()
 }

@@ -61,65 +61,43 @@ struct HomePageView: View {
                             HStack{
                                 VStack(spacing: 20) {
                                     // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
+                                    ProgressRingView(progress: currentProgress, ringWidth: 15)
+                                    
+                                        .padding()
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
                                     Text("Day 1")
                                 }
                                 VStack(spacing: 20) {
                                     // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                         
-                                             .padding()
-                                             .background(Color("BackgroundColor"))
-                                             .foregroundColor(.white)
-                                             .cornerRadius(10)
-                                         
-                                    }
+                                   ProgressRingView(progress: currentProgress, ringWidth: 15)
+                                    
+                                        .padding()
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
                                     Text("Day 2")
-                                   
                                 }
                                 VStack(spacing: 20) {
                                     // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
+                                    ProgressRingView(progress: currentProgress, ringWidth: 15)
+                                    
+                                        .padding()
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
                                     Text("Day 3")
                                 }
                                 VStack(spacing: 20) {
                                     // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
+                                    ProgressRingView(progress: currentProgress, ringWidth: 15)
+                                    
+                                        .padding()
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
                                     Text("Day 4")
-                                }
-                                VStack(spacing: 20) {
-                                    // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    Text("Day 5")
                                 }
                             }.padding(.leading, 20)
                         }

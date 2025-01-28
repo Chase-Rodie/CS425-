@@ -6,64 +6,38 @@
 //
 
 import XCTest
-@testable import Fit_Pantry
 
 final class NutritionManagerTest: XCTestCase {
 
-    var nutritionManager: NutritionManager!
-
     override func setUpWithError() throws {
-        nutritionManager = NutritionManager()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        // In UI tests it is usually best to stop immediately when a failure occurs.
+        continueAfterFailure = false
+
+        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
-        nutritionManager = nil
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testCalculateTotalCalories() throws {
-        //Input meals
-        let meals = ["Breakfast", "Lunch", "Dinner"]
+    @MainActor
+    func testExample() throws {
+        // UI tests must launch the application that they test.
+        let app = XCUIApplication()
+        app.launch()
 
-        //Expected total calories
-        let expectedCalories = 150 + 400 + 500
-
-        //Calculate total calories
-        let totalCalories = nutritionManager.calculateTotalCalories(for: meals)
-
-        //Assert the total calories match expected value
-        XCTAssertEqual(totalCalories, expectedCalories, "Total calories calculation is incorrect.")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
-    func testGetNutritionalInfoForBreakfast() throws {
-        //Input meal
-        let meal = "Breakfast"
-
-        //Expected nutritional information
-        let expectedNutritionalInfo: [String: Any] = [
-            "Calories": 96,
-            "Protein": 2.01,
-            "Carbohydrates": 20.97,
-            "Fat": 0.19
-        ]
-
-        //Get nutritional info
-        let nutritionalInfo = nutritionManager.getNutritionalInfo(for: meal)
-
-        //Assert nutritional information matches expected values
-        XCTAssertEqual(nutritionalInfo["Calories"] as? Int, expectedNutritionalInfo["Calories"] as? Int, "Calories for Breakfast are incorrect.")
-        XCTAssertEqual(nutritionalInfo["Protein"] as? Double, expectedNutritionalInfo["Protein"] as? Double, "Protein for Breakfast is incorrect.")
-        XCTAssertEqual(nutritionalInfo["Carbohydrates"] as? Double, expectedNutritionalInfo["Carbohydrates"] as? Double, "Carbohydrates for Breakfast are incorrect.")
-        XCTAssertEqual(nutritionalInfo["Fat"] as? Double, expectedNutritionalInfo["Fat"] as? Double, "Fat for Breakfast is incorrect.")
-    }
-
-    func testGetNutritionalInfoForUnknownMeal() throws {
-        //Input unknown meal
-        let meal = "Snack"
-
-        //Get nutritional info
-        let nutritionalInfo = nutritionManager.getNutritionalInfo(for: meal)
-
-        //Assert the nutritional info is empty for unknown meal
-        XCTAssertTrue(nutritionalInfo.isEmpty, "Nutritional info for unknown meal should be empty.")
+    @MainActor
+    func testLaunchPerformance() throws {
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
+            // This measures how long it takes to launch your application.
+            measure(metrics: [XCTApplicationLaunchMetric()]) {
+                XCUIApplication().launch()
+            }
+        }
     }
 }

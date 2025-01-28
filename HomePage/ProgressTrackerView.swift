@@ -61,10 +61,6 @@ struct ProgressTrackerView: View {
     }
 }
 
-
-
-struct ProgressTrackerView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProgressTrackerView()
-    }
+#Preview {
+    ProgressTrackerView()
 }

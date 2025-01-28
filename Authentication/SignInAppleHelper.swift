@@ -5,9 +5,6 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
-//Used Firebase to learn how to do sign in with apple and used some code from it as well
-//https://firebase.google.com/docs/auth/ios/apple
-
 import Foundation
 import SwiftUI
 import AuthenticationServices

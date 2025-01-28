@@ -5,8 +5,6 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
-//This is the UI for the various different types of authentication: email, apple, etc.
-
 import SwiftUI
 import GoogleSignIn
 import GoogleSignInSwift
@@ -18,14 +16,7 @@ struct AuthenticationView: View {
     
     var body: some View {
         VStack{
-            // Logo at the top
-            Image("logo")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150, height: 150)
-                .padding(.bottom, 30)
-
-            // Sign In Button - Anonymous
+            
             Button(action: {
                 Task {
                     do {
@@ -36,35 +27,27 @@ struct AuthenticationView: View {
                     }
                 }
             }, label: {
-                Text("Sign In Anonymously")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                Text("Sign In With Anonymously")
+                    .font(.headline)
                     .foregroundColor(.white)
-                    .padding()
+                    .frame(height: 55)
                     .frame(maxWidth: .infinity)
-                    .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.pink]), startPoint: .leading, endPoint: .trailing))
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
+                    .background(Color.orange)
+                    .cornerRadius(10)
             })
-            .padding(.bottom, 15)
-
-            // Email Sign-In
+            
             NavigationLink {
                 SignInEmailView(showSignInView: $showSignInView)
             } label: {
                 Text("Sign In With Email")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                    .font(.headline)
                     .foregroundColor(.white)
-                    .padding()
+                    .frame(height: 55)
                     .frame(maxWidth: .infinity)
-                    .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .leading, endPoint: .trailing))
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
+                    .background(Color.blue)
+                    .cornerRadius(10)
             }
-            .padding(.bottom, 15)
-
-            // Google Sign-In Button
+            
             GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
                 Task {
                     do {
@@ -74,10 +57,9 @@ struct AuthenticationView: View {
                         print(error)
                     }
                 }
+                
             }
-            .padding(.bottom, 15)
-
-            // Apple Sign-In Button
+            
             Button(action: {
                 Task {
                     do {
@@ -92,14 +74,11 @@ struct AuthenticationView: View {
                     .allowsHitTesting(false)
             })
             .frame(height: 55)
-            .padding(.bottom, 15)
-
+            
             Spacer()
         }
         .padding()
-        .background(LinearGradient(gradient: Gradient(colors: [Color.white.opacity(0.5), Color.blue.opacity(0.1)]), startPoint: .top, endPoint: .bottom))
-
-        .padding()
+        .navigationBarTitle("Sign In")
     }
 }
 

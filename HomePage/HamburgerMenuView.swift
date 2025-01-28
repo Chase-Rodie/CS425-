@@ -46,8 +46,6 @@ struct HamburgerMenuView: View {
     }
 }
 
-struct HamburgerMenuView_Previews: PreviewProvider {
-    static var previews: some View {
-      HamburgerMenuView()
-    }
+#Preview {
+    HamburgerMenuView()
 }

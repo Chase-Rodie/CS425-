@@ -5,8 +5,6 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
-//Shows the UI related to signing in with email
-
 import SwiftUI
 
 struct SignInEmailView: View {

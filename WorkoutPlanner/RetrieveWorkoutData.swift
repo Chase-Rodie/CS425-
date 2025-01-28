@@ -15,28 +15,11 @@ class RetrieveWorkoutData : ObservableObject {
     
     //2D array for workoutplan
     @Published var workoutPlan : [[Exercise]] = []
-    @Published var completedExercisesCounts: [Int] = []
     
 //    func resetWorkoutPlan() {
 //         self.workoutPlan = []  // Clear the in-memory workout plan
 //         print("In-memory workoutPlan cleared.")
 //     }
-    
-    //this function will allow for data to show properly in the progressrings for the homepage
-    //does need further testing
-    func completedExercises() {
-           completedExercisesCounts = workoutPlan.map { day in
-               day.filter { $0.isComplete }.count
-           }
-       }
-    
-    func progress(forDay index: Int) -> Double {
-            guard index < workoutPlan.count else { return 0.0 }
-            let totalExercises = workoutPlan[index].count
-            let completedExercises = completedExercisesCounts[index]
-            return totalExercises > 0 ? Double(completedExercises) / Double(totalExercises) : 0.0
-        }
-    
     
     func markComplete(for exercise: Exercise){
         //find the exercise
@@ -114,7 +97,7 @@ class RetrieveWorkoutData : ObservableObject {
                 DispatchQueue.main.async{
                     self.workoutPlan = decodedData
                 }
-                return true 
+                return true
             } else {
                 print("No saved exercises found.")
                 return false
@@ -123,7 +106,6 @@ class RetrieveWorkoutData : ObservableObject {
     
     
 }
-
 
 
 
