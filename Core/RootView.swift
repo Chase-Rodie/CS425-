@@ -8,6 +8,7 @@
 //Entire group worked on this to handle how app went from it's entry to subsequent views
 
 import SwiftUI
+import FirebaseAuth
 
 struct RootView: View {
     
@@ -30,6 +31,8 @@ struct RootView: View {
             }
         }
         .onAppear {
+            
+            
             // Check if the user is authenticated when RootView appears
             checkAuthStatus()
         }

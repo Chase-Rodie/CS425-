@@ -296,11 +296,6 @@ struct weightEntryView: View{
 }
 
 
-
-#Preview {
-   WorkoutView()
-}
-
 struct WorkoutView_Previews: PreviewProvider {
     static var previews: some View {
         WorkoutView()

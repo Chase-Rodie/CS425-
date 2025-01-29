@@ -16,6 +16,8 @@ struct PantryView: View {
     // Error message for fetching errors
     @State private var errorMessage: String? = nil
     
+    @State private var isLoading = true
+    
     // Variables to control item edits
     @State private var showEditSheet: Bool = false
     @State private var selectedItem: PantryItem?
@@ -30,6 +32,7 @@ struct PantryView: View {
             return
         }
         */
+        isLoading = true
         // Tempoarary static assignemt of user for testing
         let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         
@@ -43,6 +46,8 @@ struct PantryView: View {
                 self.errorMessage = "Failed to fetch pantry items: \(error.localizedDescription)"
                 return
             }
+            
+            isLoading = false
             
             guard let snapshot = snapshot else {
                 self.errorMessage = "No pantry data found"
@@ -68,6 +73,12 @@ struct PantryView: View {
     var body: some View {
         NavigationView {
             VStack {
+                if isLoading {
+                    ProgressView()
+                    Text("Loading")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                }
                 // Display pantry items
                 if pantryItems.isEmpty {
                     Text("Your pantry is empty")
