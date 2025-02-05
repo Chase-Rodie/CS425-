@@ -42,9 +42,26 @@ struct WorkoutView: View {
                             hasWorkoutPlan = false
                            // workoutPlanModel.workoutPlan = []
                             //workoutPlanModel.resetWorkoutPlan()
-                           
-                            
-                            }
+                        }
+                        
+//                        Button("testing"){
+//                            let testItem = Exercise(id: UUID().uuidString,
+//                                                    category: "Strength",
+//                                                    equipment: "Dumbbell",
+//                                                    force: "Push",
+//                                                    instructions: [
+//                                                        "Stand upright with a dumbbell in each hand.",
+//                                                        "Press the dumbbells overhead until your arms are fully extended.",
+//                                                        "Lower the dumbbells back to shoulder level and repeat."
+//                                                    ],
+//                                                    level: "Beginner",
+//                                                    mechanic: "Compound",
+//                                                    name: "Dumbbell Shoulder Press",
+//                                                    primaryMuscles: ["Deltoids"],
+//                                                    secondaryMuscles: ["Triceps", "Upper Chest"])
+//                            workoutPlanModel.saveWorkoutPlanDB(item: testItem)
+//                            
+//                            }
 
                         ZStack{
                             RoundedRectangle(cornerRadius: 18)

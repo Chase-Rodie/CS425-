@@ -91,7 +91,8 @@ class RetrieveWorkoutData : ObservableObject {
         group.notify(queue: .main){
             DispatchQueue.main.async{
                 self.workoutPlan = tempExercises
-                self.saveWorkoutPlan()
+                //self.saveWorkoutPlan()
+                self.saveWorkoutPlanDB()
                 
             }
         }
@@ -106,6 +107,54 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
+    //reworked function to save the workoutplan to the database
+    func saveWorkoutPlanDB(){
+        //get user ID
+        //temp. user id for testing
+        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        
+        //temp workoutplan id for testing
+        let workoutPlanID = "12345"
+        let db = Firestore.firestore()
+        
+        //iterate through every exercise in the weekly plan
+        for(dayIndex, exercises) in workoutPlan.enumerated(){
+            let dayCollection = db
+            //we will want to change week based off the current week it is generated
+                .collection("userData_test")
+                .document(userID)
+                .collection("workoutplan")
+                .document(workoutPlanID)
+                .collection("Day\(dayIndex + 1)")
+            
+            for exercise in exercises{
+                let exerciseDocument = dayCollection.document(exercise.name)
+                
+                let data: [String: Any] = [
+                    "category": exercise.category,
+                    "equipment": exercise.equipment,
+                    "force": exercise.force,
+                    "instructions": exercise.instructions,
+                    "level": exercise.level,
+                    "mechanic": exercise.mechanic,
+                    "name": exercise.name,
+                    "primaryMuscles": exercise.primaryMuscles,
+                    "secondaryMuscles": exercise.secondaryMuscles,
+                    //may need to exclude this one?
+                    "isComplete": exercise.isComplete
+                ]
+                //may need to add an error/catch for if the exercise already exists in there?
+                exerciseDocument.setData(data, merge: true) { error in
+                    if error != nil{
+                        print("Error updating Workout Document \(exercise.name).")
+                    } else{
+                        print("Updated Workout Document\(exercise.name).")
+                    }
+                }
+            }
+        }
+        
+    }
     
     func loadWorkoutPlan() -> Bool {
             let decoder = JSONDecoder()
