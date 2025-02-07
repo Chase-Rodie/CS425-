@@ -252,7 +252,8 @@ struct GenerateWorkoutPlanView: View {
                                 ("push", "chest"),
                                 ("pull", "glutes"),
                                 ("pull", "biceps"),
-                                ("push", "hamstrings")
+                                //had to change this temporarily!
+                                ("pull", "biceps")
                             ], maxExercises: passMax, level: "beginner"){
                                 
                                 DispatchQueue.main.async {
@@ -268,7 +269,8 @@ struct GenerateWorkoutPlanView: View {
                                 ("push", "chest"),
                                 ("pull", "glutes"),
                                 ("pull", "biceps"),
-                                ("push", "hamstrings"),
+                                //had to change this temproarily!
+                                ("pull", "biceps"),
                                 ("push", "abdominals")
                             ], maxExercises: passMax, level: "beginner"){
                                 

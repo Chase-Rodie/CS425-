@@ -45,7 +45,7 @@ class RetrieveWorkoutData : ObservableObject {
 
         //let group = DispatchGroup()
 
-        for i in 1...3 {
+        for i in 1...4 {
           //  group.enter()
             db.collection("Day\(i)").getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -173,9 +173,14 @@ class RetrieveWorkoutData : ObservableObject {
         group.notify(queue: .main){
             DispatchQueue.main.async{
                 self.workoutPlan = tempExercises
+                print("Test1")
                 //self.saveWorkoutPlan()
                 self.saveWorkoutPlanDB()
+                print("Test2")
+
                 self.saveWorkoutPlanLocally()
+                print("Test3")
+
                 completion()
                 
             }
@@ -203,6 +208,7 @@ class RetrieveWorkoutData : ObservableObject {
         let workoutPlanID = "12345"
         let db = Firestore.firestore()
         
+//        let group = DispatchGroup()
         //iterate through every exercise in the weekly plan
         for(dayIndex, exercises) in workoutPlan.enumerated(){
             let dayCollection = db
@@ -238,9 +244,15 @@ class RetrieveWorkoutData : ObservableObject {
                     } else{
                         print("Updated Workout Document\(exercise.name).")
                     }
+//                    group.leave()
                 }
             }
+            
         }
+//        group.notify(queue: .main) {
+//                // Notify when all updates are complete
+//                print("All exercises have been saved to the database.")
+//            }
         
     }
     //need to pull from database instead! rework this function?
