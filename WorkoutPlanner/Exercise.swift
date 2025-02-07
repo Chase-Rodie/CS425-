@@ -8,10 +8,11 @@
 import Foundation
 
 struct Exercise: Decodable,Encodable,Identifiable{
-    var id: String
     var category: String
     var equipment: String
     var force: String
+    var id: String
+    var imageURLs: Array<String>
     var instructions: Array<String>
     var level: String
     var mechanic: String

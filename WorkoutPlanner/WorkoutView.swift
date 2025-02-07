@@ -18,11 +18,6 @@ struct WorkoutView: View {
             
             if hasWorkoutPlan && !isLoading{
                 ScrollView{
-                    
-                    
-                    HStack{
-                        
-                    }
                     VStack(alignment: .leading, spacing: 20){
                         
                         ZStack{
@@ -90,17 +85,20 @@ struct WorkoutView: View {
                 }
                 
     
-            }  else{
-                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan, isLoading: $isLoading)
-               
-                
+            } else if isLoading {
+                // Show loading indicator
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else {
+                // Show GenerateWorkoutPlanView
+                GenerateWorkoutPlanView(workoutPlanModel: workoutPlanModel, hasWorkoutPlan: $hasWorkoutPlan, isLoading: $isLoading)
             }
         }
         .onChange(of: hasWorkoutPlan) {
-            print("finally it works ")
-            if hasWorkoutPlan && workoutPlanModel.workoutPlan.isEmpty {
-                workoutPlanModel.loadWorkoutPlan()
-            }
+//            print("finally it works ")
+//            if hasWorkoutPlan{
+//                workoutPlanModel.loadWorkoutPlan()
+//            }
         }
         
     }
@@ -161,7 +159,8 @@ struct WorkoutView: View {
 }
 
 struct GenerateWorkoutPlanView: View {
-    @ObservedObject var makeWPModel = RetrieveWorkoutData()
+    //@ObservedObject var makeWPModel = RetrieveWorkoutData()
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
     @Binding var hasWorkoutPlan: Bool
     @Binding  var isLoading: Bool
     
@@ -234,46 +233,50 @@ struct GenerateWorkoutPlanView: View {
                         
                         if days == 0 {
                             print("3 days")
-                            makeWPModel.queryExercises(days: [
+                            workoutPlanModel.queryExercises(days: [
                                 ("push", "chest"),
                                 ("pull", "shoulders"),
                                 ("pull", "glutes")
-                            ], maxExercises: passMax, level: "beginner")
-                            
-                            DispatchQueue.main.async {
-                                isLoading = false
-                                hasWorkoutPlan = true
+                            ], maxExercises: passMax, level: "beginner"){
+                                
+                                DispatchQueue.main.async {
+                                    isLoading = false
+                                    hasWorkoutPlan = true
+                                }
+                                print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
-                            print("Generated Workout Plan: \(makeWPModel.workoutPlan)")
-                            
                         }else if days == 1 {
                             print("4 days")
                             
-                            makeWPModel.queryExercises(days: [
+                            workoutPlanModel.queryExercises(days: [
                                 ("push", "chest"),
                                 ("pull", "glutes"),
                                 ("pull", "biceps"),
                                 ("push", "hamstrings")
-                            ], maxExercises: passMax, level: "beginner")
-                            
-                            DispatchQueue.main.async {
-                                isLoading = false
-                                hasWorkoutPlan = true
+                            ], maxExercises: passMax, level: "beginner"){
+                                
+                                DispatchQueue.main.async {
+                                    isLoading = false
+                                    hasWorkoutPlan = true
+                                }
+                                print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
                         }else if days == 2 {
                             print("5 days")
                             
-                            makeWPModel.queryExercises(days: [
+                            workoutPlanModel.queryExercises(days: [
                                 ("push", "chest"),
                                 ("pull", "glutes"),
                                 ("pull", "biceps"),
                                 ("push", "hamstrings"),
                                 ("push", "abdominals")
-                            ], maxExercises: passMax, level: "beginner")
-                            
-                            DispatchQueue.main.async {
-                                isLoading = false
-                                hasWorkoutPlan = true
+                            ], maxExercises: passMax, level: "beginner"){
+                                
+                                DispatchQueue.main.async {
+                                    isLoading = false
+                                    hasWorkoutPlan = true
+                                }
+                                print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
                         }
                         
