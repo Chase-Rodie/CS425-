@@ -1,35 +1,24 @@
 //
 //  RootView.swift
-//  Fit Pantry
-// 
-//  Created by Chase Rodie on 11/23/24.
+//  SwiftfulFirebaseBootcamp
 //
-
-//Entire group worked on this to handle how app went from it's entry to subsequent views
+//  Created by Nick Sarno on 1/21/23.
+//
 
 import SwiftUI
 
 struct RootView: View {
     
-    @State private var showSignInView: Bool = false // Tracks if login is required
+    @State private var showSignInView: Bool = false
     
     var body: some View {
         ZStack {
-            if showSignInView {
-                // If we need to show the SignIn View
-                AuthenticationView(showSignInView: $showSignInView)
-                    .onAppear {
-                        // Check the authentication status right when this view is shown
-                        checkAuthStatus()
-                    }
-            } else {
-                // Show TempContentView once logged in, wrapped in a NavigationStack for navigation capabilities
-                NavigationStack {
-                    TempContentView(showSignInView: $showSignInView)
-                }
+            if !showSignInView {
+                TempContentView(showSignInView: $showSignInView)
             }
         }
         .onAppear {
+<<<<<<< Updated upstream
             // Check if the user is authenticated when RootView appears
             checkAuthStatus()
         }
@@ -40,9 +29,15 @@ struct RootView: View {
         // Check if there's an authenticated user, otherwise show the sign-in screen
         do {
             let authUser = try AuthenticationManager.shared.getAuthenticatedUser()
+=======
+            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
+>>>>>>> Stashed changes
             self.showSignInView = authUser == nil
-        } catch {
-            self.showSignInView = true // If no user is authenticated, show the sign-in view
+        }
+        .fullScreenCover(isPresented: $showSignInView) {
+            NavigationStack {
+                AuthenticationView(showSignInView: $showSignInView)
+            }
         }
     }
 }
