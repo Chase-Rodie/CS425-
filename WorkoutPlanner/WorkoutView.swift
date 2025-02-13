@@ -13,6 +13,7 @@ struct WorkoutView: View {
     @State private var hasWorkoutPlan: Bool = false
     @State private var isLoading: Bool = false
     
+    
     var body: some View {
         NavigationView{
             
