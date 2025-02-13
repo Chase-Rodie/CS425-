@@ -19,10 +19,15 @@ struct DailyWorkoutView: View {
             
             ForEach(dayWorkoutPlan){exercise in
                 HStack {
-                    Image("workout")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50, height: 50)
+                    if let firstImageURL = exercise.imageURLs.first, let url = URL(string: firstImageURL) {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }
                     VStack(alignment: .leading) {
                         NavigationLink(exercise.name, destination: IndividualExercise(exercise: exercise))
                             .font(.subheadline)
