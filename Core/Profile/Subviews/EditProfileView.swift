@@ -1,10 +1,3 @@
-//
-//  EditProfileView.swift
-//  Fit Pantry
-//
-//  Created by Chase Rodie on 2/11/25.
-//
-
 import SwiftUI
 
 struct EditProfileView: View {
@@ -15,7 +8,7 @@ struct EditProfileView: View {
 
     init(viewModel: ProfileViewModel) {
         _viewModel = ObservedObject(wrappedValue: viewModel)
-        _editedUser = State(initialValue: viewModel.user ?? DBUser(userId: "", age: nil, gender: nil, fitnessLevel: nil, goal: nil)) // Default values
+        _editedUser = State(initialValue: viewModel.user ?? DBUser(userId: "", age: nil, gender: nil, fitnessLevel: nil, goal: nil, height: nil)) // Default values
     }
     
     var body: some View {
@@ -23,7 +16,7 @@ struct EditProfileView: View {
             Section(header: Text("Personal Information")) {
                 TextField("Age", text: Binding(
                     get: { editedUser.age.map { "\($0)" } ?? "" },
-                    set: { editedUser.age = Int($0) }
+                    set: { editedUser.age = $0.isEmpty ? nil : Int($0) }
                 ))
                 .keyboardType(.numberPad)
                 
@@ -41,17 +34,35 @@ struct EditProfileView: View {
                     get: { editedUser.goal ?? "" },
                     set: { editedUser.goal = $0.isEmpty ? nil : $0 }
                 ))
+                
+                TextField("Height", text: Binding(
+                    get: { editedUser.height ?? "" },
+                    set: { editedUser.height = $0.isEmpty ? nil : $0 }
+                ))
             }
             
             Button("Save Changes") {
                 Task {
-                    await viewModel.updateUserProfile(user: editedUser)
-                    dismiss()
+                    await saveProfile()
                 }
             }
             .buttonStyle(.borderedProminent)
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .navigationTitle("Edit Profile")
+    }
+    
+    private func saveProfile() async {
+        print("Saving user: \(editedUser)") // Debugging Step
+
+        do {
+            try await viewModel.updateUserProfile(user: editedUser)
+            DispatchQueue.main.async {
+                viewModel.user = editedUser // ✅ Ensures ViewModel updates
+                dismiss() // ✅ Closes the screen after saving
+            }
+        } catch {
+            print("Error updating profile: \(error)")
+        }
     }
 }

@@ -52,9 +52,11 @@ struct ProfileView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
-                //NavigationLink {
-                    //EditProfileView
-                //}
+                NavigationLink {
+                    EditProfileView(viewModel: viewModel)
+                } label: {
+                    Text("Edit Profile")
+                }
                 
                 
                 PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {

@@ -11,7 +11,7 @@ import PhotosUI
 @MainActor
 final class ProfileViewModel: ObservableObject {
     
-    @Published private(set) var user: DBUser? = nil
+    @Published var user: DBUser?
             
     func loadCurrentUser() async throws {
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
@@ -24,6 +24,13 @@ final class ProfileViewModel: ObservableObject {
         Task {
             try await UserManager.shared.addUserPreference(userId: user.userId, preference: text)
             self.user = try await UserManager.shared.getUser(userId: user.userId)
+        }
+    }
+    
+    func updateUserProfile(user: DBUser) async throws {
+        try? await UserManager.shared.updateUserProfile(user: user)
+        DispatchQueue.main.async {
+            self.user = user
         }
     }
     

@@ -1,8 +1,8 @@
 //
 //  RootView.swift
-//  SwiftfulFirebaseBootcamp
+//  Fit Pantry
 //
-//  Created by Nick Sarno on 1/21/23.
+//  Created by Chase Rodie on 11/23/24.
 //
 
 import SwiftUI
@@ -18,20 +18,7 @@ struct RootView: View {
             }
         }
         .onAppear {
-<<<<<<< Updated upstream
-            // Check if the user is authenticated when RootView appears
-            checkAuthStatus()
-        }
-    }
-    
-    // Helper function to check user authentication
-    private func checkAuthStatus() {
-        // Check if there's an authenticated user, otherwise show the sign-in screen
-        do {
-            let authUser = try AuthenticationManager.shared.getAuthenticatedUser()
-=======
             let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
->>>>>>> Stashed changes
             self.showSignInView = authUser == nil
         }
         .fullScreenCover(isPresented: $showSignInView) {

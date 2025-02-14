@@ -229,34 +229,17 @@ final class UserManager {
     
     func updateUserProfile(user: DBUser) async throws {
         var data: [String: Any] = [:]
-        
-        if let weight = user.weight {
-            data["weight"] = weight
-        }
-        
-        if let height = user.height {
-            data["height"] = height
-        }
-        
-        if let gender = user.gender {
-            data["gender"] = gender
-        }
-        
-        if let age = user.age {
-            data["age"] = age
-        }
-        
-        if let fitnessLevel = user.fitnessLevel {
-            data["fitness_level"] = fitnessLevel
-        }
-        
-        if let goal = user.goal {
-            data["goal"] = goal
-        }
-        
+
+        data["weight"] = user.weight ?? FieldValue.delete()
+        data["height"] = user.height ?? FieldValue.delete()
+        data["gender"] = user.gender ?? FieldValue.delete()
+        data["age"] = user.age ?? FieldValue.delete()
+        data["fitness_level"] = user.fitnessLevel ?? FieldValue.delete()
+        data["goal"] = user.goal ?? FieldValue.delete()
+
         try await userDocument(userId: user.userId).updateData(data)
-        
     }
+
     
     func addUserInformation(userId: String, userInformation: String) async throws {
         var data: [String:Any] = [
