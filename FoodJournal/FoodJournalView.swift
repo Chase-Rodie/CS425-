@@ -9,6 +9,11 @@ import SwiftUI
 
 struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
+    private let userId: String
+    
+    init(userId: String){
+        self.userId = userId
+    }
     
     let now = Date()
     
@@ -20,45 +25,70 @@ struct FoodJournalView: View {
             
             ScrollView{
                 VStack{
-    
                         VStack{
                             Text("Today's Food Journal")
                                 .font(.title)
                                 .fontWeight(.semibold)
-                                .foregroundColor(Color.white)
                             Text(now.formatted(date: .long, time: .omitted))
-                                .foregroundColor(Color.white)
-
-                        
+                                .fontWeight(.semibold)
                     }
                     VStack{
-                        VStack(alignment: .leading){
-                            Text("Breakfast:")
-                                .font(.headline)
+                        HStack{
+                            VStack(alignment: .trailing){
+                                Text("Breakfast:")
+                                    .font(.headline)
+                                Text("Food1")
+                            }
+                            Spacer()
+                            Button{
+                                viewModel.showingFoodJournalItemAddView = true
+                            } label:{
+                                Image(systemName: "plus")
+                                    .font(.system(size: 20))
+                            }.sheet(isPresented: $viewModel.showingFoodJournalItemAddView){
+                                FoodJournalAddItemView()
+                                
+                            }.foregroundColor(.black)
+                            
                         }
-                        VStack(alignment: .leading){
-                            Text("Lunch:")
-                                .font(.headline)
+                        .padding()
+                        HStack{
+                            VStack(alignment: .trailing){
+                                Text("Lunch:")
+                                    .font(.headline)
+                            }
+                            Spacer()
                         }
-                        VStack(alignment: .leading){
-                            Text("Dinner:")
-                                .font(.headline)
+                        .padding()
+                        HStack{
+                            VStack(alignment: .trailing){
+                                Text("Dinner:")
+                                    .font(.headline)
+                            }
+                            Spacer()
                         }
-                        VStack(alignment: .leading){
-                            Text("Snacks:")
-                                .font(.headline)
+                        .padding()
+                        HStack{
+                            VStack(alignment: .trailing){
+                                Text("Snacks:")
+                                    .font(.headline)
+                            }
+                            Spacer()
                         }
+                        .padding()
                         
                     }
                     
                 }
             }
-        }
+        }.foregroundColor(.white)
     }
     
     }
 
 
+
+
 #Preview {
-    FoodJournalView()
+    FoodJournalView(userId: "")
 }

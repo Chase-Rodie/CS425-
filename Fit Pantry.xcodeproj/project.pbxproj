@@ -13,6 +13,9 @@
 		5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */; };
 		5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */; };
 		5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */; };
+		5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */; };
+		5E74B7042D62D98800E5912B /* FoodJournalAddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */; };
+		5E74B7072D62DF2000E5912B /* FoodJournalAddItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */; };
 		5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */; };
 		5EB437752CF9A99900C8B75F /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437742CF9A99900C8B75F /* ExerciseModel.swift */; };
 		5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */; };
@@ -140,6 +143,9 @@
 		5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalViewModel.swift; sourceTree = "<group>"; };
 		5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalView.swift; sourceTree = "<group>"; };
 		5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWorkoutView.swift; sourceTree = "<group>"; };
+		5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalItemView.swift; sourceTree = "<group>"; };
+		5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalAddItemView.swift; sourceTree = "<group>"; };
+		5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalAddItemViewModel.swift; sourceTree = "<group>"; };
 		5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		5EB437742CF9A99900C8B75F /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
@@ -296,6 +302,9 @@
 			children = (
 				5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */,
 				5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */,
+				5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */,
+				5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */,
+				5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */,
 			);
 			path = FoodJournal;
 			sourceTree = "<group>";
@@ -916,14 +925,17 @@
 				5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */,
 				9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
-				5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */,
+				5EB437752CF9A99900C8B75F /* ExerciseModel.swift in Sources */,
 				9A7F604B2D5BC414007BF914 /* EditProfileView.swift in Sources */,
 				F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */,
+				5E74B7042D62D98800E5912B /* FoodJournalAddItemView.swift in Sources */,
+				5E74B7072D62DF2000E5912B /* FoodJournalAddItemViewModel.swift in Sources */,
 				9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
+				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
 				F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */,

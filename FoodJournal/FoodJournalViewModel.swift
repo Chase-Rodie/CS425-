@@ -7,10 +7,14 @@
 
 import SwiftUI
 import FirebaseCore
+import FirebaseAuth
 import FirebaseFirestore
 
 
-class FoodJournalViewModel: ObservableObject {
+@MainActor class FoodJournalViewModel: ObservableObject {
+
+    @Published var showingFoodJournalItemAddView = false
+    
     @Published var foodEntries: [Food] = []
     
     private let db = Firestore.firestore()
@@ -23,6 +27,7 @@ class FoodJournalViewModel: ObservableObject {
     
     
     func addFoodEntry(){
+        
         
     }
     
