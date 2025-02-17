@@ -25,14 +25,14 @@ struct SignInEmailView: View {
                 .padding()
                 .background(Color.gray.opacity(0.4))
                 .cornerRadius(10)
-            
+
             Button {
                 Task {
                     do {
                         try await viewModel.signUp()
                         showSignInView = false
                         return
-                    } catch{
+                    } catch {
                         print(error)
                     }
                     
@@ -40,7 +40,7 @@ struct SignInEmailView: View {
                         try await viewModel.signIn()
                         showSignInView = false
                         return
-                    } catch{
+                    } catch {
                         print(error)
                     }
                 }
@@ -60,6 +60,7 @@ struct SignInEmailView: View {
         .navigationTitle("Sign In With Email")
     }
 }
+
 struct SignInEmailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
