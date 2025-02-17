@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
@@ -17,6 +18,7 @@ class RetrieveWorkoutData : ObservableObject {
     @Published var workoutPlan : [[Exercise]] = []
     @Published var completedExercisesCounts: [Int] = []
     
+    let now = Date()
     
     //reworked function to load the workoutplan from the database
     private func saveWorkoutPlanLocally(){
@@ -31,15 +33,19 @@ class RetrieveWorkoutData : ObservableObject {
     //untested
     func fetchWorkoutPlan() {
         
-        //static values for initial setup/testing
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
-        let workoutPlanID = "12345"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+        //get current date in correct format for document naming purposes
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
 
         let db = Firestore.firestore()
             .collection("userData_test")
             .document(userID)
             .collection("workoutplan")
-            .document(workoutPlanID)
+            .document(formattedDate)
 
         var tempWorkoutPlan: [[Exercise]] = []
 
@@ -202,10 +208,14 @@ class RetrieveWorkoutData : ObservableObject {
     func saveWorkoutPlanDB(){
         //get user ID
         //temp. user id for testing
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
         
-        //temp workoutplan id for testing
-        let workoutPlanID = "12345"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+       
         let db = Firestore.firestore()
         
 //        let group = DispatchGroup()
@@ -216,7 +226,7 @@ class RetrieveWorkoutData : ObservableObject {
                 .collection("userData_test")
                 .document(userID)
                 .collection("workoutplan")
-                .document(workoutPlanID)
+                .document(formattedDate)
                 .collection("Day\(dayIndex + 1)")
             
             for exercise in exercises{

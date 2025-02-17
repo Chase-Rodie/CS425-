@@ -6,13 +6,24 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
+import FirebaseFirestore
 
 struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
-    private let userId: String
+    @FirestoreQuery var items: [Food]
+    
+  //  private let userId: String
+    
     
     init(userId: String){
-        self.userId = userId
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+        
+        //self.userId = userId
+        self._items = FirestoreQuery(collectionPath: "userData_test/\(userId)/foodjournal/\(formattedDate)/breakfast")
     }
     
     let now = Date()
@@ -37,7 +48,10 @@ struct FoodJournalView: View {
                             VStack(alignment: .trailing){
                                 Text("Breakfast:")
                                     .font(.headline)
-                                Text("Food1")
+                                List(items){ item in
+                                    Text(item.name)
+                                }
+                                .listStyle(PlainListStyle())
                             }
                             Spacer()
                             Button{
@@ -90,5 +104,5 @@ struct FoodJournalView: View {
 
 
 #Preview {
-    FoodJournalView(userId: "")
+    FoodJournalView(userId: "gwj5OvTOGmNA8GCfd7nkEzo3djA2")
 }

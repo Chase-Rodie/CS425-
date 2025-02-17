@@ -202,22 +202,11 @@ struct FoodJournalAddItemView: View {
         
         // Add food to a users pantry
         private func addFood(item: Food, value: Double) {
-            // Get the user's ID
-            /*
-            guard let userID = Auth.auth().currentUser?.uid else {
-                return
-            }
-            */
-            // Tempoarary static assignemt of user for testing
-            //let userID = "IG0kz1WPQAOfI5wXFbEmyk108iV2"
+           
             guard let userID = Auth.auth().currentUser?.uid else {
                 return
             }
             
-            
-            
-           // let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
-            //print(userID)
             
             //get current date in correct format for document naming purposes
             let dateFormatter = DateFormatter()
