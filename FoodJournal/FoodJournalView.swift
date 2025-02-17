@@ -9,6 +9,9 @@ import SwiftUI
 
 struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
+    
+    let now = Date()
+    
     var body: some View{
         ScrollView{
             VStack{
@@ -16,11 +19,15 @@ struct FoodJournalView: View {
                     RoundedRectangle(cornerRadius: 18)
                         .fill(Color("BackgroundColor"))
                         .frame(width: 370, height: 150)
+                    VStack{
+                        Text("Today's Food Journal")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color.white)
+                        Text(now.formatted(date: .long, time: .omitted))
+                            .foregroundColor(Color.white)
+                    }
                     
-                    Text("Today's Food Journal")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Color.white)
                 }
                 VStack{
                     VStack(alignment: .leading){
@@ -39,6 +46,7 @@ struct FoodJournalView: View {
                         Text("Snacks:")
                         .font(.headline)
                     }
+            
                 }
                 
             }
