@@ -13,42 +13,45 @@ struct FoodJournalView: View {
     let now = Date()
     
     var body: some View{
-        ScrollView{
-            VStack{
-                ZStack{
-                    RoundedRectangle(cornerRadius: 18)
-                        .fill(Color("BackgroundColor"))
-                        .frame(width: 370, height: 150)
+        ZStack{
+          
+            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            
+            ScrollView{
+                VStack{
+    
+                        VStack{
+                            Text("Today's Food Journal")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color.white)
+                            Text(now.formatted(date: .long, time: .omitted))
+                                .foregroundColor(Color.white)
+
+                        
+                    }
                     VStack{
-                        Text("Today's Food Journal")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.white)
-                        Text(now.formatted(date: .long, time: .omitted))
-                            .foregroundColor(Color.white)
+                        VStack(alignment: .leading){
+                            Text("Breakfast:")
+                                .font(.headline)
+                        }
+                        VStack(alignment: .leading){
+                            Text("Lunch:")
+                                .font(.headline)
+                        }
+                        VStack(alignment: .leading){
+                            Text("Dinner:")
+                                .font(.headline)
+                        }
+                        VStack(alignment: .leading){
+                            Text("Snacks:")
+                                .font(.headline)
+                        }
+                        
                     }
                     
                 }
-                VStack{
-                    VStack(alignment: .leading){
-                        Text("Breakfast:")
-                            .font(.headline)
-                    }
-                    VStack(alignment: .leading){
-                        Text("Lunch:")
-                        .font(.headline)
-                    }
-                    VStack(alignment: .leading){
-                        Text("Dinner:")
-                        .font(.headline)
-                    }
-                    VStack(alignment: .leading){
-                        Text("Snacks:")
-                        .font(.headline)
-                    }
-            
-                }
-                
             }
         }
     }
