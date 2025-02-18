@@ -1,31 +1,51 @@
 //
 //  RootView.swift
 //  Fit Pantry
-//
+// 
 //  Created by Chase Rodie on 11/23/24.
 //
+
+//Entire group worked on this to handle how app went from it's entry to subsequent views
 
 import SwiftUI
 import FirebaseAuth
 
 struct RootView: View {
     
-    @State private var showSignInView: Bool = false
+    @State private var showSignInView: Bool = false // Tracks if login is required
     
     var body: some View {
         ZStack {
-            if !showSignInView {
-                TempContentView(showSignInView: $showSignInView)
+            if showSignInView {
+                // If we need to show the SignIn View
+                AuthenticationView(showSignInView: $showSignInView)
+                    .onAppear {
+                        // Check the authentication status right when this view is shown
+                        checkAuthStatus()
+                    }
+            } else {
+                // Show TempContentView once logged in, wrapped in a NavigationStack for navigation capabilities
+                NavigationStack {
+                    TempContentView(showSignInView: $showSignInView)
+                }
             }
         }
         .onAppear {
-            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
-            self.showSignInView = authUser == nil
+            
+            
+            // Check if the user is authenticated when RootView appears
+            checkAuthStatus()
         }
-        .fullScreenCover(isPresented: $showSignInView) {
-            NavigationStack {
-                AuthenticationView(showSignInView: $showSignInView)
-            }
+    }
+    
+    // Helper function to check user authentication
+    private func checkAuthStatus() {
+        // Check if there's an authenticated user, otherwise show the sign-in screen
+        do {
+            let authUser = try AuthenticationManager.shared.getAuthenticatedUser()
+            self.showSignInView = authUser == nil
+        } catch {
+            self.showSignInView = true // If no user is authenticated, show the sign-in view
         }
     }
 }

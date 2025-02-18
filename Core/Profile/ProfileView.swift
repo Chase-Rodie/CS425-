@@ -8,21 +8,24 @@
 //View handles how the user views their profile and at this point it just shows their UID and if they signed in annonymously
 
 import SwiftUI
-import PhotosUI
+
+@MainActor
+final class ProfileViewModel: ObservableObject {
+    
+    @Published private(set) var user: DatabaseUser? = nil
+    
+    func loadCurrentUser() async throws {
+        let  authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
+        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+    }
+    
+}
 
 struct ProfileView: View {
     
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var url: URL? = nil
     
-    let preferenceOptions: [String] = ["Sports", "Movies", "Books"]
-    
-    private func preferenceIsSelected(text: String) -> Bool {
-        viewModel.user?.preferences?.contains(text) == true
-    }
-                                       
     var body: some View {
         List {
             if let user = viewModel.user {
@@ -31,72 +34,15 @@ struct ProfileView: View {
                 if let isAnonymous = user.isAnonymous {
                     Text("Is Anonymous: \(isAnonymous.description.capitalized)")
                 }
-                
-                VStack {
-                    HStack {
-                        ForEach(preferenceOptions, id: \.self) { string in
-                            Button(string) {
-                                if preferenceIsSelected(text: string) {
-                                    viewModel.removeUserPreference(text: string)
-                                } else {
-                                    viewModel.addUserPreference(text: string)
-                                }
-                            }
-                            .font(.headline)
-                            .buttonStyle(.borderedProminent)
-                            .tint(preferenceIsSelected(text: string) ? .green : .red)
-                        }
-                    }
-                    
-                    Text("User preferences: \((user.preferences ?? []).joined(separator: ", "))")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                
-                NavigationLink {
-                    EditProfileView(viewModel: viewModel)
-                } label: {
-                    Text("Edit Profile")
-                }
-                
-                
-                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                    Text("Select a photo")
-                }
-                
-                
-                if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 150, height: 150)
-                            .cornerRadius(10)
-                    } placeholder: {
-                        ProgressView()
-                            .frame(width: 150, height: 150)
-                    }
-                }
-                
-                if viewModel.user?.profileImagePath != nil {
-                    Button("Delete image") {
-                        viewModel.deleteProfileImage()
-                    }
-                }
             }
         }
         .task {
             try? await viewModel.loadCurrentUser()
         }
-        .onChange(of: selectedItem, perform: { newValue in
-            if let newValue {
-                viewModel.saveProfileImage(item: newValue)
-            }
-        })
         .navigationTitle("Profile")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    SettingsView(showSignInView: $showSignInView)
+                NavigationLink { SettingsView(showSignInView: $showSignInView)
                 } label: {
                     Image(systemName: "gear")
                         .font(.headline)
@@ -108,6 +54,8 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        RootView()
+        NavigationStack {
+            ProfileView(showSignInView: .constant(false))
+        }
     }
 }

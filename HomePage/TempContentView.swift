@@ -38,7 +38,7 @@ struct TempContentView: View {
                 .tabItem {
                     Label("Pantry", systemImage: "fork.knife.circle.fill")
                 }
-            ProfileView(showSignInView: $showSignInView)
+            WorkoutView()
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }

@@ -42,7 +42,7 @@ struct AuthenticationView: View {
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.green)
+                    .background(LinearGradient(gradient: Gradient(colors: [Color.orange, Color.pink]), startPoint: .leading, endPoint: .trailing))
                     .cornerRadius(20)
                     .shadow(radius: 10)
             })
@@ -58,71 +58,47 @@ struct AuthenticationView: View {
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.green)
+                    .background(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .leading, endPoint: .trailing))
                     .cornerRadius(20)
                     .shadow(radius: 10)
             }
             .padding(.bottom, 15)
 
             // Google Sign-In Button
-            
-            VStack(spacing: 15) {
-                // Google Sign-In Button (Now on Top)
-                Button {
-                    print("Tapped Google sign-in")
-                    Task {
-                        do {
-                            try await viewModel.signInGoogle()
-                            showSignInView = false
-                        } catch {
-                            print(error)
-                        }
+            GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+                Task {
+                    do {
+                        try await viewModel.signInGoogle()
+                        showSignInView = false
+                    } catch {
+                        print(error)
                     }
-                } label: {
-                    HStack {
-                        Image("GoogleButton")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-
-                        Text("Sign in with Google")
-                            .font(.headline)
-                            .foregroundColor(.black)
-
-                        Spacer()
-                    }
-                    .padding()
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .shadow(radius: 2)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 20)
-
-                // Apple Sign-In Button (Now Below Google)
-                Button(action: {
-                    Task {
-                        do {
-                            try await viewModel.signInApple()
-                            showSignInView = false
-                        } catch {
-                            print(error)
-                        }
-                    }
-                }, label: {
-                    SignInWithAppleButtonViewRepresentable(type: .default, style: .black)
-                        .allowsHitTesting(false)
-                })
-                .frame(height: 55)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 20)
             }
+            .padding(.bottom, 15)
 
+            // Apple Sign-In Button
+            Button(action: {
+                Task {
+                    do {
+                        try await viewModel.signInApple()
+                        showSignInView = false
+                    } catch {
+                        print(error)
+                    }
+                }
+            }, label: {
+                SignInWithAppleButtonViewRepresentable(type: .default, style: .black)
+                    .allowsHitTesting(false)
+            })
+            .frame(height: 55)
+            .padding(.bottom, 15)
 
+            Spacer()
         }
         .padding()
+        .background(LinearGradient(gradient: Gradient(colors: [Color.white.opacity(0.5), Color.blue.opacity(0.1)]), startPoint: .top, endPoint: .bottom))
+
         .padding()
     }
 }

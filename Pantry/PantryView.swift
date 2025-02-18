@@ -27,16 +27,17 @@ struct PantryView: View {
     // Function to fetch pantry items
     private func fetchPantryItems() {
         // Get the user's ID
-        
+        /*
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
+        */
         isLoading = true
         // Tempoarary static assignemt of user for testing
-        //let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         
         let db = Firestore.firestore()
-            .collection("users")
+            .collection("userData_test")
             .document(userID)
             .collection("pantry")
         
