@@ -34,11 +34,15 @@ struct TempContentView: View {
                 .tabItem {
                     Label("Workout", systemImage: "figure.run")
                 }
+            FoodJournalView(userId:"Uhq3C2AQ05apw4yETqgyIl8mXzk2")
+                .tabItem {
+                    Label("Food Journal", systemImage: "fork.knife.circle.fill")
+                }
             PantryView()
                 .tabItem {
                     Label("Pantry", systemImage: "fork.knife.circle.fill")
                 }
-            WorkoutView()
+            ProfileView(showSignInView: $showSignInView)
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
