@@ -23,7 +23,7 @@ struct FoodJournalView: View {
         let formattedDate = dateFormatter.string(from: now)
         
         //self.userId = userId
-        self._items = FirestoreQuery(collectionPath: "userData_test/\(userId)/foodjournal/\(formattedDate)/breakfast")
+        self._items = FirestoreQuery(collectionPath: "users/\(userId)/foodjournal/\(formattedDate)/breakfast")
     }
     
     let now = Date()

@@ -42,7 +42,7 @@ class RetrieveWorkoutData : ObservableObject {
         let formattedDate = dateFormatter.string(from: now)
 
         let db = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("workoutplan")
             .document(formattedDate)
@@ -223,7 +223,7 @@ class RetrieveWorkoutData : ObservableObject {
         for(dayIndex, exercises) in workoutPlan.enumerated(){
             let dayCollection = db
             //we will want to change week based off the current week it is generated
-                .collection("userData_test")
+                .collection("users")
                 .document(userID)
                 .collection("workoutplan")
                 .document(formattedDate)

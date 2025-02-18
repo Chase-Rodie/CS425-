@@ -215,7 +215,7 @@ struct FoodJournalAddItemView: View {
             
             // Create a refrence to the database
             let db = Firestore.firestore()
-                .collection("userData_test")
+                .collection("users")
                 .document(userID)
                 .collection("foodjournal")
                 .document(formattedDate)
