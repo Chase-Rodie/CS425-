@@ -67,6 +67,7 @@
 		F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A82CFD255A0070B172 /* ShoppingList.swift */; };
 		F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AA2CFD256A0070B172 /* UserPreferences.swift */; };
 		F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AC2CFD25780070B172 /* MealPlanView.swift */; };
+		F84D3FB32D6E53F200FA80B5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F84D3FB22D6E53F200FA80B5 /* FirebaseStorage */; };
 		F892351B2D01765C00328C01 /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
 		F89235302D01876100328C01 /* NutritionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A62CFD254A0070B172 /* NutritionManager.swift */; };
 		F89235322D01886800328C01 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F89235312D01886800328C01 /* FirebaseAnalytics */; };
@@ -195,11 +196,61 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealSuggestionsTest; sourceTree = "<group>"; };
-		F80C28D12CFD2BEF0070B172 /* MealPlannerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MealPlannerTest; sourceTree = "<group>"; };
-		F80C28E02CFD2C250070B172 /* NutritionManagerTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NutritionManagerTest; sourceTree = "<group>"; };
-		F80C28EF2CFD2C360070B172 /* ShoppingListTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ShoppingListTest; sourceTree = "<group>"; };
-		F80C28FE2CFD2C570070B172 /* UserPreferenceTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserPreferenceTest; sourceTree = "<group>"; };
+		F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = MealSuggestionsTest;
+			sourceTree = "<group>";
+		};
+		F80C28D12CFD2BEF0070B172 /* MealPlannerTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = MealPlannerTest;
+			sourceTree = "<group>";
+		};
+		F80C28E02CFD2C250070B172 /* NutritionManagerTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = NutritionManagerTest;
+			sourceTree = "<group>";
+		};
+		F80C28EF2CFD2C360070B172 /* ShoppingListTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = ShoppingListTest;
+			sourceTree = "<group>";
+		};
+		F80C28FE2CFD2C570070B172 /* UserPreferenceTest */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = UserPreferenceTest;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +263,7 @@
 				9A069DFB2CFA878C008620A9 /* GoogleSignIn in Frameworks */,
 				9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */,
 				5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */,
+				F84D3FB32D6E53F200FA80B5 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,11 +364,11 @@
 			path = HomePage;
 			sourceTree = "<group>";
 		};
-		9A1708C22CF2E01D00746B91 /* Frameworks */ = {
+		7CF6120435A27639F5715D84 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Frameworks;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		9A3FB8932CD3E53C0019266C /* Authentication */ = {
@@ -478,7 +530,7 @@
 				9A5E9D992CFAE80B009460EA /* Utilities */,
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8992CD3E6220019266C /* Tests */,
-				9A1708C22CF2E01D00746B91 /* Frameworks */,
+				7CF6120435A27639F5715D84 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1601,6 +1653,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9A069DF92CFA878C008620A9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		F84D3FB22D6E53F200FA80B5 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		F89235312D01886800328C01 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

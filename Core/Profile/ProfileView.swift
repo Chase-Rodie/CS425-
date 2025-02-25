@@ -20,10 +20,6 @@ final class ProfileViewModel: ObservableObject {
     func loadCurrentUser() async throws {
         let  authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
         self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
-        
-        if let profilePicURL = user?.profileImageUrl {
-            await loadProfileImage(from: profilePicURL)
-        }
     }
     
     func loadProfileImage(from url: String) async{
@@ -42,83 +38,74 @@ final class ProfileViewModel: ObservableObject {
 }
 
 struct ProfileView: View {
-    
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     
     var body: some View {
         NavigationView{
             VStack{
-                //Profile Image
-                if let image = viewModel.profileImage{
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                        .padding()
-                } else{
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.gray)
-                        .padding()
+                Image("User")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding()
+            }
+            List {
+                if let user = viewModel.user {
+                    Section(header: Text("Personal Info")){
+                        Text("Email: \(user.email ?? "N/A")")
+                        Text("Gender: \(user.gender ?? "N/A")")
+                        //Text("Weight: \(user.weight ?? "N/A") lbs")
+                        Text("Weight: \(user.weight.map { String(format: "%.1f", $0) } ?? "N/A") lbs")
+
+                        Text("Height: \(user.height ?? "N/A") inches")
+                        Text("Allergies: \(user.allergies?.joined(separator: ", ") ?? "None")")
+                        Text("Exercise Level: \(user.exerciseLevel?.capitalized ?? "N/A")")
+                    }
+                    //                Text("UserId: \(user.userId)")
+                    //
+                    //                if let isAnonymous = user.isAnonymous {
+                    //                    Text("Is Anonymous: \(isAnonymous.description.capitalized)")
+                    //                }
+                    //            }
                 }
-            }
-        }
-        List {
-            if let user = viewModel.user {
-                Section(header: Text("Personal Info")){
-                    Text("Email: \(user.email ?? "N/A")")
-                    Text("Gender: \(user.gender ?? "N/A")")
-                    Text("Weight: \(user.weight ?? "N/A") lbs")
-                    Text("Height: \(user.height ?? "N/A") inches")
-                    Text("Allergies: \(user.allergies ?? "None")")
-                    Text("Exercise Level: \(user.exerciseLevel?.capitalized ?? "N/A")")
+                Section{
+                    NavigationLink(destination: EditProfileView(user: viewModel.user)){
+                        Text("EditProfile")
+                            .foregroundColor(.blue)
+                    }
                 }
-                //                Text("UserId: \(user.userId)")
-                //
-                //                if let isAnonymous = user.isAnonymous {
-                //                    Text("Is Anonymous: \(isAnonymous.description.capitalized)")
-                //                }
-                //            }
-            }
-            Section{
-                NavigationLink(destination: EditProfileView(user: viewModel.user)){
-                    Text("EditProfile")
-                        .foregroundColor(.blue)
+                .task {
+                    try? await viewModel.loadCurrentUser()
                 }
-            }
-            .task {
-                try? await viewModel.loadCurrentUser()
-            }
-            .navigationTitle("Profile")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink { SettingsView(showSignInView: $showSignInView)
-                    } label: {
-                        Image(systemName: "gear")
-                            .font(.headline)
+                .navigationTitle("Profile")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink { SettingsView(showSignInView: $showSignInView)
+                        } label: {
+                            Image(systemName: "gear")
+                                .font(.headline)
+                        }
                     }
                 }
             }
         }
     }
-}
     
-struct EditProfileView: View{
-    var user: DatabaseUser?
-    var body: some View{
-        Text("Edit Profile Screen")
-            .navigationTitle("Edit Profile")
+    struct EditProfileView: View{
+        var user: DatabaseUser?
+        var body: some View{
+            Text("Edit Profile Screen")
+                .navigationTitle("Edit Profile")
+        }
     }
-}
     
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ProfileView(showSignInView: .constant(false))
+    struct ProfileView_Previews: PreviewProvider {
+        static var previews: some View {
+            NavigationStack {
+                ProfileView(showSignInView: .constant(false))
+            }
         }
     }
 }

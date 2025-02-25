@@ -15,6 +15,11 @@ struct DatabaseUser {
     let email: String?
     let photoUrl: String?
     let dateCreated: Date?
+    let gender: String?
+    let height: String?
+    let exerciseLevel: String?
+    let allergies: [String]?
+    let weight: Double?
 }
 
 final class UserManager {
@@ -52,6 +57,21 @@ final class UserManager {
         let photoUrl = data["photo_url"] as? String
         let dateCreated = data["date_created"] as? Date
         
-        return DatabaseUser(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
+        let gender = data["gender"] as? String
+        let height = data["height"] as? String
+        let exerciseLevel = data["exerciseLevel"] as? String
+        let allergies = data["allergies"] as? [String]
+        let weight = data["weight"] as? Double
+        
+        return DatabaseUser(
+            userId: userId,
+            isAnonymous: isAnonymous,
+            email: email, photoUrl: photoUrl,
+            dateCreated: dateCreated,
+            gender: gender,
+            height: height,
+            exerciseLevel: exerciseLevel,
+            allergies: allergies,
+            weight: weight)
     }
 }
