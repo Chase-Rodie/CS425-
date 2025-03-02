@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct FoodJournalAddItemView: View {
     let mealName: String
+    @ObservedObject var viewModel: FoodJournalViewModel
     
     // Search bar text
     @State private var searchText: String = ""
@@ -142,16 +143,7 @@ struct FoodJournalAddItemView: View {
                         showError = false
                     }
                 }
-            } // End Error sheet popup
-            /*.toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink { SettingsView(showSignInView: $showSignInView)
-                    } label: {
-                        Image(systemName: "gear")
-                            .font(.headline)
-                    }
-                }
-            }*/
+            } 
         }
         
         // Function for what happens when a food is selected
@@ -242,6 +234,10 @@ struct FoodJournalAddItemView: View {
                 if error != nil {
                     print("Error updating document")
                 } else {
+                    DispatchQueue.main.async {
+                                    viewModel.fetchFoodEntries(mealName: mealName) // Refresh after update
+                                }
+
                     print("Document updated!")
                 }
             }

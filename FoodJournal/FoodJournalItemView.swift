@@ -9,6 +9,9 @@ import SwiftUI
 
 struct FoodJournalItemView: View {
     let item: Food
+    let mealName: String
+    
+    @ObservedObject var viewModel: FoodJournalViewModel
     
     var body: some View {
         HStack{
@@ -19,7 +22,7 @@ struct FoodJournalItemView: View {
             }
             Spacer()
             Button{
-                
+                viewModel.deleteFoodEntry(mealName: mealName, food: item)
             } label: {
                     Image(systemName: "trash")
                 }
@@ -28,5 +31,5 @@ struct FoodJournalItemView: View {
 }
 
 #Preview {
-    FoodJournalItemView(item: Food(id: "1", name: "Banana", foodGroup: "Fruits", food_id: 101, calories: 100, fat: 0.3, carbohydrates: 27, protein: 1.3, suitableFor: ["Vegan", "Gluten-Free"]))
+    FoodJournalItemView(item: Food(id: "1", name: "Banana", foodGroup: "Fruits", food_id: 101, calories: 100, fat: 0.3, carbohydrates: 27, protein: 1.3, suitableFor: ["Vegan", "Gluten-Free"]), mealName: "breakfast", viewModel: FoodJournalViewModel())
 }

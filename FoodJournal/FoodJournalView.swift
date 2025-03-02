@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
+    @State private var selectedMeal: Meal?
     //@FirestoreQuery var items: [Food]
     
   //  private let userId: String
@@ -29,6 +30,7 @@ struct FoodJournalView: View {
     let now = Date()
     
     var body: some View{
+//        ProgressView(value: 0.5, total: 1.0)
         ZStack{
           
             LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
@@ -44,27 +46,27 @@ struct FoodJournalView: View {
                                 .fontWeight(.semibold)
                     }
                     VStack{
+
                         HStack{
                             VStack(alignment: .leading){
                                 HStack{
                                     Text("Breakfast:")
                                         .bold(true)
                                     Spacer()
-                                    Button{
-                                        viewModel.showingFoodJournalItemAddView = true
-                                    } label:{
+                                    Button {
+                                        selectedMeal = Meal(name: "breakfast")
+                                    } label: {
                                         Image(systemName: "plus")
                                             .font(.system(size: 20))
-                                    }.sheet(isPresented: $viewModel.showingFoodJournalItemAddView){
-                                        FoodJournalAddItemView(mealName: "lunch")
-                                        
+                                    }.sheet(item: $selectedMeal) { meal in
+                                        FoodJournalAddItemView(mealName: meal.name, viewModel: viewModel)
                                     }
                                 }
                                 Divider()
                                     .background(Color.black)
                                 //Text("Entries Count: \(viewModel.foodEntries.count)")
                                 ForEach(viewModel.breakfastFoodEntries){ food in
-                                    FoodJournalItemView(item: food)
+                                    FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)
                                 }
 
                             }
@@ -78,21 +80,21 @@ struct FoodJournalView: View {
                                     Text("Lunch:")
                                         .bold(true)
                                     Spacer()
-                                    Button{
-                                        viewModel.showingFoodJournalItemAddView = true
-                                    } label:{
+                                    Button {
+                                        selectedMeal = Meal(name: "lunch")
+                                    } label: {
                                         Image(systemName: "plus")
                                             .font(.system(size: 20))
-                                    }.sheet(isPresented: $viewModel.showingFoodJournalItemAddView){
-                                        FoodJournalAddItemView(mealName: "lunch")
-                                        
+                                    }.sheet(item: $selectedMeal) { meal in
+                                        FoodJournalAddItemView(mealName: meal.name, viewModel: viewModel)
                                     }
+
                                 }
                                 Divider()
                                     .background(Color.black)
                                 //Text("Entries Count: \(viewModel.foodEntries.count)")
                                 ForEach(viewModel.lunchFoodEntries){ food in
-                                    FoodJournalItemView(item: food)
+                                    FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)
                                 }
 
                             }
@@ -101,16 +103,27 @@ struct FoodJournalView: View {
                         .padding()
                         HStack{
                             VStack(alignment: .trailing){
-                                Text("Dinner:")
-                                    .font(.headline)
-                            }
-                            Spacer()
-                        }
-                        .padding()
-                        HStack{
-                            VStack(alignment: .trailing){
-                                Text("Snacks:")
-                                    .font(.headline)
+                                HStack{
+                                    Text("Dinner:")
+                                        .bold(true)
+                                    Spacer()
+                                    Button {
+                                        selectedMeal = Meal(name: "dinner")
+                                    } label: {
+                                        Image(systemName: "plus")
+                                            .font(.system(size: 20))
+                                    }.sheet(item: $selectedMeal) { meal in
+                                        FoodJournalAddItemView(mealName: meal.name, viewModel: viewModel)
+                                    }
+
+                                }
+                                Divider()
+                                    .background(Color.black)
+                                //Text("Entries Count: \(viewModel.foodEntries.count)")
+                                ForEach(viewModel.dinnerFoodEntries){ food in
+                                    FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)
+                                }
+
                             }
                             Spacer()
                         }
@@ -122,9 +135,9 @@ struct FoodJournalView: View {
             }
         }.foregroundColor(.white)
             .onAppear {
-                //print("onAppear called - Fetching Food Entries")
                 viewModel.fetchFoodEntries(mealName:"breakfast")
-                //print("onAppear foodEntries: \(viewModel.foodEntries)")
+                viewModel.fetchFoodEntries(mealName:"lunch")
+                viewModel.fetchFoodEntries(mealName:"dinner")
             }
             
     }
@@ -132,6 +145,10 @@ struct FoodJournalView: View {
     }
 
 
+struct Meal: Identifiable {
+    let id = UUID()  // Conforming to Identifiable
+    let name: String
+}
 
 
 #Preview {

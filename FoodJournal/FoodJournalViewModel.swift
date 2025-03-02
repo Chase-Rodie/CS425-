@@ -109,9 +109,50 @@ import FirebaseFirestore
 
   
     
-    func deleteFoodEntry(){
+    func deleteFoodEntry(mealName: String, food: Food) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            self.errorMessage = "User not authenticated"
+            return
+        }
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+        
+        let foodDocument = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("foodjournal")
+            .document(formattedDate)
+            .collection(mealName)
+            .document(food.id)
+
+        foodDocument.delete { error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Failed to delete food entry: \(error.localizedDescription)"
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                switch mealName.lowercased() {
+                case "breakfast":
+                    self.breakfastFoodEntries.removeAll { $0.id == food.id }
+                case "lunch":
+                    self.lunchFoodEntries.removeAll { $0.id == food.id }
+                case "dinner":
+                    self.dinnerFoodEntries.removeAll { $0.id == food.id }
+                default:
+                    print("Invalid Meal Name")
+                }
+                
+                self.saveLocally(foodEntries: self.loadLocally(for: mealName), for: mealName)
+                self.objectWillChange.send()
+            }
+        }
     }
+
 }
 
 
