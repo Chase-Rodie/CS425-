@@ -19,6 +19,8 @@
 		5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */; };
 		5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */; };
 		5EFA1F372CFD6FC500308814 /* TempContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F362CFD6FC500308814 /* TempContentView.swift */; };
+		924111F42D750F66001C624B /* MealGenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924111F32D750F4F001C624B /* MealGenAPI.swift */; };
+		924111F62D750F79001C624B /* MealGenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924111F52D750F72001C624B /* MealGenView.swift */; };
 		9A069DFB2CFA878C008620A9 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9A069DFA2CFA878C008620A9 /* GoogleSignIn */; };
 		9A069DFD2CFA878C008620A9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9A069DFC2CFA878C008620A9 /* GoogleSignInSwift */; };
 		9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1708C32CF2E01D00746B91 /* FirebaseAuth */; };
@@ -136,6 +138,8 @@
 		5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
 		5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTrackerView.swift; sourceTree = "<group>"; };
 		5EFA1F362CFD6FC500308814 /* TempContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempContentView.swift; sourceTree = "<group>"; };
+		924111F32D750F4F001C624B /* MealGenAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealGenAPI.swift; sourceTree = "<group>"; };
+		924111F52D750F72001C624B /* MealGenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealGenView.swift; sourceTree = "<group>"; };
 		9A069DFE2CFAE03A008620A9 /* Fit-Pantry-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fit-Pantry-Info.plist"; sourceTree = "<group>"; };
 		9A1708C52CF2E08300746B91 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		9A1708C72CF2E51200746B91 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
@@ -315,6 +319,8 @@
 		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
 			isa = PBXGroup;
 			children = (
+				924111F52D750F72001C624B /* MealGenView.swift */,
+				924111F32D750F4F001C624B /* MealGenAPI.swift */,
 				F80C28AC2CFD25780070B172 /* MealPlanView.swift */,
 				F80C28AA2CFD256A0070B172 /* UserPreferences.swift */,
 				F80C28A82CFD255A0070B172 /* ShoppingList.swift */,
@@ -844,6 +850,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				924111F62D750F79001C624B /* MealGenView.swift in Sources */,
 				F80C28A72CFD25560070B172 /* NutritionManager.swift in Sources */,
 				9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */,
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
@@ -861,6 +868,7 @@
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
 				5EFA1F372CFD6FC500308814 /* TempContentView.swift in Sources */,
+				924111F42D750F66001C624B /* MealGenAPI.swift in Sources */,
 				9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */,
 				9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */,
 				5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */,
