@@ -9,6 +9,8 @@ import FirebaseAuth
 import FirebaseFirestore
 
 struct FoodJournalAddItemView: View {
+    let mealName: String
+    
     // Search bar text
     @State private var searchText: String = ""
     // Track selected item
@@ -185,7 +187,7 @@ struct FoodJournalAddItemView: View {
                 print("Entered value for \(selectedItem.name): \(amountDbl)")
                 
                 // Valid value add food to database
-                addFood(item: selectedItem, value: value)
+                addFood(item: selectedItem, value: value, mealName: mealName)
                 
             } else {
                 // Conversion to numerical value failed
@@ -201,7 +203,7 @@ struct FoodJournalAddItemView: View {
         }
         
         // Add food to a users pantry
-        private func addFood(item: Food, value: Double) {
+    private func addFood(item: Food, value: Double, mealName: String) {
            
             guard let userID = Auth.auth().currentUser?.uid else {
                 return
@@ -219,14 +221,20 @@ struct FoodJournalAddItemView: View {
                 .document(userID)
                 .collection("foodjournal")
                 .document(formattedDate)
-                .collection("breakfast")
+                .collection(mealName)
                 .document(item.id)
             
             
             let data: [String: Any] = [
                 "id": item.food_id,
                 "name": item.name,
-                "quantity": value
+                "foodGroup": item.foodGroup,
+                "calories": item.calories,
+                "fat": item.fat,
+                "carbohydrates": item.carbohydrates,
+                "protein": item.protein,
+                "suitableFor": item.suitableFor
+               // "quantity": value
             ]
             
             // Update the document in Firestore
@@ -241,6 +249,6 @@ struct FoodJournalAddItemView: View {
     }
 
 
-#Preview {
-    FoodJournalAddItemView()
-}
+//#Preview {
+//    FoodJournalAddItemView(mealName: "breakfast")
+//}

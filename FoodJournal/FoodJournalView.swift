@@ -12,20 +12,20 @@ import FirebaseFirestore
 
 struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
-    @FirestoreQuery var items: [Food]
+    //@FirestoreQuery var items: [Food]
     
   //  private let userId: String
     
     
-    init(userId: String){
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
-        let formattedDate = dateFormatter.string(from: now)
-        
-        //self.userId = userId
-        self._items = FirestoreQuery(collectionPath: "users/\(userId)/foodjournal/\(formattedDate)/breakfast")
-    }
-    
+//    init(userId: String){
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "MM-dd-yyyy"
+//        let formattedDate = dateFormatter.string(from: now)
+//        
+//        //self.userId = userId
+//        self._items = FirestoreQuery(collectionPath: "users/\(userId)/foodjournal/\(formattedDate)/breakfast")
+//    }
+//    
     let now = Date()
     
     var body: some View{
@@ -45,31 +45,56 @@ struct FoodJournalView: View {
                     }
                     VStack{
                         HStack{
-                            VStack(alignment: .trailing){
-                                Text("Breakfast:")
-                                    .font(.headline)
-                                List(items){ item in
-                                    Text(item.name)
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text("Breakfast:")
+                                        .bold(true)
+                                    Spacer()
+                                    Button{
+                                        viewModel.showingFoodJournalItemAddView = true
+                                    } label:{
+                                        Image(systemName: "plus")
+                                            .font(.system(size: 20))
+                                    }.sheet(isPresented: $viewModel.showingFoodJournalItemAddView){
+                                        FoodJournalAddItemView(mealName: "lunch")
+                                        
+                                    }
                                 }
-                                .listStyle(PlainListStyle())
+                                Divider()
+                                    .background(Color.black)
+                                //Text("Entries Count: \(viewModel.foodEntries.count)")
+                                ForEach(viewModel.breakfastFoodEntries){ food in
+                                    FoodJournalItemView(item: food)
+                                }
+
                             }
                             Spacer()
-                            Button{
-                                viewModel.showingFoodJournalItemAddView = true
-                            } label:{
-                                Image(systemName: "plus")
-                                    .font(.system(size: 20))
-                            }.sheet(isPresented: $viewModel.showingFoodJournalItemAddView){
-                                FoodJournalAddItemView()
-                                
-                            }.foregroundColor(.black)
                             
                         }
                         .padding()
                         HStack{
                             VStack(alignment: .trailing){
-                                Text("Lunch:")
-                                    .font(.headline)
+                                HStack{
+                                    Text("Lunch:")
+                                        .bold(true)
+                                    Spacer()
+                                    Button{
+                                        viewModel.showingFoodJournalItemAddView = true
+                                    } label:{
+                                        Image(systemName: "plus")
+                                            .font(.system(size: 20))
+                                    }.sheet(isPresented: $viewModel.showingFoodJournalItemAddView){
+                                        FoodJournalAddItemView(mealName: "lunch")
+                                        
+                                    }
+                                }
+                                Divider()
+                                    .background(Color.black)
+                                //Text("Entries Count: \(viewModel.foodEntries.count)")
+                                ForEach(viewModel.lunchFoodEntries){ food in
+                                    FoodJournalItemView(item: food)
+                                }
+
                             }
                             Spacer()
                         }
@@ -96,6 +121,12 @@ struct FoodJournalView: View {
                 }
             }
         }.foregroundColor(.white)
+            .onAppear {
+                //print("onAppear called - Fetching Food Entries")
+                viewModel.fetchFoodEntries(mealName:"breakfast")
+                //print("onAppear foodEntries: \(viewModel.foodEntries)")
+            }
+            
     }
     
     }
@@ -104,5 +135,5 @@ struct FoodJournalView: View {
 
 
 #Preview {
-    FoodJournalView(userId: "gwj5OvTOGmNA8GCfd7nkEzo3djA2")
+    FoodJournalView()
 }

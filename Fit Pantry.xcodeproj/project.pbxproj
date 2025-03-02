@@ -20,6 +20,7 @@
 		5EB437752CF9A99900C8B75F /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437742CF9A99900C8B75F /* ExerciseModel.swift */; };
 		5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */; };
 		5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5EB437782CF9AA3000C8B75F /* FirebaseFirestore */; };
+		5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */; };
 		5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */; };
 		5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */; };
 		5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */; };
@@ -149,6 +150,7 @@
 		5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		5EB437742CF9A99900C8B75F /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
+		5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutDataTests.swift; sourceTree = "<group>"; };
 		5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerMenuView.swift; sourceTree = "<group>"; };
 		5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
 		5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTrackerView.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */,
+				5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */,
 			);
 			path = "Fit PantryTests";
 			sourceTree = "<group>";
@@ -951,6 +954,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */,
 				9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

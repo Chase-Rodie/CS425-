@@ -14,9 +14,15 @@ struct FoodJournalItemView: View {
         HStack{
             VStack(alignment: .leading){
                 Text(item.name)
-                Text(item.calories.description)
+                    .bold()
+                Text("Calories: "+item.calories.description)
             }
             Spacer()
+            Button{
+                
+            } label: {
+                    Image(systemName: "trash")
+                }
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 // Model for Foods
-struct Food: Identifiable, Decodable {
+struct Food: Identifiable, Decodable, Encodable {
     var id: String
     var name: String
     var foodGroup: String
@@ -21,7 +21,7 @@ struct Food: Identifiable, Decodable {
 }
 
 // Model for Pantry Item
-struct PantryItem: Identifiable {
+struct PantryItem: Identifiable, Decodable {
     let id: String
     let food_id: Int
     let name: String
