@@ -10,11 +10,18 @@
 		097FB5202CFAD08B00F58B67 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB51F2CFAD08B00F58B67 /* Food.swift */; };
 		097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB5212CFAD0C200F58B67 /* AddFoodView.swift */; };
 		097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB5232CFAD0E300F58B67 /* SearchManager.swift */; };
+		5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */; };
+		5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */; };
 		5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */; };
+		5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */; };
+		5E74B7042D62D98800E5912B /* FoodJournalAddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */; };
+		5E74B7072D62DF2000E5912B /* FoodJournalAddItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */; };
 		5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */; };
-		5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437742CF9A99900C8B75F /* Exercise.swift */; };
+		5EB437752CF9A99900C8B75F /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437742CF9A99900C8B75F /* ExerciseModel.swift */; };
 		5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */; };
 		5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5EB437782CF9AA3000C8B75F /* FirebaseFirestore */; };
+		5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */; };
+		5EB5A40A2D7511FE004D0F38 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */; };
 		5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */; };
 		5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */; };
 		5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */; };
@@ -26,6 +33,12 @@
 		9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1708C32CF2E01D00746B91 /* FirebaseAuth */; };
 		9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C52CF2E08300746B91 /* AuthenticationView.swift */; };
 		9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C72CF2E51200746B91 /* SignInEmailView.swift */; };
+		9A2AA4932D5364420073837E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4922D5364420073837E /* FirebaseFirestore */; };
+		9A2AA4952D5364640073837E /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4942D5364640073837E /* FirebaseFirestoreCombine-Community */; };
+		9A2AA4972D53663B0073837E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4962D53663B0073837E /* FirebaseFirestore */; };
+		9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2AA4982D5367B10073837E /* ProfileViewModel.swift */; };
+		9A2AA49C2D5368130073837E /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2AA49B2D5368130073837E /* StorageManager.swift */; };
+		9A2AA49E2D5368610073837E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA49D2D5368610073837E /* FirebaseStorage */; };
 		9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89A2CD3E8E90019266C /* ContentView.swift */; };
 		9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89E2CD3F6840019266C /* WorkoutView.swift */; };
 		9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
@@ -37,6 +50,7 @@
 		9A6624412CFEBAC700A5CB90 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6624402CFEBAC700A5CB90 /* SignInEmailViewModel.swift */; };
 		9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6624452CFEBBC900A5CB90 /* ProfileView.swift */; };
 		9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6624492CFECB7700A5CB90 /* UserManager.swift */; };
+		9A7F604B2D5BC414007BF914 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F604A2D5BC414007BF914 /* EditProfileView.swift */; };
 		9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */; };
 		9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* FitPantry.swift */; };
 		9AC81DD52CA57BD000A0472C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD42CA57BD000A0472C /* Assets.xcassets */; };
@@ -130,10 +144,17 @@
 		097FB51F2CFAD08B00F58B67 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		097FB5212CFAD0C200F58B67 /* AddFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodView.swift; sourceTree = "<group>"; };
 		097FB5232CFAD0E300F58B67 /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
+		5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalViewModel.swift; sourceTree = "<group>"; };
+		5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalView.swift; sourceTree = "<group>"; };
 		5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWorkoutView.swift; sourceTree = "<group>"; };
+		5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalItemView.swift; sourceTree = "<group>"; };
+		5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalAddItemView.swift; sourceTree = "<group>"; };
+		5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalAddItemViewModel.swift; sourceTree = "<group>"; };
 		5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
-		5EB437742CF9A99900C8B75F /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
+		5EB437742CF9A99900C8B75F /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
+		5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutDataTests.swift; sourceTree = "<group>"; };
+		5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerMenuView.swift; sourceTree = "<group>"; };
 		5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
 		5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTrackerView.swift; sourceTree = "<group>"; };
@@ -143,6 +164,8 @@
 		9A069DFE2CFAE03A008620A9 /* Fit-Pantry-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fit-Pantry-Info.plist"; sourceTree = "<group>"; };
 		9A1708C52CF2E08300746B91 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		9A1708C72CF2E51200746B91 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
+		9A2AA4982D5367B10073837E /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		9A2AA49B2D5368130073837E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		9A3FB89A2CD3E8E90019266C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9A3FB89E2CD3F6840019266C /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		9A3FB8A02CD3F68F0019266C /* MealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealView.swift; sourceTree = "<group>"; };
@@ -155,6 +178,7 @@
 		9A6624402CFEBAC700A5CB90 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
 		9A6624452CFEBBC900A5CB90 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9A6624492CFECB7700A5CB90 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		9A7F604A2D5BC414007BF914 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fit Pantry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DD22CA57BCF00A0472C /* FitPantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitPantry.swift; sourceTree = "<group>"; };
 		9AC81DD42CA57BD000A0472C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -199,9 +223,13 @@
 			files = (
 				9A069DFD2CFA878C008620A9 /* GoogleSignInSwift in Frameworks */,
 				9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */,
+				9A2AA49E2D5368610073837E /* FirebaseStorage in Frameworks */,
 				9A069DFB2CFA878C008620A9 /* GoogleSignIn in Frameworks */,
 				9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */,
 				5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */,
+				9A2AA4972D53663B0073837E /* FirebaseFirestore in Frameworks */,
+				9A2AA4932D5364420073837E /* FirebaseFirestore in Frameworks */,
+				9A2AA4952D5364640073837E /* FirebaseFirestoreCombine-Community in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,9 +305,22 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		5E18D4EC2D5DE32E009490B3 /* FoodJournal */ = {
+			isa = PBXGroup;
+			children = (
+				5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */,
+				5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */,
+				5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */,
+				5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */,
+				5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */,
+			);
+			path = FoodJournal;
+			sourceTree = "<group>";
+		};
 		5EB2C7602CFABFB300EA8E8D /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */,
 				5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */,
 				5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */,
 				5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */,
@@ -294,6 +335,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9A2AA49A2D5367F90073837E /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				9A2AA49B2D5368130073837E /* StorageManager.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 		9A3FB8932CD3E53C0019266C /* Authentication */ = {
@@ -337,7 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				9A3FB89E2CD3F6840019266C /* WorkoutView.swift */,
-				5EB437742CF9A99900C8B75F /* Exercise.swift */,
+				5EB437742CF9A99900C8B75F /* ExerciseModel.swift */,
 				5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */,
 				5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */,
 			);
@@ -426,7 +475,9 @@
 		9A6624422CFEBB2D00A5CB90 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				9A7F60352D554098007BF914 /* Subviews */,
 				9A6624452CFEBBC900A5CB90 /* ProfileView.swift */,
+				9A2AA4982D5367B10073837E /* ProfileViewModel.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -439,9 +490,18 @@
 			path = Firestore;
 			sourceTree = "<group>";
 		};
+		9A7F60352D554098007BF914 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				9A7F604A2D5BC414007BF914 /* EditProfileView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		9AC81DC42CA57BCF00A0472C = {
 			isa = PBXGroup;
 			children = (
+				9A2AA49A2D5367F90073837E /* Storage */,
 				9A5E9D9C2CFB0B4D009460EA /* Fit Pantry.entitlements */,
 				9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */,
 				9A069DFE2CFAE03A008620A9 /* Fit-Pantry-Info.plist */,
@@ -449,6 +509,7 @@
 				9A3FB8932CD3E53C0019266C /* Authentication */,
 				9A6624102CFE47CD00A5CB90 /* Core */,
 				9A6624482CFECB6600A5CB90 /* Firestore */,
+				5E18D4EC2D5DE32E009490B3 /* FoodJournal */,
 				5EB2C7602CFABFB300EA8E8D /* HomePage */,
 				097FB51E2CFAD07100F58B67 /* Models */,
 				9A3FB8952CD3E5720019266C /* Meal Planning */,
@@ -490,6 +551,7 @@
 			isa = PBXGroup;
 			children = (
 				9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */,
+				5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */,
 			);
 			path = "Fit PantryTests";
 			sourceTree = "<group>";
@@ -860,8 +922,11 @@
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */,
+				9A2AA49C2D5368130073837E /* StorageManager.swift in Sources */,
 				F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */,
+				5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */,
 				5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */,
+				5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
 				F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */,
@@ -874,18 +939,24 @@
 				5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */,
 				9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */,
 				9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */,
-				5EB437752CF9A99900C8B75F /* Exercise.swift in Sources */,
+				5EB437752CF9A99900C8B75F /* ExerciseModel.swift in Sources */,
+				9A7F604B2D5BC414007BF914 /* EditProfileView.swift in Sources */,
 				F80C28A12CFD24FC0070B172 /* HelperFunctions.swift in Sources */,
+				5E74B7042D62D98800E5912B /* FoodJournalAddItemView.swift in Sources */,
+				5EB5A40A2D7511FE004D0F38 /* SwiftUIView.swift in Sources */,
+				5E74B7072D62DF2000E5912B /* FoodJournalAddItemViewModel.swift in Sources */,
 				9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
+				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
 				F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */,
 				9A6624412CFEBAC700A5CB90 /* SignInEmailViewModel.swift in Sources */,
 				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
+				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
 				5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */,
 				9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */,
 			);
@@ -895,6 +966,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */,
 				9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1593,6 +1665,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		9A2AA4922D5364420073837E /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9A2AA4942D5364640073837E /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		9A2AA4962D53663B0073837E /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9A2AA49D2D5368610073837E /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9ABD96272CBF031C00CB9922 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

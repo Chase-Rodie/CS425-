@@ -10,19 +10,12 @@ import SwiftUI
 struct WorkoutView: View {
     
     @StateObject var workoutPlanModel = RetrieveWorkoutData()
-    @State private var hasWorkoutPlan: Bool = false
     @State private var isLoading: Bool = false
     
     var body: some View {
         NavigationView{
-            
-            if hasWorkoutPlan && !isLoading{
+            if workoutPlanModel.isWorkoutPlanAvailable && !isLoading{
                 ScrollView{
-                    
-                    
-                    HStack{
-                        
-                    }
                     VStack(alignment: .leading, spacing: 20){
                         
                         ZStack{
@@ -38,14 +31,14 @@ struct WorkoutView: View {
                         
                         Button("delete"){
                             UserDefaults.standard.removeObject(forKey: "workoutPlan")
-                                print("Workout plan successfully removed.")
-                            hasWorkoutPlan = false
-                           // workoutPlanModel.workoutPlan = []
+                            print("Workout plan successfully removed.")
+                            //  hasWorkoutPlan = false
+                            // workoutPlanModel.workoutPlan = []
                             //workoutPlanModel.resetWorkoutPlan()
-                           
-                            
-                            }
+                            workoutPlanModel.isWorkoutPlanAvailable = false
 
+                        }
+                        
                         ZStack{
                             RoundedRectangle(cornerRadius: 18)
                                 .fill(Color("BackgroundColor"))
@@ -72,41 +65,54 @@ struct WorkoutView: View {
                     
                 }
                 
-    
-            }  else{
-                GenerateWorkoutPlanView(hasWorkoutPlan: $hasWorkoutPlan, isLoading: $isLoading)
-               
                 
+            } else if isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else {
+                GenerateWorkoutPlanView(workoutPlanModel: workoutPlanModel, isLoading: $isLoading)
             }
         }
-        .onChange(of: hasWorkoutPlan) {
-            print("finally it works ")
-            if hasWorkoutPlan && workoutPlanModel.workoutPlan.isEmpty {
-                workoutPlanModel.loadWorkoutPlan()
-            }
+        //When view appears, it checks to see if a workoutplan already exists for the user
+        .onAppear{
+            workoutPlanModel.workoutPlanExists { exists in
+                            DispatchQueue.main.async {
+                                workoutPlanModel.isWorkoutPlanAvailable = exists
+                            }
+                        }
         }
         
     }
     
     
     
+    
     struct ExerciseRowView: View {
-        let exercise: Exercise
+        //let exercise: Exercise
+        @State var exercise: Exercise
         let workoutPlanModel: RetrieveWorkoutData
 
         var body: some View {
             HStack {
-                Image("workout")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 50)
+                if let firstImageURL = exercise.imageURLs.first, let url = URL(string: firstImageURL) {
+                    AsyncImage(url: url) { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50, height: 50)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
                 VStack(alignment: .leading) {
-                    NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
+                    NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel))
                         .font(.subheadline)
                     Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
                         .font(.footnote)
                 }
-                Button(action: { workoutPlanModel.markComplete(for: exercise) }) {
+                Button(action: {
+                    workoutPlanModel.markComplete(for: exercise)
+                    exercise.isComplete.toggle()
+                }) {
                     Image(systemName: exercise.isComplete ? "checkmark.circle.fill" : "circle")
                         .foregroundColor(exercise.isComplete ? .green : .gray)
                 }
@@ -118,6 +124,8 @@ struct WorkoutView: View {
     
     struct DetailedExercise: View {
         var exercise: Exercise
+        @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+
         var body: some View{
             ScrollView{
                 VStack(alignment: .leading, spacing: 16){
@@ -135,7 +143,7 @@ struct WorkoutView: View {
                         .padding(.vertical, 4)
                     }
                     
-                    weightEntryView()
+                    weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                 }
                 .padding(.horizontal, 16)
             }
@@ -144,25 +152,17 @@ struct WorkoutView: View {
 }
 
 struct GenerateWorkoutPlanView: View {
-    @ObservedObject var makeWPModel = RetrieveWorkoutData()
-    @Binding var hasWorkoutPlan: Bool
+    //@ObservedObject var makeWPModel = RetrieveWorkoutData()
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
     @Binding  var isLoading: Bool
-    
     @State var days = 0
     let numDays = ["3", "4", "5"]
-    
-    
     @State var dur = 0
     let duration = ["30", "60"]
-    
     @State var diff = 0
     let difficulty = ["Beginner", "Intermediate", "Expert"]
     
-    
-    
-    
     var body: some View {
-        
     
         VStack {
             ZStack{
@@ -217,46 +217,51 @@ struct GenerateWorkoutPlanView: View {
                         
                         if days == 0 {
                             print("3 days")
-                            makeWPModel.queryExercises(days: [
+                            workoutPlanModel.queryExercises(days: [
                                 ("push", "chest"),
                                 ("pull", "shoulders"),
                                 ("pull", "glutes")
-                            ], maxExercises: passMax, level: "beginner")
-                            
-                            DispatchQueue.main.async {
-                                isLoading = false
-                                hasWorkoutPlan = true
+                            ], maxExercises: passMax, level: "beginner"){
+                                
+                                DispatchQueue.main.async {
+                                    isLoading = false
+            
+                                }
+                                print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
-                            print("Generated Workout Plan: \(makeWPModel.workoutPlan)")
-                            
                         }else if days == 1 {
                             print("4 days")
                             
-                            makeWPModel.queryExercises(days: [
+                            workoutPlanModel.queryExercises(days: [
                                 ("push", "chest"),
                                 ("pull", "glutes"),
                                 ("pull", "biceps"),
-                                ("push", "hamstrings")
-                            ], maxExercises: passMax, level: "beginner")
-                            
-                            DispatchQueue.main.async {
-                                isLoading = false
-                                hasWorkoutPlan = true
+                                //had to change this temporarily!
+                                ("pull", "biceps")
+                            ], maxExercises: passMax, level: "beginner"){
+                                
+                                DispatchQueue.main.async {
+                                    isLoading = false
+                                }
+                                print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
                         }else if days == 2 {
                             print("5 days")
                             
-                            makeWPModel.queryExercises(days: [
+                            workoutPlanModel.queryExercises(days: [
                                 ("push", "chest"),
                                 ("pull", "glutes"),
                                 ("pull", "biceps"),
-                                ("push", "hamstrings"),
+                                //had to change this temproarily!
+                                ("pull", "biceps"),
                                 ("push", "abdominals")
-                            ], maxExercises: passMax, level: "beginner")
-                            
-                            DispatchQueue.main.async {
-                                isLoading = false
-                                hasWorkoutPlan = true
+                            ], maxExercises: passMax, level: "beginner"){
+                                
+                                DispatchQueue.main.async {
+                                    isLoading = false
+                                    workoutPlanModel.isWorkoutPlanAvailable = true
+                                }
+                                print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
                         }
                         
@@ -273,26 +278,41 @@ struct GenerateWorkoutPlanView: View {
 
 struct weightEntryView: View{
     @State private var weight: String = ""
+    var exercise: Exercise
+    var workoutPlanModel: RetrieveWorkoutData
     var body: some View {
         VStack {
-                    Text("Enter the weight used:")
+                    Text("Weight used:")
                         .font(.headline)
                     
                     TextField("Weight in lbs", text: $weight)
-                        .keyboardType(.decimalPad) // Use a numeric keyboard for weight input
+                        .keyboardType(.decimalPad)
                         .padding()
-                        .background(Color(.systemGray6)) // Background style for the text field
+                        .background(Color(.systemGray6))
                         .cornerRadius(8)
                         .padding(.horizontal)
                     
-                    Text("You entered: \(weight) lbs")
+            Button("Save Weight"){
+             
+                if let weightValue = Double(weight){
+                    workoutPlanModel.updateWeight(for: exercise, weight: weightValue)
+                    print("UpdateWeight called")
+                }
+            }
                         .padding()
                     
                     Spacer()
                 }
                 .padding()
-        
-    }
+                .onAppear {
+                            workoutPlanModel.getSavedWeight(for: exercise) { savedWeight in
+                                if let savedWeight = savedWeight {
+                                    weight = String(savedWeight)
+
+                                }
+                            }
+                        }
+            }
 }
 
 
