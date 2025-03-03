@@ -79,6 +79,9 @@
 		F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28A82CFD255A0070B172 /* ShoppingList.swift */; };
 		F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AA2CFD256A0070B172 /* UserPreferences.swift */; };
 		F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80C28AC2CFD25780070B172 /* MealPlanView.swift */; };
+		F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DAC82D759F2200F4345D /* MealDetailView.swift */; };
+		F825DACB2D759F5700F4345D /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DACA2D759F5200F4345D /* ShoppingListView.swift */; };
+		F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DACF2D75A88100F4345D /* FirestoreManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -206,6 +209,9 @@
 		F80C28DF2CFD2C250070B172 /* NutritionManagerTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutritionManagerTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80C28EE2CFD2C360070B172 /* ShoppingListTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShoppingListTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80C28FD2CFD2C570070B172 /* UserPreferenceTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UserPreferenceTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F825DAC82D759F2200F4345D /* MealDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailView.swift; sourceTree = "<group>"; };
+		F825DACA2D759F5200F4345D /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
+		F825DACF2D75A88100F4345D /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -371,8 +377,10 @@
 				924111F52D750F72001C624B /* MealGenView.swift */,
 				924111F32D750F4F001C624B /* MealGenAPI.swift */,
 				F80C28AC2CFD25780070B172 /* MealPlanView.swift */,
+				F825DAC82D759F2200F4345D /* MealDetailView.swift */,
 				F80C28AA2CFD256A0070B172 /* UserPreferences.swift */,
 				F80C28A82CFD255A0070B172 /* ShoppingList.swift */,
+				F825DACA2D759F5200F4345D /* ShoppingListView.swift */,
 				F80C28A62CFD254A0070B172 /* NutritionManager.swift */,
 				F80C28A42CFD253C0070B172 /* MealSuggestions.swift */,
 				F80C28A02CFD24F70070B172 /* HelperFunctions.swift */,
@@ -428,6 +436,7 @@
 		9A5E9D992CFAE80B009460EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				F825DACF2D75A88100F4345D /* FirestoreManager.swift */,
 				9A5E9D9A2CFAE887009460EA /* Utilities.swift */,
 			);
 			path = Utilities;
@@ -924,6 +933,7 @@
 				9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */,
 				9A2AA49C2D5368130073837E /* StorageManager.swift in Sources */,
 				F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */,
+				F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */,
 				5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */,
 				5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */,
 				5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */,
@@ -933,6 +943,7 @@
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
 				5EFA1F372CFD6FC500308814 /* TempContentView.swift in Sources */,
+				F825DACB2D759F5700F4345D /* ShoppingListView.swift in Sources */,
 				924111F42D750F66001C624B /* MealGenAPI.swift in Sources */,
 				9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */,
 				9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */,
@@ -951,6 +962,7 @@
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
 				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,
+				F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
 				F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */,
