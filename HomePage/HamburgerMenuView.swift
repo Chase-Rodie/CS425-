@@ -125,15 +125,15 @@ struct HamburgerMenuView: View {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }) {
-//                HStack {
-//                    Image(systemName: "xmark.circle.fill")
-//                        .foregroundColor(.red)
-//                        .imageScale(.large)
-//                    Text("Close Menu")
-//                        .foregroundColor(.red)
-//                        .font(.headline)
-//                }
-//                .padding(.bottom, 30)
+                HStack {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.red)
+                        .imageScale(.large)
+                    Text("Close Menu")
+                        .foregroundColor(.red)
+                        .font(.headline)
+                }
+                .padding(.bottom, 30)
             }
         }
         .padding()

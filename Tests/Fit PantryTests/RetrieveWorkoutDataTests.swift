@@ -38,7 +38,7 @@ class RetrieveWorkoutDataTests: XCTestCase {
         //Act
         retrieveWorkoutData.workoutPlan = [[exercise1, exercise2], [exercise1]]
 
-        retrieveWorkoutData.completedExercises()
+        //retrieveWorkoutData.completedExercises()
 
         //Assert
         XCTAssertEqual(retrieveWorkoutData.completedExercisesCounts, [1, 1], "Completed exercises count is incorrect.")

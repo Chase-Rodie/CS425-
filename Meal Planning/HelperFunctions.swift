@@ -63,7 +63,12 @@ func calculateDailyCalories(
     }
 }
 
-func calculateBMI(weightInLbs: Double, heightInFeet: Int, heightInInches: Int) -> Double {
+func calculateBMI(weightInLbs: Double, heightInFeet: Int, heightInInches: Int) -> Double? {
+    // Check for invalid inputs
+    if weightInLbs <= 0 || heightInFeet < 0 || heightInInches < 0 {
+        return nil  // Return nil for invalid input
+    }
+    
     let weightInKg = weightInLbs * 0.453592
     let heightInMeters = (Double(heightInFeet) * 30.48 + Double(heightInInches) * 2.54) / 100
     return weightInKg / (heightInMeters * heightInMeters)
