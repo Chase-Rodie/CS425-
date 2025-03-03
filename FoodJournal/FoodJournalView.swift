@@ -26,11 +26,14 @@ struct FoodJournalView: View {
 //        //self.userId = userId
 //        self._items = FirestoreQuery(collectionPath: "users/\(userId)/foodjournal/\(formattedDate)/breakfast")
 //    }
-//    
+    //calorie goal will need to be passed into this view or fetched from database at some point
+    
+    let calorieGoal: Double = 1600
+   
     let now = Date()
     
     var body: some View{
-//        ProgressView(value: 0.5, total: 1.0)
+        
         ZStack{
           
             LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
@@ -38,15 +41,26 @@ struct FoodJournalView: View {
             
             ScrollView{
                 VStack{
-                        VStack{
+                    VStack{
                             Text("Today's Food Journal")
                                 .font(.title)
                                 .fontWeight(.semibold)
                             Text(now.formatted(date: .long, time: .omitted))
                                 .fontWeight(.semibold)
-                    }
+                        }
+                    Spacer(minLength: 30)
+                   
                     VStack{
-
+                        let totalCalories = viewModel.totalCaloriesForDay()
+                        let progress = min(Double(totalCalories) / Double(calorieGoal), 1.0)
+                        VStack(spacing: 5){
+                            Text("Totals for today:")
+                            Text("Calories: \(totalCalories)/\(calorieGoal.formatted())")
+                        }
+                      
+                        ProgressView(value: progress, total: 1.0)
+                            .progressViewStyle(LinearProgressViewStyle())
+                            .frame(width: 200, height: 20) // Adjust width and height
                         HStack{
                             VStack(alignment: .leading){
                                 HStack{

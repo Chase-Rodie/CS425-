@@ -163,12 +163,12 @@ struct HomePageView: View {
     
     
     
-    struct ProgressView: View {
-        var body: some View {
-            VStack{
-                Text("Progress View")
-            }
-            
-        }
-    }
+//    struct ProgressView: View {
+//        var body: some View {
+//            VStack{
+//                Text("Progress View")
+//            }
+//            
+//        }
+//    }
 

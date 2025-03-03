@@ -82,6 +82,7 @@ struct FoodJournalAddItemView: View {
                 }
             }
             .padding()
+            .foregroundColor(.black)
             
             // Sheet to prompt user for the amount of food they have
             // when item is selected
@@ -126,6 +127,7 @@ struct FoodJournalAddItemView: View {
                     .padding()
                 }
                 .padding()
+                .foregroundColor(.black)
             } // End .sheet popup entry
             
             .sheet(isPresented: $showError) {

@@ -153,6 +153,14 @@ import FirebaseFirestore
         }
     }
 
+    
+    func totalCaloriesForDay()-> Int {
+        let breakfastCalories = breakfastFoodEntries.reduce(0) { $0 + Int($1.calories) }
+        let lunchCalories = lunchFoodEntries.reduce(0) { $0 + Int($1.calories) }
+        let dinnerCalories = dinnerFoodEntries.reduce(0) { $0 + Int($1.calories) }
+        
+        return breakfastCalories + lunchCalories + dinnerCalories
+    }
 }
 
 
