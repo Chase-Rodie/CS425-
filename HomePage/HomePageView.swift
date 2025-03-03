@@ -15,8 +15,14 @@ import SwiftUI
 
 struct HomePageView: View {
     
+    @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
     @Binding var showMenu: Bool
-    @State private var currentProgress: Double = 0.5
+    //@State private var currentProgress: Double = 0.5
+    //@State private var currentProgress: Double = 0.0
+    @State private var progressValues: [Double] = Array(repeating: 1, count: 7)
+    @State private var selectedDate: Date = Date()
+    let dayIndex: Int = 1
+    
     
     var body: some View {
         
@@ -58,69 +64,19 @@ struct HomePageView: View {
                         .padding()
                     HStack{
                         ScrollView(.horizontal){
-                            HStack{
-                                VStack(spacing: 20) {
-                                    // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    Text("Day 1")
-                                }
-                                VStack(spacing: 20) {
-                                    // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                         
-                                             .padding()
-                                             .background(Color("BackgroundColor"))
-                                             .foregroundColor(.white)
-                                             .cornerRadius(10)
-                                         
-                                    }
-                                    Text("Day 2")
-                                   
-                                }
-                                VStack(spacing: 20) {
-                                    // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    Text("Day 3")
-                                }
-                                VStack(spacing: 20) {
-                                    // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    Text("Day 4")
-                                }
-                                VStack(spacing: 20) {
-                                    // Progress Ring
-                                    NavigationLink(destination: ProgressView()){
-                                        ProgressRingView(progress: currentProgress, ringWidth: 15)
-                                        
-                                            .padding()
-                                            .background(Color("BackgroundColor"))
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    Text("Day 5")
-                                }
+                            HStack {
+                                ForEach(1..<7, id: \.self) { dayIndex in
+                                    VStack(spacing: 20) {
+                                        NavigationLink(destination: ProgressView()) {
+                                            ProgressRingView(progress: progressValues[dayIndex], ringWidth: 15)
+                                                .padding()
+                                                .background(Color("BackgroundColor"))
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                        }
+                                        Text("Day \(dayIndex)")
+                                                                }
+                                                            }
                             }.padding(.leading, 20)
                         }
                     }
@@ -154,15 +110,32 @@ struct HomePageView: View {
                         NavigationLink("Progress Calendar", destination: ProgressTrackerView())
                             .font(.largeTitle)
                     }
+                .onAppear {
+                    fetchAllDaysProgress()
+                }
                 }
                 
             }.accentColor(.background)
             
         }
+    private func fetchAllDaysProgress() {
+        for dayIndex in 1..<7 { // Loop through all days
+            retrieveworkoutdata.countCompletedAndTotalExercises(for: selectedDate, dayIndex: dayIndex) { completed, total in
+                let progress = total > 0 ? Double(completed) / Double(total) : 0.0
+                
+                DispatchQueue.main.async {
+                    // Update only the specific index in the array
+                    self.progressValues[dayIndex] = progress
+                    print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
+                }
+            }
+        }
+    }
+   
     }
     
     
-    
+//    
 //    struct ProgressView: View {
 //        var body: some View {
 //            VStack{
@@ -171,4 +144,4 @@ struct HomePageView: View {
 //            
 //        }
 //    }
-
+//

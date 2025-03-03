@@ -19,7 +19,6 @@ struct FoodJournalItemView: View {
                 Text(item.name)
                     .bold()
                 Text("Calories: "+item.calories.description)
-                
             }
             Spacer()
             Button{

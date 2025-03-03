@@ -10,15 +10,11 @@ import SwiftUI
 struct WorkoutView: View {
     
     @StateObject var workoutPlanModel = RetrieveWorkoutData()
-    @State private var hasWorkoutPlan: Bool = false
     @State private var isLoading: Bool = false
-    
-    
     
     var body: some View {
         NavigationView{
-            
-            if hasWorkoutPlan && !isLoading{
+            if workoutPlanModel.isWorkoutPlanAvailable && !isLoading{
                 ScrollView{
                     VStack(alignment: .leading, spacing: 20){
                         
@@ -35,31 +31,14 @@ struct WorkoutView: View {
                         
                         Button("delete"){
                             UserDefaults.standard.removeObject(forKey: "workoutPlan")
-                                print("Workout plan successfully removed.")
-                            hasWorkoutPlan = false
-                           // workoutPlanModel.workoutPlan = []
+                            print("Workout plan successfully removed.")
+                            //  hasWorkoutPlan = false
+                            // workoutPlanModel.workoutPlan = []
                             //workoutPlanModel.resetWorkoutPlan()
+                            workoutPlanModel.isWorkoutPlanAvailable = false
+
                         }
                         
-//                        Button("testing"){
-//                            let testItem = Exercise(id: UUID().uuidString,
-//                                                    category: "Strength",
-//                                                    equipment: "Dumbbell",
-//                                                    force: "Push",
-//                                                    instructions: [
-//                                                        "Stand upright with a dumbbell in each hand.",
-//                                                        "Press the dumbbells overhead until your arms are fully extended.",
-//                                                        "Lower the dumbbells back to shoulder level and repeat."
-//                                                    ],
-//                                                    level: "Beginner",
-//                                                    mechanic: "Compound",
-//                                                    name: "Dumbbell Shoulder Press",
-//                                                    primaryMuscles: ["Deltoids"],
-//                                                    secondaryMuscles: ["Triceps", "Upper Chest"])
-//                            workoutPlanModel.saveWorkoutPlanDB(item: testItem)
-//                            
-//                            }
-
                         ZStack{
                             RoundedRectangle(cornerRadius: 18)
                                 .fill(Color("BackgroundColor"))
@@ -86,29 +65,31 @@ struct WorkoutView: View {
                     
                 }
                 
-    
+                
             } else if isLoading {
-                // Show loading indicator
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
             } else {
-                // Show GenerateWorkoutPlanView
-                GenerateWorkoutPlanView(workoutPlanModel: workoutPlanModel, hasWorkoutPlan: $hasWorkoutPlan, isLoading: $isLoading)
+                GenerateWorkoutPlanView(workoutPlanModel: workoutPlanModel, isLoading: $isLoading)
             }
         }
-        .onChange(of: hasWorkoutPlan) {
-//            print("finally it works ")
-//            if hasWorkoutPlan{
-//                workoutPlanModel.loadWorkoutPlan()
-//            }
+        //When view appears, it checks to see if a workoutplan already exists for the user
+        .onAppear{
+            workoutPlanModel.workoutPlanExists { exists in
+                            DispatchQueue.main.async {
+                                workoutPlanModel.isWorkoutPlanAvailable = exists
+                            }
+                        }
         }
         
     }
     
     
     
+    
     struct ExerciseRowView: View {
-        let exercise: Exercise
+        //let exercise: Exercise
+        @State var exercise: Exercise
         let workoutPlanModel: RetrieveWorkoutData
 
         var body: some View {
@@ -123,12 +104,15 @@ struct WorkoutView: View {
                     }
                 }
                 VStack(alignment: .leading) {
-                    NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise))
+                    NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel))
                         .font(.subheadline)
                     Text("Primary Muscles: \(exercise.primaryMuscles.joined(separator: ", "))")
                         .font(.footnote)
                 }
-                Button(action: { workoutPlanModel.markComplete(for: exercise) }) {
+                Button(action: {
+                    workoutPlanModel.markComplete(for: exercise)
+                    exercise.isComplete.toggle()
+                }) {
                     Image(systemName: exercise.isComplete ? "checkmark.circle.fill" : "circle")
                         .foregroundColor(exercise.isComplete ? .green : .gray)
                 }
@@ -140,6 +124,8 @@ struct WorkoutView: View {
     
     struct DetailedExercise: View {
         var exercise: Exercise
+        @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+
         var body: some View{
             ScrollView{
                 VStack(alignment: .leading, spacing: 16){
@@ -157,7 +143,7 @@ struct WorkoutView: View {
                         .padding(.vertical, 4)
                     }
                     
-                    weightEntryView()
+                    weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                 }
                 .padding(.horizontal, 16)
             }
@@ -168,24 +154,15 @@ struct WorkoutView: View {
 struct GenerateWorkoutPlanView: View {
     //@ObservedObject var makeWPModel = RetrieveWorkoutData()
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
-    @Binding var hasWorkoutPlan: Bool
     @Binding  var isLoading: Bool
-    
     @State var days = 0
     let numDays = ["3", "4", "5"]
-    
-    
     @State var dur = 0
     let duration = ["30", "60"]
-    
     @State var diff = 0
     let difficulty = ["Beginner", "Intermediate", "Expert"]
     
-    
-    
-    
     var body: some View {
-        
     
         VStack {
             ZStack{
@@ -248,7 +225,7 @@ struct GenerateWorkoutPlanView: View {
                                 
                                 DispatchQueue.main.async {
                                     isLoading = false
-                                    hasWorkoutPlan = true
+            
                                 }
                                 print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
@@ -265,7 +242,6 @@ struct GenerateWorkoutPlanView: View {
                                 
                                 DispatchQueue.main.async {
                                     isLoading = false
-                                    hasWorkoutPlan = true
                                 }
                                 print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
@@ -283,7 +259,7 @@ struct GenerateWorkoutPlanView: View {
                                 
                                 DispatchQueue.main.async {
                                     isLoading = false
-                                    hasWorkoutPlan = true
+                                    workoutPlanModel.isWorkoutPlanAvailable = true
                                 }
                                 print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                             }
@@ -302,26 +278,41 @@ struct GenerateWorkoutPlanView: View {
 
 struct weightEntryView: View{
     @State private var weight: String = ""
+    var exercise: Exercise
+    var workoutPlanModel: RetrieveWorkoutData
     var body: some View {
         VStack {
-                    Text("Enter the weight used:")
+                    Text("Weight used:")
                         .font(.headline)
                     
                     TextField("Weight in lbs", text: $weight)
-                        .keyboardType(.decimalPad) // Use a numeric keyboard for weight input
+                        .keyboardType(.decimalPad)
                         .padding()
-                        .background(Color(.systemGray6)) // Background style for the text field
+                        .background(Color(.systemGray6))
                         .cornerRadius(8)
                         .padding(.horizontal)
                     
-                    Text("You entered: \(weight) lbs")
+            Button("Save Weight"){
+             
+                if let weightValue = Double(weight){
+                    workoutPlanModel.updateWeight(for: exercise, weight: weightValue)
+                    print("UpdateWeight called")
+                }
+            }
                         .padding()
                     
                     Spacer()
                 }
                 .padding()
-        
-    }
+                .onAppear {
+                            workoutPlanModel.getSavedWeight(for: exercise) { savedWeight in
+                                if let savedWeight = savedWeight {
+                                    weight = String(savedWeight)
+
+                                }
+                            }
+                        }
+            }
 }
 
 

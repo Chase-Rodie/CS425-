@@ -305,9 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */,
-				5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */,
 				5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */,
-				5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */,
+				5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */,
 				5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */,
 				5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */,
 			);
@@ -317,6 +316,7 @@
 		5EB2C7602CFABFB300EA8E8D /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */,
 				5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */,
 				5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */,
 				5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */,

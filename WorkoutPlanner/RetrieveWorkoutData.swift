@@ -17,6 +17,7 @@ class RetrieveWorkoutData : ObservableObject {
     //2D array for workoutplan
     @Published var workoutPlan : [[Exercise]] = []
     @Published var completedExercisesCounts: [Int] = []
+    @Published var isWorkoutPlanAvailable:Bool = false
     
     let now = Date()
     
@@ -111,19 +112,19 @@ class RetrieveWorkoutData : ObservableObject {
     
     //this function will allow for data to show properly in the progressrings for the homepage
     //does need further testing
-    func completedExercises() {
-           completedExercisesCounts = workoutPlan.map { day in
-               day.filter { $0.isComplete }.count
-           }
-       }
-    
-    func progress(forDay index: Int) -> Double {
-            guard index < workoutPlan.count else { return 0.0 }
-            let totalExercises = workoutPlan[index].count
-            let completedExercises = completedExercisesCounts[index]
-            return totalExercises > 0 ? Double(completedExercises) / Double(totalExercises) : 0.0
-        }
-    
+//    func completedExercises() {
+//           completedExercisesCounts = workoutPlan.map { day in
+//               day.filter { $0.isComplete }.count
+//           }
+//       }
+//    
+//    func progress(forDay index: Int) -> Double {
+//            guard index < workoutPlan.count else { return 0.0 }
+//            let totalExercises = workoutPlan[index].count
+//            let completedExercises = completedExercisesCounts[index]
+//            return totalExercises > 0 ? Double(completedExercises) / Double(totalExercises) : 0.0
+//        }
+//    
     
     func markComplete(for exercise: Exercise){
         //find the exercise
@@ -131,7 +132,8 @@ class RetrieveWorkoutData : ObservableObject {
         for dayIndex in workoutPlan.indices{
             if let exerciseIndex = workoutPlan[dayIndex].firstIndex(where: { $0.id == exercise.id }){
                 workoutPlan[dayIndex][exerciseIndex].isComplete.toggle()
-                
+                saveExerciseCompletionStatus(exercise: workoutPlan[dayIndex][exerciseIndex])
+                updateExerciseCompletionInDB(exercise: workoutPlan[dayIndex][exerciseIndex], dayIndex: dayIndex)
                 saveWorkoutPlanDB()
                 break
             }
@@ -140,7 +142,6 @@ class RetrieveWorkoutData : ObservableObject {
     }
     
     func queryExercises(days: [(String, String)], maxExercises: Int = 4, level: String, completion: @escaping () -> Void)  {
-      //  FirebaseApp.configure()
         let db = Firestore.firestore()
         
         var tempExercises: [[Exercise]] = Array(repeating: [], count: days.count)
@@ -149,12 +150,12 @@ class RetrieveWorkoutData : ObservableObject {
         
         for(index,(type, primaryMuscle)) in days.enumerated(){
             group.enter()
-            db.collection("exercises").whereField("force", isEqualTo: type).whereField("level", isEqualTo: level ).whereField("primaryMuscles", arrayContains: primaryMuscle).limit(to: maxExercises).getDocuments{ snapshot, error in
+            db.collection("exercises").whereField("force", isEqualTo: type).whereField("level", isEqualTo: level ).whereField("primaryMuscles", arrayContains: primaryMuscle).limit(to: maxExercises*2).getDocuments{ snapshot, error in
                 
                 if error == nil{
                     print("No errors")
                     if let snapshot = snapshot{
-                        let exercises = snapshot.documents.compactMap{document -> Exercise? in
+                        let allExercises = snapshot.documents.compactMap{document -> Exercise? in
                             return Exercise(
                                 category: document["category"] as? String ?? "",
                                 equipment: document["equipment"] as? String ?? "",
@@ -169,8 +170,10 @@ class RetrieveWorkoutData : ObservableObject {
                                 secondaryMuscles: (document["secondaryMuscles"] as? [String]) ?? []
                             )
                         }
-                        tempExercises[index] = exercises
-                        print("Fetched \(exercises.count) exercises for category \(type)")
+                        
+                        let randomizedExercises = allExercises.shuffled().prefix(maxExercises)
+                        tempExercises[index] = Array(randomizedExercises)
+                        //print("Fetched \(exercises.count) exercises for category \(type)")
                     }
                 }
                 group.leave()
@@ -179,31 +182,17 @@ class RetrieveWorkoutData : ObservableObject {
         group.notify(queue: .main){
             DispatchQueue.main.async{
                 self.workoutPlan = tempExercises
-                print("Test1")
-                //self.saveWorkoutPlan()
+                
                 self.saveWorkoutPlanDB()
-                print("Test2")
 
                 self.saveWorkoutPlanLocally()
-                print("Test3")
-
+                self.isWorkoutPlanAvailable = true
                 completion()
                 
             }
         }
     }
 
-//previous saveWorkoutPlan for saving plan to device
-    
-//    private func saveWorkoutPlan(){
-//        let encoder = JSONEncoder()
-//        if let encodedData = try? encoder.encode(workoutPlan){
-//            UserDefaults.standard.set(encodedData, forKey: "workoutPlan")
-//        } else{
-//            print("Failed to encode exercises.")
-//        }
-//    }
-    
     //reworked function to save the workoutplan to the database
     func saveWorkoutPlanDB(){
         //get user ID
@@ -218,7 +207,6 @@ class RetrieveWorkoutData : ObservableObject {
        
         let db = Firestore.firestore()
         
-//        let group = DispatchGroup()
         //iterate through every exercise in the weekly plan
         for(dayIndex, exercises) in workoutPlan.enumerated(){
             let dayCollection = db
@@ -254,17 +242,13 @@ class RetrieveWorkoutData : ObservableObject {
                     } else{
                         print("Updated Workout Document\(exercise.name).")
                     }
-//                    group.leave()
                 }
             }
             
         }
-//        group.notify(queue: .main) {
-//                // Notify when all updates are complete
-//                print("All exercises have been saved to the database.")
-//            }
-        
     }
+    
+    
     //need to pull from database instead! rework this function?
     func loadWorkoutPlan() -> Bool {
             let decoder = JSONDecoder()
@@ -279,7 +263,208 @@ class RetrieveWorkoutData : ObservableObject {
                 return false
             }
         }
-  
+    
+    
+    //Updates weight the user recorded for the exercises
+    func updateWeight(for exercise: Exercise, weight: Double) {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+
+        let db = Firestore.firestore()
+        let exerciseRef = db.collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+            .collection("Day1")
+            .document(exercise.name)
+        
+        exerciseRef.updateData(["weightUsed": weight]) { error in
+            if let error = error {
+                print("Error updating weight: \(error.localizedDescription)")
+            } else {
+                print("Weight updated successfully!")
+            }
+        }
+    }
+
+    func workoutPlanExists(completion: @escaping (Bool) -> Void) {
+        // First Check UserDefaults
+        if loadWorkoutPlan() {
+            print("Workout plan found in UserDefaults.")
+            completion(true)
+            return
+        }
+        
+        // Second Check Database
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user logged in.")
+            completion(false)
+            return
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+        
+        let db = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+
+        db.getDocument { (document, error) in
+            if let error = error {
+                print("Error checking Firestore: \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+            
+            if let document = document, document.exists {
+                print("Workout plan found in Firestore.")
+                completion(true)
+            } else {
+                print("No workout plan found.")
+                completion(false)
+            }
+        }
+    }
+
+//Retrieves the weight that the user entered for the exercise.
+    
+    func getSavedWeight(for exercise: Exercise, completion: @escaping (Double?) -> Void) {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Error: No user ID found")
+            completion(nil)
+            return
+        }
+        
+        let weightRef = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+            .collection("Day1")
+            .document(exercise.name)
+        
+        weightRef.getDocument { (document, error) in
+            if let error = error {
+                print("Error fetching weight: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            if let document = document, document.exists {
+                let data = document.data()
+                if let weight = data?["weightUsed"] as? Double {
+                    completion(weight)
+                } else {
+                    completion(nil)
+                }
+            } else {
+                print("Document does not exist")
+                completion(nil)
+            }
+        }
+    }
+
+    
+    func saveExerciseCompletionStatus(exercise: Exercise) {
+        let defaults = UserDefaults.standard
+        let key = "exerciseCompleted_\(exercise.id)"
+        defaults.set(exercise.isComplete, forKey: key)
+        print("Exercise \(exercise.name) completion status saved: \(exercise.isComplete)")
+    }
+
+    func isExerciseCompleted(exercise: Exercise) -> Bool {
+        let defaults = UserDefaults.standard
+        let key = "exerciseCompleted_\(exercise.id)"
+        return defaults.bool(forKey: key)
+    }
+
+    func loadCompletionStatuses() {
+        for dayIndex in workoutPlan.indices {
+            for exerciseIndex in workoutPlan[dayIndex].indices {
+                let exercise = workoutPlan[dayIndex][exerciseIndex]
+                workoutPlan[dayIndex][exerciseIndex].isComplete = isExerciseCompleted(exercise: exercise)
+            }
+        }
+    }
+    
+    func updateExerciseCompletionInDB(exercise: Exercise, dayIndex: Int) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Error: No user logged in.")
+            return
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: now)
+
+        let db = Firestore.firestore()
+        let exerciseRef = db.collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+            .collection("Day\(dayIndex + 1)")
+            .document(exercise.name)
+
+        exerciseRef.updateData(["isComplete": exercise.isComplete]) { error in
+            if let error = error {
+                print("Error updating exercise completion status: \(error.localizedDescription)")
+            } else {
+                print("Exercise \(exercise.name) completion status updated successfully in Firestore.")
+            }
+        }
+    }
+
+    func countCompletedAndTotalExercises(for date: Date, dayIndex: Int, completion: @escaping (Int, Int) -> Void) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        let formattedDate = dateFormatter.string(from: date)
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Error: No user logged in.")
+            completion(0, 0)
+            return
+        }
+        
+        let db = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+            .collection("Day\(dayIndex)")
+        
+        db.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error fetching exercises: \(error.localizedDescription)")
+                completion(0, 0)
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No exercises found for Day \(dayIndex)")
+                completion(0, 0)
+                return
+            }
+            
+            let totalExercises = documents.count
+            let completedCount = documents.filter { ($0.data()["isComplete"] as? Bool) == true }.count
+            
+            print("Day \(dayIndex): Completed \(completedCount) / \(totalExercises)")
+            completion(completedCount, totalExercises)
+        }
+    }
+
 }
 
 

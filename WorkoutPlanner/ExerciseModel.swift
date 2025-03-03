@@ -20,5 +20,6 @@ struct Exercise: Decodable,Encodable,Identifiable{
     var primaryMuscles: Array<String>
     var secondaryMuscles: Array<String>
     var isComplete: Bool = false
+    var weightUsed: Double?
 }
 
