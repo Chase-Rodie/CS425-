@@ -43,6 +43,8 @@
 		9A3FB89F2CD3F6840019266C /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB89E2CD3F6840019266C /* WorkoutView.swift */; };
 		9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A02CD3F68F0019266C /* MealView.swift */; };
 		9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A22CD3F69E0019266C /* PantryView.swift */; };
+		9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */; };
+		9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */; };
 		9A5E9D982CFAE5BD009460EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */; };
 		9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E9D9A2CFAE887009460EA /* Utilities.swift */; };
 		9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66243A2CFEB95F00A5CB90 /* SettingsViewModel.swift */; };
@@ -58,6 +60,8 @@
 		9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */; };
 		9AC81DEC2CA57BD000A0472C /* Fit_PantryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */; };
 		9AC81DEE2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */; };
+		9ACB9D5E2D7055A7000DA9FD /* DBUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */; };
+		9ACB9D602D70590C000DA9FD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB9D5F2D70590C000DA9FD /* XCTest.framework */; platformFilter = ios; };
 		9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */; };
 		9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888F12CF2921F00E83A3A /* SignInAppleHelper.swift */; };
 		9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */; };
@@ -173,6 +177,8 @@
 		9A3FB89E2CD3F6840019266C /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		9A3FB8A02CD3F68F0019266C /* MealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealView.swift; sourceTree = "<group>"; };
 		9A3FB8A22CD3F69E0019266C /* PantryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryView.swift; sourceTree = "<group>"; };
+		9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailView.swift; sourceTree = "<group>"; };
+		9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewModel.swift; sourceTree = "<group>"; };
 		9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A5E9D9A2CFAE887009460EA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		9A5E9D9C2CFB0B4D009460EA /* Fit Pantry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Fit Pantry.entitlements"; sourceTree = "<group>"; };
@@ -191,6 +197,9 @@
 		9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITests.swift; sourceTree = "<group>"; };
 		9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUserTests.swift; sourceTree = "<group>"; };
+		9ACB9D5F2D70590C000DA9FD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		9ACB9D612D705B08000DA9FD /* Fit Pantry.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Fit Pantry.xctestplan"; sourceTree = "<group>"; };
 		9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		9AF888F12CF2921F00E83A3A /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
 		9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
@@ -243,6 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9ACB9D602D70590C000DA9FD /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +349,7 @@
 		9A1708C22CF2E01D00746B91 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9ACB9D5F2D70590C000DA9FD /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -477,6 +488,8 @@
 			children = (
 				9A1708C72CF2E51200746B91 /* SignInEmailView.swift */,
 				9A6624402CFEBAC700A5CB90 /* SignInEmailViewModel.swift */,
+				9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */,
+				9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -510,6 +523,7 @@
 		9AC81DC42CA57BCF00A0472C = {
 			isa = PBXGroup;
 			children = (
+				9ACB9D612D705B08000DA9FD /* Fit Pantry.xctestplan */,
 				9A2AA49A2D5367F90073837E /* Storage */,
 				9A5E9D9C2CFB0B4D009460EA /* Fit Pantry.entitlements */,
 				9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */,
@@ -559,6 +573,7 @@
 		9AC81DE02CA57BD000A0472C /* Fit PantryTests */ = {
 			isa = PBXGroup;
 			children = (
+				9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */,
 				9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */,
 				5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */,
 			);
@@ -940,6 +955,7 @@
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
 				F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */,
+				9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */,
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
 				5EFA1F372CFD6FC500308814 /* TempContentView.swift in Sources */,
@@ -969,6 +985,7 @@
 				9A6624412CFEBAC700A5CB90 /* SignInEmailViewModel.swift in Sources */,
 				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
 				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
+				9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */,
 				5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */,
 				9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */,
 			);
@@ -979,6 +996,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */,
+				9ACB9D5E2D7055A7000DA9FD /* DBUserTests.swift in Sources */,
 				9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
