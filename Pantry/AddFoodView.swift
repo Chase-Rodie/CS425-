@@ -209,20 +209,20 @@ struct AddFoodView: View {
     // Add food to a users pantry
     private func addFood(item: Food, value: Double) {
         // Get the user's ID
-        /*
+        
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
-        */
+        
         // Tempoarary static assignemt of user for testing
         //let userID = "IG0kz1WPQAOfI5wXFbEmyk108iV2"
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        //let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         //print(userID)
         
         
         // Create a refrence to the database
         let db = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("pantry")
             .document(item.id)

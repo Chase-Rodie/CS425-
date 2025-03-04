@@ -114,7 +114,7 @@ struct MealPlanView: View {
 
     var body: some View {
         ZStack {
-            NavigationView {
+            NavigationStack {  
                 VStack(alignment: .leading) {
                     Text("Meal Plan")
                         .font(.largeTitle)
@@ -177,7 +177,7 @@ struct MealPlanView: View {
                     }
                 }
             }
-        
+
             if isMenuOpen {
                 GeometryReader { geometry in
                     ZStack(alignment: .leading) {
@@ -188,7 +188,7 @@ struct MealPlanView: View {
                                     isMenuOpen = false
                                 }
                             }
-                        
+
                         HamburgerMenuView()
                             .frame(width: geometry.size.width * 0.7)
                             .transition(.move(edge: .leading))
@@ -211,15 +211,6 @@ struct MealPlanView: View {
 
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            MealPlanView()
-                .previewDevice("iPhone 14")
-                .preferredColorScheme(.light)
-
-            MealPlanView()
-                .previewDevice("iPhone 14 Pro")
-                .preferredColorScheme(.dark)
-        }
+        MealPlanView()
     }
 }
-

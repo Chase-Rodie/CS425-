@@ -42,7 +42,7 @@
 //        .padding()
 //        .frame(maxWidth: .infinity, alignment: .leading)
 //        .background(Color("LighterColor"))
-//        
+//
 //    }
 //}
 //
@@ -69,32 +69,32 @@ struct HamburgerMenuView: View {
             }
             .padding(.top, 100)
             
-            NavigationLink(destination: ProfileView(showSignInView: .constant(false))) {
-                HStack {
-                    Image(systemName: "person")
-                        .foregroundColor(.black)
-                        .imageScale(.large)
-                    Text("Profile")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }
-            .padding(.top, 30)
+            //NavigationLink(destination: ProfileView(showSignInView: .constant(false))) {
+                //HStack {
+                    //Image(systemName: "person")
+                        //.foregroundColor(.black)
+                        //.imageScale(.large)
+                   // Text("Profile")
+                        //.foregroundColor(.black)
+                        //.font(.headline)
+                //}
+            //}
+            //.padding(.top, 30)
             
-            NavigationLink(destination: SettingsView(showSignInView: .constant(false))) {
-                HStack {
-                    Image(systemName: "gear")
-                        .foregroundColor(.black)
-                        .imageScale(.large)
-                    Text("Settings")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }
-            .padding(.top, 30)
+            //NavigationLink(destination: SettingsView(showSignInView: .constant(false))) {
+                //HStack {
+                    //Image(systemName: "gear")
+                        //.foregroundColor(.black)
+                        //.imageScale(.large)
+                    //Text("Settings")
+                       // .foregroundColor(.black)
+                        //.font(.headline)
+                //}
+            //}
+            //.padding(.top, 30)
             
-            Divider()
-                .padding(.vertical, 20)
+            //Divider()
+               // .padding(.vertical, 20)
 
             NavigationLink(destination: ShoppingListView()) {
                 HStack {
@@ -149,4 +149,3 @@ struct HamburgerMenuView_Previews: PreviewProvider {
         }
     }
 }
-
