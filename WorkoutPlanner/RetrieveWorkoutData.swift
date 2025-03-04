@@ -22,7 +22,7 @@ class RetrieveWorkoutData : ObservableObject {
     let now = Date()
     
     //reworked function to load the workoutplan from the database
-    private func saveWorkoutPlanLocally(){
+    func saveWorkoutPlanLocally(){
             let encoder = JSONEncoder()
             if let encodedData = try? encoder.encode(workoutPlan){
                 UserDefaults.standard.set(encodedData, forKey: "workoutPlan")
