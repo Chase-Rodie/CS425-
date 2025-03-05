@@ -178,13 +178,22 @@ extension AuthenticationManager {
     @discardableResult
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
+        let user = authDataResult.user
+        
+        try await user.sendEmailVerification()
+        
+        return AuthDataResultModel(user: user)
     }
-    
+
     @discardableResult
     func signInUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
+        let user = authDataResult.user
+        
+        guard user.isEmailVerified else {
+            throw CustomAuthenticationErrors.emailVerificationFailed
+        }
+        return AuthDataResultModel(user: user)
     }
     
     func resetPassword(email: String) async throws {
@@ -197,6 +206,20 @@ extension AuthenticationManager {
         }
         
         try await user.updatePassword(to: password)
+    }
+    
+    func resendEmailVerification() throws {
+        guard let user = Auth.auth().currentUser else {
+            throw CustomAuthenticationErrors.userNotFound
+        }
+        
+        user.sendEmailVerification { error in
+            if let error = error {
+                print("Error resending verification email: \(error.localizedDescription)")
+            } else {
+                print("Verification email resent successfully.")
+            }
+        }
     }
     
     func updateEmail(email: String) async throws {

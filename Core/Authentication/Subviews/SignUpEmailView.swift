@@ -13,7 +13,8 @@ struct SignUpEmailView: View {
     @Binding var showSignInView: Bool
     @State private var showPassword: Bool = false
     @State private var showConfirmPassword: Bool = false
-    
+    @State private var emailErrorMessage: String? = nil
+
     var body: some View {
         VStack {
             TextField("Email...", text: $viewModel.email)
@@ -22,12 +23,22 @@ struct SignUpEmailView: View {
                 .cornerRadius(10)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
-            
+                .onChange(of: viewModel.email) { _ in
+                    emailErrorMessage = nil
+                }
+
+            if let emailErrorMessage = emailErrorMessage {
+                Text(emailErrorMessage)
+                    .foregroundColor(.red)
+                    .font(.caption)
+            }
+
             HStack {
                 if showPassword {
                     TextField("Password...", text: $viewModel.password)
                 } else {
                     SecureField("Password...", text: $viewModel.password)
+                        .textContentType(.oneTimeCode)
                 }
                 Button(action: { showPassword.toggle() }) {
                     Image(systemName: showPassword ? "eye.slash" : "eye")
@@ -43,6 +54,7 @@ struct SignUpEmailView: View {
                     TextField("Confirm Password...", text: $viewModel.confirmPassword)
                 } else {
                     SecureField("Confirm Password...", text: $viewModel.confirmPassword)
+                        .textContentType(.oneTimeCode)
                 }
                 Button(action: { showConfirmPassword.toggle() }) {
                     Image(systemName: showConfirmPassword ? "eye.slash" : "eye")
@@ -54,12 +66,16 @@ struct SignUpEmailView: View {
             .cornerRadius(10)
 
             Button {
-                Task {
-                    do {
-                        try await viewModel.signUp()
-                        showSignInView = false
-                    } catch {
-                        print("Sign Up Failed: \(error)")
+                if isPasswordTooSimple(viewModel.password) {
+                    emailErrorMessage = "Password must be at least 6 characters long and include at least one number and one special character."
+                } else {
+                    Task {
+                        do {
+                            try await viewModel.signUp()
+                            showSignInView = false
+                        } catch {
+                            print("Sign Up Failed: \(error)")
+                        }
                     }
                 }
             } label: {
@@ -77,6 +93,12 @@ struct SignUpEmailView: View {
         .padding()
         .navigationTitle("Sign Up With Email")
     }
+    
+    private func isPasswordTooSimple(_ password: String) -> Bool {
+        let regex = "^(?=.*[0-9])(?=.*[A-Za-z])(?=.*[!@#$%^&*(),.?\":{}|<>]).{6,}$"
+        return password.range(of: regex, options: .regularExpression) == nil
+    }
+
 }
 
 struct SignUpEmailView_Previews: PreviewProvider {
@@ -86,4 +108,3 @@ struct SignUpEmailView_Previews: PreviewProvider {
         }
     }
 }
-

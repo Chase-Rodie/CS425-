@@ -8,7 +8,7 @@ struct EditProfileView: View {
 
     init(viewModel: ProfileViewModel) {
         _viewModel = ObservedObject(wrappedValue: viewModel)
-        _editedUser = State(initialValue: viewModel.user ?? DBUser(userId: "", age: nil, gender: nil, fitnessLevel: nil, goal: nil, height: nil)) // Default values
+        _editedUser = State(initialValue: viewModel.user ?? DBUser(userId: "", age: nil, gender: nil, fitnessLevel: nil, goal: nil, weight: nil, height: nil)) // Default values
     }
     
     var body: some View {
@@ -39,6 +39,11 @@ struct EditProfileView: View {
                     get: { editedUser.height ?? "" },
                     set: { editedUser.height = $0.isEmpty ? nil : $0 }
                 ))
+                
+                TextField("Weight", text: Binding(
+                    get: { editedUser.weight ?? "" },
+                    set: { editedUser.height = $0.isEmpty ? nil : $0}
+                ))
             }
             
             Button("Save Changes") {
@@ -53,13 +58,13 @@ struct EditProfileView: View {
     }
     
     private func saveProfile() async {
-        print("Saving user: \(editedUser)") // Debugging Step
+        print("Saving user: \(editedUser)") 
 
         do {
             try await viewModel.updateUserProfile(user: editedUser)
             DispatchQueue.main.async {
-                viewModel.user = editedUser // ✅ Ensures ViewModel updates
-                dismiss() // ✅ Closes the screen after saving
+                viewModel.user = editedUser
+                dismiss()
             }
         } catch {
             print("Error updating profile: \(error)")
