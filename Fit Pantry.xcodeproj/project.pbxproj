@@ -33,6 +33,12 @@
 		9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1708C32CF2E01D00746B91 /* FirebaseAuth */; };
 		9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C52CF2E08300746B91 /* AuthenticationView.swift */; };
 		9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C72CF2E51200746B91 /* SignInEmailView.swift */; };
+		9A26AD012D7B91360039DA58 /* GoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD002D7B91360039DA58 /* GoalsView.swift */; };
+		9A26AD032D7B914D0039DA58 /* FavoriteMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */; };
+		9A26AD072D7B91B10039DA58 /* ProgressionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD062D7B91B10039DA58 /* ProgressionView.swift */; };
+		9A26AD092D7B91C90039DA58 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD082D7B91C90039DA58 /* FriendsView.swift */; };
+		9A26AD0B2D7B91DD0039DA58 /* AppsDevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */; };
+		9A26AD0D2D7B91F30039DA58 /* PrivacyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */; };
 		9A2AA4932D5364420073837E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4922D5364420073837E /* FirebaseFirestore */; };
 		9A2AA4952D5364640073837E /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4942D5364640073837E /* FirebaseFirestoreCombine-Community */; };
 		9A2AA4972D53663B0073837E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4962D53663B0073837E /* FirebaseFirestore */; };
@@ -171,6 +177,12 @@
 		9A069DFE2CFAE03A008620A9 /* Fit-Pantry-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fit-Pantry-Info.plist"; sourceTree = "<group>"; };
 		9A1708C52CF2E08300746B91 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		9A1708C72CF2E51200746B91 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
+		9A26AD002D7B91360039DA58 /* GoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsView.swift; sourceTree = "<group>"; };
+		9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMealView.swift; sourceTree = "<group>"; };
+		9A26AD062D7B91B10039DA58 /* ProgressionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionView.swift; sourceTree = "<group>"; };
+		9A26AD082D7B91C90039DA58 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsDevicesView.swift; sourceTree = "<group>"; };
+		9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyInfoView.swift; sourceTree = "<group>"; };
 		9A2AA4982D5367B10073837E /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		9A2AA49B2D5368130073837E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		9A3FB89A2CD3E8E90019266C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -336,6 +348,7 @@
 		5EB2C7602CFABFB300EA8E8D /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				9A26ACFF2D7B911E0039DA58 /* Subviews */,
 				5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */,
 				5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */,
 				5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */,
@@ -352,6 +365,19 @@
 				9ACB9D5F2D70590C000DA9FD /* XCTest.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9A26ACFF2D7B911E0039DA58 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				9A26AD002D7B91360039DA58 /* GoalsView.swift */,
+				9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */,
+				9A26AD062D7B91B10039DA58 /* ProgressionView.swift */,
+				9A26AD082D7B91C90039DA58 /* FriendsView.swift */,
+				9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */,
+				9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		9A2AA49A2D5367F90073837E /* Storage */ = {
@@ -942,6 +968,7 @@
 				9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */,
 				9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */,
 				9A66243E2CFEB9F500A5CB90 /* AuthenticationViewModel.swift in Sources */,
+				9A26AD0B2D7B91DD0039DA58 /* AppsDevicesView.swift in Sources */,
 				9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
 				5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */,
@@ -951,6 +978,7 @@
 				F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */,
 				5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */,
 				5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */,
+				9A26AD092D7B91C90039DA58 /* FriendsView.swift in Sources */,
 				5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
@@ -962,6 +990,7 @@
 				F825DACB2D759F5700F4345D /* ShoppingListView.swift in Sources */,
 				924111F42D750F66001C624B /* MealGenAPI.swift in Sources */,
 				9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */,
+				9A26AD012D7B91360039DA58 /* GoalsView.swift in Sources */,
 				9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */,
 				5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */,
 				9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */,
@@ -978,6 +1007,7 @@
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
 				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,
+				9A26AD032D7B914D0039DA58 /* FavoriteMealView.swift in Sources */,
 				F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
@@ -987,6 +1017,8 @@
 				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
 				9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */,
 				5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */,
+				9A26AD0D2D7B91F30039DA58 /* PrivacyInfoView.swift in Sources */,
+				9A26AD072D7B91B10039DA58 /* ProgressionView.swift in Sources */,
 				9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
