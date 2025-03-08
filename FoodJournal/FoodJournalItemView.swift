@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FoodJournalItemView: View {
-    let item: Food
+    let item: FoodJournalItem
     let mealName: String
     
     @ObservedObject var viewModel: FoodJournalViewModel
@@ -24,6 +24,7 @@ struct FoodJournalItemView: View {
                     Text(item.name)
                         .bold()
                         .font(.system(size: 30))
+                    Text("Quantity: "+item.quantity.description)
                     Text("Calories: "+item.calories.description)
                     Text("Carbohydrates: " + item.carbohydrates.description)
                     Text("Protein: " + item.protein.description)
@@ -37,5 +38,5 @@ struct FoodJournalItemView: View {
 }
 
 #Preview {
-    FoodJournalItemView(item: Food(id: "1", name: "Banana", foodGroup: "Fruits", food_id: 101, calories: 100, fat: 0.3, carbohydrates: 27, protein: 1.3, suitableFor: ["Vegan", "Gluten-Free"]), mealName: "breakfast", viewModel: FoodJournalViewModel())
+    FoodJournalItemView(item: FoodJournalItem(id: "1", name: "Banana", foodGroup: "Fruits", food_id: 101, calories: 100, fat: 0.3, carbohydrates: 27, protein: 1.3, suitableFor: ["Vegan", "Gluten-Free"], quantity: 2.4), mealName: "breakfast", viewModel: FoodJournalViewModel())
 }

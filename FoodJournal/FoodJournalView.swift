@@ -86,8 +86,7 @@ struct FoodJournalView: View {
                                                 Text(food.name)
                                                     .bold()
                                             }
-                                            le'
-                                            '
+                                            Text("Quantity: "+food.quantity.description)
                                             Text("Calories: "+food.calories.description)
                                                 .font(.body)
                                         }
@@ -123,11 +122,25 @@ struct FoodJournalView: View {
                                 }
                                 Divider()
                                     .background(Color.black)
-                                //Text("Entries Count: \(viewModel.foodEntries.count)")
                                 ForEach(viewModel.lunchFoodEntries){ food in
-                                    FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)
+                                    HStack{
+                                        VStack(alignment: .leading){
+                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)){
+                                                Text(food.name)
+                                                    .bold()
+                                            }
+                                            Text("Quantity: "+food.quantity.description)
+                                            Text("Calories: "+food.calories.description)
+                                                .font(.body)
+                                        }
+                                        Spacer()
+                                        Button{
+                                            viewModel.deleteFoodEntry(mealName: "lunch", food: food)
+                                        } label: {
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                                 }
-
                             }
                             Spacer()
                         }
@@ -150,9 +163,24 @@ struct FoodJournalView: View {
                                 }
                                 Divider()
                                     .background(Color.black)
-                                //Text("Entries Count: \(viewModel.foodEntries.count)")
                                 ForEach(viewModel.dinnerFoodEntries){ food in
-                                    FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)
+                                    HStack{
+                                        VStack(alignment: .leading){
+                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)){
+                                                Text(food.name)
+                                                    .bold()
+                                            }
+                                            Text("Quantity: "+food.quantity.description)
+                                            Text("Calories: "+food.calories.description)
+                                                .font(.body)
+                                        }
+                                        Spacer()
+                                        Button{
+                                            viewModel.deleteFoodEntry(mealName: "dinner", food: food)
+                                        } label: {
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                                 }
 
                             }
