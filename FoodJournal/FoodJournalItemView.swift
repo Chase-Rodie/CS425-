@@ -14,18 +14,24 @@ struct FoodJournalItemView: View {
     @ObservedObject var viewModel: FoodJournalViewModel
     
     var body: some View {
-        HStack{
-            VStack(alignment: .leading){
-                Text(item.name)
-                    .bold()
-                Text("Calories: "+item.calories.description)
-            }
-            Spacer()
-            Button{
-                viewModel.deleteFoodEntry(mealName: mealName, food: item)
-            } label: {
-                    Image(systemName: "trash")
+        ZStack(alignment: .topLeading){
+            
+            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            
+            HStack{
+                VStack(alignment: .leading, spacing: 10){
+                    Text(item.name)
+                        .bold()
+                        .font(.system(size: 30))
+                    Text("Calories: "+item.calories.description)
+                    Text("Carbohydrates: " + item.carbohydrates.description)
+                    Text("Protein: " + item.protein.description)
+                    Text("Fats: " + item.fat.description)
+                    Text("Show More")
                 }
+                .padding()
+            }
         }
     }
 }

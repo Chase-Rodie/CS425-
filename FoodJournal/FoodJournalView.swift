@@ -78,10 +78,26 @@ struct FoodJournalView: View {
                                 }
                                 Divider()
                                     .background(Color.black)
-                                //Text("Entries Count: \(viewModel.foodEntries.count)")
+                               
                                 ForEach(viewModel.breakfastFoodEntries){ food in
-                                    NavigationLink(destination:FoodJournalExpandedItemView(item: food, mealName: "breakfast")){}
-                                    FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)
+                                    HStack{
+                                        VStack(alignment: .leading){
+                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)){
+                                                Text(food.name)
+                                                    .bold()
+                                            }
+                                            le'
+                                            '
+                                            Text("Calories: "+food.calories.description)
+                                                .font(.body)
+                                        }
+                                        Spacer()
+                                        Button{
+                                            viewModel.deleteFoodEntry(mealName: "breakfast", food: food)
+                                        } label: {
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                                 }
 
                             }

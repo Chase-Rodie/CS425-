@@ -27,3 +27,17 @@ struct PantryItem: Identifiable, Decodable {
     let name: String
     let quantity: Double
 }
+
+
+struct FoodJournalItem: Identifiable, Decodable, Encodable {
+    var id: String
+    var name: String
+    var foodGroup: String
+    var food_id: Int32
+    var calories: Int32
+    var fat: Float32
+    var carbohydrates: Float32
+    var protein: Float32
+    var suitableFor: [String]
+    let quantity: Double
+}
