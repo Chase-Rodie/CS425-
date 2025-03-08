@@ -25,10 +25,10 @@ import FirebaseFirestore
     let now = Date()
     
     func fetchFoodEntries(mealName: String){
-//        guard let userID = Auth.auth().currentUser?.uid else {
-//            return
-//        }
-        let userID = "gwj5OvTOGmNA8GCfd7nkEzo3djA2"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+       // let userID = "gwj5OvTOGmNA8GCfd7nkEzo3djA2"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"

@@ -1,85 +1,67 @@
-//
-//  PantryView.swift
-//  Fit Pantry
-//
-//  Created by Chase Rodie on 10/31/24.
-//
-
 import Foundation
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
 struct PantryView: View {
-    // Array to hold pantry items
     @State private var pantryItems: [PantryItem] = []
-    // Error message for fetching errors
     @State private var errorMessage: String? = nil
-    
     @State private var isLoading = true
-    
-    // Variables to control item edits
     @State private var showEditSheet: Bool = false
     @State private var selectedItem: PantryItem?
     @State private var newQuantity: String = ""
     @State private var newQuantityDbl: Double = 0.0
-    
+
     // Function to fetch pantry items
     private func fetchPantryItems() {
-        // Get the user's ID
-        /*
         guard let userID = Auth.auth().currentUser?.uid else {
+            errorMessage = "User not authenticated"
             return
         }
-        */
-        isLoading = true
-        // Tempoarary static assignemt of user for testing
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         
+        isLoading = true
         let db = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("pantry")
         
         db.getDocuments { snapshot, error in
+            isLoading = false
+            
             if let error = error {
                 self.errorMessage = "Failed to fetch pantry items: \(error.localizedDescription)"
                 return
             }
-            
-            isLoading = false
             
             guard let snapshot = snapshot else {
                 self.errorMessage = "No pantry data found"
                 return
             }
             
-            // Map Firestore documents to PantryItem model
             self.pantryItems = snapshot.documents.compactMap { doc in
                 let data = doc.data()
                 let id = doc.documentID
                 let food_id = data["id"] as? Int ?? 0
-                let name = data["name"] as? String ?? "name not found"
+                let name = data["name"] as? String ?? "Unknown Item"
                 let quantity = data["quantity"] as? Double ?? 0.0
                 
                 return PantryItem(id: id, food_id: food_id, name: name, quantity: quantity)
             }
             
-            self.errorMessage = nil // Clear any previous error
+            self.errorMessage = nil
         }
     }
-    
-    // Pantry view
+
     var body: some View {
         NavigationView {
             VStack {
                 if isLoading {
                     ProgressView()
-                    Text("Loading")
+                    Text("Loading...")
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
                 }
-                // Display pantry items
+                
                 if pantryItems.isEmpty {
                     Text("Your pantry is empty")
                         .foregroundColor(.gray)
@@ -87,10 +69,7 @@ struct PantryView: View {
                 } else {
                     List {
                         ForEach(pantryItems, id: \.id) { item in
-                            Button(action: {
-                                // Set the selected item and show the edit popup
-                                editQuantity(item)
-                            }) {
+                            Button(action: { editQuantity(item) }) {
                                 HStack {
                                     Text(item.name)
                                     Spacer()
@@ -99,11 +78,10 @@ struct PantryView: View {
                                 }
                             }
                         }
-                        .onDelete(perform: deletePantryItem) // Swipe-to-delete functionality
+                        .onDelete(perform: deletePantryItem)
                     }
                 }
                 
-                // Display error if fetching failed
                 if let errorMessage = errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
@@ -126,19 +104,14 @@ struct PantryView: View {
             .onAppear {
                 fetchPantryItems()
             }
-            
-            // Sheet to prompt user for the amount of food they have
-            // when item is selected
             .sheet(isPresented: $showEditSheet) {
                 VStack {
-                    // Text to display
                     Text("Amount on hand?")
                         .font(.headline)
                         .padding()
                     
                     TextField("Quantity", text: $newQuantity)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        // Displays keypad
                         .keyboardType(.decimalPad)
                         .padding()
                     
@@ -148,9 +121,7 @@ struct PantryView: View {
                             .padding()
                     }
                     
-                    // Show buttons at bottom
                     HStack {
-                        // Submit Button
                         Button("Submit") {
                             submitAmount()
                         }
@@ -159,10 +130,7 @@ struct PantryView: View {
                         
                         Spacer()
                         
-                        //Cancel Button
                         Button("Cancel") {
-                            
-                            // Get rid of popup without commiting changes
                             showEditSheet = false
                         }
                         .padding()
@@ -170,27 +138,20 @@ struct PantryView: View {
                     .padding()
                 }
                 .padding()
-            } // End .sheet popup entry
+            }
         }
     }
-    
-    
-    // Function to delete an item by swiping left
+
     private func deletePantryItem(at offsets: IndexSet) {
-        // Get the user's ID
-        /*
         guard let userID = Auth.auth().currentUser?.uid else {
+            errorMessage = "User not authenticated"
             return
         }
-        */
-        // Tempoarary static assignemt of user for testing
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         
         for index in offsets {
             let itemToDelete = pantryItems[index]
-            
             let db = Firestore.firestore()
-                .collection("userData_test")
+                .collection("users")
                 .document(userID)
                 .collection("pantry")
                 .document(itemToDelete.id)
@@ -199,69 +160,38 @@ struct PantryView: View {
                 if let error = error {
                     self.errorMessage = "Failed to delete item: \(error.localizedDescription)"
                 } else {
-                    self.pantryItems.remove(at: index) // Remove from the local array
+                    self.pantryItems.remove(at: index)
                     self.errorMessage = nil
                 }
             }
         }
     }
-    
-    private func editQuantity(_ item: PantryItem){
-        // Debug message
-        //print("Item tapped: \(item.id)")
-        
-        // Get Food that was selected
+
+    private func editQuantity(_ item: PantryItem) {
         selectedItem = item
-        
-        // Reset Values
         newQuantity = ""
-        
-        // Display popup menu
         showEditSheet = true
     }
-    
-    // Get amount and validate for entry into database
+
     private func submitAmount() {
-        
-        // Ensure a valid item has been selected
-        guard let selectedItem = selectedItem else {
+        guard let selectedItem = selectedItem, let value = Double(newQuantity) else {
+            errorMessage = "Please enter a valid number"
             return
         }
         
-        if let value = Double(newQuantity) {
-            // Set amount to value if numerical
-            newQuantityDbl = value
-            
-            // Valid value add food to database
-            updatePantryItem(item: selectedItem, value: value)
-            
-        } else {
-            // Conversion to numerical value failed
-            // Display error message
-            errorMessage = "Please enter a valid number"
-            print("\(errorMessage ?? "")")
-            //showError = true
-        }
-        
-        // Close any popups and return to search view
-        //showError = false
+        updatePantryItem(item: selectedItem, value: value)
         fetchPantryItems()
         showEditSheet = false
     }
-    
-    // Function to update the quantity of a pantry item
+
     private func updatePantryItem(item: PantryItem, value: Double) {
-        // Get the user's ID
-        /*
         guard let userID = Auth.auth().currentUser?.uid else {
+            errorMessage = "User not authenticated"
             return
         }
-        */
-        // Tempoarary static assignemt of user for testing
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         
         let db = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("pantry")
             .document(item.id)
@@ -272,7 +202,6 @@ struct PantryView: View {
             "quantity": value
         ]
         
-        // Update the document in Firestore
         db.setData(data, merge: true) { error in
             if error != nil {
                 print("Error updating document")
@@ -286,4 +215,3 @@ struct PantryView: View {
 #Preview {
     PantryView()
 }
-

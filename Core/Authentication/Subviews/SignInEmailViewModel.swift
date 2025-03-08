@@ -32,4 +32,13 @@ final class SignInEmailViewModel: ObservableObject {
         
         try await AuthenticationManager.shared.signInUser(email: email, password: password)
     }
+    
+    func resetPassword(email: String) async throws {
+        guard !email.isEmpty else {
+            print("No email entered.")
+            return
+        }
+        
+        try await AuthenticationManager.shared.resetPassword(email: email)
+    }
 }

@@ -5,43 +5,71 @@
 //  Created by Chase Rodie on 11/23/24.
 //
 
-//Shows the UI related to signing in with email
-
 import SwiftUI
 
 struct SignInEmailView: View {
     
     @StateObject private var viewModel = SignInEmailViewModel()
     @Binding var showSignInView: Bool
+    @State private var resetEmail: String = ""
+    @State private var showResetAlert = false
+    @State private var resetMessage: String = ""
+    @State private var errorMessage: String?
+    @State private var showPassword: Bool = false  // Toggle for password visibility
     
     var body: some View {
         VStack {
+            // Email Input Field
             TextField("Email...", text: $viewModel.email)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled(true)
                 .padding()
                 .background(Color.gray.opacity(0.4))
                 .cornerRadius(10)
             
-            SecureField("Password...", text: $viewModel.password)
-                .padding()
-                .background(Color.gray.opacity(0.4))
-                .cornerRadius(10)
-
+            // Password Input Field with Eye Icon
+            HStack {
+                if showPassword {
+                    TextField("Password...", text: $viewModel.password)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                        .padding()
+                } else {
+                    SecureField("Password...", text: $viewModel.password)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                        .padding()
+                }
+                
+                // Eye icon for toggling password visibility
+                Button(action: {
+                    showPassword.toggle()
+                }) {
+                    Image(systemName: showPassword ? "eye.slash" : "eye")
+                        .foregroundColor(.gray)
+                        .padding(.trailing, 10)
+                }
+            }
+            .background(Color.gray.opacity(0.4))
+            .cornerRadius(10)
+            
+            // Error Message Display
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            
+            // Sign In Button
             Button {
                 Task {
                     do {
-                        try await viewModel.signUp()
-                        showSignInView = false
-                        return
-                    } catch {
-                        print(error)
-                    }
-                    
-                    do {
                         try await viewModel.signIn()
                         showSignInView = false
-                        return
                     } catch {
-                        print(error)
+                        errorMessage = "No account found for this email. Please sign up or check your email/password."
                     }
                 }
             } label: {
@@ -49,15 +77,47 @@ struct SignInEmailView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
+                    .frame(width: 360)
+                    .background(Color.green)
                     .cornerRadius(10)
+            }
+            
+            // Forgot Password Button
+            Button(action: {
+                resetEmail = viewModel.email
+                showResetAlert = true
+            }) {
+                Text("Forgot Password?")
+                    .font(.body)
+                    .foregroundColor(.blue)
+                    .underline()
+                    .padding(.top, 5)
             }
             
             Spacer()
         }
         .padding()
         .navigationTitle("Sign In With Email")
+        .alert("Reset Password", isPresented: $showResetAlert) {
+            VStack {
+                TextField("Enter your email", text: $resetEmail)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                Button("Send Reset Link") {
+                    Task {
+                        do {
+                            try await viewModel.resetPassword(email: resetEmail)
+                            resetMessage = "A reset link has been sent to your email."
+                        } catch {
+                            resetMessage = "Failed to send reset link. Please check your email."
+                        }
+                    }
+                }
+            }
+        } message: {
+            Text(resetMessage)
+        }
     }
 }
 
