@@ -22,6 +22,7 @@
 		5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5EB437782CF9AA3000C8B75F /* FirebaseFirestore */; };
 		5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */; };
 		5EB5A40A2D7511FE004D0F38 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */; };
+		5EEDA2812D7CD3D400D3645A /* FoodJournalExpandedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEDA2802D7CD3D400D3645A /* FoodJournalExpandedItemView.swift */; };
 		5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */; };
 		5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */; };
 		5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */; };
@@ -153,6 +154,7 @@
 		5EB437762CF9A9DD00C8B75F /* RetrieveWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutData.swift; sourceTree = "<group>"; };
 		5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrieveWorkoutDataTests.swift; sourceTree = "<group>"; };
 		5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		5EEDA2802D7CD3D400D3645A /* FoodJournalExpandedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodJournalExpandedItemView.swift; sourceTree = "<group>"; };
 		5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerMenuView.swift; sourceTree = "<group>"; };
 		5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
 		5EFA1F342CFD6F9D00308814 /* ProgressTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTrackerView.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */,
 				5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */,
 				5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */,
+				5EEDA2802D7CD3D400D3645A /* FoodJournalExpandedItemView.swift */,
 			);
 			path = FoodJournal;
 			sourceTree = "<group>";
@@ -922,6 +925,7 @@
 				5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
+				5EEDA2812D7CD3D400D3645A /* FoodJournalExpandedItemView.swift in Sources */,
 				F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */,
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,

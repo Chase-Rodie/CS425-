@@ -80,6 +80,7 @@ struct FoodJournalView: View {
                                     .background(Color.black)
                                 //Text("Entries Count: \(viewModel.foodEntries.count)")
                                 ForEach(viewModel.breakfastFoodEntries){ food in
+                                    NavigationLink(destination:FoodJournalExpandedItemView(item: food, mealName: "breakfast")){}
                                     FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)
                                 }
 
