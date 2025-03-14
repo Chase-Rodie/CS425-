@@ -16,7 +16,7 @@ import SwiftUI
 struct HomePageView: View {
     
     @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
-    @Binding var showMenu: Bool
+    //@Binding var showMenu: Bool
     //@State private var currentProgress: Double = 0.5
     //@State private var currentProgress: Double = 0.0
     @State private var progressValues: [Double] = Array(repeating: 1, count: 7)
@@ -30,21 +30,21 @@ struct HomePageView: View {
             ScrollView{
                 VStack(alignment: .leading, spacing: 80){
                     
-                    HStack{
-                        Button(action: {
-                            withAnimation{
-                                self.showMenu = true
-                            }
-                        }){
-                            Image(systemName: "line.3.horizontal")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 30, height: 30)
-                            
-                        }
-                        .padding(.leading, 20)
-                        Spacer()
-                    }
+//                    HStack{
+//                        Button(action: {
+//                            withAnimation{
+//                                self.showMenu = true
+//                            }
+//                        }){
+//                            Image(systemName: "line.3.horizontal")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: 30, height: 30)
+//                            
+//                        }
+//                        .padding(.leading, 20)
+//                        Spacer()
+//                    }
                 }
                 VStack(alignment: .center, spacing: 20){
                     ZStack{
@@ -136,12 +136,10 @@ struct HomePageView: View {
     
     
 //    
-//    struct ProgressView: View {
-//        var body: some View {
-//            VStack{
-//                Text("Progress View")
-//            }
-//            
-//        }
-//    }
-//
+struct HomePageView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomePageView()
+    }
+}
+
+

@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  ProfileViewModel.swift
 //  Fit Pantry
 //
 //  Created by Chase Rodie on 2/5/25.
