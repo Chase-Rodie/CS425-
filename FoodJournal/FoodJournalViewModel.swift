@@ -15,9 +15,9 @@ import FirebaseFirestore
 
     @Published var showingFoodJournalItemAddView = false
     
-    @Published var breakfastFoodEntries: [Food] = []
-    @Published var lunchFoodEntries: [Food] = []
-    @Published var dinnerFoodEntries: [Food] = []
+    @Published var breakfastFoodEntries: [FoodJournalItem] = []
+    @Published var lunchFoodEntries: [FoodJournalItem] = []
+    @Published var dinnerFoodEntries: [FoodJournalItem] = []
     @State private var errorMessage: String? = nil
     
     private let db = Firestore.firestore()
@@ -67,8 +67,9 @@ import FirebaseFirestore
                     let carbohydrates = (data["carbohydrates"] as? NSNumber)?.floatValue ?? 0.0
                     let protein = (data["protein"] as? NSNumber)?.floatValue ?? 0.0
                     let suitableFor = data["suitableFor"] as? [String] ?? []
+                    let quantity = data["quantity"] as? Double ?? 0
 
-                    return Food(id: id, name: name, foodGroup: foodGroup, food_id: food_id, calories: Int32(calories), fat: fat, carbohydrates: carbohydrates, protein: protein, suitableFor: suitableFor)
+                return FoodJournalItem(id: id, name: name, foodGroup: foodGroup, food_id: food_id, calories: Int32(calories), fat: fat, carbohydrates: carbohydrates, protein: protein, suitableFor: suitableFor, quantity: quantity)
                 }
             DispatchQueue.main.async{
                 switch mealName.lowercased(){
@@ -91,7 +92,7 @@ import FirebaseFirestore
         
     }
     
-    func saveLocally(foodEntries: [Food], for mealName: String) {
+    func saveLocally(foodEntries: [FoodJournalItem], for mealName: String) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(foodEntries) {
             UserDefaults.standard.set(encoded, forKey: "\(mealName.lowercased())foodEntries")
@@ -99,9 +100,9 @@ import FirebaseFirestore
     }
 
     
-    func loadLocally(for mealName: String) -> [Food] {
+    func loadLocally(for mealName: String) -> [FoodJournalItem] {
         if let savedData = UserDefaults.standard.data(forKey: "foodEntries_\(mealName.lowercased())"),
-           let decodedEntries = try? JSONDecoder().decode([Food].self, from: savedData) {
+           let decodedEntries = try? JSONDecoder().decode([FoodJournalItem].self, from: savedData) {
             return decodedEntries
         }
         return []
@@ -109,7 +110,7 @@ import FirebaseFirestore
 
   
     
-    func deleteFoodEntry(mealName: String, food: Food) {
+    func deleteFoodEntry(mealName: String, food: FoodJournalItem) {
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
             return
