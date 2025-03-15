@@ -60,6 +60,7 @@
 		9A6624412CFEBAC700A5CB90 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6624402CFEBAC700A5CB90 /* SignInEmailViewModel.swift */; };
 		9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6624452CFEBBC900A5CB90 /* ProfileView.swift */; };
 		9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6624492CFECB7700A5CB90 /* UserManager.swift */; };
+		9A6F88462D85FD0D0062168B /* PantryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6F88452D85FD0D0062168B /* PantryManager.swift */; };
 		9A7F604B2D5BC414007BF914 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F604A2D5BC414007BF914 /* EditProfileView.swift */; };
 		9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */; };
 		9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* FitPantry.swift */; };
@@ -202,6 +203,7 @@
 		9A6624402CFEBAC700A5CB90 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
 		9A6624452CFEBBC900A5CB90 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9A6624492CFECB7700A5CB90 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		9A6F88452D85FD0D0062168B /* PantryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryManager.swift; sourceTree = "<group>"; };
 		9A7F604A2D5BC414007BF914 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fit Pantry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DD22CA57BCF00A0472C /* FitPantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitPantry.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				9A3FB8A22CD3F69E0019266C /* PantryView.swift */,
 				097FB5212CFAD0C200F58B67 /* AddFoodView.swift */,
 				097FB5232CFAD0E300F58B67 /* SearchManager.swift */,
+				9A6F88452D85FD0D0062168B /* PantryManager.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -1009,6 +1012,7 @@
 				9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
+				9A6F88462D85FD0D0062168B /* PantryManager.swift in Sources */,
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
 				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,

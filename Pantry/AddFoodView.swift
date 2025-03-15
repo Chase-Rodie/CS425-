@@ -30,7 +30,6 @@ struct AddFoodView: View {
     
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
-    
     // Search view, contians:
     // - Search bar
     // - Results from search
@@ -212,7 +211,31 @@ struct AddFoodView: View {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
+
+        // Use the original nutritional values without rounding
+        let originalFood = Food(
+            id: item.id,
+            name: item.name,
+            foodGroup: item.foodGroup,
+            food_id: item.food_id,
+            calories: item.calories,  // Keep original value
+            fat: item.fat,            // Keep original value
+            carbohydrates: item.carbohydrates,  // Keep original value
+            protein: item.protein,    // Keep original value
+            suitableFor: item.suitableFor
+        )
         
+        // Create a PantryItem from the Food object
+        let pantryItem = PantryItem(
+            id: originalFood.id,
+            food_id: Int(originalFood.food_id),  // Convert food_id from Int32 to Int
+            name: originalFood.name,
+            quantity: value // Set the quantity from the entered value
+        )
+        
+        // Save the pantry item to Firestore
+        PantryManager.shared.saveFoodToFirestore(pantryItem: pantryItem, foodData: originalFood)
+
         // Reference to Firestore database
         let db = Firestore.firestore()
             .collection("users")
@@ -220,15 +243,15 @@ struct AddFoodView: View {
             .collection("pantry")
             .document(item.id)
         
-        // Add food and nutritional info
+        // Add food and nutritional info without rounding
         let data: [String: Any] = [
             "id": item.food_id,
             "name": item.name,
             "quantity": value,
-            "calories": item.calories,
-            "fat": item.fat,
-            "carbohydrates": item.carbohydrates,
-            "protein": item.protein
+            "calories": originalFood.calories,  // Use original value
+            "fat": originalFood.fat,            // Use original value
+            "carbohydrates": originalFood.carbohydrates,  // Use original value
+            "protein": originalFood.protein     // Use original value
         ]
         
         // Update document in Firestore
@@ -242,8 +265,10 @@ struct AddFoodView: View {
     }
 
 
-}
 
+
+
+}
 
 #Preview {
     AddFoodView()
