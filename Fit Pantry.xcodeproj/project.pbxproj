@@ -353,7 +353,6 @@
 			isa = PBXGroup;
 			children = (
 				9A26ACFF2D7B911E0039DA58 /* Subviews */,
-				5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */,
 				5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */,
 				5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */,
 				5EFA1F322CFD6F7200308814 /* ProgressRingView.swift */,
