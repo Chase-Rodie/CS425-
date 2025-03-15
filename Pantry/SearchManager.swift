@@ -4,7 +4,7 @@
 //
 //  Created by Zach Greenhill on 11/29/24.
 //
-
+   
 import Foundation
 import FirebaseFirestore
 import Combine
@@ -26,13 +26,10 @@ class SearchManager: ObservableObject {
         
         // Check to see if there is an equal operator
         let query = processSearchTerm(searchQuery)
-        //print(query.self, String(query.after ?? "nil"), String(query.before ?? "nil"))
         
         // If there is an '=' & there is something before or after it
         if (query.before != nil && query.after != nil) {
-            //print("Search by value")
             
-            // See if there is a keyword before =
             var keywordFlag = false
             var keyword = ""
             if (query.before?.uppercased() == CAL_KEY){
@@ -52,14 +49,12 @@ class SearchManager: ObservableObject {
                 keywordFlag = true
             }
             
-            // See if there is a < > after the =
             var operandFlag = false
             let operandCheck = parseFirstCharacter(from: query.after ?? "")
             if operandCheck.firstCharacter == "<" || operandCheck.firstCharacter == ">" {
                 operandFlag = true
             }
             
-            // See if there is a number after everything else
             var valueFlag = false
             var value = 0.0
             if operandFlag == true {
@@ -67,7 +62,6 @@ class SearchManager: ObservableObject {
                 if value >= 0 {
                     valueFlag = true
                 }
-                
             }
             else {
                 value = Double(query.after ?? "") ?? -1
@@ -76,10 +70,9 @@ class SearchManager: ObservableObject {
                 }
             }
             
-            // Critera for advance search is met, search by specific value
             if (keywordFlag == true && valueFlag == true) {
                 
-                // Preform search for items greater than criteria
+                // Perform search for items greater than criteria
                 if operandCheck.firstCharacter == ">" {
                     getItemGreater(field: keyword, searchQuery: value) { result in
                         switch result {
@@ -93,7 +86,7 @@ class SearchManager: ObservableObject {
                     }
                 }
                 
-                // Preform search for items less than criteria
+                // Perform search for items less than criteria
                 else if operandCheck.firstCharacter == "<" {
                     getItemLess(field: keyword, searchQuery: value) { result in
                         switch result {
@@ -105,7 +98,6 @@ class SearchManager: ObservableObject {
                             print("Error fetching items: \(error.localizedDescription)")
                         }
                     }
-                
                 }
                 else {
                     getItemByValue(field: keyword, searchQuery: value) { result in
@@ -120,14 +112,13 @@ class SearchManager: ObservableObject {
                     }
                 }
             }
-            
-            // Critera for advance search is false, search by name
             else {
                 getItemByName(searchQuery: searchQuery) { result in
                     switch result {
                     case .success(let fetchedItems):
                         DispatchQueue.main.async {
-                            self.items = fetchedItems
+                            // Filter the items locally after fetching all of them
+                            self.items = self.filterItems(fetchedItems, withQuery: searchQuery)
                         }
                     case .failure(let error):
                         print("Error fetching items: \(error.localizedDescription)")
@@ -136,13 +127,14 @@ class SearchManager: ObservableObject {
             }
         }
         
-        // Search by name
+        // Search by name (if there's no '=' in query)
         else {
             getItemByName(searchQuery: searchQuery) { result in
                 switch result {
                 case .success(let fetchedItems):
                     DispatchQueue.main.async {
-                        self.items = fetchedItems
+                        // Filter the items locally after fetching all of them
+                        self.items = self.filterItems(fetchedItems, withQuery: searchQuery)
                     }
                 case .failure(let error):
                     print("Error fetching items: \(error.localizedDescription)")
@@ -151,102 +143,88 @@ class SearchManager: ObservableObject {
         }
     }
     
-    // Function to fetch a list of items by name
+    // Function to filter items based on the search query (case-insensitive partial matching)
+    func filterItems(_ items: [Food], withQuery query: String) -> [Food] {
+        // Make the query case-insensitive
+        let lowercasedQuery = query.lowercased()
+        return items.filter { food in
+            food.name.lowercased().contains(lowercasedQuery) ||
+            food.foodGroup.lowercased().contains(lowercasedQuery) ||
+            String(food.calories).contains(lowercasedQuery) ||
+            String(food.fat).contains(lowercasedQuery) ||
+            String(food.carbohydrates).contains(lowercasedQuery) ||
+            String(food.protein).contains(lowercasedQuery)
+        }
+    }
+
     func getItemByName(searchQuery: String, completion: @escaping (Result<[Food], Error>) -> Void) {
         db.collection(dbName)
-            //.whereField("name", isEqualTo: searchQuery) // Explicit name search
-            .whereField("name", isGreaterThanOrEqualTo: searchQuery)
-            .whereField("name", isLessThanOrEqualTo: searchQuery + "\u{f7ff}")
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(error))
                     return
                 }
                 
-                // If search yeild nothing return an empty array
+                // If no documents found, return an empty array
                 guard let snapshot = snapshot else {
                     completion(.success([]))
                     return
                 }
                 
-                // Return items from search
-                let fetchedItems: [Food] = snapshot.documents.compactMap { d in
-                    Food(
-                        id: d.documentID,
-                        name: d["name"] as? String ?? "",
-                        foodGroup: d["Food Group"] as? String ?? "",
-                        food_id: d["ID"] as? Int32 ?? 0,
-                        calories: d["Calories"] as? Int32 ?? 0,
-                        fat: d["Fat (g)"] as? Float32 ?? 0.0,
-                        carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
-                        protein: d["Protein (g)"] as? Float32 ?? 0.0,
-                        suitableFor: d["suitableFor"] as? [String] ?? []
-                    )
+                // Log the document data to ensure we have correct data
+                snapshot.documents.forEach { document in
+                    print("Fetched document: \(document.data())")
                 }
-                
-                // Return statement
+
+                // Map Firestore data to Food model
+                let fetchedItems: [Food] = snapshot.documents.compactMap { d in
+                    // Safe conversion for each field
+                    let calories = (d["Calories"] as? Int32) ?? Int32((d["Calories"] as? Double ?? 0.0)) // Convert Double to Int32
+                    let fat = (d["Fat (g)"] as? Float32) ?? Float32((d["Fat (g)"] as? Double ?? 0.0)) // Convert Double to Float32
+                    let carbohydrates = (d["Carbohydrate (g)"] as? Float32) ?? Float32((d["Carbohydrate (g)"] as? Double ?? 0.0)) // Convert Double to Float32
+                    let protein = (d["Protein (g)"] as? Float32) ?? Float32((d["Protein (g)"] as? Double ?? 0.0)) // Convert Double to Float32
+                    
+                    let food = Food(
+                        id: d.documentID,  // Firestore document ID
+                        name: d["name"] as? String ?? "",  // Handle name
+                        foodGroup: d["Food Group"] as? String ?? "",  // Handle Food Group
+                        food_id: d["ID"] as? Int32 ?? 0,  // Handle food_id
+                        calories: calories,  // Use safely casted value
+                        fat: fat,  // Use safely casted value
+                        carbohydrates: carbohydrates,  // Use safely casted value
+                        protein: protein,  // Use safely casted value
+                        suitableFor: d["suitableFor"] as? [String] ?? []  // Handle suitableFor as an array of strings
+                    )
+                    print("Mapped Food item: \(food)")  // Log mapped food to verify values
+                    return food
+                }
+
+                // Return the successfully fetched items
                 completion(.success(fetchedItems))
             }
     }
+
+
     
-    // Get items by a value, exact match only
-    func getItemByValue(field: String, searchQuery: Double, completion: @escaping (Result<[Food], Error>) -> Void) {
-        db.collection(dbName)
-            .whereField(field, isEqualTo: searchQuery) // Explicit name search
-            //.whereField("name", isGreaterThanOrEqualTo: searchQuery)
-            //.whereField("name", isLessThanOrEqualTo: searchQuery)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                // If search yeild nothing return an empty array
-                guard let snapshot = snapshot else {
-                    completion(.success([]))
-                    return
-                }
-                
-                // Return items from search
-                let fetchedItems: [Food] = snapshot.documents.compactMap { d in
-                    Food(
-                        id: d.documentID,
-                        name: d["name"] as? String ?? "",
-                        foodGroup: d["Food Group"] as? String ?? "",
-                        food_id: d["ID"] as? Int32 ?? 0,
-                        calories: d["Calories"] as? Int32 ?? 0,
-                        fat: d["Fat (g)"] as? Float32 ?? 0.0,
-                        carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
-                        protein: d["Protein (g)"] as? Float32 ?? 0.0,
-                        suitableFor: d["suitableFor"] as? [String] ?? []
-                    )
-                }
-                
-                // Return statement
-                completion(.success(fetchedItems))
-            }
-        
-    }
-    
-    // Get all items greater than a value
     func getItemGreater(field: String, searchQuery: Double, completion: @escaping (Result<[Food], Error>) -> Void) {
         db.collection(dbName)
-            //.whereField(field, isEqualTo: searchQuery) // Explicit name search
-            .whereField(field, isGreaterThanOrEqualTo: searchQuery)
-            //.whereField("name", isLessThanOrEqualTo: searchQuery)
+            .whereField(field, isGreaterThan: searchQuery)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(error))
                     return
                 }
                 
-                // If search yeild nothing return an empty array
                 guard let snapshot = snapshot else {
                     completion(.success([]))
                     return
                 }
-                
-                // Return items from search
+
+                // Log the document data to ensure we have correct data
+                snapshot.documents.forEach { document in
+                    print("Fetched document: \(document.data())")
+                }
+
                 let fetchedItems: [Food] = snapshot.documents.compactMap { d in
                     Food(
                         id: d.documentID,
@@ -261,30 +239,29 @@ class SearchManager: ObservableObject {
                     )
                 }
                 
-                // Return statement
                 completion(.success(fetchedItems))
             }
     }
     
-    // Get all items less than a value
     func getItemLess(field: String, searchQuery: Double, completion: @escaping (Result<[Food], Error>) -> Void) {
         db.collection(dbName)
-            //.whereField(field, isEqualTo: searchQuery) // Explicit name search
-            //.whereField(field, isGreaterThanOrEqualTo: searchQuery)
-            .whereField(field, isLessThanOrEqualTo: searchQuery)
+            .whereField(field, isLessThan: searchQuery)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(error))
                     return
                 }
                 
-                // If search yeild nothing return an empty array
                 guard let snapshot = snapshot else {
                     completion(.success([]))
                     return
                 }
-                
-                // Return items from search
+
+                // Log the document data to ensure we have correct data
+                snapshot.documents.forEach { document in
+                    print("Fetched document: \(document.data())")
+                }
+
                 let fetchedItems: [Food] = snapshot.documents.compactMap { d in
                     Food(
                         id: d.documentID,
@@ -299,24 +276,53 @@ class SearchManager: ObservableObject {
                     )
                 }
                 
-                // Return statement
                 completion(.success(fetchedItems))
             }
     }
     
-    
-    // Break the search query into two parts if there is an '='
+    func getItemByValue(field: String, searchQuery: Double, completion: @escaping (Result<[Food], Error>) -> Void) {
+        db.collection(dbName)
+            .whereField(field, isEqualTo: searchQuery)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let snapshot = snapshot else {
+                    completion(.success([]))
+                    return
+                }
+
+                // Log the document data to ensure we have correct data
+                snapshot.documents.forEach { document in
+                    print("Fetched document: \(document.data())")
+                }
+
+                let fetchedItems: [Food] = snapshot.documents.compactMap { d in
+                    Food(
+                        id: d.documentID,
+                        name: d["name"] as? String ?? "",
+                        foodGroup: d["Food Group"] as? String ?? "",
+                        food_id: d["ID"] as? Int32 ?? 0,
+                        calories: d["Calories"] as? Int32 ?? 0,
+                        fat: d["Fat (g)"] as? Float32 ?? 0.0,
+                        carbohydrates: d["Carbohydrate (g)"] as? Float32 ?? 0.0,
+                        protein: d["Protein (g)"] as? Float32 ?? 0.0,
+                        suitableFor: d["suitableFor"] as? [String] ?? []
+                    )
+                }
+                
+                completion(.success(fetchedItems))
+            }
+    }
+
     func processSearchTerm(_ searchTerm: String) -> (before: String?, after: String?) {
-        // Check if the search term contains '='
         guard let equalsIndex = searchTerm.firstIndex(of: "=") else {
-            // Return nil for both if '=' is not found
             return (nil, nil)
         }
         
-        // Extract the part before '='
         let before = searchTerm[..<equalsIndex].trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        // Extract the part after '='
         let afterStartIndex = searchTerm.index(after: equalsIndex)
         let after = searchTerm[afterStartIndex...].trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -324,17 +330,12 @@ class SearchManager: ObservableObject {
     }
     
     func parseFirstCharacter(from input: String) -> (firstCharacter: Character?, remainingString: String) {
-        // Check for empty string
         guard !input.isEmpty else {
-            return (nil, input) // Return nil if the string is empty
+            return (nil, input)
         }
         
-        // Get first character
-        let firstCharacter = input.first // Get the first character
-        
-        // Remove first character and return remainder of string
+        let firstCharacter = input.first
         let remainingString = String(input.dropFirst())
         return (firstCharacter, remainingString)
     }
-    
 }
