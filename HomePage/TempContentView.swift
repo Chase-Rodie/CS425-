@@ -35,7 +35,7 @@ struct TempContentView: View {
                     .tabItem { Label("Workout", systemImage: "figure.run") }
                     .tag(1)
                 
-                HomePageView()
+                HomePageView(showSignInView: $showSignInView)
                     .tabItem { Label("Home", systemImage: "house.fill") }
                     .tag(0)
 

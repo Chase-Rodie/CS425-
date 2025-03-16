@@ -11,11 +11,6 @@ import Combine
 
 class SearchManager: ObservableObject {
     
-//    init() {
-//        // Test the food initialization with decimal values
-//        testFoodInitialization()
-//    }
-    
     private var db = Firestore.firestore()
     let dbName = "test" // Change later for production
     
@@ -27,39 +22,6 @@ class SearchManager: ObservableObject {
     let CARB_KEY = "CARBS"
     let PROT_KEY = "PROTEIN"
     
-    
-//    func testFoodInitialization() {
-//        // Example decimal values for testing
-//        let calories = 45.6789
-//        let fat = 9.8765
-//        let carbohydrates = 23.4567
-//        let protein = 12.3456
-//        
-//        // Initialize Food object manually with these values
-//        let food = Food(
-//            id: "test123",  // Unique ID
-//            name: "Test Food",
-//            foodGroup: "Test Group",
-//            food_id: 12345,
-//            calories: roundToTwoDecimalPlaces(calories),
-//            fat: roundToTwoDecimalPlaces(fat),
-//            carbohydrates: roundToTwoDecimalPlaces(carbohydrates),
-//            protein: roundToTwoDecimalPlaces(protein),
-//            suitableFor: ["Vegan"]
-//        )
-//        
-//        // Log the values to see if rounding works
-//        print("Food Initialized: \(food)")
-//        
-//        // Optionally, you can manually check if values are rounded correctly
-//        assert(food.calories == 45.68, "Calories are not rounded correctly!")
-//        assert(food.fat == 9.88, "Fat is not rounded correctly!")
-//        assert(food.carbohydrates == 23.46, "Carbs are not rounded correctly!")
-//        assert(food.protein == 12.35, "Protein is not rounded correctly!")
-//        
-//        print("Test passed if no assertions failed!")
-//    }
-
     // Function to fetch items based on a search query
     func fetchItems(searchQuery: String) {
         
@@ -210,31 +172,29 @@ class SearchManager: ObservableObject {
                     return
                 }
 
-                // Log the document data to ensure we have correct data
+                // Log the document data to ensure correct data
                 snapshot.documents.forEach { document in
                     print("Fetched document data: \(document.data())")
                 }
 
                 // Map Firestore data to Food model with rounding
                 let fetchedItems: [Food] = snapshot.documents.compactMap { d in
-                    // Fetch values and round them to 2 decimal places
                     let calories = (d["Calories"] as? Double ?? 0.0)
                     let fat = (d["Fat (g)"] as? Double ?? 0.0)
                     let carbohydrates = (d["Carbohydrate (g)"] as? Double ?? 0.0)
                     let protein = (d["Protein (g)"] as? Double ?? 0.0)
                     
                     let food = Food(
-                        id: d.documentID,  // Firestore document ID
-                        name: d["name"] as? String ?? "",  // Handle name
-                        foodGroup: d["Food Group"] as? String ?? "",  // Handle Food Group
-                        food_id: d["ID"] as? Int32 ?? 0,  // Handle food_id
-                        calories: calories,  // Use rounded value
-                        fat: fat,  // Use rounded value
-                        carbohydrates: carbohydrates,  // Use rounded value
-                        protein: protein,  // Use rounded value
-                        suitableFor: d["suitableFor"] as? [String] ?? []  // Handle suitableFor as an array of strings
+                        id: d.documentID,
+                        name: d["name"] as? String ?? "",
+                        foodGroup: d["Food Group"] as? String ?? "",
+                        food_id: d["ID"] as? Int32 ?? 0,
+                        calories: calories,
+                        fat: fat,
+                        carbohydrates: carbohydrates,
+                        protein: protein,
+                        suitableFor: d["suitableFor"] as? [String] ?? []
                     )
-                    print("Mapped Food item: \(food)")  // Log mapped food to verify values
                     return food
                 }
 
@@ -258,21 +218,15 @@ class SearchManager: ObservableObject {
                 }
 
                 let fetchedItems: [Food] = snapshot.documents.compactMap { d in
-                    // Fetch values and round them to 2 decimal places
-                    let calories = PantryManager.shared.roundToTwoDecimalPlaces((d["Calories"] as? Double ?? 0.0))
-                    let fat = PantryManager.shared.roundToTwoDecimalPlaces((d["Fat (g)"] as? Double ?? 0.0))
-                    let carbohydrates = PantryManager.shared.roundToTwoDecimalPlaces((d["Carbohydrate (g)"] as? Double ?? 0.0))
-                    let protein = PantryManager.shared.roundToTwoDecimalPlaces((d["Protein (g)"] as? Double ?? 0.0))
-
                     return Food(
                         id: d.documentID,
                         name: d["name"] as? String ?? "",
                         foodGroup: d["Food Group"] as? String ?? "",
                         food_id: d["ID"] as? Int32 ?? 0,
-                        calories: calories,
-                        fat: fat,
-                        carbohydrates: carbohydrates,
-                        protein: protein,
+                        calories: d["Calories"] as? Double ?? 0.0,
+                        fat: d["Fat (g)"] as? Double ?? 0.0,
+                        carbohydrates: d["Carbohydrate (g)"] as? Double ?? 0.0,
+                        protein: d["Protein (g)"] as? Double ?? 0.0,
                         suitableFor: d["suitableFor"] as? [String] ?? []
                     )
                 }
@@ -296,21 +250,15 @@ class SearchManager: ObservableObject {
                 }
 
                 let fetchedItems: [Food] = snapshot.documents.compactMap { d in
-                    // Fetch values and round them to 2 decimal places
-                    let calories = PantryManager.shared.roundToTwoDecimalPlaces((d["Calories"] as? Double ?? 0.0))
-                    let fat = PantryManager.shared.roundToTwoDecimalPlaces((d["Fat (g)"] as? Double ?? 0.0))
-                    let carbohydrates = PantryManager.shared.roundToTwoDecimalPlaces((d["Carbohydrate (g)"] as? Double ?? 0.0))
-                    let protein = PantryManager.shared.roundToTwoDecimalPlaces((d["Protein (g)"] as? Double ?? 0.0))
-
                     return Food(
                         id: d.documentID,
                         name: d["name"] as? String ?? "",
                         foodGroup: d["Food Group"] as? String ?? "",
                         food_id: d["ID"] as? Int32 ?? 0,
-                        calories: calories,
-                        fat: fat,
-                        carbohydrates: carbohydrates,
-                        protein: protein,
+                        calories: d["Calories"] as? Double ?? 0.0,
+                        fat: d["Fat (g)"] as? Double ?? 0.0,
+                        carbohydrates: d["Carbohydrate (g)"] as? Double ?? 0.0,
+                        protein: d["Protein (g)"] as? Double ?? 0.0,
                         suitableFor: d["suitableFor"] as? [String] ?? []
                     )
                 }
@@ -334,21 +282,15 @@ class SearchManager: ObservableObject {
                 }
 
                 let fetchedItems: [Food] = snapshot.documents.compactMap { d in
-                    // Fetch values and round them to 2 decimal places
-                    let calories = PantryManager.shared.roundToTwoDecimalPlaces((d["Calories"] as? Double ?? 0.0))
-                    let fat = PantryManager.shared.roundToTwoDecimalPlaces((d["Fat (g)"] as? Double ?? 0.0))
-                    let carbohydrates = PantryManager.shared.roundToTwoDecimalPlaces((d["Carbohydrate (g)"] as? Double ?? 0.0))
-                    let protein = PantryManager.shared.roundToTwoDecimalPlaces((d["Protein (g)"] as? Double ?? 0.0))
-
                     return Food(
                         id: d.documentID,
                         name: d["name"] as? String ?? "",
                         foodGroup: d["Food Group"] as? String ?? "",
                         food_id: d["ID"] as? Int32 ?? 0,
-                        calories: calories,
-                        fat: fat,
-                        carbohydrates: carbohydrates,
-                        protein: protein,
+                        calories: d["Calories"] as? Double ?? 0.0,
+                        fat: d["Fat (g)"] as? Double ?? 0.0,
+                        carbohydrates: d["Carbohydrate (g)"] as? Double ?? 0.0,
+                        protein: d["Protein (g)"] as? Double ?? 0.0,
                         suitableFor: d["suitableFor"] as? [String] ?? []
                     )
                 }

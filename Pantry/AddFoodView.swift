@@ -212,25 +212,23 @@ struct AddFoodView: View {
             return
         }
 
-        // Use the original nutritional values without rounding
         let originalFood = Food(
             id: item.id,
             name: item.name,
             foodGroup: item.foodGroup,
             food_id: item.food_id,
-            calories: item.calories,  // Keep original value
-            fat: item.fat,            // Keep original value
-            carbohydrates: item.carbohydrates,  // Keep original value
-            protein: item.protein,    // Keep original value
+            calories: item.calories,
+            fat: item.fat,
+            carbohydrates: item.carbohydrates,
+            protein: item.protein,
             suitableFor: item.suitableFor
         )
         
-        // Create a PantryItem from the Food object
         let pantryItem = PantryItem(
             id: originalFood.id,
-            food_id: Int(originalFood.food_id),  // Convert food_id from Int32 to Int
+            food_id: Int(originalFood.food_id),
             name: originalFood.name,
-            quantity: value // Set the quantity from the entered value
+            quantity: value
         )
         
         // Save the pantry item to Firestore
@@ -248,13 +246,13 @@ struct AddFoodView: View {
             "id": item.food_id,
             "name": item.name,
             "quantity": value,
-            "calories": originalFood.calories,  // Use original value
-            "fat": originalFood.fat,            // Use original value
-            "carbohydrates": originalFood.carbohydrates,  // Use original value
-            "protein": originalFood.protein     // Use original value
+            "calories": originalFood.calories,
+            "fat": originalFood.fat,
+            "carbohydrates": originalFood.carbohydrates,
+            "protein": originalFood.protein
         ]
         
-        // Update document in Firestore
+        // Update doc
         db.setData(data, merge: true) { error in
             if error != nil {
                 print("Error updating document")
