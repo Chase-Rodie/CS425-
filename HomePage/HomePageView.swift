@@ -14,6 +14,7 @@ import SwiftUI
 
 struct HomePageView: View {
     @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
+    @ObservedObject var profileViewModel: ProfileViewModel
     @State private var progressValues: [Double] = Array(repeating: 1, count: 7)
     @State private var selectedDate: Date = Date()
     @Binding var showSignInView: Bool
@@ -38,10 +39,34 @@ struct HomePageView: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 10)
-                
+
+                // 📌 Workout Progress starts here (below weight progress)
                 ScrollView {
                     VStack(alignment: .center, spacing: 15) {
                         VStack(alignment: .leading, spacing: 10) {
+                            if let weightDiff = profileViewModel.weightDifference {
+                                if weightDiff > 0 {
+                                    Text("Weight Gained: \(weightDiff) lbs")
+                                        .font(.subheadline)
+                                        .foregroundColor(.red)
+                                        .padding(.leading, 15)
+                                } else if weightDiff < 0 {
+                                    Text("Weight Lost: \(-weightDiff) lbs")
+                                        .font(.subheadline)
+                                        .foregroundColor(.green)
+                                        .padding(.leading, 15)
+                                } else {
+                                    Text("Weight Stable")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                        .padding(.leading, 15)
+                                }
+                            } else {
+                                Text("Weight Progress: -")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                    .padding(.leading, 15)
+                            }
                             Text("Workout Progress")
                                 .font(.largeTitle)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -49,8 +74,8 @@ struct HomePageView: View {
                             
                             ScrollView(.horizontal) {
                                 HStack(spacing: 10) {
-                                    ForEach(1..<7, id: \ .self) { dayIndex in
-                                        VStack(spacing: 10) { // Reduced spacing
+                                    ForEach(1..<7, id: \.self) { dayIndex in
+                                        VStack(spacing: 10) {
                                             NavigationLink(destination: ProgressView()) {
                                                 ProgressRingView(progress: progressValues[dayIndex], ringWidth: 15)
                                                     .padding()
@@ -65,15 +90,15 @@ struct HomePageView: View {
                                 .padding(.leading, 20)
                             }
                         }
-                        
-                        VStack(alignment: .leading, spacing: 10) { 
+
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("Today's Meals")
                                 .font(.largeTitle)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.horizontal)
                             
                             ScrollView(.horizontal) {
-                                HStack(spacing: 10) { // Reduced spacing
+                                HStack(spacing: 10) {
                                     NavigationLink(destination: ProgressView()) {
                                         Image("Breakfast")
                                             .resizable()
@@ -95,11 +120,16 @@ struct HomePageView: View {
                                 }
                             }
                         }
-                        
+
                         NavigationLink("Progress Calendar", destination: ProgressTrackerView())
                             .font(.largeTitle)
                     }
                     .onAppear {
+                        Task {
+                           await profileViewModel.fetchUserProfile()
+                            print("Debug: weightDifference is \(profileViewModel.weightDifference ?? 0)")
+
+                        }
                         fetchAllDaysProgress()
                     }
                 }
@@ -107,7 +137,7 @@ struct HomePageView: View {
             .accentColor(.background)
         }
     }
-    
+
     private func fetchAllDaysProgress() {
         for dayIndex in 1..<7 {
             retrieveworkoutdata.countCompletedAndTotalExercises(for: selectedDate, dayIndex: dayIndex) { completed, total in
@@ -124,6 +154,6 @@ struct HomePageView: View {
 
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
-        HomePageView(showSignInView: .constant(false))
+        HomePageView(profileViewModel: ProfileViewModel(), showSignInView: .constant(false))
     }
 }
