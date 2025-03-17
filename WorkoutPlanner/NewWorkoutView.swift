@@ -1,0 +1,144 @@
+//
+//  NewWorkoutView.swift
+//  Fit Pantry
+//
+//  Created by Lexie Reddon on 3/16/25.
+//
+
+import SwiftUI
+
+struct NewWorkoutView: View {
+    @StateObject private var viewModel = RetrieveWorkoutData()
+    
+    var body: some View {
+        Group{
+            let hasWorkoutPlan = viewModel.isWorkoutPlanAvailable
+            if hasWorkoutPlan {
+                //Display workoutplanview
+                GetWorkoutPlanView(workoutPlanModel: viewModel) //isLoading: $isLoading)
+            } else {
+                //Display form
+                //View2()
+                GetWorkoutPlanView(workoutPlanModel: viewModel)
+            }
+        }
+    }
+}
+
+
+struct GetWorkoutPlanView: View {
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+    //@Binding  var isLoading: Bool
+    @State var days = 0
+    let numDays = ["3", "4", "5"]
+    @State var dur = 0
+    let duration = ["30", "60"]
+    @State var diff = 0
+    let difficulty = ["Beginner", "Intermediate", "Expert"]
+    
+    var body: some View {
+        ZStack{
+            
+            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            VStack{
+                Text("You do not currently have a workout plan.")
+                    .fontWeight(.semibold)
+                Text("Please fill out the form below to get one!")
+                    .fontWeight(.semibold)
+             
+                VStack{
+                        Picker("Minutes", selection: $dur){
+                            ForEach(duration.indices, id:\.self){i in                        Text(self.duration[i])
+                            }
+                        }.pickerStyle(.segmented)
+    
+                        Picker("Days", selection: $days){
+                                ForEach(numDays.indices, id:\.self){i in                        Text(self.numDays[i])
+                                }
+                        }.pickerStyle(.segmented)
+                        Picker("Difficulty", selection: $diff){
+                            ForEach(difficulty.indices, id:\.self){i in                        Text(self.difficulty[i])
+                            }
+                        }.pickerStyle(.segmented)
+                
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(Color.white).frame(width: 200, height: 25)
+                        Button("Get Workout Plan"){
+                            print("Generating Workout Plan")
+                            
+                            var passMax: Int = 0
+                            
+                            if dur == 0{
+                                passMax = 3
+                            }else{
+                                passMax = 5
+                            }
+                            
+                            
+                            if days == 0 {
+                                print("3 days")
+                                workoutPlanModel.queryExercises(days: [
+                                    ("push", "chest"),
+                                    ("pull", "shoulders"),
+                                    ("pull", "glutes")
+                                ], maxExercises: passMax, level: "beginner"){
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                        
+                                    }
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
+                                }
+                            }else if days == 1 {
+                                print("4 days")
+                                
+                                workoutPlanModel.queryExercises(days: [
+                                    ("push", "chest"),
+                                    ("pull", "glutes"),
+                                    ("pull", "biceps"),
+                                    //had to change this temporarily!
+                                    ("pull", "biceps")
+                                ], maxExercises: passMax, level: "beginner"){
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                    }
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
+                                }
+                            }else if days == 2 {
+                                print("5 days")
+                                
+                                workoutPlanModel.queryExercises(days: [
+                                    ("push", "chest"),
+                                    ("pull", "glutes"),
+                                    ("pull", "biceps"),
+                                    //had to change this temproarily!
+                                    ("pull", "biceps"),
+                                    ("push", "abdominals")
+                                ], maxExercises: passMax, level: "beginner"){
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                        workoutPlanModel.isWorkoutPlanAvailable = true
+                                    }
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
+                                }
+                            }
+                        }
+                        .foregroundColor(.black)
+                    }
+                    
+                } .padding()
+                
+            }
+            
+        }
+    }
+}
+
+
+#Preview {
+    NewWorkoutView()
+}
