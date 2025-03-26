@@ -16,7 +16,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             List {
-                if viewModel.user != nil {
+                if let user = viewModel.user {
                     NavigationLink {
                         EditProfileView(viewModel: viewModel)
                     } label: {
@@ -27,7 +27,7 @@ struct ProfileView: View {
                         Text("Select a photo")
                     }
 
-                    if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
+                    if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
                         AsyncImage(url: url) { image in
                             image.resizable()
                                 .scaledToFill()
@@ -38,15 +38,20 @@ struct ProfileView: View {
                         }
                     }
 
-                    if viewModel.user?.profileImagePath != nil {
+                    if user.profileImagePath != nil {
                         Button("Delete image") {
                             viewModel.deleteProfileImage()
                         }
                     }
+                } else {
+                    Text("Loading profile...")
+                        .foregroundColor(.gray)
                 }
             }
-            .task {
-                try? await viewModel.loadCurrentUser()
+            .onAppear {
+                Task {
+                    try? await viewModel.loadCurrentUser()
+                }
             }
             .onChange(of: selectedItem) { newValue in
                 if let newValue {
@@ -57,6 +62,7 @@ struct ProfileView: View {
         }
     }
 }
+
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {

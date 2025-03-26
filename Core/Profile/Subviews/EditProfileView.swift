@@ -42,7 +42,7 @@ struct EditProfileView: View {
                 
                 TextField("Weight", text: Binding(
                     get: { editedUser.weight ?? "" },
-                    set: { editedUser.height = $0.isEmpty ? nil : $0}
+                    set: { editedUser.weight = $0.isEmpty ? nil : $0}
                 ))
             }
             

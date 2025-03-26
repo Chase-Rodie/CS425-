@@ -14,9 +14,12 @@ struct SignUpEmailView: View {
     @State private var showPassword: Bool = false
     @State private var showConfirmPassword: Bool = false
     @State private var emailErrorMessage: String? = nil
+    @State private var passwordErrorMessage: String? = nil
+    @State private var showEmailVerificationView = false
 
     var body: some View {
         VStack {
+            // Email Input
             TextField("Email...", text: $viewModel.email)
                 .padding()
                 .background(Color.gray.opacity(0.4))
@@ -26,13 +29,15 @@ struct SignUpEmailView: View {
                 .onChange(of: viewModel.email) { _ in
                     emailErrorMessage = nil
                 }
-
+            
+            // Email Error Message
             if let emailErrorMessage = emailErrorMessage {
                 Text(emailErrorMessage)
                     .foregroundColor(.red)
                     .font(.caption)
             }
 
+            // Password Input
             HStack {
                 if showPassword {
                     TextField("Password...", text: $viewModel.password)
@@ -49,6 +54,7 @@ struct SignUpEmailView: View {
             .background(Color.gray.opacity(0.4))
             .cornerRadius(10)
             
+            // Confirm Password Input
             HStack {
                 if showConfirmPassword {
                     TextField("Confirm Password...", text: $viewModel.confirmPassword)
@@ -65,18 +71,34 @@ struct SignUpEmailView: View {
             .background(Color.gray.opacity(0.4))
             .cornerRadius(10)
 
+            // Password Error Message
+            if let passwordErrorMessage = passwordErrorMessage {
+                Text(passwordErrorMessage)
+                    .foregroundColor(.red)
+                    .font(.caption)
+            }
+
+            // Sign Up Button
             Button {
+                passwordErrorMessage = nil  // Reset previous error
+                
                 if isPasswordTooSimple(viewModel.password) {
-                    emailErrorMessage = "Password must be at least 6 characters long and include at least one number and one special character."
+                    passwordErrorMessage = "Password must be at least 6 characters long and include at least one number and one special character."
                 } else {
                     Task {
                         do {
-                            try await viewModel.signUp()
-                            showSignInView = false
-                        } catch {
-                            print("Sign Up Failed: \(error)")
+                            let user = try await viewModel.signUp()
+                            
+                            if !user.isEmailVerified {  // Now this will work
+                                showEmailVerificationView = true  // Redirect to verification screen
+                            } else {
+                                showSignInView = false  // If email is already verified, go to sign-in
+                            }
+                        } catch let error as NSError {
+                            passwordErrorMessage = error.localizedDescription  // Display Firebase error
                         }
                     }
+
                 }
             } label: {
                 Text("Sign Up")
@@ -87,18 +109,20 @@ struct SignUpEmailView: View {
                     .background(Color.green)
                     .cornerRadius(10)
             }
-            
+
             Spacer()
         }
         .padding()
         .navigationTitle("Sign Up With Email")
+        .navigationDestination(isPresented: $showEmailVerificationView) {
+            EmailVerificationView(showSignInView: $showSignInView)
+        }
     }
     
     private func isPasswordTooSimple(_ password: String) -> Bool {
         let regex = "^(?=.*[0-9])(?=.*[A-Za-z])(?=.*[!@#$%^&*(),.?\":{}|<>]).{6,}$"
         return password.range(of: regex, options: .regularExpression) == nil
     }
-
 }
 
 struct SignUpEmailView_Previews: PreviewProvider {

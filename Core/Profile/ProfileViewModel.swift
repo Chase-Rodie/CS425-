@@ -18,30 +18,12 @@ final class ProfileViewModel: ObservableObject {
         self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
     }
     
-    func addUserPreference(text: String) {
-        guard let user else { return }
-        
-        Task {
-            try await UserManager.shared.addUserPreference(userId: user.userId, preference: text)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-        }
-    }
-    
     func updateUserProfile(user: DBUser) async throws {
         try? await UserManager.shared.updateUserProfile(user: user)
         DispatchQueue.main.async {
             self.user = user
         }
     }
-    
-//    func addUserInformation(text: String) {
-//        guard let user else { return }
-//
-//        Task {
-//            try await UserManager.shared.addUserInformation(userId: user.userId, userInformation: text)
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
-//        }
-//    }
     
     func removeUserPreference(text: String) {
         guard let user else { return }
@@ -88,4 +70,29 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    func getWeightHistory() -> [(date: Date, weight: String)] {
+        return user?.weightHistory ?? []
+    }
+    
+    func getWeightChange() -> String {
+        guard let history = user?.weightHistory, history.count > 1 else {
+            return "No weight data available"
+        }
+        
+        let latest = history.last!
+        let previous = history[history.count - 2]
+        
+        if let latestWeight = Double(latest.weight), let previousWeight = Double(previous.weight) {
+            let difference = latestWeight - previousWeight
+            if difference == 0 {
+                return "No change in weight"
+            } else if difference > 0 {
+                return "Gained \(String(format: "%.1f", difference)) lbs"
+            } else {
+                return "Lost \(String(format: "%.1f", abs(difference))) lbs"
+            }
+        }
+        
+        return "Invalid weight data"
+    }
 }

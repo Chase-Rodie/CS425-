@@ -13,8 +13,8 @@
 import SwiftUI
 
 struct HomePageView: View {
+    @StateObject var viewModel = ProfileViewModel()
     @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
-    @ObservedObject var profileViewModel: ProfileViewModel
     @State private var progressValues: [Double] = Array(repeating: 1, count: 7)
     @State private var selectedDate: Date = Date()
     @Binding var showSignInView: Bool
@@ -40,33 +40,13 @@ struct HomePageView: View {
                 .padding(.horizontal)
                 .padding(.top, 10)
 
-                // 📌 Workout Progress starts here (below weight progress)
                 ScrollView {
                     VStack(alignment: .center, spacing: 15) {
                         VStack(alignment: .leading, spacing: 10) {
-                            if let weightDiff = profileViewModel.weightDifference {
-                                if weightDiff > 0 {
-                                    Text("Weight Gained: \(weightDiff) lbs")
-                                        .font(.subheadline)
-                                        .foregroundColor(.red)
-                                        .padding(.leading, 15)
-                                } else if weightDiff < 0 {
-                                    Text("Weight Lost: \(-weightDiff) lbs")
-                                        .font(.subheadline)
-                                        .foregroundColor(.green)
-                                        .padding(.leading, 15)
-                                } else {
-                                    Text("Weight Stable")
-                                        .font(.subheadline)
-                                        .foregroundColor(.gray)
-                                        .padding(.leading, 15)
-                                }
-                            } else {
-                                Text("Weight Progress: -")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                    .padding(.leading, 15)
-                            }
+                            Text(viewModel.getWeightChange())
+                                .font(.headline)
+                                .foregroundColor(.primary)
+
                             Text("Workout Progress")
                                 .font(.largeTitle)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -125,11 +105,6 @@ struct HomePageView: View {
                             .font(.largeTitle)
                     }
                     .onAppear {
-                        Task {
-                           await profileViewModel.fetchUserProfile()
-                            print("Debug: weightDifference is \(profileViewModel.weightDifference ?? 0)")
-
-                        }
                         fetchAllDaysProgress()
                     }
                 }
@@ -154,6 +129,6 @@ struct HomePageView: View {
 
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
-        HomePageView(profileViewModel: ProfileViewModel(), showSignInView: .constant(false))
+        HomePageView(showSignInView: .constant(false))
     }
 }

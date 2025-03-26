@@ -17,6 +17,8 @@ final class SettingsViewModel: ObservableObject {
     
     @Published var authProviders: [AuthProviderOption] = []
     @Published var authUser: AuthDataResultModel? = nil
+    @Published var showReauthAlert: Bool = false  // 🔥 Add this
+
     
     func loadAuthProviders() {
         if let providers = try? AuthenticationManager.shared.getcurrentEmailProvider() {
@@ -74,8 +76,18 @@ final class SettingsViewModel: ObservableObject {
         self.authUser = authDataResult
     }
     
-    //Give user a warning to warn user action is permanent / reauthenticate (login)
-    func deleteAccount() async throws {
-        try await AuthenticationManager.shared.deleteUser()
+    func deleteAccount() async {
+            do {
+                try await AuthenticationManager.shared.deleteUser()
+                print("Account deletion successful")
+            } catch CustomAuthenticationErrors.requiresReauthentication {
+                showReauthAlert = true
+            } catch {
+                print("Error deleting account: \(error)")
+            }
+        }
+
+    func reauthenticateUser(email: String, password: String) async throws {
+        try await AuthenticationManager.shared.reauthenticateUser(email: email, password: password)
     }
 }

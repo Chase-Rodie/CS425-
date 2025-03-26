@@ -69,6 +69,7 @@
 		9AC81DE22CA57BD000A0472C /* Fit_PantryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DE12CA57BD000A0472C /* Fit_PantryTests.swift */; };
 		9AC81DEC2CA57BD000A0472C /* Fit_PantryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */; };
 		9AC81DEE2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */; };
+		9ACA65E82D8DF4DF00F7D7E1 /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA65E72D8DF4DF00F7D7E1 /* EmailVerificationView.swift */; };
 		9ACB9D5E2D7055A7000DA9FD /* DBUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */; };
 		9ACB9D602D70590C000DA9FD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB9D5F2D70590C000DA9FD /* XCTest.framework */; platformFilter = ios; };
 		9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */; };
@@ -214,6 +215,7 @@
 		9AC81DE72CA57BD000A0472C /* Fit PantryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fit PantryUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DEB2CA57BD000A0472C /* Fit_PantryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITests.swift; sourceTree = "<group>"; };
 		9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fit_PantryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9ACA65E72D8DF4DF00F7D7E1 /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
 		9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUserTests.swift; sourceTree = "<group>"; };
 		9ACB9D5F2D70590C000DA9FD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		9ACB9D612D705B08000DA9FD /* Fit Pantry.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Fit Pantry.xctestplan"; sourceTree = "<group>"; };
@@ -523,6 +525,7 @@
 				9A6624402CFEBAC700A5CB90 /* SignInEmailViewModel.swift */,
 				9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */,
 				9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */,
+				9ACA65E72D8DF4DF00F7D7E1 /* EmailVerificationView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1021,6 +1024,7 @@
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
 				F80C28AD2CFD257D0070B172 /* MealPlanView.swift in Sources */,
+				9ACA65E82D8DF4DF00F7D7E1 /* EmailVerificationView.swift in Sources */,
 				9A6624412CFEBAC700A5CB90 /* SignInEmailViewModel.swift in Sources */,
 				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
 				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
