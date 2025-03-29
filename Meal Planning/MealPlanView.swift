@@ -195,10 +195,12 @@ struct MealPlanView: View {
                             .padding(.bottom, 5)
                         }
                     }
-
+                    
                     Button("Submit") {
                         quantityErrors = [:]
                         var isValid = true
+
+                        var updatedMealPlan = mealPlan
 
                         for meal in selectedMeals {
                             guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
@@ -207,10 +209,15 @@ struct MealPlanView: View {
                                 continue
                             }
 
-                            if eaten > meal.quantity {
-                                let formattedQuantity = String(format: "%.1f", meal.quantity)
-                                quantityErrors[meal.id] = "You only have \(formattedQuantity)"
-                                isValid = false
+                            if let index = updatedMealPlan.firstIndex(where: { $0.id == meal.id }) {
+                                let currentQuantity = updatedMealPlan[index].quantity
+                                if eaten > currentQuantity {
+                                    let formattedQuantity = String(format: "%.1f", currentQuantity)
+                                    quantityErrors[meal.id] = "You only have \(formattedQuantity)"
+                                    isValid = false
+                                } else {
+                                    updatedMealPlan[index].quantity -= eaten
+                                }
                             }
                         }
 
@@ -225,6 +232,10 @@ struct MealPlanView: View {
                                 updatedMeal.consumedAmount = eaten
                                 updatedMeal.quantity -= eaten
                                 todayMeals[selectedMealType, default: []].append(updatedMeal)
+
+                                if let index = mealPlan.firstIndex(where: { $0.id == meal.id }) {
+                                    mealPlan[index].quantity -= eaten
+                                }
                             }
                         }
 
@@ -232,6 +243,7 @@ struct MealPlanView: View {
                         inputQuantities.removeAll()
                         showQuantityInput = false
                     }
+
                     .padding()
                 }
             }
@@ -387,3 +399,4 @@ struct MealPlanView_Previews: PreviewProvider {
         MealPlanView()
     }
 }
+
