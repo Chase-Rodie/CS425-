@@ -59,6 +59,7 @@ class FirestoreManager {
             var meals = [MealPlanner]()
             snapshot?.documents.forEach { document in
                 let data = document.data()
+                let docID = document.documentID
                 if let name = data["name"] as? String {
                     let rawID = document.documentID
                     let foodID = "[\(rawID)]"
@@ -67,7 +68,7 @@ class FirestoreManager {
                     let categoryString = data["category"] as? String
                     let category = MealCategory(rawValue: categoryString ?? "Prepared") ?? .prepared
 
-                    let meal = MealPlanner(name: name, foodID: foodID, imageURL: imageURL, category: category, quantity: 1.0)
+                    let meal = MealPlanner(pantryDocID: docID, name: name, foodID: foodID, imageURL: imageURL, category: category, quantity: 1.0)
                     meals.append(meal)
                 } else {
                     print("Skipping \(document.documentID) — missing name.")

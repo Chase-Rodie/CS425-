@@ -3,7 +3,6 @@
 //  Fit Pantry
 //
 //  Created by Heather Amistani on 02/28/2025
-//
 
 //import SwiftUI
 //import Firebase
@@ -26,10 +25,13 @@
 //
 //struct MealPlanner: Identifiable, Hashable {
 //    let id = UUID()
+//    let pantryDocID: String
 //    let name: String
 //    let foodID: String
 //    let imageURL: String?
 //    let category: MealCategory
+//    var quantity: Double
+//    var consumedAmount: Double? = nil
 //}
 //
 //struct MealPlanView: View {
@@ -38,6 +40,10 @@
 //    @State private var selectedCategory: MealCategory = .prepared
 //    @State private var selectedMeals: Set<MealPlanner> = []
 //    @State private var todayMeals: [MealType: [MealPlanner]] = [:]
+//    @State private var showQuantityInput = false
+//    @State private var selectedMealType: MealType = .breakfast
+//    @State private var inputQuantities: [UUID: String] = [:]
+//    @State private var quantityErrors: [UUID: String] = [:]
 //
 //    var body: some View {
 //        NavigationView {
@@ -62,7 +68,11 @@
 //                            meals: Binding(
 //                                get: { todayMeals[type] ?? [] },
 //                                set: { todayMeals[type] = $0 }
-//                            )
+//                            ),
+//                            onRemove: { removedMeal in
+//                                let amountToRestore = removedMeal.consumedAmount ?? 0
+//                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amountToRestore)
+//                            }
 //                        )) {
 //                            VStack {
 //                                Image(systemName: "leaf")
@@ -98,7 +108,7 @@
 //                                HStack {
 //                                    NavigationLink(destination: MealDetailView(meal: meal.name, foodID: meal.foodID)) {
 //                                        VStack(alignment: .leading) {
-//                                            Text(meal.name)
+//                                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
 //                                                .font(.title3)
 //                                                .padding(.bottom, 2)
 //                                            Text("Tap to view details")
@@ -136,7 +146,8 @@
 //                        Text("Add selected to:")
 //                        ForEach(MealType.allCases) { type in
 //                            Button(type.rawValue) {
-//                                addMealsToMealType(type)
+//                                selectedMealType = type
+//                                showQuantityInput = true
 //                            }
 //                            .padding(6)
 //                            .background(Color.blue)
@@ -151,23 +162,171 @@
 //            }
 //            .onAppear {
 //                Task {
+//                    checkAndResetDailyMeals()
 //                    await fetchMealsAsync()
+//                }
+//            }
+//            .sheet(isPresented: $showQuantityInput) {
+//                VStack {
+//                    Text("How much of each selected item was eaten?")
+//                        .font(.headline)
+//                        .padding()
+//
+//                    ScrollView {
+//                        ForEach(Array(selectedMeals), id: \..self) { meal in
+//                            VStack(alignment: .leading, spacing: 4) {
+//                                Text(meal.name)
+//                                    .font(.subheadline)
+//
+//                                TextField("Amount", text: Binding(
+//                                    get: { inputQuantities[meal.id] ?? "" },
+//                                    set: { inputQuantities[meal.id] = $0 }
+//                                ))
+//                                .keyboardType(.decimalPad)
+//                                .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                if let error = quantityErrors[meal.id] {
+//                                    Text(error)
+//                                        .foregroundColor(.red)
+//                                        .font(.caption)
+//                                }
+//                            }
+//                            .padding(.horizontal)
+//                            .padding(.bottom, 5)
+//                        }
+//                    }
+//
+//                    Button("Submit") {
+//                        quantityErrors = [:]
+//                        var isValid = true
+//
+//                        for meal in selectedMeals {
+//                            guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
+//                                quantityErrors[meal.id] = "Enter a valid number"
+//                                isValid = false
+//                                continue
+//                            }
+//
+//                            if eaten > meal.quantity {
+//                                let formattedQuantity = String(format: "%.1f", meal.quantity)
+//                                quantityErrors[meal.id] = "You only have \(formattedQuantity)"
+//                                isValid = false
+//                            }
+//                        }
+//
+//                        guard isValid else { return }
+//
+//                        for meal in selectedMeals {
+//                            if let input = inputQuantities[meal.id], let eaten = Double(input) {
+//                                updatePantryQuantity(docID: meal.pantryDocID, amount: -eaten)
+//                                logMeal(for: meal, amount: eaten, type: selectedMealType)
+//
+//                                var updatedMeal = meal
+//                                updatedMeal.consumedAmount = eaten
+//                                updatedMeal.quantity -= eaten
+//                                todayMeals[selectedMealType, default: []].append(updatedMeal)
+//                            }
+//                        }
+//
+//                        selectedMeals.removeAll()
+//                        inputQuantities.removeAll()
+//                        showQuantityInput = false
+//                    }
+//                    .padding()
 //                }
 //            }
 //        }
 //    }
 //
-//    func addMealsToMealType(_ type: MealType) {
-//        for meal in selectedMeals {
-//            todayMeals[type, default: []].append(meal)
+//    func updatePantryQuantity(docID: String, amount: Double) {
+//        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+//        let docRef = Firestore.firestore()
+//            .collection("userData_test")
+//            .document(userID)
+//            .collection("pantry")
+//            .document(docID)
+//
+//        docRef.updateData(["quantity": FieldValue.increment(amount)])
+//    }
+//
+//    func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
+//        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        let today = dateFormatter.string(from: Date())
+//
+//        let logRef = Firestore.firestore()
+//            .collection("userData_test")
+//            .document(userID)
+//            .collection("mealLogs")
+//            .document(today)
+//
+//        let mealData: [String: Any] = [
+//            "name": meal.name,
+//            "foodID": meal.foodID,
+//            "amount": amount
+//        ]
+//
+//        logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
+//    }
+//
+//    func checkAndResetDailyMeals() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        let today = dateFormatter.string(from: Date())
+//        let lastOpened = UserDefaults.standard.string(forKey: "lastOpenedDate")
+//
+//        if lastOpened != today {
+//            todayMeals = [:]
+//            UserDefaults.standard.set(today, forKey: "lastOpenedDate")
 //        }
-//        selectedMeals.removeAll()
 //    }
 //
 //    func fetchMealsAsync() async {
 //        await withCheckedContinuation { continuation in
-//            FirestoreManager().fetchMeals { meals in
-//                mealPlan = Array(Set(meals))
+//            let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+//            let db = Firestore.firestore()
+//                .collection("userData_test")
+//                .document(userID)
+//                .collection("pantry")
+//
+//            db.getDocuments { snapshot, error in
+//                if let error = error {
+//                    print("Failed to fetch pantry items: \(error.localizedDescription)")
+//                    isLoading = false
+//                    continuation.resume()
+//                    return
+//                }
+//
+//                guard let snapshot = snapshot else {
+//                    print("No pantry data found")
+//                    isLoading = false
+//                    continuation.resume()
+//                    return
+//                }
+//
+//                self.mealPlan = snapshot.documents.compactMap { doc in
+//                    let data = doc.data()
+//                    guard
+//                        let foodID = data["id"] as? Int,
+//                        let name = data["name"] as? String,
+//                        let quantity = data["quantity"] as? Double
+//                    else {
+//                        return nil
+//                    }
+//
+//                    let category: MealCategory = quantity > 1 ? .prepared : .ingredient
+//
+//                    return MealPlanner(
+//                        pantryDocID: doc.documentID,
+//                        name: name,
+//                        foodID: String(foodID),
+//                        imageURL: nil,
+//                        category: category,
+//                        quantity: quantity
+//                    )
+//                }
+//
 //                isLoading = false
 //                continuation.resume()
 //            }
@@ -178,6 +337,7 @@
 //struct TodayMealView: View {
 //    let mealType: MealType
 //    @Binding var meals: [MealPlanner]
+//    var onRemove: (MealPlanner) -> Void
 //
 //    var body: some View {
 //        VStack {
@@ -193,9 +353,10 @@
 //                List {
 //                    ForEach(meals) { meal in
 //                        HStack {
-//                            Text(meal.name)
+//                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
 //                            Spacer()
 //                            Button(action: {
+//                                onRemove(meal)
 //                                meals.removeAll { $0.id == meal.id }
 //                            }) {
 //                                Image(systemName: "trash")
@@ -236,11 +397,13 @@ enum MealType: String, CaseIterable, Identifiable {
 
 struct MealPlanner: Identifiable, Hashable {
     let id = UUID()
+    let pantryDocID: String
     let name: String
     let foodID: String
     let imageURL: String?
     let category: MealCategory
-    let quantity: Double
+    var quantity: Double
+    var consumedAmount: Double? = nil
 }
 
 struct MealPlanView: View {
@@ -249,6 +412,10 @@ struct MealPlanView: View {
     @State private var selectedCategory: MealCategory = .prepared
     @State private var selectedMeals: Set<MealPlanner> = []
     @State private var todayMeals: [MealType: [MealPlanner]] = [:]
+    @State private var showQuantityInput = false
+    @State private var selectedMealType: MealType = .breakfast
+    @State private var inputQuantities: [UUID: String] = [:]
+    @State private var quantityErrors: [UUID: String] = [:]
 
     var body: some View {
         NavigationView {
@@ -273,7 +440,11 @@ struct MealPlanView: View {
                             meals: Binding(
                                 get: { todayMeals[type] ?? [] },
                                 set: { todayMeals[type] = $0 }
-                            )
+                            ),
+                            onRemove: { removedMeal in
+                                let amountToRestore = removedMeal.consumedAmount ?? 0
+                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amountToRestore)
+                            }
                         )) {
                             VStack {
                                 Image(systemName: "leaf")
@@ -296,7 +467,7 @@ struct MealPlanView: View {
                     }
                     .padding()
                 } else {
-                    let filteredMeals = mealPlan.filter { $0.category == selectedCategory }
+                    let filteredMeals = mealPlan.filter { $0.category == selectedCategory && $0.quantity > 0 }
 
                     if filteredMeals.isEmpty {
                         Text("No \(selectedCategory.rawValue.lowercased()) meals available.")
@@ -347,7 +518,8 @@ struct MealPlanView: View {
                         Text("Add selected to:")
                         ForEach(MealType.allCases) { type in
                             Button(type.rawValue) {
-                                addMealsToMealType(type)
+                                selectedMealType = type
+                                showQuantityInput = true
                             }
                             .padding(6)
                             .background(Color.blue)
@@ -362,17 +534,124 @@ struct MealPlanView: View {
             }
             .onAppear {
                 Task {
+                    checkAndResetDailyMeals()
                     await fetchMealsAsync()
+                }
+            }
+            .sheet(isPresented: $showQuantityInput) {
+                VStack {
+                    Text("How much of each selected item was eaten?")
+                        .font(.headline)
+                        .padding()
+
+                    ScrollView {
+                        ForEach(Array(selectedMeals), id: \..self) { meal in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(meal.name)
+                                    .font(.subheadline)
+
+                                TextField("Amount", text: Binding(
+                                    get: { inputQuantities[meal.id] ?? "" },
+                                    set: { inputQuantities[meal.id] = $0 }
+                                ))
+                                .keyboardType(.decimalPad)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                                if let error = quantityErrors[meal.id] {
+                                    Text(error)
+                                        .foregroundColor(.red)
+                                        .font(.caption)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 5)
+                        }
+                    }
+
+                    Button("Submit") {
+                        quantityErrors = [:]
+                        var isValid = true
+
+                        for meal in selectedMeals {
+                            guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
+                                quantityErrors[meal.id] = "Enter a valid number"
+                                isValid = false
+                                continue
+                            }
+
+                            if eaten > meal.quantity {
+                                let formattedQuantity = String(format: "%.1f", meal.quantity)
+                                quantityErrors[meal.id] = "You only have \(formattedQuantity)"
+                                isValid = false
+                            }
+                        }
+
+                        guard isValid else { return }
+
+                        for meal in selectedMeals {
+                            if let input = inputQuantities[meal.id], let eaten = Double(input) {
+                                updatePantryQuantity(docID: meal.pantryDocID, amount: -eaten)
+                                logMeal(for: meal, amount: eaten, type: selectedMealType)
+
+                                var updatedMeal = meal
+                                updatedMeal.consumedAmount = eaten
+                                updatedMeal.quantity -= eaten
+                                todayMeals[selectedMealType, default: []].append(updatedMeal)
+                            }
+                        }
+
+                        selectedMeals.removeAll()
+                        inputQuantities.removeAll()
+                        showQuantityInput = false
+                    }
+                    .padding()
                 }
             }
         }
     }
 
-    func addMealsToMealType(_ type: MealType) {
-        for meal in selectedMeals {
-            todayMeals[type, default: []].append(meal)
+    func updatePantryQuantity(docID: String, amount: Double) {
+        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        let docRef = Firestore.firestore()
+            .collection("userData_test")
+            .document(userID)
+            .collection("pantry")
+            .document(docID)
+
+        docRef.updateData(["quantity": FieldValue.increment(amount)])
+    }
+
+    func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
+        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let today = dateFormatter.string(from: Date())
+
+        let logRef = Firestore.firestore()
+            .collection("userData_test")
+            .document(userID)
+            .collection("mealLogs")
+            .document(today)
+
+        let mealData: [String: Any] = [
+            "name": meal.name,
+            "foodID": meal.foodID,
+            "amount": amount
+        ]
+
+        logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
+    }
+
+    func checkAndResetDailyMeals() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let today = dateFormatter.string(from: Date())
+        let lastOpened = UserDefaults.standard.string(forKey: "lastOpenedDate")
+
+        if lastOpened != today {
+            todayMeals = [:]
+            UserDefaults.standard.set(today, forKey: "lastOpenedDate")
         }
-        selectedMeals.removeAll()
     }
 
     func fetchMealsAsync() async {
@@ -403,7 +682,8 @@ struct MealPlanView: View {
                     guard
                         let foodID = data["id"] as? Int,
                         let name = data["name"] as? String,
-                        let quantity = data["quantity"] as? Double
+                        let quantity = data["quantity"] as? Double,
+                        quantity > 0
                     else {
                         return nil
                     }
@@ -411,6 +691,7 @@ struct MealPlanView: View {
                     let category: MealCategory = quantity > 1 ? .prepared : .ingredient
 
                     return MealPlanner(
+                        pantryDocID: doc.documentID,
                         name: name,
                         foodID: String(foodID),
                         imageURL: nil,
@@ -429,6 +710,7 @@ struct MealPlanView: View {
 struct TodayMealView: View {
     let mealType: MealType
     @Binding var meals: [MealPlanner]
+    var onRemove: (MealPlanner) -> Void
 
     var body: some View {
         VStack {
@@ -444,9 +726,10 @@ struct TodayMealView: View {
                 List {
                     ForEach(meals) { meal in
                         HStack {
-                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
+                            Text("\(meal.name) (\(meal.consumedAmount ?? 0, specifier: "%.1f"))")
                             Spacer()
                             Button(action: {
+                                onRemove(meal)
                                 meals.removeAll { $0.id == meal.id }
                             }) {
                                 Image(systemName: "trash")
@@ -454,6 +737,17 @@ struct TodayMealView: View {
                             }
                         }
                     }
+                }
+                Button(action: {
+                    print("View Recipe tapped for \(mealType.rawValue)")
+                }) {
+                    Text("View Recipe")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                        .padding([.horizontal, .bottom])
                 }
             }
         }
