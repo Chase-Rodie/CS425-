@@ -3,43 +3,20 @@
 //  Fit Pantry
 //
 //  Created by Heather Amistani on 02/28/2025
+//
 
 import SwiftUI
 import Firebase
 import FirebaseFirestore
-
-enum MealCategory: String, CaseIterable, Identifiable {
-    case prepared = "Prepared"
-    case ingredient = "Ingredient"
-
-    var id: String { rawValue }
-}
-
-enum MealType: String, CaseIterable, Identifiable {
-    case breakfast = "Breakfast"
-    case lunch = "Lunch"
-    case dinner = "Dinner"
-
-    var id: String { rawValue }
-}
-
-struct MealPlanner: Identifiable, Hashable {
-    let id = UUID()
-    let pantryDocID: String
-    let name: String
-    let foodID: String
-    let imageURL: String?
-    let category: MealCategory
-    var quantity: Double
-    var consumedAmount: Double? = nil
-}
+import Foundation
 
 struct MealPlanView: View {
+    @EnvironmentObject var mealManager: TodayMealManager
+    @State private var selectedDate = Date()
     @State private var mealPlan: [MealPlanner] = []
     @State private var isLoading = true
     @State private var selectedCategory: MealCategory = .prepared
     @State private var selectedMeals: Set<MealPlanner> = []
-    @State private var todayMeals: [MealType: [MealPlanner]] = [:]
     @State private var showQuantityInput = false
     @State private var selectedMealType: MealType = .breakfast
     @State private var inputQuantities: [UUID: String] = [:]
@@ -53,6 +30,10 @@ struct MealPlanView: View {
                     .fontWeight(.bold)
                     .padding(.leading)
 
+                DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
+                    .datePickerStyle(.compact)
+                    .padding(.horizontal)
+
                 Picker("Meal Category", selection: $selectedCategory) {
                     ForEach(MealCategory.allCases) { category in
                         Text(category.rawValue).tag(category)
@@ -64,16 +45,17 @@ struct MealPlanView: View {
                 HStack {
                     ForEach(MealType.allCases) { type in
                         NavigationLink(destination: TodayMealView(
+                            selectedDate: selectedDate, 
                             mealType: type,
                             meals: Binding(
-                                get: { todayMeals[type] ?? [] },
-                                set: { todayMeals[type] = $0 }
+                                get: { mealManager.getMeals(for: selectedDate, type: type) },
+                                set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                             ),
                             onRemove: { removedMeal in
                                 let amountToRestore = removedMeal.consumedAmount ?? 0
                                 updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amountToRestore)
                             }
-                        )) {
+                        )){
                             VStack {
                                 Image(systemName: "leaf")
                                 Text(type.rawValue)
@@ -96,7 +78,6 @@ struct MealPlanView: View {
                     .padding()
                 } else {
                     let filteredMeals = mealPlan.filter { $0.category == selectedCategory && $0.quantity > 0 }
-
                     if filteredMeals.isEmpty {
                         Text("No \(selectedCategory.rawValue.lowercased()) meals available.")
                             .font(.headline)
@@ -110,7 +91,6 @@ struct MealPlanView: View {
                                         VStack(alignment: .leading) {
                                             Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
                                                 .font(.title3)
-                                                .padding(.bottom, 2)
                                             Text("Tap to view details")
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
@@ -162,7 +142,6 @@ struct MealPlanView: View {
             }
             .onAppear {
                 Task {
-                    checkAndResetDailyMeals()
                     await fetchMealsAsync()
                 }
             }
@@ -195,12 +174,10 @@ struct MealPlanView: View {
                             .padding(.bottom, 5)
                         }
                     }
-                    
+
                     Button("Submit") {
                         quantityErrors = [:]
                         var isValid = true
-
-                        var updatedMealPlan = mealPlan
 
                         for meal in selectedMeals {
                             guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
@@ -209,15 +186,10 @@ struct MealPlanView: View {
                                 continue
                             }
 
-                            if let index = updatedMealPlan.firstIndex(where: { $0.id == meal.id }) {
-                                let currentQuantity = updatedMealPlan[index].quantity
-                                if eaten > currentQuantity {
-                                    let formattedQuantity = String(format: "%.1f", currentQuantity)
-                                    quantityErrors[meal.id] = "You only have \(formattedQuantity)"
-                                    isValid = false
-                                } else {
-                                    updatedMealPlan[index].quantity -= eaten
-                                }
+                            if eaten > meal.quantity {
+                                let formatted = String(format: "%.1f", meal.quantity)
+                                quantityErrors[meal.id] = "You only have \(formatted)"
+                                isValid = false
                             }
                         }
 
@@ -231,7 +203,7 @@ struct MealPlanView: View {
                                 var updatedMeal = meal
                                 updatedMeal.consumedAmount = eaten
                                 updatedMeal.quantity -= eaten
-                                todayMeals[selectedMealType, default: []].append(updatedMeal)
+                                mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
 
                                 if let index = mealPlan.firstIndex(where: { $0.id == meal.id }) {
                                     mealPlan[index].quantity -= eaten
@@ -243,7 +215,6 @@ struct MealPlanView: View {
                         inputQuantities.removeAll()
                         showQuantityInput = false
                     }
-
                     .padding()
                 }
             }
@@ -257,7 +228,6 @@ struct MealPlanView: View {
             .document(userID)
             .collection("pantry")
             .document(docID)
-
         docRef.updateData(["quantity": FieldValue.increment(amount)])
     }
 
@@ -265,7 +235,7 @@ struct MealPlanView: View {
         let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let today = dateFormatter.string(from: Date())
+        let today = dateFormatter.string(from: selectedDate)
 
         let logRef = Firestore.firestore()
             .collection("userData_test")
@@ -280,18 +250,6 @@ struct MealPlanView: View {
         ]
 
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
-    }
-
-    func checkAndResetDailyMeals() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let today = dateFormatter.string(from: Date())
-        let lastOpened = UserDefaults.standard.string(forKey: "lastOpenedDate")
-
-        if lastOpened != today {
-            todayMeals = [:]
-            UserDefaults.standard.set(today, forKey: "lastOpenedDate")
-        }
     }
 
     func fetchMealsAsync() async {
@@ -319,12 +277,10 @@ struct MealPlanView: View {
 
                 self.mealPlan = snapshot.documents.compactMap { doc in
                     let data = doc.data()
-                    guard
-                        let foodID = data["id"] as? Int,
-                        let name = data["name"] as? String,
-                        let quantity = data["quantity"] as? Double,
-                        quantity > 0
-                    else {
+                    guard let foodID = data["id"] as? Int,
+                          let name = data["name"] as? String,
+                          let quantity = data["quantity"] as? Double,
+                          quantity > 0 else {
                         return nil
                     }
 
@@ -347,56 +303,9 @@ struct MealPlanView: View {
     }
 }
 
-struct TodayMealView: View {
-    let mealType: MealType
-    @Binding var meals: [MealPlanner]
-    var onRemove: (MealPlanner) -> Void
-
-    var body: some View {
-        VStack {
-            Text("\(mealType.rawValue) Meals")
-                .font(.largeTitle)
-                .bold()
-                .padding()
-
-            if meals.isEmpty {
-                Text("No meals added yet.")
-                    .foregroundColor(.gray)
-            } else {
-                List {
-                    ForEach(meals) { meal in
-                        HStack {
-                            Text("\(meal.name) (\(meal.consumedAmount ?? 0, specifier: "%.1f"))")
-                            Spacer()
-                            Button(action: {
-                                onRemove(meal)
-                                meals.removeAll { $0.id == meal.id }
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                }
-                Button(action: {
-                    print("View Recipe tapped for \(mealType.rawValue)")
-                }) {
-                    Text("View Recipe")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
-                        .padding([.horizontal, .bottom])
-                }
-            }
-        }
-    }
-}
-
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {
-        MealPlanView()
+        MealPlanView().environmentObject(TodayMealManager())
     }
 }
 

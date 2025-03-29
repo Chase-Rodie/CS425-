@@ -42,6 +42,14 @@ struct TempContentView: View {
                 .tabItem {
                     Label("Pantry", systemImage: "fork.knife.circle.fill")
                 }
+            MealPlanView()
+                .tabItem {
+                    Label("Meal Planner", systemImage: "calendar")
+                }
+            ShoppingListView()
+                .tabItem {
+                    Label("Shopping List", systemImage: "cart.fill")
+                }
             ProfileView(showSignInView: $showSignInView)
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
@@ -64,8 +72,15 @@ struct TempContentView: View {
 }
 
 
+//struct TempContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TempContentView(showSignInView: .constant(false))
+//    }
+//}
+
 struct TempContentView_Previews: PreviewProvider {
     static var previews: some View {
         TempContentView(showSignInView: .constant(false))
+            .environmentObject(TodayMealManager()) // 👈 This line fixes the crash!
     }
 }

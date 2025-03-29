@@ -13,13 +13,14 @@ import FirebaseCore
 
 @main
 struct Fit_PantryApp: App {
-    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var mealManager = TodayMealManager()
     
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 RootView()
+                    .environmentObject(mealManager)
                 
             }
         }
