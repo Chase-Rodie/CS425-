@@ -15,9 +15,11 @@ struct NewWorkoutView: View {
             let hasWorkoutPlan = viewModel.isWorkoutPlanAvailable
             if hasWorkoutPlan {
                 //Display workoutplanview
-                GetWorkoutPlanView(workoutPlanModel: viewModel) //isLoading: $isLoading)
+                //ReworkedWorkoutView
+                //GetWorkoutPlanView(workoutPlanModel: viewModel) //isLoading: $isLoading)
+                ReworkedWorkoutView(workoutPlanModel: viewModel)
             } else {
-                //Display form
+                //Display form for creating workoutplan
                 //View2()
                 GetWorkoutPlanView(workoutPlanModel: viewModel)
             }
@@ -80,9 +82,9 @@ struct GetWorkoutPlanView: View {
                             if days == 0 {
                                 print("3 days")
                                 workoutPlanModel.queryExercises(days: [
-                                    ("push", "chest"),
-                                    ("pull", "shoulders"),
-                                    ("pull", "glutes")
+                                    ("push", ["chest", "shoulders", "triceps"]),
+                                    ("pull", ["back", "biceps", "abdominals"]),
+                                    ("pull", ["glutes", "quadriceps", "calves", "hamstrings"])
                                 ], maxExercises: passMax, level: "beginner"){
                                     
                                     DispatchQueue.main.async {
@@ -95,11 +97,10 @@ struct GetWorkoutPlanView: View {
                                 print("4 days")
                                 
                                 workoutPlanModel.queryExercises(days: [
-                                    ("push", "chest"),
-                                    ("pull", "glutes"),
-                                    ("pull", "biceps"),
-                                    //had to change this temporarily!
-                                    ("pull", "biceps")
+                                    ("push", ["chest", "triceps"]),
+                                    ("pull", ["back", "biceps"]),
+                                    ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
+                                    ("pull", ["shoulders", "abdominals"])
                                 ], maxExercises: passMax, level: "beginner"){
                                     
                                     DispatchQueue.main.async {
@@ -111,12 +112,12 @@ struct GetWorkoutPlanView: View {
                                 print("5 days")
                                 
                                 workoutPlanModel.queryExercises(days: [
-                                    ("push", "chest"),
-                                    ("pull", "glutes"),
-                                    ("pull", "biceps"),
-                                    //had to change this temproarily!
-                                    ("pull", "biceps"),
-                                    ("push", "abdominals")
+                                    ("push", ["chest", "shoulders", "triceps"]),
+                                    ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
+                                    ("pull", ["back", "biceps", "abdominals"]),
+                                    ("pull", ["calves", "hamstrings"]),
+                                    //full body
+                                    ("pull", ["quadriceps","shoulders", "hamstrings"])
                                 ], maxExercises: passMax, level: "beginner"){
                                     
                                     DispatchQueue.main.async {

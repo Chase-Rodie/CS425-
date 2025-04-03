@@ -10,14 +10,13 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
 
-
-
 class RetrieveWorkoutData : ObservableObject {
     
     //2D array for workoutplan
     @Published var workoutPlan : [[Exercise]] = []
     @Published var completedExercisesCounts: [Int] = []
     @Published var isWorkoutPlanAvailable:Bool = false
+    var workoutDays: [(String, [String])] = []
     
     let now = Date()
     
@@ -31,7 +30,7 @@ class RetrieveWorkoutData : ObservableObject {
             }
         }
     
-    //untested
+   
     func fetchWorkoutPlan() {
         
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -39,7 +38,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
         //get current date in correct format for document naming purposes
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
 
         let db = Firestore.firestore()
@@ -50,14 +49,10 @@ class RetrieveWorkoutData : ObservableObject {
 
         var tempWorkoutPlan: [[Exercise]] = []
 
-        //let group = DispatchGroup()
-
         for i in 1...4 {
-          //  group.enter()
             db.collection("Day\(i)").getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error fetching documents: \(error.localizedDescription)")
-              //      group.leave()
                     return
                 }
 
@@ -91,16 +86,14 @@ class RetrieveWorkoutData : ObservableObject {
 
                 DispatchQueue.main.async {
                     while tempWorkoutPlan.count < i {
-                        tempWorkoutPlan.append([])  // Ensure we have a slot for each day
+                        tempWorkoutPlan.append([])
                     }
                     tempWorkoutPlan[i - 1] = exercisesForDay
                     print("Fetched \(exercisesForDay.count) exercises for Day \(i)")
                 }
-               // group.leave()
             }
         }
 
-       // group.notify(queue: .main) {
             DispatchQueue.main.async {
                 self.workoutPlan = tempWorkoutPlan
                 self.saveWorkoutPlanLocally()  // Save locally after fetching
@@ -141,8 +134,9 @@ class RetrieveWorkoutData : ObservableObject {
         
     }
     
-    func queryExercises(days: [(String, String)], maxExercises: Int = 4, level: String, completion: @escaping () -> Void)  {
+    func queryExercises(days: [(String, [String])], maxExercises: Int = 4, level: String, completion: @escaping () -> Void)  {
         let db = Firestore.firestore()
+        self.workoutDays = days
         
         var tempExercises: [[Exercise]] = Array(repeating: [], count: days.count)
         
@@ -150,7 +144,7 @@ class RetrieveWorkoutData : ObservableObject {
         
         for(index,(type, primaryMuscle)) in days.enumerated(){
             group.enter()
-            db.collection("exercises").whereField("force", isEqualTo: type).whereField("level", isEqualTo: level ).whereField("primaryMuscles", arrayContains: primaryMuscle).limit(to: maxExercises*2).getDocuments{ snapshot, error in
+            db.collection("exercises").whereField("force", isEqualTo: type).whereField("level", isEqualTo: level ).whereField("primaryMuscles", arrayContainsAny: primaryMuscle).limit(to: maxExercises*2).getDocuments{ snapshot, error in
                 
                 if error == nil{
                     print("No errors")
@@ -195,22 +189,44 @@ class RetrieveWorkoutData : ObservableObject {
 
     //reworked function to save the workoutplan to the database
     func saveWorkoutPlanDB(){
-        //get user ID
-        //temp. user id for testing
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
        
         let db = Firestore.firestore()
         
+        let workoutPlanDoc = db
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+        
+
+        var workoutData: [String: Any] = [
+            "numberOfDays" : workoutDays.count
+            
+        ]
+        
+        for (index, day) in workoutDays.enumerated() {
+            let key = "muscleGroupDay\(index + 1)" // Example: "muscleGroupDay1"
+            workoutData[key] = day.1 // Assuming day.1 is the muscle group array
+        }
+        
+        workoutPlanDoc.setData(workoutData, merge: true) { error in
+                if let error = error {
+                    print("Error saving workout metadata: \(error.localizedDescription)")
+                } else {
+                    print("Workout metadata saved successfully.")
+                }
+            }
+        
         //iterate through every exercise in the weekly plan
         for(dayIndex, exercises) in workoutPlan.enumerated(){
             let dayCollection = db
-            //we will want to change week based off the current week it is generated
                 .collection("users")
                 .document(userID)
                 .collection("workoutplan")
@@ -232,10 +248,8 @@ class RetrieveWorkoutData : ObservableObject {
                     "name": exercise.name,
                     "primaryMuscles": exercise.primaryMuscles,
                     "secondaryMuscles": exercise.secondaryMuscles,
-                    //may need to exclude this one?
                     "isComplete": exercise.isComplete
                 ]
-                //may need to add an error/catch for if the exercise already exists in there?
                 exerciseDocument.setData(data, merge: true) { error in
                     if error != nil{
                         print("Error updating Workout Document \(exercise.name).")
@@ -270,7 +284,7 @@ class RetrieveWorkoutData : ObservableObject {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
 
         let db = Firestore.firestore()
@@ -306,7 +320,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
         
         let db = Firestore.firestore()
@@ -333,11 +347,10 @@ class RetrieveWorkoutData : ObservableObject {
     }
 
 //Retrieves the weight that the user entered for the exercise.
-    
     func getSavedWeight(for exercise: Exercise, completion: @escaping (Double?) -> Void) {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
 
         
@@ -406,7 +419,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
 
         let db = Firestore.firestore()
@@ -428,7 +441,7 @@ class RetrieveWorkoutData : ObservableObject {
 
     func countCompletedAndTotalExercises(for date: Date, dayIndex: Int, completion: @escaping (Int, Int) -> Void) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-yyyy"
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: date)
         
         guard let userID = Auth.auth().currentUser?.uid else {

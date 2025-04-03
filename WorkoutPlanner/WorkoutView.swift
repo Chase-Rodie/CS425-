@@ -218,9 +218,9 @@ struct GenerateWorkoutPlanView: View {
                         if days == 0 {
                             print("3 days")
                             workoutPlanModel.queryExercises(days: [
-                                ("push", "chest"),
-                                ("pull", "shoulders"),
-                                ("pull", "glutes")
+//                                ("push", "chest"),
+//                                ("pull", "shoulders"),
+//                                ("pull", "glutes")
                             ], maxExercises: passMax, level: "beginner"){
                                 
                                 DispatchQueue.main.async {
@@ -233,11 +233,11 @@ struct GenerateWorkoutPlanView: View {
                             print("4 days")
                             
                             workoutPlanModel.queryExercises(days: [
-                                ("push", "chest"),
-                                ("pull", "glutes"),
-                                ("pull", "biceps"),
-                                //had to change this temporarily!
-                                ("pull", "biceps")
+//                                ("push", "chest"),
+//                                ("pull", "glutes"),
+//                                ("pull", "biceps"),
+//                                //had to change this temporarily!
+//                                ("pull", "biceps")
                             ], maxExercises: passMax, level: "beginner"){
                                 
                                 DispatchQueue.main.async {
@@ -249,12 +249,12 @@ struct GenerateWorkoutPlanView: View {
                             print("5 days")
                             
                             workoutPlanModel.queryExercises(days: [
-                                ("push", "chest"),
-                                ("pull", "glutes"),
-                                ("pull", "biceps"),
-                                //had to change this temproarily!
-                                ("pull", "biceps"),
-                                ("push", "abdominals")
+//                                ("push", "chest"),
+//                                ("pull", "glutes"),
+//                                ("pull", "biceps"),
+//                                //had to change this temproarily!
+//                                ("pull", "biceps"),
+//                                ("push", "abdominals")
                             ], maxExercises: passMax, level: "beginner"){
                                 
                                 DispatchQueue.main.async {
