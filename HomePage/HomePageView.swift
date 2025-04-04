@@ -261,7 +261,7 @@ struct HomePageView: View {
                     VStack(alignment: .center, spacing: 20) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 18)
-                                .fill(Color("BackgroundColor"))
+                                .fill(Color(.orange))
                                 .frame(width: 370, height: 150)
 
                             Text("Welcome to Fit Pantry!")
