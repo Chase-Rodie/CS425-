@@ -35,14 +35,6 @@ struct MealDetailView: View {
                     Text("Food Group: \(foodGroup)")
                         .font(.headline)
                 }
-                
-                Button(action: { print("View Recipe tapped!") }) {
-                    Text("View Recipe")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                }
             } else {
                 Text("Loading...")
             }

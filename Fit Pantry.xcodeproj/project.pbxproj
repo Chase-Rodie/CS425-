@@ -86,6 +86,11 @@
 		F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DAC82D759F2200F4345D /* MealDetailView.swift */; };
 		F825DACB2D759F5700F4345D /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DACA2D759F5200F4345D /* ShoppingListView.swift */; };
 		F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DACF2D75A88100F4345D /* FirestoreManager.swift */; };
+		F8A7CDC92D9F66B4009F5907 /* MealPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */; };
+		F8A7CDCB2D9F66F0009F5907 /* TodayMealManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */; };
+		F8A7CDCD2D9F6702009F5907 /* TodayMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */; };
+		F8A7CDCF2D9F6733009F5907 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCE2D9F6731009F5907 /* Meal.swift */; };
+		F8A7CDD02D9F6733009F5907 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCE2D9F6731009F5907 /* Meal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +226,10 @@
 		F825DAC82D759F2200F4345D /* MealDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailView.swift; sourceTree = "<group>"; };
 		F825DACA2D759F5200F4345D /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		F825DACF2D75A88100F4345D /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanner.swift; sourceTree = "<group>"; };
+		F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealManager.swift; sourceTree = "<group>"; };
+		F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealView.swift; sourceTree = "<group>"; };
+		F8A7CDCE2D9F6731009F5907 /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -316,6 +325,7 @@
 		097FB51E2CFAD07100F58B67 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F8A7CDCE2D9F6731009F5907 /* Meal.swift */,
 				097FB51F2CFAD08B00F58B67 /* Food.swift */,
 			);
 			path = Models;
@@ -385,6 +395,9 @@
 		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
 			isa = PBXGroup;
 			children = (
+				F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */,
+				F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */,
+				F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */,
 				924111F52D750F72001C624B /* MealGenView.swift */,
 				924111F32D750F4F001C624B /* MealGenAPI.swift */,
 				F80C28AC2CFD25780070B172 /* MealPlanView.swift */,
@@ -944,16 +957,19 @@
 				9A66243E2CFEB9F500A5CB90 /* AuthenticationViewModel.swift in Sources */,
 				9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */,
 				9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */,
+				F8A7CDCB2D9F66F0009F5907 /* TodayMealManager.swift in Sources */,
 				5EB2C7622CFABFD700EA8E8D /* HomePageView.swift in Sources */,
 				9A3FB89B2CD3E8E90019266C /* ContentView.swift in Sources */,
 				9A2AA49C2D5368130073837E /* StorageManager.swift in Sources */,
 				F80C28AB2CFD25750070B172 /* UserPreferences.swift in Sources */,
 				F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */,
 				5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */,
+				F8A7CDCD2D9F6702009F5907 /* TodayMealView.swift in Sources */,
 				5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */,
 				5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
+				F8A7CDC92D9F66B4009F5907 /* MealPlanner.swift in Sources */,
 				F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */,
 				9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */,
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
@@ -977,6 +993,7 @@
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
+				F8A7CDCF2D9F6733009F5907 /* Meal.swift in Sources */,
 				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,
 				F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
@@ -1030,6 +1047,7 @@
 			files = (
 				F80591542CFFA28800A900FC /* Food.swift in Sources */,
 				F80591532CFFA28100A900FC /* HelperFunctions.swift in Sources */,
+				F8A7CDD02D9F6733009F5907 /* Meal.swift in Sources */,
 				F80591552CFFA28F00A900FC /* MealView.swift in Sources */,
 				F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */,
 			);
