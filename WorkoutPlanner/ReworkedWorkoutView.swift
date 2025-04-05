@@ -77,6 +77,8 @@ struct ReworkedWorkoutView: View {
 
 
 
+
+
 #Preview {
     ReworkedWorkoutView()
 }

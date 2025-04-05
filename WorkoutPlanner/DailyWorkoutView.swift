@@ -55,9 +55,7 @@ struct ExerciseRowView: View {
                 }
             }
             VStack(alignment: .leading) {
-               // NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel))
-                 //   .font(.subheadline)
-                Text(exercise.name)
+                NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel))
                 Text("4 sets of 8 reps")
                 Text("Weight: 30 lbs")
             }
@@ -68,6 +66,35 @@ struct ExerciseRowView: View {
                 Image(systemName: exercise.isComplete ? "checkmark.circle.fill" : "circle")
                     .foregroundColor(exercise.isComplete ? .green : .gray)
             }
+        }
+    }
+}
+
+
+struct DetailedExercise: View {
+    var exercise: Exercise
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+
+    var body: some View{
+        ScrollView{
+            VStack(alignment: .leading, spacing: 16){
+                Text(exercise.name)
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.bottom, 8)
+                Text("Instructions:")
+                    .font(.headline)
+                ForEach(exercise.instructions, id:\.self){ step in
+                    HStack(alignment: .top){
+                        Text("-")
+                        Text(step)
+                    }
+                    .padding(.vertical, 4)
+                }
+                
+                weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel)
+            }
+            .padding(.horizontal, 16)
         }
     }
 }
