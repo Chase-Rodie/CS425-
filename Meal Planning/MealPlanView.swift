@@ -57,11 +57,13 @@ struct MealPlanView: View {
                             }
                         )){
                             VStack {
-                                Image(systemName: "leaf")
+                                Image(systemName: "fork.knife")
+                                    .foregroundColor(Color("Navy"))
                                 Text(type.rawValue)
+                                    .foregroundColor(Color("Navy"))
                             }
                             .padding()
-                            .background(Color.green.opacity(0.2))
+                            .background(Color("BackgroundColor").opacity(0.5))
                             .cornerRadius(12)
                         }
                     }
@@ -108,7 +110,9 @@ struct MealPlanView: View {
                                     }) {
                                         Image(systemName: selectedMeals.contains(meal) ? "checkmark.circle.fill" : "plus.circle")
                                             .font(.title2)
-                                            .foregroundColor(selectedMeals.contains(meal) ? .green : .blue)
+                                            .foregroundColor(
+                                                selectedMeals.contains(meal) ? Color("Orange") : Color("BackgroundColor")
+                                            )
                                     }
                                     .buttonStyle(PlainButtonStyle())
                                     .contentShape(Rectangle())
@@ -130,7 +134,7 @@ struct MealPlanView: View {
                                 showQuantityInput = true
                             }
                             .padding(6)
-                            .background(Color.blue)
+                            .background(Color("Navy"))
                             .foregroundColor(.white)
                             .cornerRadius(8)
                         }

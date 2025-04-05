@@ -48,7 +48,7 @@ struct ShoppingListView: View {
                         showQuantityPrompt = true
                     }) {
                         Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.green)
+                            .foregroundColor(Color("BackgroundColor"))
                             .font(.title)
                     }
                     .padding(.trailing)
@@ -71,7 +71,7 @@ struct ShoppingListView: View {
                         newQuantity = ""
                         showQuantityPrompt = false
                     }
-                    .foregroundColor(.red)
+                    .foregroundColor(Color("Orange"))
 
                     Spacer()
 
@@ -83,7 +83,7 @@ struct ShoppingListView: View {
                         pendingItemName = ""
                         showQuantityPrompt = false
                     }
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color("Navy"))
                 }
                 .padding()
             }

@@ -47,7 +47,7 @@ struct TodayMealView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.green)
+                .background(Color("BackgroundColor"))
                 .foregroundColor(.white)
                 .cornerRadius(12)
                 .padding([.horizontal, .bottom])
