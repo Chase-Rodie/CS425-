@@ -20,8 +20,8 @@ struct ReworkedWorkoutView: View {
     
     var body: some View {
         ZStack{
-//            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
-//                .ignoresSafeArea()
+            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
+                .ignoresSafeArea()
             ScrollView{
                 Spacer()
                 ZStack{
@@ -30,9 +30,12 @@ struct ReworkedWorkoutView: View {
                         .frame(width: 350, height: 65)
                     
                     Text("Weekly Summary")
+                        .foregroundColor(.white)
                 }
                 Spacer()
-                Text("4 Working Days, 3 Rest Days")
+                VStack(alignment: .leading){
+                    Text("4 Working Days, 3 Rest Days")
+                }
                 VStack{
                     ForEach(0..<workoutPlanModel.workoutPlan.count, id: \.self){
                         typeIndex in
@@ -70,12 +73,7 @@ struct ReworkedWorkoutView: View {
             }
         }
     }
-    
-    
 }
-
-
-
 
 
 
