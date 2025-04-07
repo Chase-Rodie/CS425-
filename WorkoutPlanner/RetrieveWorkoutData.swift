@@ -12,10 +12,10 @@ import FirebaseFirestore
 
 class RetrieveWorkoutData : ObservableObject {
     
+    @Published var isWorkoutPlanAvailable:Bool = false
     //2D array for workoutplan
     @Published var workoutPlan : [[Exercise]] = []
     @Published var completedExercisesCounts: [Int] = []
-    @Published var isWorkoutPlanAvailable:Bool = false
     var workoutDays: [(String, [String])] = []
     
     let now = Date()
@@ -78,7 +78,9 @@ class RetrieveWorkoutData : ObservableObject {
                         name: data["name"] as? String ?? "",
                         primaryMuscles: data["primaryMuscles"] as? [String] ?? [],
                         secondaryMuscles: data["secondaryMuscles"] as? [String] ?? [],
-                        isComplete: data["isComplete"] as? Bool ?? false
+                        isComplete: data["isComplete"] as? Bool ?? false,
+                        sets: data["sets"] as? Int ?? 3,
+                        reps: data["reps"] as? Int ?? 10
                     )
                         exercisesForDay.append(exercise)
                     
@@ -161,7 +163,9 @@ class RetrieveWorkoutData : ObservableObject {
                                 mechanic: document["mechanic"] as? String ?? "",
                                 name: document["name"] as? String ?? "",
                                 primaryMuscles: (document["primaryMuscles"] as? [String]) ?? [],
-                                secondaryMuscles: (document["secondaryMuscles"] as? [String]) ?? []
+                                secondaryMuscles: (document["secondaryMuscles"] as? [String]) ?? [],
+                                sets: document["sets"] as? Int ?? 3,
+                                reps: document["reps"] as? Int ?? 10
                             )
                         }
                         
@@ -248,7 +252,9 @@ class RetrieveWorkoutData : ObservableObject {
                     "name": exercise.name,
                     "primaryMuscles": exercise.primaryMuscles,
                     "secondaryMuscles": exercise.secondaryMuscles,
-                    "isComplete": exercise.isComplete
+                    "isComplete": exercise.isComplete,
+                    "sets": exercise.sets,
+                    "reps": exercise.reps
                 ]
                 exerciseDocument.setData(data, merge: true) { error in
                     if error != nil{

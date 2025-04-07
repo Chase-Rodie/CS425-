@@ -12,8 +12,7 @@ struct NewWorkoutView: View {
     
     var body: some View {
         Group{
-            let hasWorkoutPlan = viewModel.isWorkoutPlanAvailable
-            if hasWorkoutPlan {
+            if viewModel.isWorkoutPlanAvailable{
                 //Display workoutplanview
                 //ReworkedWorkoutView
                 //GetWorkoutPlanView(workoutPlanModel: viewModel) //isLoading: $isLoading)
@@ -23,6 +22,13 @@ struct NewWorkoutView: View {
                 //View2()
                 GetWorkoutPlanView(workoutPlanModel: viewModel)
             }
+        }
+        .onAppear{
+            viewModel.workoutPlanExists { exists in
+                            DispatchQueue.main.async {
+                                viewModel.isWorkoutPlanAvailable = exists
+                            }
+                        }
         }
     }
 }

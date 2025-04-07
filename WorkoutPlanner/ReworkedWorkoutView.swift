@@ -35,6 +35,15 @@ struct ReworkedWorkoutView: View {
                 Spacer()
                 VStack(alignment: .leading){
                     Text("4 Working Days, 3 Rest Days")
+                    Button("delete"){
+                        UserDefaults.standard.removeObject(forKey: "workoutPlan")
+                        print("Workout plan successfully removed.")
+                        //  hasWorkoutPlan = false
+                        // workoutPlanModel.workoutPlan = []
+                        //workoutPlanModel.resetWorkoutPlan()
+                        workoutPlanModel.isWorkoutPlanAvailable = false
+
+                    }
                 }
                 VStack{
                     ForEach(0..<workoutPlanModel.workoutPlan.count, id: \.self){

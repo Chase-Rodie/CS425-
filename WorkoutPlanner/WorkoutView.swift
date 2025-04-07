@@ -143,7 +143,7 @@ struct WorkoutView: View {
                         .padding(.vertical, 4)
                     }
                     
-                    weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel)
+                   // weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                 }
                 .padding(.horizontal, 16)
             }
@@ -275,45 +275,45 @@ struct GenerateWorkoutPlanView: View {
     
     }
 }
-
-struct weightEntryView: View{
-    @State private var weight: String = ""
-    var exercise: Exercise
-    var workoutPlanModel: RetrieveWorkoutData
-    var body: some View {
-        VStack {
-                    Text("Weight used:")
-                        .font(.headline)
-                    
-                    TextField("Weight in lbs", text: $weight)
-                        .keyboardType(.decimalPad)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
-                        .padding(.horizontal)
-                    
-            Button("Save Weight"){
-             
-                if let weightValue = Double(weight){
-                    workoutPlanModel.updateWeight(for: exercise, weight: weightValue)
-                    print("UpdateWeight called")
-                }
-            }
-                        .padding()
-                    
-                    Spacer()
-                }
-                .padding()
-                .onAppear {
-                            workoutPlanModel.getSavedWeight(for: exercise) { savedWeight in
-                                if let savedWeight = savedWeight {
-                                    weight = String(savedWeight)
-
-                                }
-                            }
-                        }
-            }
-}
+//
+//struct weightEntryView: View{
+//    @State private var weight: String = ""
+//    var exercise: Exercise
+//    var workoutPlanModel: RetrieveWorkoutData
+//    var body: some View {
+//        VStack {
+//                    Text("Weight used:")
+//                        .font(.headline)
+//                    
+//                    TextField("Weight in lbs", text: $weight)
+//                        .keyboardType(.decimalPad)
+//                        .padding()
+//                        .background(Color(.systemGray6))
+//                        .cornerRadius(8)
+//                        .padding(.horizontal)
+//                    
+//            Button("Save Weight"){
+//             
+//                if let weightValue = Double(weight){
+//                    workoutPlanModel.updateWeight(for: exercise, weight: weightValue)
+//                    print("UpdateWeight called")
+//                }
+//            }
+//                        .padding()
+//                    
+//                    Spacer()
+//                }
+//                .padding()
+//                .onAppear {
+//                            workoutPlanModel.getSavedWeight(for: exercise) { savedWeight in
+//                                if let savedWeight = savedWeight {
+//                                    weight = String(savedWeight)
+//
+//                                }
+//                            }
+//                        }
+//            }
+//}
 
 
 struct WorkoutView_Previews: PreviewProvider {

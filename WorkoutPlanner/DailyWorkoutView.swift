@@ -76,28 +76,117 @@ struct DetailedExercise: View {
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
 
     var body: some View{
-        ScrollView{
-            VStack(alignment: .leading, spacing: 16){
-                Text(exercise.name)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding(.bottom, 8)
-                Text("Instructions:")
-                    .font(.headline)
-                ForEach(exercise.instructions, id:\.self){ step in
-                    HStack(alignment: .top){
-                        Text("-")
-                        Text(step)
+        ZStack{
+//            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
+//                .ignoresSafeArea()
+            ScrollView{
+                VStack(alignment: .leading, spacing: 16){
+                    
+                    if let firstImageURL = exercise.imageURLs.first, let url = URL(string: firstImageURL) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity)
+                                .frame(maxHeight: 250)
+                                .clipped()
+                                .padding(.horizontal, 12)
+                        } placeholder: {
+                            ProgressView()
+                        }
                     }
-                    .padding(.vertical, 4)
+                    
+                    VStack{
+                        Text(exercise.name)
+                            .font(.title)
+                            .bold()
+                            .padding(.bottom, 8)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        ForEach(0..<exercise.sets, id:\.self){ setIndex in
+                            weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel, setIndex: setIndex + 1)
+                            
+                        }
+                    
+                        Text("Instructions:")
+                            .font(.headline)
+                        ForEach(exercise.instructions, id:\.self){ step in
+                            HStack(alignment: .top, spacing: 8){
+                                Text("•")
+                                    .font(.body)
+                                    .frame(width: 20, alignment: .leading)
+                                Text(step)
+                                    .font(.body)
+                                    .multilineTextAlignment(.leading)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
                 }
-                
-                weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel)
             }
-            .padding(.horizontal, 16)
         }
     }
 }
+
+
+
+struct weightEntryView: View{
+    @State private var reps: Int?
+    @State private var weight: Int?
+    var exercise: Exercise
+    var workoutPlanModel: RetrieveWorkoutData
+    var setIndex: Int
+    var body: some View {
+    //    VStack {
+                   // Text("Weight used:")
+                     //   .font(.headline)
+        HStack{
+            Text("\(setIndex)")
+                .font(.headline)
+                .foregroundColor(.white)
+                .frame(width: 32, height: 32)
+                .background(Color.green)
+                .clipShape(Circle())
+            
+            TextField("Reps", value: $reps, formatter: NumberFormatter())
+                .keyboardType(.numberPad)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                //.padding(.horizontal)
+            
+            
+            TextField("Weight in lbs", value: $weight, formatter: NumberFormatter())
+                .keyboardType(.numberPad)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                //.padding(.horizontal)
+            
+//            Button("Save Weight"){
+//                
+//                if let weightValue = Double(weight){
+//                    workoutPlanModel.updateWeight(for: exercise, weight: weightValue)
+//                    print("UpdateWeight called")
+//                }
+//            }
+//            .padding()
+            
+            Spacer()
+            //  }
+        }
+                .padding()
+                .onAppear {
+//                            workoutPlanModel.getSavedWeight(for: exercise) { savedWeight in
+//                                if let savedWeight = savedWeight {
+//                                    weight = String(savedWeight)
+//
+//                                }
+//                            }
+                        }
+            }
+}
+
+
 
 
 //#Preview {
