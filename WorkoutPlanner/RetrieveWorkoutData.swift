@@ -212,12 +212,11 @@ class RetrieveWorkoutData : ObservableObject {
 
         var workoutData: [String: Any] = [
             "numberOfDays" : workoutDays.count
-            
         ]
         
         for (index, day) in workoutDays.enumerated() {
             let key = "muscleGroupDay\(index + 1)" // Example: "muscleGroupDay1"
-            workoutData[key] = day.1 // Assuming day.1 is the muscle group array
+            workoutData[key] = day.1
         }
         
         workoutPlanDoc.setData(workoutData, merge: true) { error in
