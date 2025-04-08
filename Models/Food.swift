@@ -13,10 +13,10 @@ struct Food: Identifiable, Decodable, Encodable {
     var name: String
     var foodGroup: String
     var food_id: Int32
-    var calories: Int32
-    var fat: Float32
-    var carbohydrates: Float32
-    var protein: Float32
+    var calories: Double  // Change to Double
+    var fat: Double       // Change to Double
+    var carbohydrates: Double  // Change to Double
+    var protein: Double   // Change to Double
     var suitableFor: [String]
 }
 

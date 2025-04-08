@@ -15,7 +15,7 @@ struct SignInEmailView: View {
     @State private var showResetAlert = false
     @State private var resetMessage: String = ""
     @State private var errorMessage: String?
-    @State private var showPassword: Bool = false  // Toggle for password visibility
+    @State private var showPassword: Bool = false  
     
     var body: some View {
         VStack {
@@ -69,7 +69,7 @@ struct SignInEmailView: View {
                         try await viewModel.signIn()
                         showSignInView = false
                     } catch {
-                        errorMessage = "No account found for this email. Please sign up or check your email/password."
+                        errorMessage = error.localizedDescription
                     }
                 }
             } label: {
@@ -99,22 +99,17 @@ struct SignInEmailView: View {
         .padding()
         .navigationTitle("Sign In With Email")
         .alert("Reset Password", isPresented: $showResetAlert) {
-            VStack {
-                TextField("Enter your email", text: $resetEmail)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                Button("Send Reset Link") {
-                    Task {
-                        do {
-                            try await viewModel.resetPassword(email: resetEmail)
-                            resetMessage = "A reset link has been sent to your email."
-                        } catch {
-                            resetMessage = "Failed to send reset link. Please check your email."
-                        }
+            Button("Send Reset Link") {
+                Task {
+                    do {
+                        try await viewModel.resetPassword(email: resetEmail)
+                        resetMessage = "A reset link has been sent to your email."
+                    } catch {
+                        resetMessage = "Failed to send reset link. Please check your email."
                     }
                 }
             }
+            Button("Cancel", role: .cancel) { }
         } message: {
             Text(resetMessage)
         }

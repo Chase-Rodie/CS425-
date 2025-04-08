@@ -7,16 +7,18 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
-    
-struct DBUser: Codable {
+struct DBUser: Identifiable, Codable, Equatable {
     var userId: String
+    var name: String?
     var age: Int?
     var gender: String?
     var fitnessLevel: String?
     var goal: String?
-    var weight: String?
     var height: String?
+    var weight: String?
+    var weightHistory: [(date: Date, weight: String)]?
     var isAnonymous: Bool?
     var email: String?
     var photoUrl: String?
@@ -25,6 +27,29 @@ struct DBUser: Codable {
     var profileImagePath: String?
     var profileImagePathUrl: String?
     var userInformation: [String]?
+    
+    var id: String {
+        return userId
+    }
+    
+    static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
+        return lhs.userId == rhs.userId &&
+        lhs.name == rhs.name &&
+        lhs.age == rhs.age &&
+        lhs.gender == rhs.gender &&
+        lhs.fitnessLevel == rhs.fitnessLevel &&
+        lhs.goal == rhs.goal &&
+        lhs.height == rhs.height &&
+        lhs.weight == rhs.weight &&
+        lhs.isAnonymous == rhs.isAnonymous &&
+        lhs.email == rhs.email &&
+        lhs.photoUrl == rhs.photoUrl &&
+        lhs.dateCreated == rhs.dateCreated &&
+        lhs.preferences == rhs.preferences &&
+        lhs.profileImagePath == rhs.profileImagePath &&
+        lhs.profileImagePathUrl == rhs.profileImagePathUrl &&
+        lhs.userInformation == rhs.userInformation
+    }
 
     init(auth: AuthDataResultModel) {
         self.userId = auth.uid
@@ -43,7 +68,7 @@ struct DBUser: Codable {
         self.weight = nil
         self.height = nil
     }
-    
+
     init(
         userId: String,
         isAnonymous: Bool? = nil,
@@ -59,7 +84,9 @@ struct DBUser: Codable {
         fitnessLevel: String? = nil,
         goal: String? = nil,
         weight: String? = nil,
-        height: String? = nil
+        height: String? = nil,
+        weightHistory: [(date: Date, weight: String)]? = nil,
+        name: String? = nil
     ) {
         self.userId = userId
         self.isAnonymous = isAnonymous
@@ -76,23 +103,23 @@ struct DBUser: Codable {
         self.goal = goal
         self.weight = weight
         self.height = height
+        self.weightHistory = weightHistory
+        self.name = name
     }
-    
 
-    
     enum CodingKeys: String, CodingKey {
-        case userId = "user_id"
-        case isAnonymous = "is_anonymous"
+        case userId = "userId"
+        case isAnonymous = "isAnonymous"
         case email = "email"
-        case photoUrl = "photo_url"
-        case dateCreated = "date_created"
+        case photoUrl = "photoUrl"
+        case dateCreated = "dateCreated"
         case preferences = "preferences"
-        case profileImagePath = "profile_image_path"
-        case profileImagePathUrl = "profile_image_path_url"
+        case profileImagePath = "profileImagePath"
+        case profileImagePathUrl = "profileImagePathUrl"
         case userInformation = "userInformation"
         case age = "age"
         case gender = "gender"
-        case fitnessLevel = "fitness_level"
+        case fitnessLevel = "fitnessLevel"
         case goal = "goal"
         case weight = "weight"
         case height = "height"
@@ -116,7 +143,7 @@ struct DBUser: Codable {
         self.weight = try container.decodeIfPresent(String.self, forKey: .weight)
         self.height = try container.decodeIfPresent(String.self, forKey: .height)
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.userId, forKey: .userId)
@@ -135,81 +162,105 @@ struct DBUser: Codable {
         try container.encodeIfPresent(self.weight, forKey: .weight)
         try container.encodeIfPresent(self.height, forKey: .height)
     }
-    
+
 }
 
-final class UserManager {
-    
+@MainActor
+final class UserManager: ObservableObject {
     static let shared = UserManager()
-    private init() { }
-    
-    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
-    
-    private func userDocument(userId: String) -> DocumentReference {
-        userCollection.document(userId)
+
+    @Published var currentUser: DBUser?
+
+    private let db = Firestore.firestore()
+
+    private init() {
+        Task {
+            await fetchCurrentUser()
+        }
     }
-    
+
+    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
+
+    private func userDocument(userId: String) -> DocumentReference {
+        return userCollection
+            .document(userId)
+            .collection("UserInformation")
+            .document("profile")
+    }
+
+
     private func userFavoriteProductCollection(userId: String) -> CollectionReference {
         userDocument(userId: userId).collection("favorite_products")
     }
-    
+
+    func loadUserProfile(userId: String) async throws -> DBUser? {
+        let user = try await UserManager.shared.getUser(userId: userId)
+        return user
+    }
+
+    func createNewUser(user: DBUser) async throws {
+        do {
+            try userDocument(userId: user.userId).setData(from: user, merge: false)
+            print("User successfully created in Firestore")
+        } catch {
+            print("Error creating user in Firestore: \(error)")
+        }
+    }
+
     private func userFavoriteProductDocument(userId: String, favoriteProductId: String) -> DocumentReference {
         userFavoriteProductCollection(userId: userId).document(favoriteProductId)
     }
-    
+
     private let encoder: Firestore.Encoder = {
         let encoder = Firestore.Encoder()
-//        encoder.keyEncodingStrategy = .convertToSnakeCase
         return encoder
     }()
 
     private let decoder: Firestore.Decoder = {
         let decoder = Firestore.Decoder()
-//        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder
     }()
-    
-    private var userFavoriteProductsListener: ListenerRegistration? = nil
-    
-    func createNewUser(user: DBUser) async throws {
-        try userDocument(userId: user.userId).setData(from: user, merge: false)
-    }
-    
-//    func createNewUser(auth: AuthDataResultModel) async throws {
-//        var userData: [String:Any] = [
-//            "user_id" : auth.uid,
-//            "is_anonymous" : auth.isAnonymous,
-//            "date_created" : Timestamp(),
-//        ]
-//        if let email = auth.email {
-//            userData["email"] = email
-//        }
-//        if let photoUrl = auth.photoUrl {
-//            userData["photo_url"] = photoUrl
-//        }
-//
-//        try await userDocument(userId: auth.uid).setData(userData, merge: false)
-//    }
+
     
     func getUser(userId: String) async throws -> DBUser {
-        try await userDocument(userId: userId).getDocument(as: DBUser.self)
+        let profileRef = Firestore.firestore()
+            .collection("users")
+            .document(userId)
+            .collection("UserInformation")
+            .document("profile")
+
+        let snapshot = try await profileRef.getDocument()
+
+        guard var data = snapshot.data() else {
+            print("No user data found in Firestore for userId: \(userId)")
+            throw NSError(domain: "UserManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+        }
+
+        print("📡 Firestore raw data: \(data)")
+
+        data["userId"] = userId
+
+        if let timestamp = data["dateCreated"] as? Timestamp {
+            data["dateCreated"] = timestamp.dateValue()
+        }
+
+        if let dateCreated = data["dateCreated"] as? Date {
+            data["dateCreated"] = dateCreated.timeIntervalSince1970
+        }
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
+            let user = try JSONDecoder().decode(DBUser.self, from: jsonData)
+            print("Successfully decoded user: \(user)")
+            return user
+        } catch {
+            print("Decoding error: \(error)")
+            throw error
+        }
     }
-    
-//    func getUser(userId: String) async throws -> DBUser {
-//        let snapshot = try await userDocument(userId: userId).getDocument()
-//
-//        guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
-//            throw URLError(.badServerResponse)
-//        }
-//
-//        let isAnonymous = data["is_anonymous"] as? Bool
-//        let email = data["email"] as? String
-//        let photoUrl = data["photo_url"] as? String
-//        let dateCreated = data["date_created"] as? Date
-//
-//        return DBUser(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
-//    }
-    
+
+
+
     func updateUserProfileImagePath(userId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [
             DBUser.CodingKeys.profileImagePath.rawValue : path,
@@ -218,35 +269,38 @@ final class UserManager {
 
         try await userDocument(userId: userId).updateData(data)
     }
-    
-    func addUserPreference(userId: String, preference: String) async throws {
-        let data: [String:Any] = [
-            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayUnion([preference])
-        ]
 
-        try await userDocument(userId: userId).updateData(data)
-    }
-    
     func updateUserProfile(user: DBUser) async throws {
-        var data: [String: Any] = [:]
-
-        data["weight"] = user.weight ?? FieldValue.delete()
-        data["height"] = user.height ?? FieldValue.delete()
-        data["gender"] = user.gender ?? FieldValue.delete()
-        data["age"] = user.age ?? FieldValue.delete()
-        data["fitness_level"] = user.fitnessLevel ?? FieldValue.delete()
-        data["goal"] = user.goal ?? FieldValue.delete()
-
-        try await userDocument(userId: user.userId).updateData(data)
+        let userRef = db.collection("users")
+                        .document(user.userId)
+                        .collection("UserInformation")
+                        .document("profile")
+        
+        let userData: [String: Any] = [
+            "userId": user.userId,
+            "name": user.name ?? "",
+            "age": user.age ?? 0,
+            "gender": user.gender ?? "",
+            "fitnessLevel": user.fitnessLevel ?? "",
+            "goal": user.goal ?? "",
+            "height": user.height ?? "",
+            "weight": user.weight ?? "",
+            "email": user.email ?? "",
+            "dateCreated": user.dateCreated != nil ? Timestamp(date: user.dateCreated!) : FieldValue.serverTimestamp()
+        ]
+        print("User data thats updated: \(userData)")
+        try await userRef.setData(userData, merge: true)
+        print("Data updated")
     }
 
-    
+
     func addUserInformation(userId: String, userInformation: String) async throws {
         var data: [String:Any] = [
             DBUser.CodingKeys.userInformation.rawValue : FieldValue.arrayUnion([userInformation])
         ]
+        try await userDocument(userId: userId).updateData(data) x
     }
-    
+
     func removeUserPreference(userId: String, preference: String) async throws {
         let data: [String:Any] = [
             DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayRemove([preference])
@@ -254,106 +308,26 @@ final class UserManager {
 
         try await userDocument(userId: userId).updateData(data)
     }
-    
-    
-    func addUserFavoriteProduct(userId: String, productId: Int) async throws {
-        let document = userFavoriteProductCollection(userId: userId).document()
-        let documentId = document.documentID
-        
-        let data: [String:Any] = [
-            UserFavoriteProduct.CodingKeys.id.rawValue : documentId,
-            UserFavoriteProduct.CodingKeys.productId.rawValue : productId,
-            UserFavoriteProduct.CodingKeys.dateCreated.rawValue : Timestamp()
-        ]
-        
-        try await document.setData(data, merge: false)
-    }
-    
-    func removeUserFavoriteProduct(userId: String, favoriteProductId: String) async throws {
-        try await userFavoriteProductDocument(userId: userId, favoriteProductId: favoriteProductId).delete()
-    }
-    
-    //func getAllUserFavoriteProducts(userId: String) async throws -> [UserFavoriteProduct] {
-        //try await userFavoriteProductCollection(userId: userId).getDocuments(as: UserFavoriteProduct.self)
-    //}
-    
-    func removeListenerForAllUserFavoriteProducts() {
-        self.userFavoriteProductsListener?.remove()
-    }
-    
-    func addListenerForAllUserFavoriteProducts(userId: String, completion: @escaping (_ products: [UserFavoriteProduct]) -> Void) {
-        self.userFavoriteProductsListener = userFavoriteProductCollection(userId: userId).addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                return
+
+    @MainActor
+    func fetchCurrentUser() async {
+        print("📡 Attempting to fetch current user...")
+
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No Firebase user ID found")
+            return
+        }
+
+        print("Firebase User ID: \(userId)")
+
+        do {
+            let user = try await getUser(userId: userId)
+            DispatchQueue.main.async {
+                self.currentUser = user
+                print("Successfully fetched user: \(user)")
             }
-            
-            let products: [UserFavoriteProduct] = documents.compactMap({ try? $0.data(as: UserFavoriteProduct.self) })
-            completion(products)
-            
-            querySnapshot?.documentChanges.forEach { diff in
-                if (diff.type == .added) {
-                    print("New products: \(diff.document.data())")
-                }
-                if (diff.type == .modified) {
-                    print("Modified products: \(diff.document.data())")
-                }
-                if (diff.type == .removed) {
-                    print("Removed products: \(diff.document.data())")
-                }
-            }
+        } catch {
+            print("Error fetching user: \(error.localizedDescription)")
         }
     }
-    
-//    func addListenerForAllUserFavoriteProducts(userId: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
-//        let publisher = PassthroughSubject<[UserFavoriteProduct], Error>()
-//
-//        self.userFavoriteProductsListener = userFavoriteProductCollection(userId: userId).addSnapshotListener { querySnapshot, error in
-//            guard let documents = querySnapshot?.documents else {
-//                print("No documents")
-//                return
-//            }
-//
-//            let products: [UserFavoriteProduct] = documents.compactMap({ try? $0.data(as: UserFavoriteProduct.self) })
-//            publisher.send(products)
-//        }
-//
-//        return publisher.eraseToAnyPublisher()
-//    }
-    //func addListenerForAllUserFavoriteProducts(userId: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
-        //let (publisher, listener) = userFavoriteProductCollection(userId: userId)
-            //.addSnapshotListener(as: UserFavoriteProduct.self)
-        
-        //self.userFavoriteProductsListener = listener
-        //return publisher
-    //}
-    
-}
-import Combine
-
-struct UserFavoriteProduct: Codable {
-    let id: String
-    let productId: Int
-    let dateCreated: Date
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case productId = "product_id"
-        case dateCreated = "date_created"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
-        self.productId = try container.decode(Int.self, forKey: .productId)
-        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.id, forKey: .id)
-        try container.encode(self.productId, forKey: .productId)
-        try container.encode(self.dateCreated, forKey: .dateCreated)
-    }
-    
 }
