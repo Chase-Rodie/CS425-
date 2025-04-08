@@ -128,7 +128,6 @@ struct HomePageView: View {
             }
             .accentColor(.background)
         }
-    }
 
     private func updatePantryQuantity(docID: String, amount: Double) {
         let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
