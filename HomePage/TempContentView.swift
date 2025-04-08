@@ -7,14 +7,11 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct TempContentView: View {
-    @State private var selectedTab = 0
+    
     @State var showMenu = false
     @Binding var showSignInView: Bool
-    @State private var dragOffset: CGFloat = 0  
-
+    
     var body: some View {
         ZStack(alignment: .leading) {
             TabView(selection: $selectedTab) {
@@ -98,11 +95,64 @@ struct TempContentView: View {
             .accentColor(Color("BackgroundColor"))
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        ZStack(alignment: .leading){
+            
+        TabView {
+            HomePageView(showMenu: self.$showMenu)
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+            WorkoutView()
+                .tabItem {
+                    Label("Workout", systemImage: "figure.run")
+                }
+            FoodJournalView()
+                .tabItem {
+                    Label("Food Journal", systemImage: "fork.knife.circle.fill")
+                }
+            PantryView()
+                .tabItem {
+                    Label("Pantry", systemImage: "fork.knife.circle.fill")
+                }
+            MealPlanView()
+                .tabItem {
+                    Label("Meal Planner", systemImage: "calendar")
+                }
+            ShoppingListView()
+                .tabItem {
+                    Label("Shopping List", systemImage: "cart.fill")
+                }
+            ProfileView(showSignInView: $showSignInView)
+                .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
+            SettingsView(showSignInView: $showSignInView)                
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
+            
+        }
+        .accentColor(Color("BackgroundColor"))
+            if self.showMenu{
+                HamburgerMenuView()
+                    .frame(width: UIScreen.main.bounds.width/1.5)
+                    .transition(.move(edge:.leading))
+                    
+            }
+        }
     }
 }
+
+
+//struct TempContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TempContentView(showSignInView: .constant(false))
+//    }
+//}
 
 struct TempContentView_Previews: PreviewProvider {
     static var previews: some View {
         TempContentView(showSignInView: .constant(false))
+            .environmentObject(TodayMealManager()) // 👈 This line fixes the crash!
     }
 }

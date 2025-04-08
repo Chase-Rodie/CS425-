@@ -74,7 +74,7 @@ struct PantryView: View {
                                     Text(item.name)
                                     Spacer()
                                     Text("\(item.quantity, specifier: "%.1f")")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(Color("BackgroundColor"))
                                 }
                             }
                         }
@@ -94,7 +94,7 @@ struct PantryView: View {
                     Text("Add Food")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(Color("BackgroundColor"))
                         .foregroundColor(.white)
                         .cornerRadius(8)
                         .padding(.horizontal)
@@ -126,7 +126,7 @@ struct PantryView: View {
                             submitAmount()
                         }
                         .padding()
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color("Navy"))
                         
                         Spacer()
                         

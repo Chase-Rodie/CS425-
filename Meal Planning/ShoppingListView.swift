@@ -3,7 +3,6 @@
 //  Fit Pantry
 //
 //  Created by Heather Amistani on 3/2/25.
-//
 
 import SwiftUI
 import Firebase
@@ -11,19 +10,20 @@ import Firebase
 struct ShoppingListView: View {
     @StateObject private var shoppingList = ShoppingList()
     @State private var newItem: String = ""
-    
+    @State private var newQuantity: String = ""
+    @State private var showQuantityPrompt = false
+    @State private var pendingItemName: String = ""
+
     var body: some View {
         NavigationView {
             VStack {
                 List {
-                    ForEach(shoppingList.items, id: \.self) { item in
+                    ForEach(Array(shoppingList.items.enumerated()), id: \.1.id) { index, item in
                         HStack {
-                            Text(item)
+                            Text("\(item.name) (\(item.quantity, specifier: "%.1f"))")
                             Spacer()
                             Button(action: {
-                                if let index = shoppingList.items.firstIndex(of: item) {
-                                    shoppingList.removeItem(at: index)
-                                }
+                                shoppingList.removeItem(at: index)
                             }) {
                                 Image(systemName: "trash")
                                     .foregroundColor(.red)
@@ -43,29 +43,51 @@ struct ShoppingListView: View {
                     Button(action: {
                         let trimmedItem = newItem.trimmingCharacters(in: .whitespacesAndNewlines)
                         guard !trimmedItem.isEmpty else { return }
-
-                        shoppingList.addItem(trimmedItem)
-                        newItem = ""  // Clear the input field
+                        pendingItemName = trimmedItem
+                        newItem = ""
+                        showQuantityPrompt = true
                     }) {
                         Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.green)
+                            .foregroundColor(Color("BackgroundColor"))
                             .font(.title)
                     }
                     .padding(.trailing)
                 }
                 .padding()
             }
-            .background(Color("LighterColor").ignoresSafeArea())
             .navigationTitle("Shopping List")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        shoppingList.loadFromFirestore()  // Refresh the list
-                    }) {
-                        Image(systemName: "arrow.clockwise")
+        }
+        .sheet(isPresented: $showQuantityPrompt) {
+            VStack(spacing: 20) {
+                Text("Enter quantity for \(pendingItemName)")
+                    .font(.headline)
+
+                TextField("Quantity", text: $newQuantity)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.decimalPad)
+
+                HStack {
+                    Button("Cancel") {
+                        newQuantity = ""
+                        showQuantityPrompt = false
                     }
+                    .foregroundColor(Color("Orange"))
+
+                    Spacer()
+
+                    Button("Add") {
+                        if let quantity = Double(newQuantity) {
+                            shoppingList.addItem(name: pendingItemName, quantity: quantity)
+                        }
+                        newQuantity = ""
+                        pendingItemName = ""
+                        showQuantityPrompt = false
+                    }
+                    .foregroundColor(Color("Navy"))
                 }
+                .padding()
             }
+            .padding()
         }
     }
 }
