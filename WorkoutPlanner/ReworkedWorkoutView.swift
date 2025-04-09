@@ -36,7 +36,12 @@ struct ReworkedWorkoutView: View {
                 }
                 Spacer()
                 VStack(alignment: .leading){
-                    Text("4 Working Days, 3 Rest Days")
+                    let numWorkingDays = workoutPlanModel.workoutMetadata["numberOfDays"] as? Int ?? 0
+                    let totalDays = 7
+                    let numRestDays = totalDays - numWorkingDays
+
+                    Text("\(numWorkingDays) Working Days, \(numRestDays) Rest Days")
+
                     Button("delete"){
                         UserDefaults.standard.removeObject(forKey: "workoutPlan")
                         print("Workout plan successfully removed.")
@@ -47,22 +52,11 @@ struct ReworkedWorkoutView: View {
 
                     }
                 }
-                VStack{
+                VStack(alignment: .leading){
                     ForEach(0..<workoutPlanModel.workoutPlan.count, id: \.self){
                         typeIndex in
                         let dayWorkoutPlan = workoutPlanModel.workoutPlan[typeIndex]
-                        VStack{
-                            HStack{
-                                VStack(alignment: .leading){
-                                NavigationLink(destination: DailyWorkoutView(dayIndex: typeIndex, dayWorkoutPlan: dayWorkoutPlan, workoutPlanModel: workoutPlanModel)){
-                                    Text("Day \(typeIndex + 1)")
-                                        .font(.system(size: 30, weight: .bold))
-                                        .fontWeight(.bold)
-                                }
-                                    
-        
-                                    Text("5 Exercises")
-                                }
+                        HStack{
                                 ZStack {
                                     // Background Circle (empty ring)
                                     Circle()
@@ -82,12 +76,24 @@ struct ReworkedWorkoutView: View {
                                 }
                                 .frame(width: 100, height: 100)
                                 
+                                VStack(alignment: .leading){
+                                NavigationLink(destination: DailyWorkoutView(dayIndex: typeIndex, dayWorkoutPlan: dayWorkoutPlan, workoutPlanModel: workoutPlanModel)){
+                                    Text("Day \(typeIndex + 1)")
+                                       // .font(.system(size: 30, weight: .bold))
+                                        .fontWeight(.bold)
+                                }
+                                    
+                                    let muscleGroupKey = "muscleGroupDay\(typeIndex + 1)"
+                                                    Text("Muscle Groups: \(workoutPlanModel.workoutMetadata[muscleGroupKey] as? String ?? "")")
+                                    Text("5 Exercises")
+                                }
+                                
                                
-                            } .padding()
+                        }.padding(.bottom, 40)
                           
-                        }
+                        
                     }
-                }
+                } .padding()
             }
         }
     }

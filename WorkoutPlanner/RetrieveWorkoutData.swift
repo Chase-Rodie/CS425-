@@ -17,6 +17,9 @@ class RetrieveWorkoutData : ObservableObject {
     @Published var workoutPlan : [[Exercise]] = []
     @Published var completedExercisesCounts: [Int] = []
     var workoutDays: [(String, [String])] = []
+    @Published var workoutMetadata: [String: Any] = [:]
+
+    
     
     let now = Date()
     
@@ -28,6 +31,8 @@ class RetrieveWorkoutData : ObservableObject {
             } else{
                 print("Failed to encode exercises.")
             }
+        
+            UserDefaults.standard.set(workoutMetadata, forKey: "workoutMetadata")
         }
     
    
@@ -215,9 +220,11 @@ class RetrieveWorkoutData : ObservableObject {
         ]
         
         for (index, day) in workoutDays.enumerated() {
-            let key = "muscleGroupDay\(index + 1)" // Example: "muscleGroupDay1"
-            workoutData[key] = day.1
-        }
+               let key = "muscleGroupDay\(index + 1)" // Example: "muscleGroupDay1"
+               let muscleGroups = day.1.joined(separator: ", ") // Join the muscle groups with a comma
+               workoutData[key] = muscleGroups // Save as a single string
+           }
+
         
         workoutPlanDoc.setData(workoutData, merge: true) { error in
                 if let error = error {
@@ -226,6 +233,9 @@ class RetrieveWorkoutData : ObservableObject {
                     print("Workout metadata saved successfully.")
                 }
             }
+        
+        
+        self.workoutMetadata = workoutData
         
         //iterate through every exercise in the weekly plan
         for(dayIndex, exercises) in workoutPlan.enumerated(){
