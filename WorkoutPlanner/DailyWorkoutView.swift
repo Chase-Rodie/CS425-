@@ -59,13 +59,10 @@ struct ExerciseRowView: View {
                 Text("4 sets of 8 reps")
                 Text("Weight: 30 lbs")
             }
-            Button(action: {
-                workoutPlanModel.markComplete(for: exercise)
-                exercise.isComplete.toggle()
-            }) {
-                Image(systemName: exercise.isComplete ? "checkmark.circle.fill" : "circle")
-                    .foregroundColor(exercise.isComplete ? .green : .gray)
-            }
+            
+            Image(systemName: workoutPlanModel.isExerciseCompleted(exercise: exercise) ? "checkmark.square" : "square")
+                                        .foregroundColor(.green)
+                                        .font(.system(size: 30))
         }
     }
 }
@@ -74,6 +71,9 @@ struct ExerciseRowView: View {
 struct DetailedExercise: View {
     var exercise: Exercise
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+    @State private var isStarFilled = false // State variable to track the star's filled/empty state
+    @State private var isFavorited: Bool = false
+
 
     var body: some View{
         ZStack{
@@ -97,16 +97,52 @@ struct DetailedExercise: View {
                     }
                     
                     VStack{
-                        Text(exercise.name)
-                            .font(.title)
-                            .bold()
-                            .padding(.bottom, 8)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        HStack{
+                            Text(exercise.name)
+                                .font(.title)
+                                .bold()
+                                .padding(.bottom, 8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Button(action: {
+                                workoutPlanModel.toggleFavoriteStatus(for: exercise)
+                                self.isFavorited.toggle()
+                                    }) {
+                                        Image(systemName: self.isFavorited ? "star.fill" : "star")
+                                            .foregroundColor(.yellow)
+                                            .font(.system(size: 30))
+
+                                    }
+                        }
                         ForEach(0..<exercise.sets, id:\.self){ setIndex in
                             weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel, setIndex: setIndex + 1)
                             
                         }
+                        
+                        HStack{
+                                Text("Exercise done: ")
+                                Image(systemName: workoutPlanModel.isExerciseCompleted(exercise: exercise) ? "checkmark.square" : "square")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 30))
+                        }
+                        
+                        Button(action: {
+                                                    workoutPlanModel.markComplete(for: exercise)
+                                                }) {
+                                                    HStack {
+                                                        Text("Complete Exercise")
+                                                                .font(.headline) // You can set the font style
+                                                                .foregroundColor(.white) // Set the text color
+                                                                .padding() // Add padding inside the button
+                                                                .frame(width: 200, height: 50) // Set the size of the button
+                                                                .background(Color.green) // Set the background color
+                                                                .cornerRadius(10) // Optional: rounded corners)
+                                                    }
+                                                }
+                                                .padding(.vertical)
                     
+                        
+                        
                         Text("Instructions:")
                             .font(.headline)
                         ForEach(exercise.instructions, id:\.self){ step in
@@ -124,6 +160,12 @@ struct DetailedExercise: View {
                 }
             }
         }
+        .onAppear {
+            // Get the favorited status when the view appears
+            workoutPlanModel.isExerciseFavorited(exercise: exercise) { isFavorited in
+                self.isFavorited = isFavorited
+            }
+        }
     }
 }
 
@@ -136,9 +178,6 @@ struct weightEntryView: View{
     var workoutPlanModel: RetrieveWorkoutData
     var setIndex: Int
     var body: some View {
-    //    VStack {
-                   // Text("Weight used:")
-                     //   .font(.headline)
         HStack{
             Text("\(setIndex)")
                 .font(.headline)
@@ -152,7 +191,6 @@ struct weightEntryView: View{
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-                //.padding(.horizontal)
             
             
             TextField("Weight in lbs", value: $weight, formatter: NumberFormatter())
@@ -160,29 +198,11 @@ struct weightEntryView: View{
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-                //.padding(.horizontal)
-            
-//            Button("Save Weight"){
-//                
-//                if let weightValue = Double(weight){
-//                    workoutPlanModel.updateWeight(for: exercise, weight: weightValue)
-//                    print("UpdateWeight called")
-//                }
-//            }
-//            .padding()
             
             Spacer()
-            //  }
         }
                 .padding()
-                .onAppear {
-//                            workoutPlanModel.getSavedWeight(for: exercise) { savedWeight in
-//                                if let savedWeight = savedWeight {
-//                                    weight = String(savedWeight)
-//
-//                                }
-//                            }
-                        }
+                
             }
 }
 

@@ -40,6 +40,8 @@ struct ReworkedWorkoutView: View {
 
                     Button("delete"){
                         UserDefaults.standard.removeObject(forKey: "workoutPlan")
+
+                        workoutPlanModel.clearAllExerciseCompletionData()
                         print("Workout plan successfully removed.")
                         //  hasWorkoutPlan = false
                         // workoutPlanModel.workoutPlan = []
@@ -54,7 +56,7 @@ struct ReworkedWorkoutView: View {
                         let dayWorkoutPlan = workoutPlanModel.workoutPlan[typeIndex]
                         HStack{
                                 ProgressRingView(progress: progressValues[typeIndex+1], ringWidth: 15)
-                          
+                                .padding(.trailing, 16) 
                                 VStack(alignment: .leading){
                                 NavigationLink(destination: DailyWorkoutView(dayIndex: typeIndex, dayWorkoutPlan: dayWorkoutPlan, workoutPlanModel: workoutPlanModel)){
                                     Text("Day \(typeIndex + 1)")

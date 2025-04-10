@@ -126,15 +126,13 @@ class RetrieveWorkoutData : ObservableObject {
 //        }
 //    
     
+
     func markComplete(for exercise: Exercise){
-        //find the exercise
-        
         for dayIndex in workoutPlan.indices{
             if let exerciseIndex = workoutPlan[dayIndex].firstIndex(where: { $0.id == exercise.id }){
                 workoutPlan[dayIndex][exerciseIndex].isComplete.toggle()
                 saveExerciseCompletionStatus(exercise: workoutPlan[dayIndex][exerciseIndex])
                 updateExerciseCompletionInDB(exercise: workoutPlan[dayIndex][exerciseIndex], dayIndex: dayIndex)
-                saveWorkoutPlanDB()
                 break
             }
         }
@@ -502,6 +500,91 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
 
+    
+    func clearAllExerciseCompletionData() {
+        let defaults = UserDefaults.standard
+        
+        // Iterate over all the keys in UserDefaults and remove those that start with "exerciseCompleted_"
+        for (key, _) in defaults.dictionaryRepresentation() {
+            if key.hasPrefix("exerciseCompleted_") {
+                defaults.removeObject(forKey: key)
+            }
+        }
+        
+        print("Cleared all exercise completion data.")
+    }
+
+    
+    func toggleFavoriteStatus(for exercise: Exercise) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Error: No user logged in.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document("favorites")
+            .collection("exercises")
+        
+        let docRef = db.document(exercise.id)
+        
+        docRef.getDocument { (document, error) in
+            if let error = error {
+                print("Error checking if exercise is favorited: \(error.localizedDescription)")
+                return
+            }
+            
+            if let document = document, document.exists {
+                docRef.delete { error in
+                    if let error = error {
+                        print("Error removing exercise from favorites: \(error.localizedDescription)")
+                    } else {
+                        print("Exercise removed from favorites")
+                    }
+                }
+            } else {
+                docRef.setData([
+                    "name": exercise.name,
+                    "id": exercise.id
+                ]) { error in
+                    if let error = error {
+                        print("Error adding exercise to favorites: \(error.localizedDescription)")
+                    } else {
+                        print("Exercise added to favorites")
+                    }
+                }
+            }
+        }
+    }
+
+    
+    func isExerciseFavorited(exercise: Exercise, completion: @escaping (Bool) -> Void) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Error: No user logged in.")
+            completion(false)
+            return
+        }
+        
+        let db = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document("favorites")
+            .collection("exercises")
+            .document(exercise.id)
+        
+        db.getDocument { (document, error) in
+            if let document = document, document.exists {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
+
+    
 }
 
 
