@@ -11,13 +11,9 @@ struct ReworkedWorkoutView: View {
     
     @StateObject var workoutPlanModel = RetrieveWorkoutData()
     @State private var isLoading: Bool = false
-    
-    
-    //may need to move to other view 
-    var progress: Double = 0.7 // Progress value between 0.0 and 1.0
-    var ringColor: Color = Color("LighterColor")
-    var ringWidth: CGFloat = 10.0
-    
+    @State private var progressValues: [Double] = Array(repeating: 0.0, count: 7)
+
+ 
     var body: some View {
         ZStack{
 //            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
@@ -57,25 +53,8 @@ struct ReworkedWorkoutView: View {
                         typeIndex in
                         let dayWorkoutPlan = workoutPlanModel.workoutPlan[typeIndex]
                         HStack{
-                                ZStack {
-                                    // Background Circle (empty ring)
-                                    Circle()
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: ringWidth)
-                                    
-                                    // Foreground Circle (progress)
-                                    Circle()
-                                        .trim(from: 0.0, to: progress)
-                                        .stroke(ringColor, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round))
-                                        .rotationEffect(.degrees(-90)) // Start from the top
-                                        .animation(.easeInOut, value: progress)
-                                    
-                                    // Text (shows progress as percentage)
-                                    Text("\(Int(progress * 100))%")
-                                        .font(.headline)
-                                        .bold()
-                                }
-                                .frame(width: 100, height: 100)
-                                
+                                ProgressRingView(progress: progressValues[typeIndex+1], ringWidth: 15)
+                          
                                 VStack(alignment: .leading){
                                 NavigationLink(destination: DailyWorkoutView(dayIndex: typeIndex, dayWorkoutPlan: dayWorkoutPlan, workoutPlanModel: workoutPlanModel)){
                                     Text("Day \(typeIndex + 1)")
@@ -93,12 +72,64 @@ struct ReworkedWorkoutView: View {
                           
                         
                     }
+                    
                 } .padding()
+                
+            }
+            .onAppear {
+                fetchAllDaysProgress()
+            }
+            
+        }
+        
+    }
+    
+    private func fetchAllDaysProgress() {
+        for dayIndex in 0..<7 { // Loop through all days
+            workoutPlanModel.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
+                let progress = total > 0 ? Double(completed) / Double(total) : 0.0
+                
+                DispatchQueue.main.async {
+                    // Update only the specific index in the array
+                    progressValues[dayIndex] = progress
+                    print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
+                }
             }
         }
     }
+    
 }
 
+
+struct ProgressRingView: View {
+    var progress: Double
+    //Progress value between 0.0 and 1.0
+    var ringColor: Color = Color("LighterColor")
+    var ringWidth: CGFloat = 10.0
+
+    var body: some View {
+        ZStack {
+                    // Background Circle (empty ring)
+                    Circle()
+                        .stroke(Color.gray.opacity(0.3), lineWidth: ringWidth)
+
+                    // Foreground Circle (progress)
+                    Circle()
+                        .trim(from: 0.0, to: progress)
+                        .stroke(ringColor, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round))
+                        .rotationEffect(.degrees(-90)) // Start from the top
+                        .animation(.easeInOut, value: progress)
+
+                    // Text (shows progress as percentage)
+                    Text("\(Int(progress * 100))%")
+                        .font(.headline)
+                        .bold()
+                }
+                .frame(width: 100, height: 100) // Adjust the size as needed
+
+    }
+
+}
 
 
 #Preview {

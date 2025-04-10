@@ -286,8 +286,17 @@ class RetrieveWorkoutData : ObservableObject {
                 DispatchQueue.main.async{
                     self.workoutPlan = decodedData
                 }
-                return true 
-            } else {
+                
+                if let savedMetadata = UserDefaults.standard.dictionary(forKey: "workoutMetadata") {
+                    DispatchQueue.main.async {
+                        self.workoutMetadata = savedMetadata
+                    }
+                    return true
+                } else {
+                    print("No workout metadata found.")
+                }
+                return true
+            }else{
                 print("No saved exercises found.")
                 return false
             }
@@ -454,10 +463,10 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
 
-    func countCompletedAndTotalExercises(for date: Date, dayIndex: Int, completion: @escaping (Int, Int) -> Void) {
+    func countCompletedAndTotalExercises(dayIndex: Int, completion: @escaping (Int, Int) -> Void) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy-'W'W"
-        let formattedDate = dateFormatter.string(from: date)
+        let formattedDate = dateFormatter.string(from: now)
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user logged in.")
@@ -488,7 +497,7 @@ class RetrieveWorkoutData : ObservableObject {
             let totalExercises = documents.count
             let completedCount = documents.filter { ($0.data()["isComplete"] as? Bool) == true }.count
             
-            print("Day \(dayIndex): Completed \(completedCount) / \(totalExercises)")
+            print("Day \(dayIndex+1): Completed \(completedCount) / \(totalExercises)")
             completion(completedCount, totalExercises)
         }
     }
