@@ -44,7 +44,7 @@ struct DailyWorkoutView: View {
                             .cornerRadius(10)
                     }
                 } .sheet(isPresented: $manualWorkoutFormShowing){
-                    AddWorkoutForm()
+                    AddWorkoutForm(workoutPlanModel: workoutPlanModel)
                 }
                 VStack(alignment: .leading){
                     ForEach(dayWorkoutPlan){exercise in
@@ -239,6 +239,8 @@ struct AddWorkoutForm: View{
     @State private var setsList = Array(repeating: 0, count: 5)
     @State private var repsList = Array(repeating: 0, count: 5)
     @State private var exerciseNamesList: [String] = Array(repeating: "", count: 5)
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+
     
     //For cardio type
 //    @State var durationCardio: Int?
@@ -267,7 +269,7 @@ struct AddWorkoutForm: View{
                             Text(self.numExercises[i])
                         }
                     }
-            
+                    
                 }
                 ForEach(0..<exercises+1, id: \.self){ i in
                     Section(header: Text("Exercise")){
@@ -278,29 +280,41 @@ struct AddWorkoutForm: View{
                             }
                         }
                         Picker("Reps", selection: $repsList[i]) {
-                                ForEach(numberOptions, id: \.self) {
-                                    Text("\($0)")
-                                }
+                            ForEach(numberOptions, id: \.self) {
+                                Text("\($0)")
+                            }
                         }
                     }
                 }
             }else if workoutType == 1{
                 
                 
-        
+                
                 
             }else if workoutType == 2{
-
+                
             }
             
             Section(header: Text("Submit"))
             {
                 Button("Submit"){
+                    let selectedType = workoutTypes[workoutType]
                     
+                    var manualExercises: [[String: Any]] = []
+                    if selectedType == "Strength" {
+                        for i in 0...exercises {
+                            let exercise: [String: Any] = [
+                                "name": exerciseNamesList[i],
+                                "sets": setsList[i],
+                                "reps": repsList[i]
+                            ]
+                            manualExercises.append(exercise)
+                        }
+                    }
                 }
             }
+            
         }
-        
     }
     
     
