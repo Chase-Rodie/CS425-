@@ -64,6 +64,7 @@
 		9A7F604B2D5BC414007BF914 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7F604A2D5BC414007BF914 /* EditProfileView.swift */; };
 		9ABD96292CBF031C00CB9922 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9ABD96282CBF031C00CB9922 /* FirebaseAnalytics */; };
 		9AC396662DA0D749004CD87E /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9AC396652DA0D749004CD87E /* FirebaseFirestoreCombine-Community */; };
+		9AC6F2F42DA8F87600DE87FA /* GoalsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC6F2F32DA8F87600DE87FA /* GoalsViewModel.swift */; };
 		9AC81DD32CA57BCF00A0472C /* FitPantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC81DD22CA57BCF00A0472C /* FitPantry.swift */; };
 		9AC81DD52CA57BD000A0472C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD42CA57BD000A0472C /* Assets.xcassets */; };
 		9AC81DD82CA57BD000A0472C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AC81DD72CA57BD000A0472C /* Preview Assets.xcassets */; };
@@ -213,6 +214,7 @@
 		9A6624492CFECB7700A5CB90 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9A6F88452D85FD0D0062168B /* PantryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryManager.swift; sourceTree = "<group>"; };
 		9A7F604A2D5BC414007BF914 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		9AC6F2F32DA8F87600DE87FA /* GoalsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsViewModel.swift; sourceTree = "<group>"; };
 		9AC81DCD2CA57BCF00A0472C /* Fit Pantry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fit Pantry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AC81DD22CA57BCF00A0472C /* FitPantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitPantry.swift; sourceTree = "<group>"; };
 		9AC81DD42CA57BD000A0472C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				9A26AD082D7B91C90039DA58 /* FriendsView.swift */,
 				9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */,
 				9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */,
+				9AC6F2F32DA8F87600DE87FA /* GoalsViewModel.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1014,6 +1017,7 @@
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
 				F80C28A52CFD25440070B172 /* MealSuggestions.swift in Sources */,
 				F8A7CDC92D9F66B4009F5907 /* MealPlanner.swift in Sources */,
+				9AC6F2F42DA8F87600DE87FA /* GoalsViewModel.swift in Sources */,
 				F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */,
 				9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */,
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,

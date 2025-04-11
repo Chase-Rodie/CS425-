@@ -29,4 +29,8 @@ struct MealPlanner: Identifiable, Hashable {
     let category: MealCategory
     var quantity: Double
     var consumedAmount: Double? = nil
+    var calories: Double
+    var protein: Double
+    var fat: Double
+    var carbohydrates: Double
 }

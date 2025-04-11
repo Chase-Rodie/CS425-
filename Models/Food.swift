@@ -13,10 +13,10 @@ struct Food: Identifiable, Decodable, Encodable {
     var name: String
     var foodGroup: String
     var food_id: Int32
-    var calories: Double  // Change to Double
-    var fat: Double       // Change to Double
-    var carbohydrates: Double  // Change to Double
-    var protein: Double   // Change to Double
+    var calories: Double  
+    var fat: Double
+    var carbohydrates: Double
+    var protein: Double
     var suitableFor: [String]
 }
 
@@ -40,4 +40,11 @@ struct FoodJournalItem: Identifiable, Decodable, Encodable {
     var protein: Float32
     var suitableFor: [String]
     let quantity: Double
+}
+
+struct DailyTargets {
+    let calories: Int
+    let protein: Int
+    let fats: Int
+    let carbs: Int
 }

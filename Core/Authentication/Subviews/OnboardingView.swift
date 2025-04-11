@@ -53,25 +53,20 @@ struct OnboardingView: View {
             }
         }
         .onAppear {
-            print("OnboardingView Appeared")
             loadUserData()
         }
     }
     
     private func nextStep() {
-        print("Next button tapped - currentStep: \(currentStep)")
 
         if currentStep < 7 {
             currentStep += 1
-            print("Moved to step: \(currentStep)")
         } else if currentStep == 7 {
             currentStep += 1
-            print("Moved to step: \(currentStep) - Showing CompletionStep")
         } else if currentStep == 8 {
             guard !onboardingComplete else { return }
             onboardingComplete = true
 
-            print("Calling saveUserData()")
             Task {
                 await saveUserData()
             }
@@ -80,61 +75,69 @@ struct OnboardingView: View {
 
     private func loadUserData() {
         if let user = userManager.currentUser {
-            name = user.name ?? ""
-            age = user.age.map { String($0) } ?? ""
-            gender = user.gender ?? ""
-            fitnessLevel = user.fitnessLevel ?? ""
-            goal = user.goal ?? ""
-            height = user.height ?? ""
-            weight = user.weight ?? ""
+            name = user.profile.name ?? ""
+            age = user.profile.age.map { String($0) } ?? ""
+            gender = user.profile.gender?.rawValue ?? ""
+            fitnessLevel = user.profile.fitnessLevel?.rawValue ?? ""
+            goal = user.profile.goal?.rawValue ?? ""
+            height = user.profile.height ?? ""
+            weight = user.profile.weight ?? ""
         }
     }
     
     @MainActor
     func saveUserData() async {
-        print("saveUserData() STARTED")
 
-        for _ in 0..<3 {
-            await userManager.fetchCurrentUser()
-            if userManager.currentUser != nil { break }
-            print("Retrying fetchCurrentUser...")
-            try? await Task.sleep(nanoseconds: 900_000_000)
-        }
-
-        guard let currentUser = userManager.currentUser else {
-            print("Still no currentUser after multiple fetch attempts")
+        guard let authUser = Auth.auth().currentUser else {
+            print("No Firebase user found")
             return
         }
-        
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(currentUser.userId)
-        let profileRef = userRef.collection("UserInformation").document("profile")
 
-        let userData: [String: Any] = [
-            "name": name.isEmpty ? currentUser.name ?? "" : name,
-            "age": Int(age) ?? currentUser.age ?? 0,
-            "gender": gender.isEmpty ? currentUser.gender ?? "" : gender,
-            "fitnessLevel": fitnessLevel.isEmpty ? currentUser.fitnessLevel ?? "" : fitnessLevel,
-            "goal": goal.isEmpty ? currentUser.goal ?? "" : goal,
-            "height": height.isEmpty ? currentUser.height ?? "" : height,
-            "weight": weight.isEmpty ? currentUser.weight ?? "" : weight,
-            "dateCreated": currentUser.dateCreated ?? Timestamp(date: Date()),
-            "isAnonymous": currentUser.isAnonymous ?? false,
-            "email": currentUser.email ?? ""
-        ]
+        guard let parsedAge = Int(age) else {
+            print("Invalid age entered")
+            return
+        }
 
+        let parsedGender = Gender(rawValue: gender)
+        let parsedFitnessLevel = FitnessLevel(rawValue: fitnessLevel)
+        let parsedGoal = Goal(rawValue: goal)
+
+        let metadata = UserMetadata(
+            userId: authUser.uid,
+            email: authUser.email,
+            isAnonymous: authUser.isAnonymous,
+            photoUrl: authUser.photoURL?.absoluteString,
+            dateCreated: Date()
+        )
+
+        let profile = UserProfile(
+            name: name,
+            age: parsedAge,
+            gender: parsedGender,
+            fitnessLevel: parsedFitnessLevel,
+            goal: parsedGoal,
+            height: height,
+            weight: weight,
+            profileImagePath: nil,
+            profileImagePathUrl: nil
+        )
+
+        let newUser = DBUser(metadata: metadata, profile: profile)
+                
         do {
-            try await profileRef.setData(userData)
-            print("User data successfully saved in subcollection")
-
-            await MainActor.run {
-                showSignInView = false
-                onboardingComplete = true
-            }
+            try await userManager.createNewUser(user: newUser)
+            await userManager.fetchCurrentUser()
         } catch {
-            print("Failed to save user data: \(error.localizedDescription)")
+            print("Error creating new user: \(error)")
+        }
+
+        await MainActor.run {
+            showSignInView = false
+            onboardingComplete = true
         }
     }
+
+
 
 
 }
@@ -201,12 +204,16 @@ struct FitnessLevelStep: View {
 }
 
 struct GoalStep: View {
-    @Binding var goal: String
+    @Binding var goal: String 
     var body: some View {
         VStack {
             Text("Enter your fitness goal")
-            TextField("Goal", text: $goal)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            Picker("Fitness Goal", selection: $goal) {
+                Text("Lose Weight").tag("LoseWeight")
+                Text("Gain Weight").tag("GainWeight")
+                Text("Maintain Weight").tag("MaintainWeight")
+            }
+            .pickerStyle(SegmentedPickerStyle())
         }
         .padding()
     }

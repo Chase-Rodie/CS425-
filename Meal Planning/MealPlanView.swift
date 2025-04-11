@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import Foundation
+import FirebaseAuth
 
 struct MealPlanView: View {
     @EnvironmentObject var mealManager: TodayMealManager
@@ -79,7 +80,9 @@ struct MealPlanView: View {
                     }
                     .padding()
                 } else {
-                    let filteredMeals = mealPlan.filter { $0.category == selectedCategory && $0.quantity > 0 }
+                    let filteredMeals = mealPlan.filter { meal in
+                        return meal.category == selectedCategory && meal.quantity > 0
+                    }
                     if filteredMeals.isEmpty {
                         Text("No \(selectedCategory.rawValue.lowercased()) meals available.")
                             .font(.headline)
@@ -223,12 +226,30 @@ struct MealPlanView: View {
                 }
             }
         }
+        
+        VStack(alignment: .leading) {
+            Text("Daily Totals")
+                .font(.headline)
+            Text("Calories: \(totalDailyCalories(), specifier: "%.0f") kcal")
+                .font(.subheadline)
+            Text("Protein: \(totalDailyProtein(), specifier: "%.0f") g")
+                .font(.subheadline)
+            Text("Fat: \(totalDailyFat(), specifier: "%.0f") g")
+                .font(.subheadline)
+            Text("Carbs: \(totalDailyCarbs(), specifier: "%.0f") g")
+                .font(.subheadline)
+            
+        }
+        .padding(.horizontal)
     }
 
     func updatePantryQuantity(docID: String, amount: Double) {
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No authenticated user found.")
+            return
+        }
         let docRef = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("pantry")
             .document(docID)
@@ -236,13 +257,16 @@ struct MealPlanView: View {
     }
 
     func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No authenticated user found.")
+            return
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let today = dateFormatter.string(from: selectedDate)
 
         let logRef = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("mealLogs")
             .document(today)
@@ -255,57 +279,155 @@ struct MealPlanView: View {
 
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
     }
+    
+    func totalDailyCalories() -> Double {
+        return MealType.allCases
+            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
+            .reduce(0.0) { total, meal in
+                let amount = meal.consumedAmount ?? 0
+                return total + (meal.calories * amount)
+            }
+    }
+    
+    func totalDailyProtein() -> Double {
+        return MealType.allCases
+            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
+            .reduce(0.0) { total, meal in
+                let amount = meal.consumedAmount ?? 0
+                return total + (meal.protein * amount)
+            }
+    }
+    
+    func totalDailyFat() -> Double {
+        return MealType.allCases
+            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
+            .reduce(0.0) { total, meal in
+                let amount = meal.consumedAmount ?? 0
+                return total + (meal.fat * amount)
+            }
+    }
+    
+    func totalDailyCarbs() -> Double {
+        return MealType.allCases
+            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
+            .reduce(0.0) { total, meal in
+                let amount = meal.consumedAmount ?? 0
+                return total + (meal.carbohydrates * amount)
+            }
+    }
 
     func fetchMealsAsync() async {
         await withCheckedContinuation { continuation in
-            let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
-            let db = Firestore.firestore()
-                .collection("userData_test")
+            guard let userID = Auth.auth().currentUser?.uid else {
+                print("No authenticated user found.")
+                self.isLoading = false
+                continuation.resume()
+                return
+            }
+            let pantryRef = Firestore.firestore()
+                .collection("users")
                 .document(userID)
                 .collection("pantry")
 
-            db.getDocuments { snapshot, error in
-                if let error = error {
-                    print("Failed to fetch pantry items: \(error.localizedDescription)")
-                    isLoading = false
+            pantryRef.getDocuments { pantrySnapshot, error in
+                guard let pantryDocs = pantrySnapshot?.documents else {
+                    print("Error fetching pantry data: \(error?.localizedDescription ?? "Unknown error")")
+                    self.isLoading = false
                     continuation.resume()
                     return
                 }
 
-                guard let snapshot = snapshot else {
-                    print("No pantry data found")
-                    isLoading = false
+                let pantryItems: [(foodID: Int, quantity: Double, pantryDocID: String)] = pantryDocs.compactMap { doc in
+                    guard let id = doc.data()["id"] as? Int,
+                          let quantity = doc.data()["quantity"] as? Double else { return nil }
+
+                    return (Int(id), quantity, doc.documentID)
+                }
+
+                let foodIDs = pantryItems.map { $0.foodID }
+                
+                guard !foodIDs.isEmpty else {
+                    print("No pantry items with valid food IDs. Skipping Food query.")
+                    self.mealPlan = []
+                    self.isLoading = false
                     continuation.resume()
                     return
                 }
+                
+                let queryIDs = pantryItems.map { $0.foodID }
+                Firestore.firestore().collection("Food")
+                    .whereField("ID", in: queryIDs)
+                    .getDocuments { foodSnapshot, error in
+                        if let error = error {
+                            continuation.resume()
+                            return
+                        }
 
-                self.mealPlan = snapshot.documents.compactMap { doc in
-                    let data = doc.data()
-                    guard let foodID = data["id"] as? Int,
-                          let name = data["name"] as? String,
-                          let quantity = data["quantity"] as? Double,
-                          quantity > 0 else {
-                        return nil
+                        guard let foodDocs = foodSnapshot?.documents else {
+                            continuation.resume()
+                            return
+                        }
+
+                        foodDocs.forEach { doc in
+                        }
+
+                        var fetchedMeals: [MealPlanner] = []
+                        for doc in foodDocs {
+                            let data = doc.data()
+
+                            guard let id = data["ID"] as? Int,
+                                  let name = data["name"] as? String,
+                                  let calories = data["calories"] as? Double,
+                                  let protein = data["protein"] as? Double,
+                                  let fat = data["fat"] as? Double,
+                                  let carbohydrates = data["carbohydrates"] as? Double else {
+                                      print("Missing or invalid data in Food doc: \(doc.documentID). Data: \(data)")
+                                      continue
+                            }
+
+                            if let quantityInfo = pantryItems.first(where: { $0.foodID == id }) {
+                                let quantity = quantityInfo.quantity
+                                let pantryDocID = quantityInfo.pantryDocID
+
+                                if quantity > 0 {
+                                    let categoryStr = (data["category"] as? String)?.capitalized ?? "Prepared"
+                                    let category = MealCategory(rawValue: categoryStr) ?? .prepared
+
+                                    let meal = MealPlanner(
+                                        pantryDocID: pantryDocID,
+                                        name: name,
+                                        foodID: String(id),
+                                        imageURL: nil,
+                                        category: category,
+                                        quantity: quantity,
+                                        calories: calories,
+                                        protein: protein,
+                                        fat: fat,
+                                        carbohydrates: carbohydrates
+                                    )
+
+                                    fetchedMeals.append(meal)
+                                }
+                            }
+                        }
+                        self.mealPlan = fetchedMeals
+                        self.isLoading = false
+                        continuation.resume()
                     }
-
-                    let category: MealCategory = quantity > 1 ? .prepared : .ingredient
-
-                    return MealPlanner(
-                        pantryDocID: doc.documentID,
-                        name: name,
-                        foodID: String(foodID),
-                        imageURL: nil,
-                        category: category,
-                        quantity: quantity
-                    )
-                }
-
-                isLoading = false
-                continuation.resume()
             }
         }
     }
+
+
 }
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        }
+    }
+}
+
 
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {

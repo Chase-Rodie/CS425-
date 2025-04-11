@@ -14,6 +14,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import FirebaseAuth
 
 struct HomePageView: View {
     @EnvironmentObject var mealManager: TodayMealManager
@@ -25,48 +26,36 @@ struct HomePageView: View {
     let dayIndex: Int = 1
 
     var body: some View {
-            VStack {
-                HStack {
-                    Spacer()
-                    Text("Fit Pantry")
-                        .font(.headline)
+        VStack {
+            HStack {
+                Spacer()
+                Text("Fit Pantry")
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Spacer()
+                
+                NavigationLink(destination: ProfileView(showSignInView: $showSignInView)) {
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .frame(width: 24, height: 24)
                         .foregroundColor(.primary)
-                    Spacer()
-                    
-                    NavigationLink(destination: ProfileView(showSignInView: $showSignInView)) {
-                        Image(systemName: "person.circle")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.primary)
-                    }
                 }
-
-                .padding(.horizontal)
-                .padding(.top, 10)
-
-                VStack(alignment: .leading, spacing: 40) {
-                    VStack(alignment: .center, spacing: 20) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 18)
-                                //.fill(Color(.orange))
-                                .fill(Color("Orange"))
-                                .frame(width: 370, height: 150)
-
-                            Text("Welcome to Fit Pantry!")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color.white)
-                        }
-
+            }
+            .padding(.horizontal)
+            .padding(.top, 10)
+                
+            ScrollView {
+                VStack(alignment: .leading, spacing: 15) {
+                    VStack(alignment: .leading, spacing: 10) {
                         DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
                             .datePickerStyle(.compact)
                             .padding(.horizontal)
-
+                        
                         Text("Workout Progress")
                             .font(.largeTitle)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
-
+                        
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(1..<7, id: \ .self) { dayIndex in
@@ -83,12 +72,12 @@ struct HomePageView: View {
                                 }
                             }.padding(.leading, 20)
                         }
-
+                        
                         Text("Today's Meals")
                             .font(.largeTitle)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
-
+                        
                         ScrollView(.horizontal) {
                             HStack(spacing: 20) {
                                 ForEach(MealType.allCases, id: \.self) { type in
@@ -116,7 +105,7 @@ struct HomePageView: View {
                                 }
                             }.padding(.horizontal)
                         }
-
+                        
                         NavigationLink("Progress Calendar", destination: ProgressTrackerView())
                             .font(.largeTitle)
                     }
@@ -128,11 +117,15 @@ struct HomePageView: View {
             }
             .accentColor(.background)
         }
+    }
 
     private func updatePantryQuantity(docID: String, amount: Double) {
-        let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No auth user found.")
+            return
+        }
         let docRef = Firestore.firestore()
-            .collection("userData_test")
+            .collection("users")
             .document(userID)
             .collection("pantry")
             .document(docID)

@@ -15,40 +15,48 @@ struct EditProfileView: View {
     
     var body: some View {
         Form {
-            if let user = editedUser {
+            if let _ = editedUser {
                 Section(header: Text("Personal Information")) {
                     TextField("Age", text: Binding(
-                        get: { user.age.map { "\($0)" } ?? "" },
-                        set: { editedUser?.age = $0.isEmpty ? nil : Int($0) }
+                        get: { editedUser?.profile.age.map { "\($0)" } ?? "" },
+                        set: { editedUser?.profile.age = Int($0) }
                     ))
                     .keyboardType(.numberPad)
                     
                     TextField("Gender", text: Binding(
-                        get: { user.gender ?? "" },
-                        set: { editedUser?.gender = $0.isEmpty ? nil : $0 }
+                        get: { editedUser?.profile.gender?.rawValue ?? "" },
+                        set: { editedUser?.profile.gender = Gender(rawValue: $0) }
                     ))
                     
-                    TextField("Fitness Level", text: Binding(
-                        get: { user.fitnessLevel ?? "" },
-                        set: { editedUser?.fitnessLevel = $0.isEmpty ? nil : $0 }
-                    ))
+                    Picker("Fitness Level", selection: Binding(
+                        get: { editedUser?.profile.fitnessLevel?.rawValue ?? "" },
+                        set: { editedUser?.profile.fitnessLevel = FitnessLevel(rawValue: $0) }
+                    )) {
+                        Text("Beginner").tag("Beginner")
+                        Text("Intermediate").tag("Intermediate")
+                        Text("Advanced").tag("Advanced")
+                    }
                     
-                    TextField("Goal", text: Binding(
-                        get: { user.goal ?? "" },
-                        set: { editedUser?.goal = $0.isEmpty ? nil : $0 }
-                    ))
-                    
+                    Picker("Fitness Goal", selection: Binding(
+                        get: { editedUser?.profile.goal?.rawValue ?? "" },
+                        set: { editedUser?.profile.goal = Goal(rawValue: $0) }
+                    )) {
+                        Text("Lose Weight").tag("LoseWeight")
+                        Text("Gain Weight").tag("GainWeight")
+                        Text("Maintain Weight").tag("MaintainWeight")
+                    }
+
                     TextField("Height", text: Binding(
-                        get: { user.height ?? "" },
-                        set: { editedUser?.height = $0.isEmpty ? nil : $0 }
+                        get: { editedUser?.profile.height ?? "" },
+                        set: { editedUser?.profile.height = $0 }
                     ))
-                    
+
                     TextField("Weight", text: Binding(
-                        get: { user.weight ?? "" },
-                        set: { editedUser?.weight = $0.isEmpty ? nil : $0 }
+                        get: { editedUser?.profile.weight ?? "" },
+                        set: { editedUser?.profile.weight = $0 }
                     ))
                 }
-                
+
                 Button("Save Changes") {
                     Task {
                         await saveProfile()
@@ -60,6 +68,7 @@ struct EditProfileView: View {
                 Text("Loading profile...").foregroundColor(.gray)
             }
         }
+
         .navigationTitle("Edit Profile")
         .onAppear {
             Task {
@@ -93,8 +102,6 @@ struct EditProfileView: View {
             return
         }
 
-        print("Attempting to save profile with the following data: \(updatedUser)")
-
         do {
             try await viewModel.updateUserProfile(user: updatedUser)
 
@@ -110,5 +117,6 @@ struct EditProfileView: View {
             print("Error updating profile: \(error)")
         }
     }
+
 
 }

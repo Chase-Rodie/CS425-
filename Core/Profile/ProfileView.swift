@@ -38,7 +38,7 @@ struct ProfileView: View {
                         }
                     }
 
-                    if user.profileImagePath != nil {
+                    if user.profile.profileImagePath != nil {
                         Button("Delete image") {
                             viewModel.deleteProfileImage()
                         }
@@ -50,9 +50,14 @@ struct ProfileView: View {
             }
             .onAppear {
                 Task {
-                    try? await viewModel.loadCurrentUser()
+                    do {
+                        try await viewModel.loadCurrentUser()
+                    } catch {
+                        print("Error loading user in ProfileView: \(error.localizedDescription)")
+                    }
                 }
             }
+
             .onChange(of: selectedItem) { newValue in
                 if let newValue {
                     viewModel.saveProfileImage(item: newValue)

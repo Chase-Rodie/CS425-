@@ -45,7 +45,17 @@ struct TempContentView: View {
                 .tag(5)
                 
                 NavigationStack {
-                    GoalsView()
+                    GoalsView(user: UserMeal(
+                        age: 24,
+                        weightInLbs: 160,
+                        heightInFeet: 5,
+                        heightInInches: 10,
+                        gender: "Male",
+                        dietaryRestrictions: [],
+                        goal: "Gain Weight",
+                        activityLevel: "Active",
+                        mealPreferences: []
+                    ))
                 }
                 .tabItem { Label("Goals", systemImage: "target") }
                 .tag(6)
