@@ -54,7 +54,7 @@ class RetrieveWorkoutData : ObservableObject {
 
         var tempWorkoutPlan: [[Exercise]] = []
 
-        for i in 1...4 {
+        for i in 1...7 {
             db.collection("Day\(i)").getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error fetching documents: \(error.localizedDescription)")
@@ -90,22 +90,21 @@ class RetrieveWorkoutData : ObservableObject {
                         exercisesForDay.append(exercise)
                     
                 }
-
-                DispatchQueue.main.async {
-                    while tempWorkoutPlan.count < i {
-                        tempWorkoutPlan.append([])
+                if !exercisesForDay.isEmpty {
+                    
+                    DispatchQueue.main.async {
+                        while tempWorkoutPlan.count < i {
+                            tempWorkoutPlan.append([])
+                        }
+                        tempWorkoutPlan[i - 1] = exercisesForDay
+                        print("Fetched \(exercisesForDay.count) exercises for Day \(i)")
+                        self.workoutPlan = tempWorkoutPlan
+                        self.saveWorkoutPlanLocally()  // Save locally after fetching
+                        print("Workout Plan after fetch: \(self.workoutPlan)")
                     }
-                    tempWorkoutPlan[i - 1] = exercisesForDay
-                    print("Fetched \(exercisesForDay.count) exercises for Day \(i)")
                 }
             }
         }
-
-            DispatchQueue.main.async {
-                self.workoutPlan = tempWorkoutPlan
-                self.saveWorkoutPlanLocally()  // Save locally after fetching
-                print("Workout Plan after fetch: \(self.workoutPlan)")
-            }
         }
     
     

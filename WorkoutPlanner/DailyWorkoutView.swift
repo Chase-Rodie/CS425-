@@ -18,20 +18,24 @@ struct DailyWorkoutView: View {
         ScrollView{
             VStack{
                 Spacer()
-                ZStack{
-                    Rectangle()
-                        .fill(Color("BackgroundColor"))
-                        .frame(width: 350, height: 65)
-                    Text("Day \(dayIndex + 1) ")
-                }
-                Text("Muscle Groups: Chest, Back, Biceps")
+                
+                Text("Day \(dayIndex + 1) ")
+                        .foregroundColor(.green)
+                        .font(.system(size: 36, weight: .bold))
+                        .fontWeight(.bold)
+
+                let muscleGroupKey = "muscleGroupDay\(dayIndex + 1)"
+                Text("Muscle Groups: \(workoutPlanModel.workoutMetadata[muscleGroupKey] as? String ?? "")")
+                Divider()
+                    .background(Color.black)
+                    .frame(width: 350)
                 VStack(alignment: .leading){
                     ForEach(dayWorkoutPlan){exercise in
                         ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                     }
                 }.padding()
             }
-        }
+        }.accentColor(.green)
     }
 }
 
@@ -71,7 +75,7 @@ struct ExerciseRowView: View {
 struct DetailedExercise: View {
     var exercise: Exercise
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
-    @State private var isStarFilled = false // State variable to track the star's filled/empty state
+    @State private var isStarFilled = false
     @State private var isFavorited: Bool = false
 
 
@@ -161,7 +165,6 @@ struct DetailedExercise: View {
             }
         }
         .onAppear {
-            // Get the favorited status when the view appears
             workoutPlanModel.isExerciseFavorited(exercise: exercise) { isFavorited in
                 self.isFavorited = isFavorited
             }
@@ -206,9 +209,3 @@ struct weightEntryView: View{
             }
 }
 
-
-
-
-//#Preview {
-//    DailyWorkoutView()
-//}

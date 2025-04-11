@@ -27,6 +27,9 @@ struct NewWorkoutView: View {
             viewModel.workoutPlanExists { exists in
                             DispatchQueue.main.async {
                                 viewModel.isWorkoutPlanAvailable = exists
+                                if exists{
+                                    viewModel.fetchWorkoutPlan()
+                                }
                             }
                         }
         }
