@@ -583,7 +583,68 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
 
-    
+    func deleteWorkoutPlan() {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user logged in.")
+            return
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
+        let formattedDate = dateFormatter.string(from: now)
+
+        let db = Firestore.firestore()
+        let workoutPlanDocRef = db
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+
+        let group = DispatchGroup()
+        for i in 1...7 {
+            group.enter()
+            workoutPlanDocRef.collection("Day\(i)").getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error fetching Day\(i) for deletion: \(error.localizedDescription)")
+                    group.leave()
+                    return
+                }
+
+                let batch = db.batch()
+                snapshot?.documents.forEach { batch.deleteDocument($0.reference) }
+
+                batch.commit { error in
+                    if let error = error {
+                        print("Error deleting exercises in Day\(i): \(error.localizedDescription)")
+                    } else {
+                        print("Successfully deleted Day\(i)")
+                    }
+                    group.leave()
+                }
+            }
+        }
+
+        group.notify(queue: .main) {
+            workoutPlanDocRef.delete { error in
+                if let error = error {
+                    print("Error deleting workout plan document: \(error.localizedDescription)")
+                } else {
+                    print("Workout plan document deleted successfully.")
+
+                    UserDefaults.standard.removeObject(forKey: "workoutPlan")
+                    UserDefaults.standard.removeObject(forKey: "workoutMetadata")
+
+                    DispatchQueue.main.async {
+                        self.workoutPlan = []
+                        self.workoutMetadata = [:]
+                        self.isWorkoutPlanAvailable = false
+                    }
+
+                }
+            }
+        }
+    }
+
 }
 
 

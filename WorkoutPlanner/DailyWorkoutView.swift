@@ -13,7 +13,8 @@ struct DailyWorkoutView: View {
     let dayIndex: Int
     let dayWorkoutPlan: [Exercise]
     let workoutPlanModel: RetrieveWorkoutData
-        
+    @State private var manualWorkoutFormShowing = false
+
     var body: some View {
         ScrollView{
             VStack{
@@ -23,17 +24,34 @@ struct DailyWorkoutView: View {
                         .foregroundColor(.green)
                         .font(.system(size: 36, weight: .bold))
                         .fontWeight(.bold)
-
+              
                 let muscleGroupKey = "muscleGroupDay\(dayIndex + 1)"
                 Text("Muscle Groups: \(workoutPlanModel.workoutMetadata[muscleGroupKey] as? String ?? "")")
                 Divider()
                     .background(Color.black)
                     .frame(width: 350)
+               
+                Button(action: {
+                    manualWorkoutFormShowing = true
+                }) {
+                    HStack {
+                        Text("Add My Own Workout")
+                            .font(.footnote)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(width: 180, height: 25)
+                            .background(Color.green)
+                            .cornerRadius(10)
+                    }
+                } .sheet(isPresented: $manualWorkoutFormShowing){
+                    AddWorkoutForm()
+                }
                 VStack(alignment: .leading){
                     ForEach(dayWorkoutPlan){exercise in
                         ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                     }
                 }.padding()
+               
             }
         }.accentColor(.green)
     }
@@ -81,8 +99,6 @@ struct DetailedExercise: View {
 
     var body: some View{
         ZStack{
-//            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
-//                .ignoresSafeArea()
             ScrollView{
                 VStack(alignment: .leading, spacing: 16){
                     
@@ -135,12 +151,12 @@ struct DetailedExercise: View {
                                                 }) {
                                                     HStack {
                                                         Text("Complete Exercise")
-                                                                .font(.headline) // You can set the font style
-                                                                .foregroundColor(.white) // Set the text color
-                                                                .padding() // Add padding inside the button
-                                                                .frame(width: 200, height: 50) // Set the size of the button
-                                                                .background(Color.green) // Set the background color
-                                                                .cornerRadius(10) // Optional: rounded corners)
+                                                                .font(.headline)
+                                                                .foregroundColor(.white)
+                                                                .padding()
+                                                                .frame(width: 200, height: 50)
+                                                                .background(Color.green)
+                                                                .cornerRadius(10)
                                                     }
                                                 }
                                                 .padding(.vertical)
@@ -209,3 +225,83 @@ struct weightEntryView: View{
             }
 }
 
+
+struct AddWorkoutForm: View{
+    
+    @State var workoutType = 0
+    let workoutTypes = ["Strength", "Cardio", "Flexibility"]
+    @State var workoutName: String = ""
+    
+    //For strength type
+    @State var exercises = 0
+    let numExercises = ["1", "2", "3", "4", "5"]
+    let numberOptions = Array(1...15)
+    @State private var setsList = Array(repeating: 0, count: 5)
+    @State private var repsList = Array(repeating: 0, count: 5)
+    @State private var exerciseNamesList: [String] = Array(repeating: "", count: 5)
+    
+    //For cardio type
+//    @State var durationCardio: Int?
+//    @State var distance: Int?
+    
+    //For Flexibility type
+//    @State var durationFlex: Int?
+   
+    var body: some View{
+        Form{
+            Section(header: Text("Workout Type")){
+                Picker("Type", selection: $workoutType){
+                    ForEach(workoutTypes.indices, id: \.self){i in
+                        Text(self.workoutTypes[i])
+                    }
+                } .pickerStyle(SegmentedPickerStyle())
+            }
+            Section(header: Text("Workout Name")){
+                TextField("Workout Name", text: $workoutName)
+            }
+            
+            if workoutType == 0 {
+                Section(header: Text("Number of Exercises:")){
+                    Picker("Exercises", selection: $exercises){
+                        ForEach(numExercises.indices, id: \.self){i in
+                            Text(self.numExercises[i])
+                        }
+                    }
+            
+                }
+                ForEach(0..<exercises+1, id: \.self){ i in
+                    Section(header: Text("Exercise")){
+                        TextField("Exercise Name", text: $exerciseNamesList[i])
+                        Picker("Sets", selection: $setsList[i]) {
+                            ForEach(numberOptions, id: \.self) {
+                                Text("\($0)")
+                            }
+                        }
+                        Picker("Reps", selection: $repsList[i]) {
+                                ForEach(numberOptions, id: \.self) {
+                                    Text("\($0)")
+                                }
+                        }
+                    }
+                }
+            }else if workoutType == 1{
+                
+                
+        
+                
+            }else if workoutType == 2{
+
+            }
+            
+            Section(header: Text("Submit"))
+            {
+                Button("Submit"){
+                    
+                }
+            }
+        }
+        
+    }
+    
+    
+}

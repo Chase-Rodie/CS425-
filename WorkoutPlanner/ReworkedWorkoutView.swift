@@ -13,11 +13,9 @@ struct ReworkedWorkoutView: View {
     @State private var isLoading: Bool = false
     @State private var progressValues: [Double] = Array(repeating: 0.0, count: 7)
     @State var isShowingDialog = false
- 
+
     var body: some View {
         ZStack{
-//            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
-//                .ignoresSafeArea()
             ScrollView{
                 Spacer()
                     Text("Weekly Summary")
@@ -41,6 +39,8 @@ struct ReworkedWorkoutView: View {
                 Divider()
                     .background(Color.black)
                     .frame(width: 350)
+               
+                
                 VStack(alignment: .leading){
                     ForEach(0..<workoutPlanModel.workoutPlan.count, id: \.self){
                         typeIndex in
@@ -49,20 +49,24 @@ struct ReworkedWorkoutView: View {
                             ProgressRingView(progress: progressValues[typeIndex+1], ringWidth: 15)
                                 .padding(.trailing, 16)
                             VStack(alignment: .leading){
-                                NavigationLink(destination: DailyWorkoutView(dayIndex: typeIndex, dayWorkoutPlan: dayWorkoutPlan, workoutPlanModel: workoutPlanModel)){
-                                    Text("Day \(typeIndex + 1)")
-                                    // .font(.system(size: 30, weight: .bold))
-                                        .fontWeight(.bold)
+                                HStack{
+                                    NavigationLink(destination: DailyWorkoutView(dayIndex: typeIndex, dayWorkoutPlan: dayWorkoutPlan, workoutPlanModel: workoutPlanModel)){
+                                        Text("Day \(typeIndex + 1)")
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .frame(width: 100, height: 25)
+                                            .background(Color.green)
+                                            .cornerRadius(10)
+                                    }
                                 }
-                                
                                 let muscleGroupKey = "muscleGroupDay\(typeIndex + 1)"
                                 Text("Muscle Groups: \(workoutPlanModel.workoutMetadata[muscleGroupKey] as? String ?? "")")
-                                Text("5 Exercises")
+                                
                             }
                             
                             
                         }.padding(.bottom, 40)
-                        
                         
                     }
                     VStack{
@@ -74,20 +78,20 @@ struct ReworkedWorkoutView: View {
                     }) {
                         HStack {
                             Text("New workout Plan")
-                                .font(.headline) // You can set the font style
-                                .foregroundColor(.white) // Set the text color
-                                .padding() // Add padding inside the button
-                                .frame(width: 200, height: 50) // Set the size of the button
-                                .background(Color.green) // Set the background color
-                                .cornerRadius(10) // Optional: rounded corners)
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(width: 200, height: 50)
+                                .background(Color.green)
+                                .cornerRadius(10)
                         }
                     }.confirmationDialog(
                         "Delete?",
                         isPresented: $isShowingDialog
                     ){
                         Button("Delete current workout plan", role: .destructive){
-                            UserDefaults.standard.removeObject(forKey: "workoutPlan")
-                            workoutPlanModel.clearAllExerciseCompletionData()
+//                            workoutPlanModel.clearAllExerciseCompletionData()
+                            workoutPlanModel.deleteWorkoutPlan()
                             print("Workout plan successfully removed.")
                             workoutPlanModel.isWorkoutPlanAvailable = false
                             print("Workout plan has been deleted.")
@@ -111,12 +115,12 @@ struct ReworkedWorkoutView: View {
     }
     
     private func fetchAllDaysProgress() {
-        for dayIndex in 0..<7 { // Loop through all days
+        for dayIndex in 0..<7 {
             workoutPlanModel.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
                 let progress = total > 0 ? Double(completed) / Double(total) : 0.0
                 
                 DispatchQueue.main.async {
-                    // Update only the specific index in the array
+                    
                     progressValues[dayIndex] = progress
                     print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
@@ -143,19 +147,24 @@ struct ProgressRingView: View {
                     Circle()
                         .trim(from: 0.0, to: progress)
                         .stroke(ringColor, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round))
-                        .rotationEffect(.degrees(-90)) // Start from the top
+                        .rotationEffect(.degrees(-90))
                         .animation(.easeInOut, value: progress)
 
-                    // Text (shows progress as percentage)
+                    
                     Text("\(Int(progress * 100))%")
                         .font(.headline)
                         .bold()
                 }
-                .frame(width: 100, height: 100) // Adjust the size as needed
+                .frame(width: 100, height: 100)
 
     }
 
 }
+
+
+
+
+
 
 
 #Preview {
