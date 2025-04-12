@@ -17,5 +17,18 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>960961808553-lnmj4amdub4860h81pt9fopj57r9lai0.apps.googleusercontent.com</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>172.127.24.215</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 </dict>
 </plist>

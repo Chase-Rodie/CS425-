@@ -102,12 +102,6 @@ struct TempContentView: View {
                 }
                 .tabItem { Label("Privacy Center", systemImage: "hand.raised") }
                 .tag(13)
-                
-                NavigationStack {
-                    MealPlanView()
-                }
-                .tabItem { Label("Meal Planner", systemImage: "calendar") }
-                .tag(14)
             }
             .accentColor(Color("BackgroundColor"))
             .frame(maxWidth: .infinity, alignment: .leading)
