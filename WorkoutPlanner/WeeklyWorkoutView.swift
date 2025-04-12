@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ReworkedWorkoutView: View {
+struct WeeklyWorkoutView: View {
     
     @StateObject var workoutPlanModel = RetrieveWorkoutData()
     @State private var isLoading: Bool = false
@@ -168,5 +168,5 @@ struct ProgressRingView: View {
 
 
 #Preview {
-    ReworkedWorkoutView()
+    WeeklyWorkoutView()
 }

@@ -31,7 +31,7 @@ struct TempContentView: View {
                     .tabItem { Label("Home", systemImage: "house.fill") }
                     .tag(0)
 
-                NewWorkoutView()
+                MainWorkoutView()
                     .tabItem { Label("Workout", systemImage: "figure.run") }
                     .tag(1)
 

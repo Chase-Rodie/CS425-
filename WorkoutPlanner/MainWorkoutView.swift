@@ -7,19 +7,14 @@
 
 import SwiftUI
 
-struct NewWorkoutView: View {
+struct MainWorkoutView: View {
     @StateObject private var viewModel = RetrieveWorkoutData()
     
     var body: some View {
         Group{
             if viewModel.isWorkoutPlanAvailable{
-                //Display workoutplanview
-                //ReworkedWorkoutView
-                //GetWorkoutPlanView(workoutPlanModel: viewModel) //isLoading: $isLoading)
-                ReworkedWorkoutView(workoutPlanModel: viewModel)
+                WeeklyWorkoutView(workoutPlanModel: viewModel)
             } else {
-                //Display form for creating workoutplan
-                //View2()
                 GetWorkoutPlanView(workoutPlanModel: viewModel)
             }
         }
@@ -150,5 +145,5 @@ struct GetWorkoutPlanView: View {
 
 
 #Preview {
-    NewWorkoutView()
+    MainWorkoutView()
 }
