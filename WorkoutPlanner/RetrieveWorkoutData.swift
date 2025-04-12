@@ -652,7 +652,10 @@ class RetrieveWorkoutData : ObservableObject {
     func saveManuallyEnteredWorkout(
                 name: String,
                 type: String,
-                exercises: [[String: Any]] = []
+                exercises: [[String: Any]] = [],
+                day: Int,
+                duration: Int,
+                distance: Int
             ) {
                 guard let userID = Auth.auth().currentUser?.uid else {
                     print("No user ID")
@@ -663,7 +666,7 @@ class RetrieveWorkoutData : ObservableObject {
                 dateFormatter.dateFormat = "MM-yyyy-'W'W"
                 let formattedDate = dateFormatter.string(from: now)
                 
-                
+                let dayID = ("Day\(day)")
                 let db = Firestore.firestore()
                 
                 let workoutRef = db
@@ -671,10 +674,14 @@ class RetrieveWorkoutData : ObservableObject {
                     .document(userID)
                     .collection("manualWorkouts")
                     .document("\(formattedDate)-manual")
+                    .collection(dayID)
+                    .document(name)
 
                 var workoutData: [String: Any] = [
                     "name": name,
                     "type": type,
+                    "duration": duration,
+                    "distance": distance
                 ]
                 
                 if type == "Strength" {

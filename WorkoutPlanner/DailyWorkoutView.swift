@@ -44,7 +44,7 @@ struct DailyWorkoutView: View {
                             .cornerRadius(10)
                     }
                 } .sheet(isPresented: $manualWorkoutFormShowing){
-                    AddWorkoutForm(workoutPlanModel: workoutPlanModel)
+                    AddWorkoutForm(day: dayIndex+1 , workoutPlanModel: workoutPlanModel, manualWorkoutFormShowing: $manualWorkoutFormShowing)
                 }
                 VStack(alignment: .leading){
                     ForEach(dayWorkoutPlan){exercise in
@@ -228,26 +228,30 @@ struct weightEntryView: View{
 
 struct AddWorkoutForm: View{
     
+    let day: Int
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+    @Binding var manualWorkoutFormShowing: Bool
+    
     @State var workoutType = 0
     let workoutTypes = ["Strength", "Cardio", "Flexibility"]
     @State var workoutName: String = ""
     
     //For strength type
-    @State var exercises = 0
-    let numExercises = ["1", "2", "3", "4", "5"]
+    @State var exercises = 1
+    let numExercises = Array(1...5)
     let numberOptions = Array(1...15)
-    @State private var setsList = Array(repeating: 0, count: 5)
-    @State private var repsList = Array(repeating: 0, count: 5)
+    @State private var setsList = Array(repeating: 1, count: 5)
+    @State private var repsList = Array(repeating: 1, count: 5)
     @State private var exerciseNamesList: [String] = Array(repeating: "", count: 5)
-    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
 
     
-    //For cardio type
-//    @State var durationCardio: Int?
-//    @State var distance: Int?
+    //For cardio & flexibility type
+    @State var dur: Int = 5
+    @State var dist: Int = 1
     
-    //For Flexibility type
-//    @State var durationFlex: Int?
+    let durOptions = Array(5...120)
+    let distOptions = Array(1...20)
+
    
     var body: some View{
         Form{
@@ -265,33 +269,53 @@ struct AddWorkoutForm: View{
             if workoutType == 0 {
                 Section(header: Text("Number of Exercises:")){
                     Picker("Exercises", selection: $exercises){
-                        ForEach(numExercises.indices, id: \.self){i in
-                            Text(self.numExercises[i])
+                        ForEach(numExercises, id: \.self){number in
+                            Text("\(number)").tag(number)
                         }
                     }
                     
                 }
-                ForEach(0..<exercises+1, id: \.self){ i in
+                ForEach(1..<exercises+1, id: \.self){ i in
                     Section(header: Text("Exercise")){
                         TextField("Exercise Name", text: $exerciseNamesList[i])
                         Picker("Sets", selection: $setsList[i]) {
                             ForEach(numberOptions, id: \.self) {
-                                Text("\($0)")
+                                Text("\($0)").tag($0)
                             }
                         }
                         Picker("Reps", selection: $repsList[i]) {
                             ForEach(numberOptions, id: \.self) {
-                                Text("\($0)")
+                                Text("\($0)").tag($0)
                             }
                         }
                     }
                 }
             }else if workoutType == 1{
-                
+                Section(header: Text("Duration")){
+                    Picker("Duration (min)", selection: $dur){
+                        ForEach(durOptions, id: \.self){value in
+                            Text("\(value) min")
+                        }
+                    }
+                }
+                Section(header: Text("Distance")){
+                    Picker("Distance (miles)", selection: $dist){
+                        ForEach(distOptions, id: \.self){value in
+                            Text("\(value) miles")
+                        }
+                    }
+                }
                 
                 
                 
             }else if workoutType == 2{
+                Section(header: Text("Duration")){
+                    Picker("Duration (min)", selection: $dur){
+                        ForEach(durOptions, id: \.self){value in
+                            Text("\(value) min")
+                        }
+                    }
+                }
                 
             }
             
@@ -302,7 +326,7 @@ struct AddWorkoutForm: View{
                     
                     var manualExercises: [[String: Any]] = []
                     if selectedType == "Strength" {
-                        for i in 0...exercises {
+                        for i in 1...exercises {
                             let exercise: [String: Any] = [
                                 "name": exerciseNamesList[i],
                                 "sets": setsList[i],
@@ -311,6 +335,8 @@ struct AddWorkoutForm: View{
                             manualExercises.append(exercise)
                         }
                     }
+                    workoutPlanModel.saveManuallyEnteredWorkout(name: workoutName, type: selectedType, exercises: manualExercises, day: day, duration: dur, distance: dist)
+                    manualWorkoutFormShowing = false
                 }
             }
             
