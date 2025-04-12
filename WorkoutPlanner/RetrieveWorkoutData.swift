@@ -18,12 +18,13 @@ class RetrieveWorkoutData : ObservableObject {
     @Published var completedExercisesCounts: [Int] = []
     var workoutDays: [(String, [String])] = []
     @Published var workoutMetadata: [String: Any] = [:]
-    
+    @Published var manualWorkoutsToday: [[String: Any]] = []
+
     
     
     let now = Date()
     
-    //reworked function to load the workoutplan from the database
+    //Saves workoutplan locally to userdefaults.
     func saveWorkoutPlanLocally(){
         let encoder = JSONEncoder()
         if let encodedData = try? encoder.encode(workoutPlan){
@@ -35,7 +36,7 @@ class RetrieveWorkoutData : ObservableObject {
         UserDefaults.standard.set(workoutMetadata, forKey: "workoutMetadata")
     }
     
-    
+    //Fetches existing workoutplan from FireBase. Stores workoutplan to UserDefaults w/ the saveWorkoutPlanLocally function.
     func fetchWorkoutPlan() {
         
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -100,32 +101,13 @@ class RetrieveWorkoutData : ObservableObject {
                         print("Fetched \(exercisesForDay.count) exercises for Day \(i)")
                         self.workoutPlan = tempWorkoutPlan
                         self.saveWorkoutPlanLocally()  // Save locally after fetching
-                        print("Workout Plan after fetch: \(self.workoutPlan)")
                     }
                 }
             }
         }
     }
     
-    
-    
-    //this function will allow for data to show properly in the progressrings for the homepage
-    //does need further testing
-    //    func completedExercises() {
-    //           completedExercisesCounts = workoutPlan.map { day in
-    //               day.filter { $0.isComplete }.count
-    //           }
-    //       }
-    //
-    //    func progress(forDay index: Int) -> Double {
-    //            guard index < workoutPlan.count else { return 0.0 }
-    //            let totalExercises = workoutPlan[index].count
-    //            let completedExercises = completedExercisesCounts[index]
-    //            return totalExercises > 0 ? Double(completedExercises) / Double(totalExercises) : 0.0
-    //        }
-    //
-    
-    
+    //Marks a single exercise as complete. Then saves changes to UserDefaults and Firebase.
     func markComplete(for exercise: Exercise){
         for dayIndex in workoutPlan.indices{
             if let exerciseIndex = workoutPlan[dayIndex].firstIndex(where: { $0.id == exercise.id }){
@@ -138,11 +120,13 @@ class RetrieveWorkoutData : ObservableObject {
         
     }
     
-    func queryExercises(days: [(String, [String])], maxExercises: Int = 4, level: String, completion: @escaping () -> Void)  {
+    //Makes Query to firestore to build user's requested workout plan. Saves to Firebase and UserDefaults with separate function calls.
+    func queryExercises(days: [(String, [String])], maxExercises: Int = 4, level: String, goal: String, completion: @escaping () -> Void)  {
         let db = Firestore.firestore()
         self.workoutDays = days
         
         var tempExercises: [[Exercise]] = Array(repeating: [], count: days.count)
+        let (customSets, customReps) = self.getSetsAndReps(for: goal)
         
         let group = DispatchGroup()
         
@@ -166,14 +150,14 @@ class RetrieveWorkoutData : ObservableObject {
                                 name: document["name"] as? String ?? "",
                                 primaryMuscles: (document["primaryMuscles"] as? [String]) ?? [],
                                 secondaryMuscles: (document["secondaryMuscles"] as? [String]) ?? [],
-                                sets: document["sets"] as? Int ?? 3,
-                                reps: document["reps"] as? Int ?? 10
+                                sets: customSets,
+                                reps: customReps
+
                             )
                         }
                         
                         let randomizedExercises = allExercises.shuffled().prefix(maxExercises)
                         tempExercises[index] = Array(randomizedExercises)
-                        //print("Fetched \(exercises.count) exercises for category \(type)")
                     }
                 }
                 group.leave()
@@ -193,7 +177,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
-    //reworked function to save the workoutplan to the database
+    //Saves the workoutplan to Firebase.
     func saveWorkoutPlanDB(){
         
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -203,7 +187,7 @@ class RetrieveWorkoutData : ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
-        let docID = "\(formattedDate)-Manual"
+        let docID = "\(formattedDate)"
         
         let db = Firestore.firestore()
         
@@ -277,7 +261,7 @@ class RetrieveWorkoutData : ObservableObject {
     }
     
     
-    //need to pull from database instead! rework this function?
+    //Loads workoutplan from UserDefaults
     func loadWorkoutPlan() -> Bool {
         let decoder = JSONDecoder()
         if let savedData = UserDefaults.standard.data(forKey: "workoutPlan"),
@@ -302,7 +286,7 @@ class RetrieveWorkoutData : ObservableObject {
     }
     
     
-    //Updates weight the user recorded for the exercises
+    //Updates user's recorded weight for the exercise.
     func updateWeight(for exercise: Exercise, weight: Double) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
@@ -327,6 +311,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
+    //Function to check if workoutplan exists in UserDefaults
     func workoutPlanExists(completion: @escaping (Bool) -> Void) {
         // First Check UserDefaults
         if loadWorkoutPlan() {
@@ -412,7 +397,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
-    
+    //Saves to userdefaults that exercise was marked complete.
     func saveExerciseCompletionStatus(exercise: Exercise) {
         let defaults = UserDefaults.standard
         let key = "exerciseCompleted_\(exercise.id)"
@@ -420,12 +405,14 @@ class RetrieveWorkoutData : ObservableObject {
         print("Exercise \(exercise.name) completion status saved: \(exercise.isComplete)")
     }
     
+    //Checks to see if exercise was completed.
     func isExerciseCompleted(exercise: Exercise) -> Bool {
         let defaults = UserDefaults.standard
         let key = "exerciseCompleted_\(exercise.id)"
         return defaults.bool(forKey: key)
     }
     
+    //Checks all exercises in day to see if completed.
     func loadCompletionStatuses() {
         for dayIndex in workoutPlan.indices {
             for exerciseIndex in workoutPlan[dayIndex].indices {
@@ -435,6 +422,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
+    //Saves to Firebase that exercise was marked complete.
     func updateExerciseCompletionInDB(exercise: Exercise, dayIndex: Int) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user logged in.")
@@ -462,6 +450,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
+    //Counts total amount of completed exercises in a day.
     func countCompletedAndTotalExercises(dayIndex: Int, completion: @escaping (Int, Int) -> Void) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy-'W'W"
@@ -501,7 +490,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
-    
+    //Clears completion data from UserDefaults.
     func clearAllExerciseCompletionData() {
         let defaults = UserDefaults.standard
         
@@ -515,7 +504,7 @@ class RetrieveWorkoutData : ObservableObject {
         print("Cleared all exercise completion data.")
     }
     
-    
+    //Marks exercise as a favorite.
     func toggleFavoriteStatus(for exercise: Exercise) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user logged in.")
@@ -560,7 +549,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
-    
+    //Checks if exercise is favorited.
     func isExerciseFavorited(exercise: Exercise, completion: @escaping (Bool) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user logged in.")
@@ -585,6 +574,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
     
+    //Deleted workoutplan from firebase
     func deleteWorkoutPlan() {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No user logged in.")
@@ -648,7 +638,7 @@ class RetrieveWorkoutData : ObservableObject {
     }
     
     
-    
+    //Saves manually entered workout to Firebase
     func saveManuallyEnteredWorkout(
                 name: String,
                 type: String,
@@ -696,6 +686,64 @@ class RetrieveWorkoutData : ObservableObject {
                     }
                 }
             }
+    
+    
+    func fetchManuallyEnteredWorkoutsForDay(day: Int) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user ID")
+            return
+        }
+        
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
+        let formattedDate = dateFormatter.string(from: now)
+        
+        let dayID = "Day\(day)"
+        let db = Firestore.firestore()
+        
+        let dayCollectionRef = db
+            .collection("users")
+            .document(userID)
+            .collection("manualWorkouts")
+            .document("\(formattedDate)-manual")
+            .collection(dayID)
+        
+        dayCollectionRef.getDocuments { [weak self] snapshot, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Error fetching workouts for day: \(error.localizedDescription)")
+                self.manualWorkoutsToday = []
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("No workouts found for day.")
+                self.manualWorkoutsToday = []
+                return
+            }
+            
+            self.manualWorkoutsToday = documents.map { $0.data() }            
+        }
+    }
+    
+    
+    private func getSetsAndReps(for goal: String) -> (Int, Int) {
+        switch goal.lowercased() {
+        case "lose":
+            return (3, 15) // higher reps, moderate sets
+        case "gain":
+            return (4, 8) // lower reps, higher sets for hypertrophy
+        case "maintain":
+            return (3, 10) // balanced
+        default:
+            return (3, 10)
+        }
+    }
+
+    
+    
 }
 
 

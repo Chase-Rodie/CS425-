@@ -12,7 +12,7 @@ struct DailyWorkoutView: View {
     //@State var exercise: Exercise
     let dayIndex: Int
     let dayWorkoutPlan: [Exercise]
-    let workoutPlanModel: RetrieveWorkoutData
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
     @State private var manualWorkoutFormShowing = false
 
     var body: some View {
@@ -47,12 +47,19 @@ struct DailyWorkoutView: View {
                     AddWorkoutForm(day: dayIndex+1 , workoutPlanModel: workoutPlanModel, manualWorkoutFormShowing: $manualWorkoutFormShowing)
                 }
                 VStack(alignment: .leading){
+                    Text("Found \(workoutPlanModel.manualWorkoutsToday.count) workouts")
+                        .padding()
+
                     ForEach(dayWorkoutPlan){exercise in
                         ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel)
                     }
                 }.padding()
                
             }
+            .onAppear {
+                workoutPlanModel.fetchManuallyEnteredWorkoutsForDay(day: dayIndex+1)
+            }
+
         }.accentColor(.green)
     }
 }
@@ -78,8 +85,8 @@ struct ExerciseRowView: View {
             }
             VStack(alignment: .leading) {
                 NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel))
-                Text("4 sets of 8 reps")
-                Text("Weight: 30 lbs")
+                Text("Sets: \(exercise.sets)")
+                Text("Reps: \(exercise.reps)")
             }
             
             Image(systemName: workoutPlanModel.isExerciseCompleted(exercise: exercise) ? "checkmark.square" : "square")
@@ -336,6 +343,8 @@ struct AddWorkoutForm: View{
                         }
                     }
                     workoutPlanModel.saveManuallyEnteredWorkout(name: workoutName, type: selectedType, exercises: manualExercises, day: day, duration: dur, distance: dist)
+                    workoutPlanModel.fetchManuallyEnteredWorkoutsForDay(day: day)
+
                     manualWorkoutFormShowing = false
                 }
             }

@@ -89,7 +89,7 @@ struct GetWorkoutPlanView: View {
                                     ("push", ["chest", "shoulders", "triceps"]),
                                     ("pull", ["back", "biceps", "abdominals"]),
                                     ("pull", ["glutes", "quadriceps", "calves", "hamstrings"])
-                                ], maxExercises: passMax, level: "beginner"){
+                                ], maxExercises: passMax, level: "beginner", goal: "lose"){
                                     
                                     DispatchQueue.main.async {
                                         
@@ -105,7 +105,7 @@ struct GetWorkoutPlanView: View {
                                     ("pull", ["back", "biceps"]),
                                     ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
                                     ("pull", ["shoulders", "abdominals"])
-                                ], maxExercises: passMax, level: "beginner"){
+                                ], maxExercises: passMax, level: "beginner",goal: "lose"){
                                     
                                     DispatchQueue.main.async {
                                         
@@ -122,7 +122,7 @@ struct GetWorkoutPlanView: View {
                                     ("pull", ["calves", "hamstrings"]),
                                     //full body
                                     ("pull", ["quadriceps","shoulders", "hamstrings"])
-                                ], maxExercises: passMax, level: "beginner"){
+                                ], maxExercises: passMax, level: "beginner", goal: "lose"){
                                     
                                     DispatchQueue.main.async {
                                         
