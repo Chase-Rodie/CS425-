@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -17,5 +19,10 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>960961808553-lnmj4amdub4860h81pt9fopj57r9lai0.apps.googleusercontent.com</string>
+	<key>NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription</key>
+	<string>FitPantry writes your meal and nutrition data to Apple Health.</string>
 </dict>
 </plist>

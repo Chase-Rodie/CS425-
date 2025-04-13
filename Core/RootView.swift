@@ -21,6 +21,10 @@ struct RootView: View {
         .onAppear {
             let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
             self.showSignInView = authUser == nil
+            
+            HealthKitManager.shared.requestAuthorization { success in
+                print(success ? "HealthKit Authorized!" : "HealthKit Not authorized")
+            }
         }
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {

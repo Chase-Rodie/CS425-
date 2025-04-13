@@ -91,6 +91,7 @@
 		F8A7CDCD2D9F6702009F5907 /* TodayMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */; };
 		F8A7CDCF2D9F6733009F5907 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCE2D9F6731009F5907 /* Meal.swift */; };
 		F8A7CDD02D9F6733009F5907 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCE2D9F6731009F5907 /* Meal.swift */; };
+		F8A7CDFA2DAB16F5009F5907 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDF92DAB16EA009F5907 /* HealthKitManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +231,7 @@
 		F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealManager.swift; sourceTree = "<group>"; };
 		F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealView.swift; sourceTree = "<group>"; };
 		F8A7CDCE2D9F6731009F5907 /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
+		F8A7CDF92DAB16EA009F5907 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -460,6 +462,7 @@
 		9A5E9D992CFAE80B009460EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				F8A7CDF92DAB16EA009F5907 /* HealthKitManager.swift */,
 				F825DACF2D75A88100F4345D /* FirestoreManager.swift */,
 				9A5E9D9A2CFAE887009460EA /* Utilities.swift */,
 			);
@@ -990,6 +993,7 @@
 				5E74B7072D62DF2000E5912B /* FoodJournalAddItemViewModel.swift in Sources */,
 				9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
+				F8A7CDFA2DAB16F5009F5907 /* HealthKitManager.swift in Sources */,
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
 				9A6624462CFEBBC900A5CB90 /* ProfileView.swift in Sources */,
@@ -1248,10 +1252,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fit-Pantry-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "FitPantry reads your nutrition data from Apple Health.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "FitPantry writes your meal and nutrition data to Apple Health.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1263,7 +1270,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = name.chaserodie.FitPantry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.heather.fitpantry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1280,10 +1287,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fit-Pantry-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "FitPantry reads your nutrition data from Apple Health.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "FitPantry writes your meal and nutrition data to Apple Health.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1295,7 +1305,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = name.chaserodie.FitPantry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.heather.fitpantry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
