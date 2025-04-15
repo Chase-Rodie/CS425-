@@ -258,9 +258,9 @@ struct MealPlanView: View {
 
     func fetchMealsAsync() async {
         await withCheckedContinuation { continuation in
-            let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
+            let userID = "plksuM4rSeNBawpM0rsHlkLVj102"
             let db = Firestore.firestore()
-                .collection("userData_test")
+                .collection("users")
                 .document(userID)
                 .collection("pantry")
 
@@ -279,29 +279,50 @@ struct MealPlanView: View {
                     return
                 }
 
-                self.mealPlan = snapshot.documents.compactMap { doc in
+                let group = DispatchGroup()
+                var fetchedMeals: [MealPlanner] = []
+
+                for doc in snapshot.documents {
                     let data = doc.data()
                     guard let foodID = data["id"] as? Int,
                           let name = data["name"] as? String,
                           let quantity = data["quantity"] as? Double,
                           quantity > 0 else {
-                        return nil
+                        continue
                     }
 
-                    let category: MealCategory = quantity > 1 ? .prepared : .ingredient
+                    group.enter()
+                    Firestore.firestore().collection("Food").document(String(foodID)).getDocument { foodSnapshot, error in
+                        defer { group.leave() }
 
-                    return MealPlanner(
-                        pantryDocID: doc.documentID,
-                        name: name,
-                        foodID: String(foodID),
-                        imageURL: nil,
-                        category: category,
-                        quantity: quantity
-                    )
+                        var mealCategory: MealCategory = .prepared  // Default to .prepared
+
+                        if let foodData = foodSnapshot?.data(),
+                           let categoryString = foodData["category"] as? String,
+                           let parsedCategory = MealCategory(rawValue: categoryString) {
+                            mealCategory = parsedCategory
+                        } else {
+                            print("Could not find category for foodID \(foodID), defaulting to .prepared")
+                        }
+
+                        let meal = MealPlanner(
+                            pantryDocID: doc.documentID,
+                            name: name,
+                            foodID: String(foodID),
+                            imageURL: nil,
+                            category: mealCategory,
+                            quantity: quantity
+                        )
+
+                        fetchedMeals.append(meal)
+                    }
                 }
 
-                isLoading = false
-                continuation.resume()
+                group.notify(queue: .main) {
+                    self.mealPlan = fetchedMeals
+                    isLoading = false
+                    continuation.resume()
+                }
             }
         }
     }
