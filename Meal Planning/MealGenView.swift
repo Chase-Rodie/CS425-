@@ -6,6 +6,8 @@
 //
 // NOTE:
 // This is for demostration purposes and can be removed later
+// NOTE:
+// Can be removed now
 
 import SwiftUI
 
