@@ -24,5 +24,21 @@ NSHealthUpdateUsageDescription
 NSHealthUpdateUsageDescription
 NSHealthUpdateUsageDescription</key>
 	<string>FitPantry writes your meal and nutrition data to Apple Health.</string>
+
+	<!-- BEGIN: App Transport Security Exception -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>172.127.24.215</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<!-- END: App Transport Security Exception -->
 </dict>
 </plist>

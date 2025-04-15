@@ -16,7 +16,7 @@ struct RecipeResponse: Codable {
 }
 
 func generateRecipe(ingredients: [String], completion: @escaping (String?) -> Void) {
-    let url = URL(string: "http://localhost:8000/generate_recipe/")!
+    let url = URL(string: "http://172.127.24.215:42647/generate_recipe/")!
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
