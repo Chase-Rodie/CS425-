@@ -62,7 +62,7 @@ class HealthKitManager {
             createSample(typeIdentifier: .dietaryProtein, value: protein, unit: .gram()),
             createSample(typeIdentifier: .dietaryCarbohydrates, value: carbs, unit: .gram()),
             createSample(typeIdentifier: .dietaryFatTotal, value: fat, unit: .gram())
-        ].compactMap { $0 } // Remove nils safely
+        ].compactMap { $0 } 
 
         guard !samples.isEmpty else {
             print("No valid samples to save to HealthKit.")
