@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import FirebaseAuth
 import Foundation
 
 struct MealPlanView: View {
@@ -250,21 +251,28 @@ struct MealPlanView: View {
 
         }
     }
-
+    
     func updatePantryQuantity(docID: String, amount: Double) {
-        //let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
-        let userID = "plksuM4rSeNBawpM0rsHlkLVj102"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+
         let docRef = Firestore.firestore()
             .collection("users")
             .document(userID)
             .collection("pantry")
             .document(docID)
+
         docRef.updateData(["quantity": FieldValue.increment(amount)])
     }
-
+    
     func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
-        //let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
-        let userID = "plksuM4rSeNBawpM0rsHlkLVj102"
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let today = dateFormatter.string(from: selectedDate)
@@ -284,10 +292,14 @@ struct MealPlanView: View {
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
     }
     
-    
     func fetchMealsAsync() async {
         await withCheckedContinuation { continuation in
-            let userID = "plksuM4rSeNBawpM0rsHlkLVj102"
+            guard let userID = Auth.auth().currentUser?.uid else {
+                print("User not authenticated")
+                isLoading = false
+                continuation.resume()
+                return
+            }
             let db = Firestore.firestore()
                 .collection("users")
                 .document(userID)
@@ -483,8 +495,6 @@ struct MealGenerationView: View {
         }
     }
 }
-
-
 
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {
