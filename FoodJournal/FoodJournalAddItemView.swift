@@ -227,8 +227,8 @@ struct FoodJournalAddItemView: View {
                 "fat": item.fat,
                 "carbohydrates": item.carbohydrates,
                 "protein": item.protein,
-                "suitableFor": item.suitableFor
-               // "quantity": value
+                "suitableFor": item.suitableFor,
+                "quantity": value
             ]
             
             // Update the document in Firestore
