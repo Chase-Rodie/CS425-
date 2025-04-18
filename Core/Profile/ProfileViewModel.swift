@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  ProfileViewModel.swift
 //  Fit Pantry
 //
 //  Created by Chase Rodie on 2/5/25.
@@ -15,17 +15,11 @@ final class ProfileViewModel: ObservableObject {
             
     func loadCurrentUser() async throws {
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
-        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+        let fetchedUser = try await UserManager.shared.getUserProfile(userId: authDataResult.uid)
+
+            self.user = fetchedUser
     }
-    
-    func addUserPreference(text: String) {
-        guard let user else { return }
-        
-        Task {
-            try await UserManager.shared.addUserPreference(userId: user.userId, preference: text)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-        }
-    }
+
     
     func updateUserProfile(user: DBUser) async throws {
         try? await UserManager.shared.updateUserProfile(user: user)
@@ -34,58 +28,23 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-//    func addUserInformation(text: String) {
-//        guard let user else { return }
-//
-//        Task {
-//            try await UserManager.shared.addUserInformation(userId: user.userId, userInformation: text)
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
-//        }
-//    }
-    
-    func removeUserPreference(text: String) {
-        guard let user else { return }
-        
-        Task {
-            try await UserManager.shared.removeUserPreference(userId: user.userId, preference: text)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-        }
-    }
-    
-    //func updateProfile(weight: String, height: String, gender: String, age: Int, fitnessLevel: String, goal: String) {
-        //guard let userId = user?.userId else { return }
-        
-        //Task {
-            //do {
-                //try await UserManager.shared.updateUserProfile(userId: userId, weight: weight, height: height, gender: gender, age: age, fitnessLevel: fitnessLevel, goal: goal)
-                //DispatchQueue.main.async {
-                    
-                //}
-            //}
-        //}
-    //}
-            
     func saveProfileImage(item: PhotosPickerItem) {
         guard let user else { return }
 
         Task {
             guard let data = try await item.loadTransferable(type: Data.self) else { return }
-            let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
-            print("SUCCESS!")
-            print(path)
-            print(name)
+            let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.metadata.userId)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path, url: url.absoluteString)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.metadata.userId, path: path, url: url.absoluteString)
         }
     }
     
     func deleteProfileImage() {
-        guard let user, let path = user.profileImagePath else { return }
+        guard let user, let path = user.profile.profileImagePath else { return }
 
         Task {
             try await StorageManager.shared.deleteImage(path: path)
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.metadata.userId, path: nil, url: nil)
         }
     }
-    
 }

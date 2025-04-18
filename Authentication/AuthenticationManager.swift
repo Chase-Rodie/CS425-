@@ -10,18 +10,21 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
 struct AuthDataResultModel {
     let uid: String
     let email: String?
     let photoUrl: String?
     let isAnonymous: Bool
+    let isEmailVerified: Bool
     
     init(user: User) {
         self.uid = user.uid
         self.email = user.email
         self.photoUrl = user.photoURL?.absoluteString
         self.isAnonymous = user.isAnonymous
+        self.isEmailVerified = user.isEmailVerified
     }
 }
 
@@ -62,18 +65,6 @@ func getUserToken() async throws -> String {
     }
 }
 
-func reauthenticateUser(email:String, password: String) async throws {
-    guard let user = Auth.auth().currentUser else {
-        throw CustomAuthenticationErrors.userNotFound
-    }
-    let credential = EmailAuthProvider.credential(withEmail: email, password: password)
-    do {
-        try await user.reauthenticate(with: credential)
-    } catch {
-        throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
-    }
-}
-
 enum CustomAuthenticationErrors: LocalizedError {
     case userNotFound
     case emailVerificationFailed
@@ -81,7 +72,8 @@ enum CustomAuthenticationErrors: LocalizedError {
     case signOutFailed
     case providerOptionNotFound(String)
     case unknownError(String)
-    
+    case requiresReauthentication
+
     var errorDescription: String? {
             switch self {
             case .userNotFound:
@@ -94,6 +86,8 @@ enum CustomAuthenticationErrors: LocalizedError {
                 return "Sign out operation failed."
             case .providerOptionNotFound(let providerID):
                 return "Provider option not recognized: \(providerID)"
+            case .requiresReauthentication:
+                        return "Reauthentication is required before deleting your account."
             case .unknownError(let message):
                 return "An unknown error occurred: \(message)"
             }
@@ -147,12 +141,26 @@ final class AuthenticationManager {
         guard let user = Auth.auth().currentUser else {
             throw CustomAuthenticationErrors.userNotFound
         }
+
+        let userID = user.uid
+        let db = Firestore.firestore()
+
         do {
+            try await db.collection("users").document(userID).delete()
+            print("User document deleted from Firestore")
+
             try await user.delete()
+            print("User deleted from Firebase Authentication")
         } catch {
-            throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+            if let errorCode = (error as NSError?)?.code,
+               errorCode == AuthErrorCode.requiresRecentLogin.rawValue {
+                throw CustomAuthenticationErrors.requiresReauthentication
+            } else {
+                throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+            }
         }
     }
+
     
     
     func sendEmailVerification() throws {
@@ -180,9 +188,15 @@ extension AuthenticationManager {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         let user = authDataResult.user
         
+        // This sends email verification
         try await user.sendEmailVerification()
         
-        return AuthDataResultModel(user: user)
+        // This creates a Firestore entry
+        let authDataModel = AuthDataResultModel(user: user)
+        let dbUser = DBUser(auth: authDataModel)
+        try await UserManager.shared.createNewUser(user: dbUser)
+        
+        return authDataModel
     }
 
     @discardableResult
@@ -191,6 +205,7 @@ extension AuthenticationManager {
         let user = authDataResult.user
         
         guard user.isEmailVerified else {
+            print("User email is not verified: \(user.email ?? "Uknown email")")
             throw CustomAuthenticationErrors.emailVerificationFailed
         }
         return AuthDataResultModel(user: user)
@@ -263,6 +278,18 @@ extension AuthenticationManager {
 }
 
 extension AuthenticationManager {
+    
+    func reauthenticateUser(email:String, password: String) async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw CustomAuthenticationErrors.userNotFound
+        }
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        do {
+            try await user.reauthenticate(with: credential)
+        } catch {
+            throw CustomAuthenticationErrors.unknownError(error.localizedDescription)
+        }
+    }
     
     @discardableResult
     func signInAnonymous() async throws -> AuthDataResultModel {

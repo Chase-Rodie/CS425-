@@ -7,353 +7,346 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
 
-    
-struct DBUser: Codable {
-    var userId: String
-    var age: Int?
-    var gender: String?
-    var fitnessLevel: String?
-    var goal: String?
-    var weight: String?
-    var height: String?
-    var isAnonymous: Bool?
-    var email: String?
-    var photoUrl: String?
-    var dateCreated: Date?
-    var preferences: [String]?
-    var profileImagePath: String?
-    var profileImagePathUrl: String?
-    var userInformation: [String]?
-
-    init(auth: AuthDataResultModel) {
-        self.userId = auth.uid
-        self.isAnonymous = auth.isAnonymous
-        self.email = auth.email
-        self.photoUrl = auth.photoUrl
-        self.dateCreated = Date()
-        self.preferences = nil
-        self.profileImagePath = nil
-        self.profileImagePathUrl = nil
-        self.userInformation = nil
-        self.age = nil
-        self.gender = nil
-        self.fitnessLevel = nil
-        self.goal = nil
-        self.weight = nil
-        self.height = nil
-    }
-    
-    init(
-        userId: String,
-        isAnonymous: Bool? = nil,
-        email: String? = nil,
-        photoUrl: String? = nil,
-        dateCreated: Date? = nil,
-        preferences: [String]? = nil,
-        profileImagePath: String? = nil,
-        profileImagePathUrl: String? = nil,
-        userInformation: [String]? = nil,
-        age: Int? = nil,
-        gender: String? = nil,
-        fitnessLevel: String? = nil,
-        goal: String? = nil,
-        weight: String? = nil,
-        height: String? = nil
-    ) {
-        self.userId = userId
-        self.isAnonymous = isAnonymous
-        self.email = email
-        self.photoUrl = photoUrl
-        self.dateCreated = dateCreated
-        self.preferences = preferences
-        self.profileImagePath = profileImagePath
-        self.profileImagePathUrl = profileImagePathUrl
-        self.userInformation = userInformation
-        self.age = age
-        self.gender = gender
-        self.fitnessLevel = fitnessLevel
-        self.goal = goal
-        self.weight = weight
-        self.height = height
-    }
-    
-
-    
-    enum CodingKeys: String, CodingKey {
-        case userId = "user_id"
-        case isAnonymous = "is_anonymous"
-        case email = "email"
-        case photoUrl = "photo_url"
-        case dateCreated = "date_created"
-        case preferences = "preferences"
-        case profileImagePath = "profile_image_path"
-        case profileImagePathUrl = "profile_image_path_url"
-        case userInformation = "userInformation"
-        case age = "age"
-        case gender = "gender"
-        case fitnessLevel = "fitness_level"
-        case goal = "goal"
-        case weight = "weight"
-        case height = "height"
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.userId = try container.decode(String.self, forKey: .userId)
-        self.isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
-        self.email = try container.decodeIfPresent(String.self, forKey: .email)
-        self.photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
-        self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
-        self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
-        self.profileImagePath = try container.decodeIfPresent(String.self, forKey: .profileImagePath)
-        self.profileImagePathUrl = try container.decodeIfPresent(String.self, forKey: .profileImagePathUrl)
-        self.userInformation = try container.decodeIfPresent([String].self, forKey: .userInformation)
-        self.age = try container.decodeIfPresent(Int.self, forKey: .age)
-        self.gender = try container.decodeIfPresent(String.self, forKey: .gender)
-        self.fitnessLevel = try container.decodeIfPresent(String.self, forKey: .fitnessLevel)
-        self.goal = try container.decodeIfPresent(String.self, forKey: .goal)
-        self.weight = try container.decodeIfPresent(String.self, forKey: .weight)
-        self.height = try container.decodeIfPresent(String.self, forKey: .height)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.userId, forKey: .userId)
-        try container.encodeIfPresent(self.isAnonymous, forKey: .isAnonymous)
-        try container.encodeIfPresent(self.email, forKey: .email)
-        try container.encodeIfPresent(self.photoUrl, forKey: .photoUrl)
-        try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
-        try container.encodeIfPresent(self.preferences, forKey: .preferences)
-        try container.encodeIfPresent(self.profileImagePath, forKey: .profileImagePath)
-        try container.encodeIfPresent(self.profileImagePathUrl, forKey: .profileImagePathUrl)
-        try container.encodeIfPresent(self.userInformation, forKey: .userInformation)
-        try container.encodeIfPresent(self.age, forKey: .age)
-        try container.encodeIfPresent(self.gender, forKey: .gender)
-        try container.encodeIfPresent(self.fitnessLevel, forKey: .fitnessLevel)
-        try container.encodeIfPresent(self.goal, forKey: .goal)
-        try container.encodeIfPresent(self.weight, forKey: .weight)
-        try container.encodeIfPresent(self.height, forKey: .height)
-    }
-    
+enum Gender: String, Codable, CaseIterable {
+    case male = "Male"
+    case female = "Female"
+    case nonBinary = "Non-binary"
+    case other = "Other"
+    case preferNotToSay = "Prefer not to say"
 }
 
-final class UserManager {
+enum FitnessLevel: String, Codable, CaseIterable {
+    case beginner = "Beginner"
+    case intermediate = "Intermediate"
+    case advanced = "Advanced"
+}
+
+enum Goal: String, Codable, CaseIterable {
+    case loseWeight = "LoseWeight"
+    case gainWeight = "GainWeight"
+    case maintainWeight = "Maintain"
+}
+
+struct UserProfile: Codable, Equatable {
+    var name: String?
+    var age: Int?
+    var gender: Gender?
+    var fitnessLevel: FitnessLevel?
+    var goal: Goal?
+    var height: String?
+    var weight: String?
+    var profileImagePath: String?
+    var profileImagePathUrl: String?
+}
+
+struct UserMetadata: Codable, Equatable {
+    var userId: String
+    var email: String?
+    var isAnonymous: Bool?
+    var photoUrl: String?
+    var dateCreated: Date?
+}
+
+struct DBUser: Decodable, Equatable {
+    var metadata: UserMetadata
+    var profile: UserProfile
     
-    static let shared = UserManager()
-    private init() { }
-    
-    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
-    
-    private func userDocument(userId: String) -> DocumentReference {
-        userCollection.document(userId)
+    var profileImagePathUrl: String? {
+        return profile.profileImagePathUrl
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case metadata
+        case profile
+        case profileImagePath
+        case profileImagePathUrl
     }
     
+    enum MetadataKeys: String, CodingKey {
+        case userId = "user_id"
+        case email
+        case isAnonymous = "is_anonymous"
+        case photoUrl = "photo_url"
+        case dateCreated = "date_created"
+    }
+
+    enum ProfileKeys: String, CodingKey {
+        case name
+        case age
+        case gender
+        case fitnessLevel = "fitnessLevel"
+        case goal
+        case height
+        case weight
+        case profileImagePath
+        case profileImagePathUrl
+    }
+
+    init(auth: AuthDataResultModel) {
+        self.metadata = UserMetadata(
+            userId: auth.uid,
+            email: auth.email,
+            isAnonymous: auth.isAnonymous,
+            photoUrl: auth.photoUrl,
+            dateCreated: Date()
+        )
+        self.profile = UserProfile(
+            name: nil,
+            age: nil,
+            gender: nil,
+            fitnessLevel: nil,
+            goal: nil,
+            height: nil,
+            weight: nil,
+            profileImagePath: nil,
+            profileImagePathUrl: nil
+        )
+    }
+
+    init(metadata: UserMetadata, profile: UserProfile) {
+        self.metadata = metadata
+        self.profile = profile
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let metadataContainer = try container.nestedContainer(keyedBy: MetadataKeys.self, forKey: .metadata)
+        let userId = try metadataContainer.decode(String.self, forKey: .userId)
+        let email = try metadataContainer.decode(String?.self, forKey: .email)
+        let isAnonymous = try metadataContainer.decode(Bool?.self, forKey: .isAnonymous)
+        let photoUrl = try metadataContainer.decode(String?.self, forKey: .photoUrl)
+        let dateCreated = try metadataContainer.decodeIfPresent(Timestamp.self, forKey: .dateCreated)?.dateValue()
+        
+        self.metadata = UserMetadata(
+            userId: userId,
+            email: email,
+            isAnonymous: isAnonymous,
+            photoUrl: photoUrl,
+            dateCreated: dateCreated
+        )
+
+        let profileContainer = try container.nestedContainer(keyedBy: ProfileKeys.self, forKey: .profile)
+        let name = try profileContainer.decode(String?.self, forKey: .name)
+        let age = try profileContainer.decode(Int?.self, forKey: .age)
+        let genderRawValue = try profileContainer.decode(String?.self, forKey: .gender)
+        let gender = genderRawValue.flatMap { Gender(rawValue: $0) }
+        let fitnessLevelRawValue = try profileContainer.decode(String?.self, forKey: .fitnessLevel)
+        let fitnessLevel = fitnessLevelRawValue.flatMap { FitnessLevel(rawValue: $0) }
+        let goalRawValue = try profileContainer.decode(String?.self, forKey: .goal)
+        let goal = goalRawValue.flatMap { Goal(rawValue: $0) }
+        let height = try profileContainer.decode(String?.self, forKey: .height)
+        let weight = try profileContainer.decode(String?.self, forKey: .weight)
+        let profileImagePath = try profileContainer.decode(String?.self, forKey: .profileImagePath)
+        let profileImagePathUrl = try profileContainer.decode(String?.self, forKey: .profileImagePathUrl)
+        
+        self.profile = UserProfile(
+            name: name,
+            age: age,
+            gender: gender,
+            fitnessLevel: fitnessLevel,
+            goal: goal,
+            height: height,
+            weight: weight,
+            profileImagePath: profileImagePath,
+            profileImagePathUrl: profileImagePathUrl
+        )
+    }
+}
+
+
+
+extension DBUser {
+    func encodeToFirestore() -> [String: Any] {
+        var data: [String: Any?] = [
+            "userId": metadata.userId,
+            "email": metadata.email,
+            "isAnonymous": metadata.isAnonymous ?? false,
+            "photoUrl": metadata.photoUrl,
+            "dateCreated": metadata.dateCreated != nil ? Timestamp(date: metadata.dateCreated!) : FieldValue.serverTimestamp(),
+            "name": profile.name,
+            "age": profile.age,
+            "gender": profile.gender?.rawValue,
+            "fitnessLevel": profile.fitnessLevel?.rawValue,
+            "goal": profile.goal?.rawValue,
+            "height": profile.height,
+            "weight": profile.weight
+        ]
+
+        return data.compactMapValues { $0 }
+    }
+}
+
+@MainActor
+final class UserManager: ObservableObject {
+    static let shared = UserManager()
+
+    @Published var currentUser: DBUser?
+
+    private let db = Firestore.firestore()
+    private let storage = Storage.storage()
+
+    private init() {
+        Task {
+            await fetchCurrentUser()
+        }
+    }
+
+    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
+
+    private func userDocument(userId: String) -> DocumentReference {
+        return userCollection.document(userId).collection("UserInformation").document("profile")
+    }
+
+
     private func userFavoriteProductCollection(userId: String) -> CollectionReference {
         userDocument(userId: userId).collection("favorite_products")
     }
+
+    func loadUserProfile(userId: String) async throws -> DBUser? {
+        let user = try await UserManager.shared.getUserProfile(userId: userId)
+        return user
+    }
     
+    func createUserMetadata(user: DBUser) async throws {
+        let data: [String: Any] = [
+            "user_id": user.metadata.userId,
+            "email": user.metadata.email ?? "",
+            "is_anonymous": user.metadata.isAnonymous ?? false,
+            "photo_url": user.metadata.photoUrl ?? "",
+            "date_created": user.metadata.dateCreated != nil ? Timestamp(date: user.metadata.dateCreated!) : FieldValue.serverTimestamp()
+        ]
+        try await Firestore.firestore().collection("users").document(user.metadata.userId).setData(data, merge: true)
+    }
+
+    func createNewUser(user: DBUser) async throws {
+        try await createUserMetadata(user: user)
+
+        let profileData: [String: Any] = [
+            "name": user.profile.name ?? "",
+            "age": user.profile.age ?? 0,
+            "gender": user.profile.gender?.rawValue ?? "",
+            "fitnessLevel": user.profile.fitnessLevel?.rawValue ?? "",
+            "goal": user.profile.goal?.rawValue ?? "",
+            "height": user.profile.height ?? "",
+            "weight": user.profile.weight ?? "",
+            "profileImagePath": user.profile.profileImagePath ?? "",
+            "profileImagePathUrl": user.profile.profileImagePathUrl ?? ""
+        ]
+
+        try await userDocument(userId: user.metadata.userId).setData(profileData)
+    }
+
+
+    func getFullUser(userId: String) async throws -> (meta: [String: Any], profile: DBUser?) {
+        let db = Firestore.firestore()
+
+        let metaRef = db.collection("users").document(userId)
+        let metaSnapshot = try await metaRef.getDocument()
+        let metadata = metaSnapshot.data() ?? [:]
+
+        let profileRef = metaRef.collection("UserInformation").document("profile")
+        let profileSnapshot = try await profileRef.getDocument()
+
+        let profile: DBUser?
+        if profileSnapshot.exists {
+            profile = try? profileSnapshot.data(as: DBUser.self)
+        } else {
+            profile = nil
+        }
+
+        return (meta: metadata, profile: profile)
+    }
+
     private func userFavoriteProductDocument(userId: String, favoriteProductId: String) -> DocumentReference {
         userFavoriteProductCollection(userId: userId).document(favoriteProductId)
     }
     
-    private let encoder: Firestore.Encoder = {
-        let encoder = Firestore.Encoder()
-//        encoder.keyEncodingStrategy = .convertToSnakeCase
-        return encoder
-    }()
+    private let encoder: Firestore.Encoder = Firestore.Encoder()
+    private let decoder: Firestore.Decoder = Firestore.Decoder()
+    
+    func getUserProfile(userId: String) async throws -> DBUser {
+         let db = Firestore.firestore()
 
-    private let decoder: Firestore.Decoder = {
-        let decoder = Firestore.Decoder()
-//        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
-    
-    private var userFavoriteProductsListener: ListenerRegistration? = nil
-    
-    func createNewUser(user: DBUser) async throws {
-        try userDocument(userId: user.userId).setData(from: user, merge: false)
-    }
-    
-//    func createNewUser(auth: AuthDataResultModel) async throws {
-//        var userData: [String:Any] = [
-//            "user_id" : auth.uid,
-//            "is_anonymous" : auth.isAnonymous,
-//            "date_created" : Timestamp(),
-//        ]
-//        if let email = auth.email {
-//            userData["email"] = email
-//        }
-//        if let photoUrl = auth.photoUrl {
-//            userData["photo_url"] = photoUrl
-//        }
-//
-//        try await userDocument(userId: auth.uid).setData(userData, merge: false)
-//    }
-    
-    func getUser(userId: String) async throws -> DBUser {
-        try await userDocument(userId: userId).getDocument(as: DBUser.self)
-    }
-    
-//    func getUser(userId: String) async throws -> DBUser {
-//        let snapshot = try await userDocument(userId: userId).getDocument()
-//
-//        guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
-//            throw URLError(.badServerResponse)
-//        }
-//
-//        let isAnonymous = data["is_anonymous"] as? Bool
-//        let email = data["email"] as? String
-//        let photoUrl = data["photo_url"] as? String
-//        let dateCreated = data["date_created"] as? Date
-//
-//        return DBUser(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
-//    }
-    
+         let metaDoc = try await db.collection("users").document(userId).getDocument()
+         let metaData = metaDoc.data() ?? [:]
+
+         var cleanedMetaData = metaData
+
+         let profileDoc = try await db.collection("users").document(userId)
+             .collection("UserInformation")
+             .document("profile")
+             .getDocument()
+
+         let profileData = profileDoc.data() ?? [:]
+
+         let combined: [String: Any] = [
+             "metadata": cleanedMetaData,
+             "profile": profileData
+         ]
+
+         do {
+             let decoder = Firestore.Decoder()
+             let user = try decoder.decode(DBUser.self, from: combined)
+             return user
+         } catch {
+             print("Decoding error: \(error)")
+             throw NSError(domain: "UserManager", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to decode user profile data"])
+         }
+     }
+
     func updateUserProfileImagePath(userId: String, path: String?, url: String?) async throws {
-        let data: [String:Any] = [
-            DBUser.CodingKeys.profileImagePath.rawValue : path,
-            DBUser.CodingKeys.profileImagePathUrl.rawValue : url,
-        ]
-
-        try await userDocument(userId: userId).updateData(data)
-    }
-    
-    func addUserPreference(userId: String, preference: String) async throws {
-        let data: [String:Any] = [
-            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayUnion([preference])
+        let data: [String: Any] = [
+            DBUser.CodingKeys.profileImagePath.rawValue: path,
+            DBUser.CodingKeys.profileImagePathUrl.rawValue: url
         ]
 
         try await userDocument(userId: userId).updateData(data)
     }
     
     func updateUserProfile(user: DBUser) async throws {
-        var data: [String: Any] = [:]
-
-        data["weight"] = user.weight ?? FieldValue.delete()
-        data["height"] = user.height ?? FieldValue.delete()
-        data["gender"] = user.gender ?? FieldValue.delete()
-        data["age"] = user.age ?? FieldValue.delete()
-        data["fitness_level"] = user.fitnessLevel ?? FieldValue.delete()
-        data["goal"] = user.goal ?? FieldValue.delete()
-
-        try await userDocument(userId: user.userId).updateData(data)
-    }
-
-    
-    func addUserInformation(userId: String, userInformation: String) async throws {
-        var data: [String:Any] = [
-            DBUser.CodingKeys.userInformation.rawValue : FieldValue.arrayUnion([userInformation])
-        ]
-    }
-    
-    func removeUserPreference(userId: String, preference: String) async throws {
-        let data: [String:Any] = [
-            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayRemove([preference])
+        let profileData: [String: Any] = [
+            "name": user.profile.name ?? "",
+            "age": user.profile.age ?? 0,
+            "gender": user.profile.gender?.rawValue ?? "",
+            "fitnessLevel": user.profile.fitnessLevel?.rawValue ?? "",
+            "goal": user.profile.goal?.rawValue ?? "",
+            "height": user.profile.height ?? "",
+            "weight": user.profile.weight ?? "",
+            "profileImagePath": user.profile.profileImagePath ?? "",
+            "profileImagePathUrl": user.profile.profileImagePathUrl ?? ""
         ]
 
-        try await userDocument(userId: userId).updateData(data)
+        try await userDocument(userId: user.metadata.userId).setData(profileData, merge: true)
     }
-    
-    
-    func addUserFavoriteProduct(userId: String, productId: Int) async throws {
-        let document = userFavoriteProductCollection(userId: userId).document()
-        let documentId = document.documentID
-        
-        let data: [String:Any] = [
-            UserFavoriteProduct.CodingKeys.id.rawValue : documentId,
-            UserFavoriteProduct.CodingKeys.productId.rawValue : productId,
-            UserFavoriteProduct.CodingKeys.dateCreated.rawValue : Timestamp()
-        ]
-        
-        try await document.setData(data, merge: false)
+
+
+    func fetchProfileImageUrl(userId: String) async throws -> String? {
+        guard let user = currentUser else {
+            throw NSError(domain: "UserManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+        }
+
+        return user.profileImagePathUrl
     }
-    
-    func removeUserFavoriteProduct(userId: String, favoriteProductId: String) async throws {
-        try await userFavoriteProductDocument(userId: userId, favoriteProductId: favoriteProductId).delete()
-    }
-    
-    //func getAllUserFavoriteProducts(userId: String) async throws -> [UserFavoriteProduct] {
-        //try await userFavoriteProductCollection(userId: userId).getDocuments(as: UserFavoriteProduct.self)
-    //}
-    
-    func removeListenerForAllUserFavoriteProducts() {
-        self.userFavoriteProductsListener?.remove()
-    }
-    
-    func addListenerForAllUserFavoriteProducts(userId: String, completion: @escaping (_ products: [UserFavoriteProduct]) -> Void) {
-        self.userFavoriteProductsListener = userFavoriteProductCollection(userId: userId).addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                return
+
+
+    @MainActor
+    func fetchCurrentUser() async {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No Firebase user ID found")
+            return
+        }
+
+        do {
+            let user = try await getUserProfile(userId: userId)
+            DispatchQueue.main.async {
+                self.currentUser = user
             }
-            
-            let products: [UserFavoriteProduct] = documents.compactMap({ try? $0.data(as: UserFavoriteProduct.self) })
-            completion(products)
-            
-            querySnapshot?.documentChanges.forEach { diff in
-                if (diff.type == .added) {
-                    print("New products: \(diff.document.data())")
-                }
-                if (diff.type == .modified) {
-                    print("Modified products: \(diff.document.data())")
-                }
-                if (diff.type == .removed) {
-                    print("Removed products: \(diff.document.data())")
-                }
-            }
+        } catch {
+            print("Error fetching user: \(error.localizedDescription)")
         }
     }
-    
-//    func addListenerForAllUserFavoriteProducts(userId: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
-//        let publisher = PassthroughSubject<[UserFavoriteProduct], Error>()
-//
-//        self.userFavoriteProductsListener = userFavoriteProductCollection(userId: userId).addSnapshotListener { querySnapshot, error in
-//            guard let documents = querySnapshot?.documents else {
-//                print("No documents")
-//                return
-//            }
-//
-//            let products: [UserFavoriteProduct] = documents.compactMap({ try? $0.data(as: UserFavoriteProduct.self) })
-//            publisher.send(products)
-//        }
-//
-//        return publisher.eraseToAnyPublisher()
-//    }
-    //func addListenerForAllUserFavoriteProducts(userId: String) -> AnyPublisher<[UserFavoriteProduct], Error> {
-        //let (publisher, listener) = userFavoriteProductCollection(userId: userId)
-            //.addSnapshotListener(as: UserFavoriteProduct.self)
-        
-        //self.userFavoriteProductsListener = listener
-        //return publisher
-    //}
-    
-}
-import Combine
-
-struct UserFavoriteProduct: Codable {
-    let id: String
-    let productId: Int
-    let dateCreated: Date
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case productId = "product_id"
-        case dateCreated = "date_created"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
-        self.productId = try container.decode(Int.self, forKey: .productId)
-        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.id, forKey: .id)
-        try container.encode(self.productId, forKey: .productId)
-        try container.encode(self.dateCreated, forKey: .dateCreated)
-    }
-    
 }

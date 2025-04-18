@@ -1,8 +1,8 @@
 //
 //  SignInEmailViewModel.swift
-//  SwiftfulFirebaseBootcamp
+//  Fit Pantry
 //
-//  Created by Nick Sarno on 1/21/23.
+//  Created by Chase Rodie on 1/21/25.
 //
 
 import Foundation
@@ -13,21 +13,9 @@ final class SignInEmailViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     
-    func signUp() async throws {
-        guard !email.isEmpty, !password.isEmpty else {
-            print("No email or password found.")
-            return
-        }
-        
-        let authDataResult = try await AuthenticationManager.shared.createUser(email: email, password: password)
-        let user = DBUser(auth: authDataResult)
-        try await UserManager.shared.createNewUser(user: user)
-    }
-    
     func signIn() async throws {
         guard !email.isEmpty, !password.isEmpty else {
-            print("No email or password found.")
-            return
+            throw NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "Email and password cannot be empty."])
         }
         
         try await AuthenticationManager.shared.signInUser(email: email, password: password)
@@ -35,8 +23,7 @@ final class SignInEmailViewModel: ObservableObject {
     
     func resetPassword(email: String) async throws {
         guard !email.isEmpty else {
-            print("No email entered.")
-            return
+            throw NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "Please enter your email."])
         }
         
         try await AuthenticationManager.shared.resetPassword(email: email)

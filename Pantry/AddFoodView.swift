@@ -30,7 +30,6 @@ struct AddFoodView: View {
     
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
-    
     // Search view, contians:
     // - Search bar
     // - Results from search
@@ -209,31 +208,51 @@ struct AddFoodView: View {
     // Add food to a users pantry
     private func addFood(item: Food, value: Double) {
         // Get the user's ID
-        
         guard let userID = Auth.auth().currentUser?.uid else {
             return
         }
+
+        let originalFood = Food(
+            id: item.id,
+            name: item.name,
+            foodGroup: item.foodGroup,
+            food_id: item.food_id,
+            calories: item.calories,
+            fat: item.fat,
+            carbohydrates: item.carbohydrates,
+            protein: item.protein,
+            suitableFor: item.suitableFor
+        )
         
-        // Tempoarary static assignemt of user for testing
-        //let userID = "IG0kz1WPQAOfI5wXFbEmyk108iV2"
-        //let userID = "Uhq3C2AQ05apw4yETqgyIl8mXzk2"
-        //print(userID)
+        let pantryItem = PantryItem(
+            id: originalFood.id,
+            food_id: Int(originalFood.food_id),
+            name: originalFood.name,
+            quantity: value
+        )
         
-        
-        // Create a refrence to the database
+        // Save the pantry item to Firestore
+        PantryManager.shared.saveFoodToFirestore(pantryItem: pantryItem, foodData: originalFood)
+
+        // Reference to Firestore database
         let db = Firestore.firestore()
             .collection("users")
             .document(userID)
             .collection("pantry")
             .document(item.id)
         
+        // Add food and nutritional info without rounding
         let data: [String: Any] = [
             "id": item.food_id,
             "name": item.name,
-            "quantity": value
+            "quantity": value,
+            "calories": originalFood.calories,
+            "fat": originalFood.fat,
+            "carbohydrates": originalFood.carbohydrates,
+            "protein": originalFood.protein
         ]
         
-        // Update the document in Firestore
+        // Update doc
         db.setData(data, merge: true) { error in
             if error != nil {
                 print("Error updating document")
@@ -242,8 +261,12 @@ struct AddFoodView: View {
             }
         }
     }
-}
 
+
+
+
+
+}
 
 #Preview {
     AddFoodView()
