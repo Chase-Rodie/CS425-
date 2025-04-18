@@ -26,7 +26,14 @@ final class SettingsViewModel: ObservableObject {
         didSet { UserDefaults.standard.set(vibrationEnabled, forKey: "vibrationEnabled") }
     }
     @Published var notificationsEnabled: Bool {
-        didSet { UserDefaults.standard.set(notificationsEnabled, forKey: "notificationsEnabled") }
+        didSet {
+            UserDefaults.standard.set(notificationsEnabled, forKey: "notificationsEnabled")
+            if notificationsEnabled {
+                requestNotificationPermission()
+            } else {
+                cancelScheduledNotifications()
+            }
+        }
     }
     
     init() {
@@ -111,13 +118,36 @@ final class SettingsViewModel: ObservableObject {
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
-                print("Error requesting notifications permission: \(error.localizedDescription)")
+                print("Notification permission error: \(error)")
             } else {
-                print("Notifications permission granted: \(granted)")
-                DispatchQueue.main.async {
-                    self.notificationsEnabled = granted
+                print("Notification permission granted: \(granted)")
+                if granted {
+                    self.scheduleDailyReminder()
                 }
             }
         }
+    }
+    
+    func scheduleDailyReminder() {
+        let content = UNMutableNotificationContent()
+        content.title = "Fit Pantry Reminder"
+        content.body = "Don't forget to log your meals today!"
+        content.sound = .default
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = 19 // 7 PM daily
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(identifier: "dailyReminder", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error)")
+            }
+        }
+    }
+    
+    func cancelScheduledNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 }

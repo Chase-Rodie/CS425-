@@ -51,6 +51,7 @@
 		9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A22CD3F69E0019266C /* PantryView.swift */; };
 		9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */; };
 		9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */; };
+		9A4F49952DB2D662008D8A77 /* FeedbackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F49942DB2D659008D8A77 /* FeedbackManager.swift */; };
 		9A5E9D982CFAE5BD009460EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */; };
 		9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E9D9A2CFAE887009460EA /* Utilities.swift */; };
 		9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66243A2CFEB95F00A5CB90 /* SettingsViewModel.swift */; };
@@ -205,6 +206,7 @@
 		9A3FB8A22CD3F69E0019266C /* PantryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryView.swift; sourceTree = "<group>"; };
 		9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailView.swift; sourceTree = "<group>"; };
 		9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewModel.swift; sourceTree = "<group>"; };
+		9A4F49942DB2D659008D8A77 /* FeedbackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackManager.swift; sourceTree = "<group>"; };
 		9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A5E9D9A2CFAE887009460EA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		9A5E9D9C2CFB0B4D009460EA /* Fit Pantry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Fit Pantry.entitlements"; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 		9A5E9D992CFAE80B009460EA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				9A4F49942DB2D659008D8A77 /* FeedbackManager.swift */,
 				F8A7CDF92DAB16EA009F5907 /* HealthKitManager.swift */,
 				F825DACF2D75A88100F4345D /* FirestoreManager.swift */,
 				9A5E9D9A2CFAE887009460EA /* Utilities.swift */,
@@ -1070,6 +1073,7 @@
 				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
 				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
 				9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */,
+				9A4F49952DB2D662008D8A77 /* FeedbackManager.swift in Sources */,
 				5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */,
 				9A26AD0D2D7B91F30039DA58 /* PrivacyInfoView.swift in Sources */,
 				9A26AD072D7B91B10039DA58 /* ProgressionView.swift in Sources */,

@@ -154,21 +154,21 @@ struct DetailedExercise: View {
                         }
                         
                         Button(action: {
-                                                    workoutPlanModel.markComplete(for: exercise)
-                                                }) {
-                                                    HStack {
-                                                        Text("Complete Exercise")
-                                                                .font(.headline)
-                                                                .foregroundColor(.white)
-                                                                .padding()
-                                                                .frame(width: 200, height: 50)
-                                                                .background(Color.green)
-                                                                .cornerRadius(10)
-                                                    }
-                                                }
-                                                .padding(.vertical)
-                    
-                        
+                            workoutPlanModel.markComplete(for: exercise)
+                            FeedbackManager.shared.playSuccessSoundIfEnabled()
+                            FeedbackManager.shared.vibrateIfEnabled()
+                        }) {
+                            HStack {
+                                Text("Complete Exercise")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(width: 200, height: 50)
+                                    .background(Color.green)
+                                    .cornerRadius(10)
+                            }
+                        }
+                        .padding(.vertical)
                         
                         Text("Instructions:")
                             .font(.headline)
