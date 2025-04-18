@@ -8,8 +8,8 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
-import Foundation
 import FirebaseAuth
+import Foundation
 
 struct MealPlanView: View {
     @EnvironmentObject var mealManager: TodayMealManager
@@ -22,6 +22,12 @@ struct MealPlanView: View {
     @State private var selectedMealType: MealType = .breakfast
     @State private var inputQuantities: [UUID: String] = [:]
     @State private var quantityErrors: [UUID: String] = [:]
+    
+    @State private var showMealGen = false
+
+    @State private var generatedRecipe: String = ""
+    @State private var isRecipeLoading = false
+
 
     var body: some View {
         NavigationView {
@@ -80,9 +86,7 @@ struct MealPlanView: View {
                     }
                     .padding()
                 } else {
-                    let filteredMeals = mealPlan.filter { meal in
-                        return meal.category == selectedCategory && meal.quantity > 0
-                    }
+                    let filteredMeals = mealPlan.filter { $0.category == selectedCategory && $0.quantity > 0 }
                     if filteredMeals.isEmpty {
                         Text("No \(selectedCategory.rawValue.lowercased()) meals available.")
                             .font(.headline)
@@ -127,24 +131,39 @@ struct MealPlanView: View {
                         .padding(.horizontal)
                     }
                 }
-
+                
                 if !selectedMeals.isEmpty {
-                    HStack {
-                        Text("Add selected to:")
-                        ForEach(MealType.allCases) { type in
-                            Button(type.rawValue) {
-                                selectedMealType = type
-                                showQuantityInput = true
+                    VStack{
+                        if selectedCategory == .ingredient {
+                            HStack {
+                                Button("Generate Recipie") {
+                                    showMealGen = true
+                                }
+                                .padding(6)
+                                .background(Color("BackgroundColor"))
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
                             }
-                            .padding(6)
-                            .background(Color("Navy"))
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
                         }
+                        
+                        HStack {
+                            Text("Add selected to:")
+                            ForEach(MealType.allCases) { type in
+                                Button(type.rawValue) {
+                                    selectedMealType = type
+                                    showQuantityInput = true
+                                }
+                                .padding(6)
+                                .background(Color("Navy"))
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                            }
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
-
+                
+                
                 Spacer()
             }
             .onAppear {
@@ -225,42 +244,35 @@ struct MealPlanView: View {
                     .padding()
                 }
             }
-        }
-        
-        VStack(alignment: .leading) {
-            Text("Daily Totals")
-                .font(.headline)
-            Text("Calories: \(totalDailyCalories(), specifier: "%.0f") kcal")
-                .font(.subheadline)
-            Text("Protein: \(totalDailyProtein(), specifier: "%.0f") g")
-                .font(.subheadline)
-            Text("Fat: \(totalDailyFat(), specifier: "%.0f") g")
-                .font(.subheadline)
-            Text("Carbs: \(totalDailyCarbs(), specifier: "%.0f") g")
-                .font(.subheadline)
-            
-        }
-        .padding(.horizontal)
-    }
+            //.sheet(isPresented: $showMealGen){}
+            .sheet(isPresented: $showMealGen) {
+                MealGenerationView(selectedMeals: selectedMeals)
+            }
 
+        }
+    }
+    
     func updatePantryQuantity(docID: String, amount: Double) {
         guard let userID = Auth.auth().currentUser?.uid else {
-            print("No authenticated user found.")
+            print("User not authenticated")
             return
         }
+
         let docRef = Firestore.firestore()
             .collection("users")
             .document(userID)
             .collection("pantry")
             .document(docID)
+
         docRef.updateData(["quantity": FieldValue.increment(amount)])
     }
-
+    
     func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
         guard let userID = Auth.auth().currentUser?.uid else {
-            print("No authenticated user found.")
+            print("User not authenticated")
             return
         }
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let today = dateFormatter.string(from: selectedDate)
@@ -280,154 +292,209 @@ struct MealPlanView: View {
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
     }
     
-    func totalDailyCalories() -> Double {
-        return MealType.allCases
-            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
-            .reduce(0.0) { total, meal in
-                let amount = meal.consumedAmount ?? 0
-                return total + (meal.calories * amount)
-            }
-    }
-    
-    func totalDailyProtein() -> Double {
-        return MealType.allCases
-            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
-            .reduce(0.0) { total, meal in
-                let amount = meal.consumedAmount ?? 0
-                return total + (meal.protein * amount)
-            }
-    }
-    
-    func totalDailyFat() -> Double {
-        return MealType.allCases
-            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
-            .reduce(0.0) { total, meal in
-                let amount = meal.consumedAmount ?? 0
-                return total + (meal.fat * amount)
-            }
-    }
-    
-    func totalDailyCarbs() -> Double {
-        return MealType.allCases
-            .flatMap { mealManager.getMeals(for: selectedDate, type: $0) }
-            .reduce(0.0) { total, meal in
-                let amount = meal.consumedAmount ?? 0
-                return total + (meal.carbohydrates * amount)
-            }
-    }
-
     func fetchMealsAsync() async {
         await withCheckedContinuation { continuation in
             guard let userID = Auth.auth().currentUser?.uid else {
-                print("No authenticated user found.")
-                self.isLoading = false
+                print("User not authenticated")
+                isLoading = false
                 continuation.resume()
                 return
             }
-            let pantryRef = Firestore.firestore()
+            let db = Firestore.firestore()
                 .collection("users")
                 .document(userID)
                 .collection("pantry")
 
-            pantryRef.getDocuments { pantrySnapshot, error in
-                guard let pantryDocs = pantrySnapshot?.documents else {
-                    print("Error fetching pantry data: \(error?.localizedDescription ?? "Unknown error")")
-                    self.isLoading = false
+            db.getDocuments { snapshot, error in
+                if let error = error {
+                    print("Failed to fetch pantry items: \(error.localizedDescription)")
+                    isLoading = false
                     continuation.resume()
                     return
                 }
 
-                let pantryItems: [(foodID: Int, quantity: Double, pantryDocID: String)] = pantryDocs.compactMap { doc in
-                    guard let id = doc.data()["id"] as? Int,
-                          let quantity = doc.data()["quantity"] as? Double else { return nil }
-
-                    return (Int(id), quantity, doc.documentID)
-                }
-
-                let foodIDs = pantryItems.map { $0.foodID }
-                
-                guard !foodIDs.isEmpty else {
-                    print("No pantry items with valid food IDs. Skipping Food query.")
-                    self.mealPlan = []
-                    self.isLoading = false
+                guard let snapshot = snapshot else {
+                    print("No pantry data found")
+                    isLoading = false
                     continuation.resume()
                     return
                 }
-                
-                let queryIDs = pantryItems.map { $0.foodID }
-                Firestore.firestore().collection("Food")
-                    .whereField("ID", in: queryIDs)
-                    .getDocuments { foodSnapshot, error in
-                        if let error = error {
-                            continuation.resume()
-                            return
-                        }
 
-                        guard let foodDocs = foodSnapshot?.documents else {
-                            continuation.resume()
-                            return
-                        }
+                let group = DispatchGroup()
+                var fetchedMeals: [MealPlanner] = []
 
-                        foodDocs.forEach { doc in
-                        }
-
-                        var fetchedMeals: [MealPlanner] = []
-                        for doc in foodDocs {
-                            let data = doc.data()
-
-                            guard let id = data["ID"] as? Int,
-                                  let name = data["name"] as? String,
-                                  let calories = data["calories"] as? Double,
-                                  let protein = data["protein"] as? Double,
-                                  let fat = data["fat"] as? Double,
-                                  let carbohydrates = data["carbohydrates"] as? Double else {
-                                      print("Missing or invalid data in Food doc: \(doc.documentID). Data: \(data)")
-                                      continue
-                            }
-
-                            if let quantityInfo = pantryItems.first(where: { $0.foodID == id }) {
-                                let quantity = quantityInfo.quantity
-                                let pantryDocID = quantityInfo.pantryDocID
-
-                                if quantity > 0 {
-                                    let categoryStr = (data["category"] as? String)?.capitalized ?? "Prepared"
-                                    let category = MealCategory(rawValue: categoryStr) ?? .prepared
-
-                                    let meal = MealPlanner(
-                                        pantryDocID: pantryDocID,
-                                        name: name,
-                                        foodID: String(id),
-                                        imageURL: nil,
-                                        category: category,
-                                        quantity: quantity,
-                                        calories: calories,
-                                        protein: protein,
-                                        fat: fat,
-                                        carbohydrates: carbohydrates
-                                    )
-
-                                    fetchedMeals.append(meal)
-                                }
-                            }
-                        }
-                        self.mealPlan = fetchedMeals
-                        self.isLoading = false
-                        continuation.resume()
+                for doc in snapshot.documents {
+                    let data = doc.data()
+                    guard let foodID = data["id"] as? Int,
+                          let name = data["name"] as? String,
+                          let quantity = data["quantity"] as? Double,
+                          quantity > 0 else {
+                        continue
                     }
+
+                    group.enter()
+                    Firestore.firestore().collection("Food").document(String(foodID)).getDocument { foodSnapshot, error in
+                        defer { group.leave() }
+
+                        var mealCategory: MealCategory = .prepared  // Default to .prepared
+
+                        if let foodData = foodSnapshot?.data(),
+                           let categoryString = foodData["category"] as? String,
+                           let parsedCategory = MealCategory(rawValue: categoryString) {
+                            mealCategory = parsedCategory
+                        } else {
+                            print("Could not find category for foodID \(foodID), defaulting to .prepared")
+                        }
+
+                        let meal = MealPlanner(
+                            pantryDocID: doc.documentID,
+                            name: name,
+                            foodID: String(foodID),
+                            imageURL: nil,
+                            category: mealCategory,
+                            quantity: quantity
+                        )
+
+                        fetchedMeals.append(meal)
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    self.mealPlan = fetchedMeals
+                    isLoading = false
+                    continuation.resume()
+                }
             }
         }
     }
 
-
 }
-extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        stride(from: 0, to: count, by: size).map {
-            Array(self[$0..<Swift.min($0 + size, count)])
+
+struct MealGenerationView: View {
+    var selectedMeals: Set<MealPlanner>
+    @Environment(\.dismiss) var dismiss
+    @State private var foodAliases: [FoodAlias] = []
+    @State private var recipe: String = "Generating your recipe..."
+
+    var body: some View {
+        NavigationView {
+                ZStack {
+                    // Background scrollable content
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            
+                            if recipe == "Generating your recipe..." {
+                                Text(recipe)
+                            }
+                            else{
+                                let parsed = parseRecipe(recipe)
+                                
+                                if !parsed.ingredients.isEmpty {
+                                    Text("🧂 Ingredients:")
+                                        .font(.headline)
+                                    ForEach(parsed.ingredients, id: \.self) { item in
+                                        Text("• \(item)")
+                                            .padding(.leading, 8)
+                                    }
+                                }
+                                
+                                if !parsed.instructions.isEmpty {
+                                    Text("👨‍🍳 Instructions:")
+                                        .font(.headline)
+                                        .padding(.top)
+                                    
+                                    ForEach(parsed.instructions.indices, id: \.self) { index in
+                                        Text("\(index + 1). \(parsed.instructions[index])")
+                                            .padding(.leading, 8)
+                                    }
+                                }
+                            }
+                            Text("⚠️ Disclaimer ⚠️")
+                                .font(.headline)
+                                .padding(.top)
+                            Text("These recipes are generated using AI and are for informational purposes only. Please use your best judgment when preparing and consuming meals. Always ensure ingredients are safe to eat, properly cooked, and that any allergies or dietary restrictions are considered. Fit Pantry is not responsible for any adverse effects resulting from the use of AI-generated content.")
+                            // Makes space above the fixed button
+                            Spacer(minLength: 80)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    }
+
+                    // Fixed bottom button
+                    VStack {
+                        Spacer()
+                        Button(action: {
+                            generate()
+                        }) {
+                            Text("Regenerate Recipe")
+                                .font(.headline)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color("BackgroundColor"))
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                        }
+                    }
+                }
+            .navigationTitle("Generated Recipe")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Back") {
+                        dismiss()
+                    }
+                }
+            }
+            .onAppear {
+                fetchAliasesAndGenerate()
+            }
+        }
+    }
+
+    func fetchAliasesAndGenerate() {
+        let db = Firestore.firestore()
+        let foodIDs = selectedMeals.map { $0.foodID }
+        var fetchedAliases: [FoodAlias] = []
+        let group = DispatchGroup()
+
+        for id in foodIDs {
+            group.enter()
+            db.collection("Food").document(id).getDocument { docSnapshot, error in
+                defer { group.leave() }
+
+                if let doc = docSnapshot, let data = doc.data() {
+                    let alias = data["alias"] as? String ?? "Unknown Alias"
+                    let name = data["name"] as? String ?? "Unknown Name"
+                    let food = FoodAlias(id: id, alias: alias, name: name)
+                    fetchedAliases.append(food)
+                } else {
+                    let food = FoodAlias(id: id, alias: "Unknown Alias", name: "Unknown Name")
+                    fetchedAliases.append(food)
+                }
+            }
+        }
+
+        group.notify(queue: .main) {
+            self.foodAliases = fetchedAliases
+            generate()
+        }
+    }
+
+    func generate() {
+        recipe = "Generating your recipe..."
+        let ingredients = foodAliases.map { $0.alias }
+
+        Fit_Pantry.generateRecipe(ingredients: ingredients) { result in
+            DispatchQueue.main.async {
+                if let result = result {
+                    recipe = result
+                } else {
+                    recipe = "Failed to generate recipe. Please try again."
+                }
+            }
         }
     }
 }
-
 
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {

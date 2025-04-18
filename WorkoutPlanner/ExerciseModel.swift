@@ -21,5 +21,17 @@ struct Exercise: Decodable,Encodable,Identifiable{
     var secondaryMuscles: Array<String>
     var isComplete: Bool = false
     var weightUsed: Double?
+    var sets: Int
+    var reps: Int
 }
 
+
+
+struct ManualWorkout: Identifiable {
+    let id: String
+    let name: String
+    let type: String
+    let duration: Int
+    let distance: Int
+    let exercises: [[String: Any]]
+}

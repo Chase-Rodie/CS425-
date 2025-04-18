@@ -12,7 +12,7 @@ import Combine
 class SearchManager: ObservableObject {
     
     private var db = Firestore.firestore()
-    let dbName = "test" // Change later for production
+    let dbName = "Food" // Change later for production
     
     @Published var items: [Food] = []
     
