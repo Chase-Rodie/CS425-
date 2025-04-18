@@ -30,5 +30,15 @@
 			</dict>
 		</dict>
 	</dict>
+<<<<<<< Updated upstream
+=======
+	<key>NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription</key>
+	<string>FitPantry writes your meal and nutrition data to Apple Health.</string>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>We use notifications to keep you informed about important updates and reminders.</string>
+>>>>>>> Stashed changes
 </dict>
 </plist>

@@ -11,13 +11,30 @@
 //Logic for functions in the settings view relating to updating email, updating password, etc.
 
 import Foundation
+import UserNotifications
 
 @MainActor
 final class SettingsViewModel: ObservableObject {
     
     @Published var authProviders: [AuthProviderOption] = []
     @Published var authUser: AuthDataResultModel? = nil
-    @Published var showReauthAlert: Bool = false  // 🔥 Add this
+    @Published var showReauthAlert: Bool = false
+    @Published var soundEnabled: Bool {
+        didSet { UserDefaults.standard.set(soundEnabled, forKey: "soundEnabled") }
+    }
+    @Published var vibrationEnabled: Bool {
+        didSet { UserDefaults.standard.set(vibrationEnabled, forKey: "vibrationEnabled") }
+    }
+    @Published var notificationsEnabled: Bool {
+        didSet { UserDefaults.standard.set(notificationsEnabled, forKey: "notificationsEnabled") }
+    }
+    
+    init() {
+        soundEnabled = UserDefaults.standard.bool(forKey: "soundEnabled")
+        vibrationEnabled = UserDefaults.standard.bool(forKey: "vibrationEnabled")
+        notificationsEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
+    }
+
 
     
     func loadAuthProviders() {
@@ -89,5 +106,18 @@ final class SettingsViewModel: ObservableObject {
 
     func reauthenticateUser(email: String, password: String) async throws {
         try await AuthenticationManager.shared.reauthenticateUser(email: email, password: password)
+    }
+    
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Error requesting notifications permission: \(error.localizedDescription)")
+            } else {
+                print("Notifications permission granted: \(granted)")
+                DispatchQueue.main.async {
+                    self.notificationsEnabled = granted
+                }
+            }
+        }
     }
 }
