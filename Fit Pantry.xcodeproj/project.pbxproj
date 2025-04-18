@@ -51,6 +51,7 @@
 		9A3FB8A32CD3F69E0019266C /* PantryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3FB8A22CD3F69E0019266C /* PantryView.swift */; };
 		9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */; };
 		9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */; };
+		9A4F482B2DB2CE8A008D8A77 /* FixedTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F482A2DB2CE8A008D8A77 /* FixedTabBarController.swift */; };
 		9A5E9D982CFAE5BD009460EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */; };
 		9A5E9D9B2CFAE887009460EA /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5E9D9A2CFAE887009460EA /* Utilities.swift */; };
 		9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66243A2CFEB95F00A5CB90 /* SettingsViewModel.swift */; };
@@ -73,6 +74,7 @@
 		9ACA66022D963ABD00F7D7E1 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA66012D963ABD00F7D7E1 /* OnboardingView.swift */; };
 		9ACB9D5E2D7055A7000DA9FD /* DBUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */; };
 		9ACB9D602D70590C000DA9FD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB9D5F2D70590C000DA9FD /* XCTest.framework */; platformFilter = ios; };
+		9AE124932DB2CA0B00543F5F /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE124922DB2CA0B00543F5F /* CustomTabBarController.swift */; };
 		9AEFA6D82DB1D74B004B2CCC /* DailyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED774B92D9C59CF00B3DE1B /* DailyWorkoutView.swift */; };
 		9AEFA6DA2DB1D90E004B2CCC /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEFA6D92DB1D90E004B2CCC /* FriendsView.swift */; };
 		9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */; };
@@ -205,6 +207,7 @@
 		9A3FB8A22CD3F69E0019266C /* PantryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryView.swift; sourceTree = "<group>"; };
 		9A452BD02D73D34400046FA4 /* SignUpEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailView.swift; sourceTree = "<group>"; };
 		9A452BD22D73D36100046FA4 /* SignUpEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewModel.swift; sourceTree = "<group>"; };
+		9A4F482A2DB2CE8A008D8A77 /* FixedTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedTabBarController.swift; sourceTree = "<group>"; };
 		9A5E9D972CFAE5BD009460EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A5E9D9A2CFAE887009460EA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		9A5E9D9C2CFB0B4D009460EA /* Fit Pantry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Fit Pantry.entitlements"; sourceTree = "<group>"; };
@@ -230,6 +233,7 @@
 		9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUserTests.swift; sourceTree = "<group>"; };
 		9ACB9D5F2D70590C000DA9FD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		9ACB9D612D705B08000DA9FD /* Fit Pantry.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Fit Pantry.xctestplan"; sourceTree = "<group>"; };
+		9AE124922DB2CA0B00543F5F /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		9AEFA6D92DB1D90E004B2CCC /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		9AF888F12CF2921F00E83A3A /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
@@ -396,6 +400,7 @@
 		9A26ACFF2D7B911E0039DA58 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				9A4F482A2DB2CE8A008D8A77 /* FixedTabBarController.swift */,
 				9A26AD002D7B91360039DA58 /* GoalsView.swift */,
 				9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */,
 				9A26AD062D7B91B10039DA58 /* ProgressionView.swift */,
@@ -403,6 +408,7 @@
 				9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */,
 				9AC6F2F32DA8F87600DE87FA /* GoalsViewModel.swift */,
 				9AEFA6D92DB1D90E004B2CCC /* FriendsView.swift */,
+				9AE124922DB2CA0B00543F5F /* CustomTabBarController.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1053,6 +1059,7 @@
 				9A66244A2CFECB7700A5CB90 /* UserManager.swift in Sources */,
 				9AF888FE2CF294A900E83A3A /* SettingsView.swift in Sources */,
 				F8A7CDFA2DAB16F5009F5907 /* HealthKitManager.swift in Sources */,
+				9AE124932DB2CA0B00543F5F /* CustomTabBarController.swift in Sources */,
 				097FB5202CFAD08B00F58B67 /* Food.swift in Sources */,
 				9A6F88462D85FD0D0062168B /* PantryManager.swift in Sources */,
 				5EFA1F332CFD6F7200308814 /* ProgressRingView.swift in Sources */,
@@ -1071,6 +1078,7 @@
 				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
 				9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */,
 				5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */,
+				9A4F482B2DB2CE8A008D8A77 /* FixedTabBarController.swift in Sources */,
 				9A26AD0D2D7B91F30039DA58 /* PrivacyInfoView.swift in Sources */,
 				9A26AD072D7B91B10039DA58 /* ProgressionView.swift in Sources */,
 				9AF888FC2CF2936600E83A3A /* RootView.swift in Sources */,
