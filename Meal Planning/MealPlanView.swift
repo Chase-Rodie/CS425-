@@ -10,7 +10,6 @@ import Firebase
 import FirebaseFirestore
 import FirebaseAuth
 import Foundation
-import FirebaseAuth
 
 struct MealPlanView: View {
     @EnvironmentObject var mealManager: TodayMealManager
@@ -87,9 +86,7 @@ struct MealPlanView: View {
                     }
                     .padding()
                 } else {
-                    let filteredMeals = mealPlan.filter { meal in
-                        return meal.category == selectedCategory && meal.quantity > 0
-                    }
+                    let filteredMeals = mealPlan.filter { $0.category == selectedCategory && $0.quantity > 0 }
                     if filteredMeals.isEmpty {
                         Text("No \(selectedCategory.rawValue.lowercased()) meals available.")
                             .font(.headline)
@@ -253,21 +250,6 @@ struct MealPlanView: View {
             }
 
         }
-        
-        VStack(alignment: .leading) {
-            Text("Daily Totals")
-                .font(.headline)
-            Text("Calories: \(totalDailyCalories(), specifier: "%.0f") kcal")
-                .font(.subheadline)
-            Text("Protein: \(totalDailyProtein(), specifier: "%.0f") g")
-                .font(.subheadline)
-            Text("Fat: \(totalDailyFat(), specifier: "%.0f") g")
-                .font(.subheadline)
-            Text("Carbs: \(totalDailyCarbs(), specifier: "%.0f") g")
-                .font(.subheadline)
-            
-        }
-        .padding(.horizontal)
     }
     
     func updatePantryQuantity(docID: String, amount: Double) {
@@ -323,39 +305,20 @@ struct MealPlanView: View {
                 .document(userID)
                 .collection("pantry")
 
-            pantryRef.getDocuments { pantrySnapshot, error in
-                guard let pantryDocs = pantrySnapshot?.documents else {
-                    print("Error fetching pantry data: \(error?.localizedDescription ?? "Unknown error")")
-                    self.isLoading = false
+            db.getDocuments { snapshot, error in
+                if let error = error {
+                    print("Failed to fetch pantry items: \(error.localizedDescription)")
+                    isLoading = false
                     continuation.resume()
                     return
                 }
 
-                let pantryItems: [(foodID: Int, quantity: Double, pantryDocID: String)] = pantryDocs.compactMap { doc in
-                    guard let id = doc.data()["id"] as? Int,
-                          let quantity = doc.data()["quantity"] as? Double else { return nil }
-
-                    return (Int(id), quantity, doc.documentID)
-                }
-
-                let foodIDs = pantryItems.map { $0.foodID }
-                
-                guard !foodIDs.isEmpty else {
-                    print("No pantry items with valid food IDs. Skipping Food query.")
-                    self.mealPlan = []
-                    self.isLoading = false
+                guard let snapshot = snapshot else {
+                    print("No pantry data found")
+                    isLoading = false
                     continuation.resume()
                     return
                 }
-                
-                let queryIDs = pantryItems.map { $0.foodID }
-                Firestore.firestore().collection("Food")
-                    .whereField("ID", in: queryIDs)
-                    .getDocuments { foodSnapshot, error in
-                        if let error = error {
-                            continuation.resume()
-                            return
-                        }
 
                 let group = DispatchGroup()
                 var fetchedMeals: [MealPlanner] = []
@@ -531,17 +494,7 @@ struct MealGenerationView: View {
             }
         }
     }
-
-
 }
-extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        stride(from: 0, to: count, by: size).map {
-            Array(self[$0..<Swift.min($0 + size, count)])
-        }
-    }
-}
-
 
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {

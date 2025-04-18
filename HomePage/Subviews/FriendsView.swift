@@ -2,7 +2,7 @@
 //  FriendsView.swift
 //  Fit Pantry
 //
-//  Created by Chase Rodie on 3/7/25.
+//  Created by Chase Rodie on 4/17/25.
 //
 
 import SwiftUI

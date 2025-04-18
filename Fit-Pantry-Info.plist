@@ -19,13 +19,6 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>960961808553-lnmj4amdub4860h81pt9fopj57r9lai0.apps.googleusercontent.com</string>
-	<key>NSHealthUpdateUsageDescription
-NSHealthUpdateUsageDescription
-NSHealthUpdateUsageDescription
-NSHealthUpdateUsageDescription</key>
-	<string>FitPantry writes your meal and nutrition data to Apple Health.</string>
-
-	<!-- BEGIN: App Transport Security Exception -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -39,6 +32,10 @@ NSHealthUpdateUsageDescription</key>
 			</dict>
 		</dict>
 	</dict>
-	<!-- END: App Transport Security Exception -->
+	<key>NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription
+NSHealthUpdateUsageDescription</key>
+	<string>FitPantry writes your meal and nutrition data to Apple Health.</string>
 </dict>
 </plist>

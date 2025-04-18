@@ -1,3 +1,4 @@
+
 //
 //  MealPlanner.swift
 //  Fit Pantry
@@ -29,10 +30,6 @@ struct MealPlanner: Identifiable, Hashable {
     let category: MealCategory
     var quantity: Double
     var consumedAmount: Double? = nil
-    var calories: Double
-    var protein: Double
-    var fat: Double
-    var carbohydrates: Double
 }
 
 struct FoodAlias: Identifiable {
@@ -84,4 +81,3 @@ func parseRecipe(_ recipe: String) -> ParsedRecipe {
 
     return ParsedRecipe(ingredients: ingredients, instructions: instructions)
 }
-

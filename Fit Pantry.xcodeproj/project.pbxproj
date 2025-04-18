@@ -12,7 +12,6 @@
 		097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097FB5232CFAD0E300F58B67 /* SearchManager.swift */; };
 		5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E18D4ED2D5DE502009490B3 /* FoodJournalViewModel.swift */; };
 		5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E18D4EF2D5DE689009490B3 /* FoodJournalView.swift */; };
-		5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */; };
 		5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7012D62C2CA00E5912B /* FoodJournalItemView.swift */; };
 		5E74B7042D62D98800E5912B /* FoodJournalAddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7032D62D98800E5912B /* FoodJournalAddItemView.swift */; };
 		5E74B7072D62DF2000E5912B /* FoodJournalAddItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E74B7062D62DF2000E5912B /* FoodJournalAddItemViewModel.swift */; };
@@ -23,7 +22,6 @@
 		5EB437792CF9AA3000C8B75F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5EB437782CF9AA3000C8B75F /* FirebaseFirestore */; };
 		5EB5A4062D704450004D0F38 /* RetrieveWorkoutDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4052D704450004D0F38 /* RetrieveWorkoutDataTests.swift */; };
 		5EB5A40A2D7511FE004D0F38 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5A4092D7511FE004D0F38 /* SwiftUIView.swift */; };
-		5ED774BA2D9C59CF00B3DE1B /* DailyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED774B92D9C59CF00B3DE1B /* DailyWorkoutView.swift */; };
 		5EEDA2C22D7CEED500D3645A /* WeeklyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEDA2C12D7CEED500D3645A /* WeeklyWorkoutView.swift */; };
 		5EEDA2C32D7CEED500D3645A /* WeeklyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEDA2C12D7CEED500D3645A /* WeeklyWorkoutView.swift */; };
 		5EFA1F312CFD6F1800308814 /* HamburgerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */; };
@@ -40,7 +38,6 @@
 		9A26AD012D7B91360039DA58 /* GoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD002D7B91360039DA58 /* GoalsView.swift */; };
 		9A26AD032D7B914D0039DA58 /* FavoriteMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */; };
 		9A26AD072D7B91B10039DA58 /* ProgressionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD062D7B91B10039DA58 /* ProgressionView.swift */; };
-		9A26AD092D7B91C90039DA58 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD082D7B91C90039DA58 /* FriendsView.swift */; };
 		9A26AD0B2D7B91DD0039DA58 /* AppsDevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */; };
 		9A26AD0D2D7B91F30039DA58 /* PrivacyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */; };
 		9A2AA4932D5364420073837E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9A2AA4922D5364420073837E /* FirebaseFirestore */; };
@@ -76,6 +73,8 @@
 		9ACA66022D963ABD00F7D7E1 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA66012D963ABD00F7D7E1 /* OnboardingView.swift */; };
 		9ACB9D5E2D7055A7000DA9FD /* DBUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */; };
 		9ACB9D602D70590C000DA9FD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB9D5F2D70590C000DA9FD /* XCTest.framework */; platformFilter = ios; };
+		9AEFA6D82DB1D74B004B2CCC /* DailyWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED774B92D9C59CF00B3DE1B /* DailyWorkoutView.swift */; };
+		9AEFA6DA2DB1D90E004B2CCC /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEFA6D92DB1D90E004B2CCC /* FriendsView.swift */; };
 		9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */; };
 		9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888F12CF2921F00E83A3A /* SignInAppleHelper.swift */; };
 		9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */; };
@@ -197,7 +196,6 @@
 		9A26AD002D7B91360039DA58 /* GoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsView.swift; sourceTree = "<group>"; };
 		9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMealView.swift; sourceTree = "<group>"; };
 		9A26AD062D7B91B10039DA58 /* ProgressionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionView.swift; sourceTree = "<group>"; };
-		9A26AD082D7B91C90039DA58 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsDevicesView.swift; sourceTree = "<group>"; };
 		9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyInfoView.swift; sourceTree = "<group>"; };
 		9A2AA4982D5367B10073837E /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -232,6 +230,7 @@
 		9ACB9D5D2D7055A1000DA9FD /* DBUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUserTests.swift; sourceTree = "<group>"; };
 		9ACB9D5F2D70590C000DA9FD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		9ACB9D612D705B08000DA9FD /* Fit Pantry.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Fit Pantry.xctestplan"; sourceTree = "<group>"; };
+		9AEFA6D92DB1D90E004B2CCC /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		9AF888EF2CF2920200E83A3A /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		9AF888F12CF2921F00E83A3A /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
 		9AF888F32CF2923000E83A3A /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
@@ -400,10 +399,10 @@
 				9A26AD002D7B91360039DA58 /* GoalsView.swift */,
 				9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */,
 				9A26AD062D7B91B10039DA58 /* ProgressionView.swift */,
-				9A26AD082D7B91C90039DA58 /* FriendsView.swift */,
 				9A26AD0A2D7B91DD0039DA58 /* AppsDevicesView.swift */,
 				9A26AD0C2D7B91F30039DA58 /* PrivacyInfoView.swift */,
 				9AC6F2F32DA8F87600DE87FA /* GoalsViewModel.swift */,
+				9AEFA6D92DB1D90E004B2CCC /* FriendsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -605,6 +604,7 @@
 				9A3FB8962CD3E57B0019266C /* WorkoutPlanner */,
 				9A3FB8992CD3E6220019266C /* Tests */,
 				9A1708C22CF2E01D00746B91 /* Frameworks */,
+				9AEFA6C32DB1D57E004B2CCC /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -649,6 +649,14 @@
 				9AC81DED2CA57BD000A0472C /* Fit_PantryUITestsLaunchTests.swift */,
 			);
 			path = "Fit PantryUITests";
+			sourceTree = "<group>";
+		};
+		9AEFA6C32DB1D57E004B2CCC /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -998,6 +1006,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AEFA6D82DB1D74B004B2CCC /* DailyWorkoutView.swift in Sources */,
 				924111F62D750F79001C624B /* MealGenView.swift in Sources */,
 				F80C28A72CFD25560070B172 /* NutritionManager.swift in Sources */,
 				9AF888F42CF2923000E83A3A /* SignInGoogleHelper.swift in Sources */,
@@ -1016,7 +1025,6 @@
 				F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */,
 				5E18D4F02D5DE689009490B3 /* FoodJournalView.swift in Sources */,
 				F8A7CDCD2D9F6702009F5907 /* TodayMealView.swift in Sources */,
-				5E65CBD62D01A60600FB4B26 /* DailyWorkoutView.swift in Sources */,
 				5EEDA2C22D7CEED500D3645A /* WeeklyWorkoutView.swift in Sources */,
 				5E18D4EE2D5DE502009490B3 /* FoodJournalViewModel.swift in Sources */,
 				5EB437772CF9A9DD00C8B75F /* RetrieveWorkoutData.swift in Sources */,
@@ -1024,6 +1032,7 @@
 				F8A7CDC92D9F66B4009F5907 /* MealPlanner.swift in Sources */,
 				9AC6F2F42DA8F87600DE87FA /* GoalsViewModel.swift in Sources */,
 				F80C289F2CFD24E00070B172 /* UserMeal.swift in Sources */,
+				9AEFA6DA2DB1D90E004B2CCC /* FriendsView.swift in Sources */,
 				9A452BD32D73D36100046FA4 /* SignUpEmailViewModel.swift in Sources */,
 				F80C28A92CFD25600070B172 /* ShoppingList.swift in Sources */,
 				9AF888F02CF2920200E83A3A /* AuthenticationManager.swift in Sources */,
@@ -1328,7 +1337,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.heather.fitpantry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chaserodie.fitpantry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1363,7 +1372,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.heather.fitpantry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chaserodie.fitpantry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
