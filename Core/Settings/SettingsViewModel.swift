@@ -130,12 +130,12 @@ final class SettingsViewModel: ObservableObject {
     
     func scheduleDailyReminder() {
         let content = UNMutableNotificationContent()
-        content.title = "Fit Pantry Reminder"
+        content.title = "Fit Pantry"
         content.body = "Don't forget to log your meals today!"
         content.sound = .default
 
         var dateComponents = DateComponents()
-        dateComponents.hour = 19 // 7 PM daily
+        dateComponents.hour = 19    
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: "dailyReminder", content: content, trigger: trigger)
