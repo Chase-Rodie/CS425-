@@ -397,34 +397,47 @@ struct MealGenerationView: View {
                         .padding()
                     }
 
-                    // Fixed bottom button
-                    VStack {
+                    // Fixed bottom buttons with solid background
+                    VStack(spacing: 0) {
                         Spacer()
-                        Button(action: {
-                            saveRecipe()
-                        }) {
-                            Text("Save Recipe")
-                                .font(.headline)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.green)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .padding(.horizontal)
-                        }
-                        Button(action: {
-                            generate()
-                        }) {
-                            Text("Regenerate Recipe")
-                                .font(.headline)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color("BackgroundColor"))
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .padding(.horizontal)
+
+                        ZStack {
+                            // Background layer (solid white)
+                            Rectangle()
+                                .fill(Color.white)
+                                .frame(height: 80)
+                                .shadow(radius: 5)
+
+                            // Button row
+                            HStack(spacing: 16) {
+                                Button(action: {
+                                    saveRecipe()
+                                }) {
+                                    Text("Save Recipe")
+                                        .font(.headline)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.navy)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
+
+                                Button(action: {
+                                    generate()
+                                }) {
+                                    Text("Regenerate")
+                                        .font(.headline)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
+                            }
+                            .padding(.horizontal)
                         }
                     }
+
                 }
             
             .navigationTitle("Generated Recipe")
