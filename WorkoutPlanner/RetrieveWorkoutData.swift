@@ -112,8 +112,8 @@ class RetrieveWorkoutData : ObservableObject {
         for dayIndex in workoutPlan.indices{
             if let exerciseIndex = workoutPlan[dayIndex].firstIndex(where: { $0.id == exercise.id }){
                 workoutPlan[dayIndex][exerciseIndex].isComplete.toggle()
-                //saveExerciseCompletionStatus(exercise: workoutPlan[dayIndex][exerciseIndex])
-             //   updateExerciseCompletionInDB(exercise: workoutPlan[dayIndex][exerciseIndex], dayIndex: dayIndex)
+                saveExerciseCompletionStatus(exercise: workoutPlan[dayIndex][exerciseIndex])
+                updateExerciseCompletionInDB(exercise: workoutPlan[dayIndex][exerciseIndex], dayIndex: dayIndex)
                 break
             }
         }
@@ -485,7 +485,7 @@ class RetrieveWorkoutData : ObservableObject {
             let totalExercises = documents.count
             let completedCount = documents.filter { ($0.data()["isComplete"] as? Bool) == true }.count
             
-            print("Day \(dayIndex): Completed \(completedCount) / \(totalExercises)")
+            print("Day \(dayIndex+1): Completed \(completedCount) / \(totalExercises)")
             completion(completedCount, totalExercises)
         }
     }
@@ -724,7 +724,7 @@ class RetrieveWorkoutData : ObservableObject {
                 return
             }
             
-            self.manualWorkoutsToday = documents.map { $0.data() }            
+            self.manualWorkoutsToday = documents.map { $0.data() }
         }
     }
     
@@ -745,6 +745,7 @@ class RetrieveWorkoutData : ObservableObject {
     
     
 }
+
 
 
 

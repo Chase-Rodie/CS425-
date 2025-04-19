@@ -57,7 +57,7 @@ struct DailyWorkoutView: View {
                
             }
             .onAppear {
-                //workoutPlanModel.fetchManuallyEnteredWorkoutsForDay(day: dayIndex+1)
+                workoutPlanModel.fetchManuallyEnteredWorkoutsForDay(day: dayIndex+1)
             }
 
         }.accentColor(.green)
