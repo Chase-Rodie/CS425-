@@ -12,12 +12,18 @@ import PhotosUI
 final class ProfileViewModel: ObservableObject {
     
     @Published var user: DBUser?
+    @Published var dietaryPreferences: [String] = []
+    @Published var allergies: [String] = []
             
     func loadCurrentUser() async throws {
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
         let fetchedUser = try await UserManager.shared.getUserProfile(userId: authDataResult.uid)
+        let prefs = try await UserManager.shared.getUserPreferences(userId: authDataResult.uid)
+        
 
-            self.user = fetchedUser
+        self.user = fetchedUser
+        self.dietaryPreferences = prefs.dietaryPreferences
+        self.allergies = prefs.allergies
     }
 
     
@@ -46,5 +52,13 @@ final class ProfileViewModel: ObservableObject {
             try await StorageManager.shared.deleteImage(path: path)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.metadata.userId, path: nil, url: nil)
         }
+    }
+    
+    func updatePreferences(dietary: [String], allergies: [String]) async throws {
+        guard let userId = user?.metadata.userId else { return }
+        try await UserManager.shared.updateUserPreferences(userId: userId, dietaryPreferences: dietary, allergies: allergies)
+
+        self.dietaryPreferences = dietary
+        self.allergies = allergies
     }
 }

@@ -35,6 +35,7 @@
 		9A1708C42CF2E01D00746B91 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9A1708C32CF2E01D00746B91 /* FirebaseAuth */; };
 		9A1708C62CF2E08300746B91 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C52CF2E08300746B91 /* AuthenticationView.swift */; };
 		9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1708C72CF2E51200746B91 /* SignInEmailView.swift */; };
+		9A2652CD2DB423EA00FFFA59 /* EditPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2652CC2DB423EA00FFFA59 /* EditPreferencesView.swift */; };
 		9A26AD012D7B91360039DA58 /* GoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD002D7B91360039DA58 /* GoalsView.swift */; };
 		9A26AD032D7B914D0039DA58 /* FavoriteMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */; };
 		9A26AD072D7B91B10039DA58 /* ProgressionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A26AD062D7B91B10039DA58 /* ProgressionView.swift */; };
@@ -194,6 +195,7 @@
 		9A069DFE2CFAE03A008620A9 /* Fit-Pantry-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fit-Pantry-Info.plist"; sourceTree = "<group>"; };
 		9A1708C52CF2E08300746B91 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		9A1708C72CF2E51200746B91 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
+		9A2652CC2DB423EA00FFFA59 /* EditPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPreferencesView.swift; sourceTree = "<group>"; };
 		9A26AD002D7B91360039DA58 /* GoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsView.swift; sourceTree = "<group>"; };
 		9A26AD022D7B914D0039DA58 /* FavoriteMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMealView.swift; sourceTree = "<group>"; };
 		9A26AD062D7B91B10039DA58 /* ProgressionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionView.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 			isa = PBXGroup;
 			children = (
 				9A7F604A2D5BC414007BF914 /* EditProfileView.swift */,
+				9A2652CC2DB423EA00FFFA59 /* EditPreferencesView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1071,6 +1074,7 @@
 				9ACA65E82D8DF4DF00F7D7E1 /* EmailVerificationView.swift in Sources */,
 				9A6624412CFEBAC700A5CB90 /* SignInEmailViewModel.swift in Sources */,
 				097FB5222CFAD0C200F58B67 /* AddFoodView.swift in Sources */,
+				9A2652CD2DB423EA00FFFA59 /* EditPreferencesView.swift in Sources */,
 				9A2AA4992D5367B10073837E /* ProfileViewModel.swift in Sources */,
 				9A452BD12D73D34400046FA4 /* SignUpEmailView.swift in Sources */,
 				9A4F49952DB2D662008D8A77 /* FeedbackManager.swift in Sources */,
