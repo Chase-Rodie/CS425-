@@ -382,11 +382,13 @@ struct MealGenerationView: View {
                     // Background scrollable content
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            
+                            Text(recipe)
+                            /*
                             if recipe == "Generating your recipe..." {
                                 Text(recipe)
                             }
                             else{
+                                //print(recipe)
                                 let parsed = parseRecipe(recipe)
                                 
                                 if !parsed.ingredients.isEmpty {
@@ -409,6 +411,7 @@ struct MealGenerationView: View {
                                     }
                                 }
                             }
+                             */
                             Text("⚠️ Disclaimer ⚠️")
                                 .font(.headline)
                                 .padding(.top)
@@ -466,7 +469,9 @@ struct MealGenerationView: View {
                     let alias = data["alias"] as? String ?? "Unknown Alias"
                     let name = data["name"] as? String ?? "Unknown Name"
                     let food = FoodAlias(id: id, alias: alias, name: name)
-                    fetchedAliases.append(food)
+                    if !(alias == "prepared_na") {
+                        fetchedAliases.append(food)
+                    }
                 } else {
                     let food = FoodAlias(id: id, alias: "Unknown Alias", name: "Unknown Name")
                     fetchedAliases.append(food)
@@ -482,12 +487,14 @@ struct MealGenerationView: View {
 
     func generate() {
         recipe = "Generating your recipe..."
-        let ingredients = foodAliases.map { $0.alias }
+        //let ingredients = foodAliases.map { $0.alias }
+        let ingredients = foodAliases.map { $0.name }
 
-        Fit_Pantry.generateRecipe(ingredients: ingredients) { result in
+        Fit_Pantry.generateRecipeWithOpenAI(ingredients: ingredients) { result in
             DispatchQueue.main.async {
                 if let result = result {
                     recipe = result
+                    print(recipe)
                 } else {
                     recipe = "Failed to generate recipe. Please try again."
                 }
