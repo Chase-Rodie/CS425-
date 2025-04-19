@@ -485,7 +485,7 @@ class RetrieveWorkoutData : ObservableObject {
             let totalExercises = documents.count
             let completedCount = documents.filter { ($0.data()["isComplete"] as? Bool) == true }.count
             
-            print("Day \(dayIndex+1): Completed \(completedCount) / \(totalExercises)")
+            print("Day \(dayIndex): Completed \(completedCount) / \(totalExercises)")
             completion(completedCount, totalExercises)
         }
     }

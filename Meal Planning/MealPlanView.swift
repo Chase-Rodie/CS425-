@@ -385,7 +385,7 @@ struct MealGenerationView: View {
                             
                             // Recipe currently displayed as plain text from AI
                             Text(recipe)
-                            
+ 
                             Text("⚠️ Disclaimer ⚠️")
                                 .font(.headline)
                                 .padding(.top)
