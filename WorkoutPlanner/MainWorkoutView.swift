@@ -29,6 +29,7 @@ struct MainWorkoutView: View {
                     viewModel.isWorkoutPlanAvailable = exists
                     if exists {
                         viewModel.fetchWorkoutPlan()
+             
                     }
                 }
             }

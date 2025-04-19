@@ -30,8 +30,8 @@ final class SettingsViewModel: ObservableObject {
         self.authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
     }
     
-    func signOut() throws {
-        try AuthenticationManager.shared.signOut()
+    func signOut() async throws {
+        try await AuthenticationManager.shared.signOut()
     }
     
     func resetPassword() async throws {

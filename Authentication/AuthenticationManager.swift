@@ -133,10 +133,11 @@ final class AuthenticationManager {
         return providers
     }
     
-    func signOut() throws {
+    func signOut() async throws {
         try Auth.auth().signOut()
         UserDefaults.standard.removeObject(forKey: "userSession")
         UserDefaults.standard.synchronize()
+        try await resetUserDefaults()
         print("User signed out successfully")
     }
     
@@ -196,7 +197,7 @@ final class AuthenticationManager {
             }
         }
 
-        defaults.synchronize() //Optional according to StackOverflow. Does not seem to impact functionality, leaving here just in case. 
+        defaults.synchronize() //Optional according to StackOverflow. Does not seem to impact functionality, leaving here just in case.
     }
 
 
