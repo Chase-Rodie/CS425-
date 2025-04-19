@@ -382,36 +382,10 @@ struct MealGenerationView: View {
                     // Background scrollable content
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
+                            
+                            // Recipe currently displayed as plain text from AI
                             Text(recipe)
-                            /*
-                            if recipe == "Generating your recipe..." {
-                                Text(recipe)
-                            }
-                            else{
-                                //print(recipe)
-                                let parsed = parseRecipe(recipe)
-                                
-                                if !parsed.ingredients.isEmpty {
-                                    Text("🧂 Ingredients:")
-                                        .font(.headline)
-                                    ForEach(parsed.ingredients, id: \.self) { item in
-                                        Text("• \(item)")
-                                            .padding(.leading, 8)
-                                    }
-                                }
-                                
-                                if !parsed.instructions.isEmpty {
-                                    Text("👨‍🍳 Instructions:")
-                                        .font(.headline)
-                                        .padding(.top)
-                                    
-                                    ForEach(parsed.instructions.indices, id: \.self) { index in
-                                        Text("\(index + 1). \(parsed.instructions[index])")
-                                            .padding(.leading, 8)
-                                    }
-                                }
-                            }
-                             */
+                            
                             Text("⚠️ Disclaimer ⚠️")
                                 .font(.headline)
                                 .padding(.top)
@@ -427,6 +401,18 @@ struct MealGenerationView: View {
                     VStack {
                         Spacer()
                         Button(action: {
+                            saveRecipe()
+                        }) {
+                            Text("Save Recipe")
+                                .font(.headline)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                        }
+                        Button(action: {
                             generate()
                         }) {
                             Text("Regenerate Recipe")
@@ -440,6 +426,7 @@ struct MealGenerationView: View {
                         }
                     }
                 }
+            
             .navigationTitle("Generated Recipe")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -498,6 +485,45 @@ struct MealGenerationView: View {
                 } else {
                     recipe = "Failed to generate recipe. Please try again."
                 }
+            }
+        }
+    }
+    
+    
+    func saveRecipe() {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let docRef = db.collection("users")
+            .document(userID)
+            .collection("SavedRecipes")
+            .document()
+        
+        // Get title from recipe
+        let title = recipe.components(separatedBy: .newlines).first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "Untitled Recipe"
+        
+        // Remove the title line and trim whitespace/newlines
+        let lines = recipe.components(separatedBy: .newlines)
+        let cleanedRecipeText = lines
+            .dropFirst() // drops the first line regardless
+            .joined(separator: "\n")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let recipeData: [String: Any] = [
+            "title": title,
+            "recipeText": cleanedRecipeText,
+            "ingredients": foodAliases.map { $0.name },
+            "timestamp": Timestamp(date: Date())
+        ]
+
+        docRef.setData(recipeData) { error in
+            if let error = error {
+                print("Error saving recipe: \(error.localizedDescription)")
+            } else {
+                print("Recipe saved successfully!")
             }
         }
     }
