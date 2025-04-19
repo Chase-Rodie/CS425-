@@ -27,7 +27,7 @@ struct SettingsView: View {
                 } else {
                     Task {
                         do {
-                            try viewModel.signOut()
+                            try await viewModel.signOut()
                             showSignInView = true
                         } catch {
                             print("Error signing out: \(error)")

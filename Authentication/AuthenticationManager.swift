@@ -73,6 +73,7 @@ enum CustomAuthenticationErrors: LocalizedError {
     case providerOptionNotFound(String)
     case unknownError(String)
     case requiresReauthentication
+    case deleteUserDefaultFailed(String)
 
     var errorDescription: String? {
             switch self {
@@ -90,6 +91,8 @@ enum CustomAuthenticationErrors: LocalizedError {
                         return "Reauthentication is required before deleting your account."
             case .unknownError(let message):
                 return "An unknown error occurred: \(message)"
+            case .deleteUserDefaultFailed(let message):
+                return "Failed to delete user defaults: \(message)"
             }
         }
     }
@@ -130,10 +133,11 @@ final class AuthenticationManager {
         return providers
     }
     
-    func signOut() throws {
+    func signOut() async throws {
         try Auth.auth().signOut()
         UserDefaults.standard.removeObject(forKey: "userSession")
         UserDefaults.standard.synchronize()
+        try await resetUserDefaults()
         print("User signed out successfully")
     }
     
@@ -151,6 +155,9 @@ final class AuthenticationManager {
 
             try await user.delete()
             print("User deleted from Firebase Authentication")
+            
+           try await resetUserDefaults()
+            print("User defaults reset")
         } catch {
             if let errorCode = (error as NSError?)?.code,
                errorCode == AuthErrorCode.requiresRecentLogin.rawValue {
@@ -176,6 +183,25 @@ final class AuthenticationManager {
             }
         }
     }
+    
+    func resetUserDefaults()async throws{
+        let keysToRemove = ["workoutPlan", "workoutMetadata"]
+        let defaults = UserDefaults.standard
+
+        for key in keysToRemove {
+            defaults.removeObject(forKey: key)
+            if defaults.object(forKey: key) != nil {
+                throw CustomAuthenticationErrors.deleteUserDefaultFailed("Failed to remove key: \(key)")
+            } else {
+                print("Removed key: \(key)")
+            }
+        }
+
+        defaults.synchronize() //Optional according to StackOverflow. Does not seem to impact functionality, leaving here just in case.
+    }
+
+
+    
 }
 
 //SignIn Email Functions

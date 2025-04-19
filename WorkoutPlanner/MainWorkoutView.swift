@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainWorkoutView: View {
     @StateObject private var viewModel = RetrieveWorkoutData()
+    @State private var hasAppeared = false
+
     
     var body: some View {
         Group{
@@ -18,15 +20,19 @@ struct MainWorkoutView: View {
                 GetWorkoutPlanView(workoutPlanModel: viewModel)
             }
         }
-        .onAppear{
+        .onAppear {
+            guard !hasAppeared else { return }
+            hasAppeared = true
+
             viewModel.workoutPlanExists { exists in
-                            DispatchQueue.main.async {
-                                viewModel.isWorkoutPlanAvailable = exists
-                                if exists{
-                                    viewModel.fetchWorkoutPlan()
-                                }
-                            }
-                        }
+                DispatchQueue.main.async {
+                    viewModel.isWorkoutPlanAvailable = exists
+                    if exists {
+                        viewModel.fetchWorkoutPlan()
+             
+                    }
+                }
+            }
         }
     }
 }
@@ -95,7 +101,7 @@ struct GetWorkoutPlanView: View {
                                         
                                         
                                     }
-//                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                                 }
                             }else if days == 1 {
                                 print("4 days")

@@ -55,6 +55,20 @@ class RetrieveWorkoutData : ObservableObject {
         
         var tempWorkoutPlan: [[Exercise]] = []
         
+        db.getDocument{ document, error in
+            if let error = error{
+                print("Error fetching workout metadata:\(error.localizedDescription)")
+                return
+            }
+            
+            guard let document = document, document.exists,
+                  let workoutData = document.data() else{
+                print("Workout metadata does not exist")
+                return
+            }
+            self.workoutMetadata = workoutData
+
+        }
         for i in 1...7 {
             db.collection("Day\(i)").getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -105,6 +119,7 @@ class RetrieveWorkoutData : ObservableObject {
                 }
             }
         }
+        
     }
     
     //Marks a single exercise as complete. Then saves changes to UserDefaults and Firebase.
@@ -485,7 +500,7 @@ class RetrieveWorkoutData : ObservableObject {
             let totalExercises = documents.count
             let completedCount = documents.filter { ($0.data()["isComplete"] as? Bool) == true }.count
             
-            print("Day \(dayIndex): Completed \(completedCount) / \(totalExercises)")
+            print("Day \(dayIndex+1): Completed \(completedCount) / \(totalExercises)")
             completion(completedCount, totalExercises)
         }
     }
@@ -724,7 +739,7 @@ class RetrieveWorkoutData : ObservableObject {
                 return
             }
             
-            self.manualWorkoutsToday = documents.map { $0.data() }            
+            self.manualWorkoutsToday = documents.map { $0.data() }
         }
     }
     
@@ -745,6 +760,7 @@ class RetrieveWorkoutData : ObservableObject {
     
     
 }
+
 
 
 

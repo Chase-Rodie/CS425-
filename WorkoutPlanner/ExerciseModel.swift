@@ -35,3 +35,4 @@ struct ManualWorkout: Identifiable {
     let distance: Int
     let exercises: [[String: Any]]
 }
+

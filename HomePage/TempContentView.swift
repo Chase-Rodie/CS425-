@@ -20,7 +20,7 @@ struct TempContentView: View {
                     .tabItem { Label("Food Journal", systemImage: "book.fill") }
                     .tag(2)
                 
-                NavigationStack { MainWorkoutView() }
+                /*NavigationStack { */MainWorkoutView() /*}*/
                     .tabItem { Label("Workout", systemImage: "figure.run") }
                     .tag(1)
                 

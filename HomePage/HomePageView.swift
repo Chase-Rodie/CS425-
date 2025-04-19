@@ -134,12 +134,14 @@ struct HomePageView: View {
     }
 
     private func fetchAllDaysProgress() {
-        for dayIndex in 1..<7 { // Loop through all days
+        for dayIndex in 0..<7 {
             retrieveworkoutdata.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
                 let progress = total > 0 ? Double(completed) / Double(total) : 0.0
+                
                 DispatchQueue.main.async {
-                    self.progressValues[dayIndex] = progress
-                    print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
+                    
+                    progressValues[dayIndex] = progress
+                   // print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
             }
         }
