@@ -40,6 +40,8 @@ struct UserProfile: Codable, Equatable {
     var weight: String?
     var profileImagePath: String?
     var profileImagePathUrl: String?
+    var dietaryPreferences: [String]?
+    var allergies: [String]?
 }
 
 struct UserMetadata: Codable, Equatable {
@@ -83,6 +85,8 @@ struct DBUser: Decodable, Equatable {
         case weight
         case profileImagePath
         case profileImagePathUrl
+        case dietaryPreferences
+        case allergies
     }
 
     init(auth: AuthDataResultModel) {
@@ -102,7 +106,9 @@ struct DBUser: Decodable, Equatable {
             height: nil,
             weight: nil,
             profileImagePath: nil,
-            profileImagePathUrl: nil
+            profileImagePathUrl: nil,
+            dietaryPreferences: nil,
+            allergies: nil
         )
     }
 
@@ -142,7 +148,9 @@ struct DBUser: Decodable, Equatable {
         let weight = try profileContainer.decode(String?.self, forKey: .weight)
         let profileImagePath = try profileContainer.decode(String?.self, forKey: .profileImagePath)
         let profileImagePathUrl = try profileContainer.decode(String?.self, forKey: .profileImagePathUrl)
-        
+        let dietaryPreferences = try profileContainer.decodeIfPresent([String].self, forKey: .dietaryPreferences)
+        let allergies = try profileContainer.decodeIfPresent([String].self, forKey: .allergies)
+
         self.profile = UserProfile(
             name: name,
             age: age,
@@ -152,7 +160,9 @@ struct DBUser: Decodable, Equatable {
             height: height,
             weight: weight,
             profileImagePath: profileImagePath,
-            profileImagePathUrl: profileImagePathUrl
+            profileImagePathUrl: profileImagePathUrl,
+            dietaryPreferences: dietaryPreferences,
+            allergies: allergies
         )
     }
 }
@@ -199,6 +209,10 @@ final class UserManager: ObservableObject {
 
     private func userDocument(userId: String) -> DocumentReference {
         return userCollection.document(userId).collection("UserInformation").document("profile")
+    }
+    
+    private func userPreferencesDocument(userId: String) -> DocumentReference {
+        userCollection.document(userId).collection("UserInformation").document("preferences")
     }
 
 
@@ -317,7 +331,9 @@ final class UserManager: ObservableObject {
             "height": user.profile.height ?? "",
             "weight": user.profile.weight ?? "",
             "profileImagePath": user.profile.profileImagePath ?? "",
-            "profileImagePathUrl": user.profile.profileImagePathUrl ?? ""
+            "profileImagePathUrl": user.profile.profileImagePathUrl ?? "",
+            "dietaryPreferences": user.profile.dietaryPreferences ?? [],
+            "allergies": user.profile.allergies ?? []
         ]
 
         try await userDocument(userId: user.metadata.userId).setData(profileData, merge: true)
@@ -331,6 +347,26 @@ final class UserManager: ObservableObject {
 
         return user.profileImagePathUrl
     }
+    
+    func getUserPreferences(userId: String) async throws -> (dietaryPreferences: [String], allergies: [String]) {
+        let snapshot = try await userPreferencesDocument(userId: userId).getDocument()
+        let data = snapshot.data() ?? [:]
+
+        let dietaryPreferences = data["dietaryPreferences"] as? [String] ?? []
+        let allergies = data["allergies"] as? [String] ?? []
+
+        return (dietaryPreferences, allergies)
+    }
+
+    func updateUserPreferences(userId: String, dietaryPreferences: [String], allergies: [String]) async throws {
+        let data: [String: Any] = [
+            "dietaryPreferences": dietaryPreferences,
+            "allergies": allergies
+        ]
+
+        try await userPreferencesDocument(userId: userId).setData(data, merge: true)
+    }
+
 
 
     @MainActor

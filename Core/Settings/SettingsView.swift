@@ -49,6 +49,8 @@ struct SettingsView: View {
             if viewModel.authUser?.isAnonymous == true {
                 anonymousSection
             }
+            
+            preferencesSection
         }
         .onAppear {
             viewModel.loadAuthProviders()
@@ -136,7 +138,7 @@ extension SettingsView {
                     }
                 }
             }
-        
+            
             Button("Update password") {
                 Task {
                     do {
@@ -174,7 +176,7 @@ extension SettingsView {
                     }
                 }
             }
-        
+            
             Button("Link Google Account") {
                 Task {
                     do {
@@ -200,4 +202,25 @@ extension SettingsView {
             Text("Create account")
         }
     }
+    
+    private var preferencesSection: some View {
+        Section(header: Text("Preferences")) {
+            VStack {
+                // Toggle for sound setting
+                Toggle("Enable Sound", isOn: $viewModel.soundEnabled)
+                
+                // Toggle for vibration setting
+                Toggle("Enable Vibration", isOn: $viewModel.vibrationEnabled)
+                
+                // Toggle for notifications setting
+                Toggle("Enable Notifications", isOn: $viewModel.notificationsEnabled)
+                    .onChange(of: viewModel.notificationsEnabled) { enabled in
+                        if enabled {
+                            viewModel.requestNotificationPermission()
+                        }
+                    }
+            }
+        }
+    }
 }
+    
