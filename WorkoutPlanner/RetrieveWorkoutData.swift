@@ -112,8 +112,8 @@ class RetrieveWorkoutData : ObservableObject {
         for dayIndex in workoutPlan.indices{
             if let exerciseIndex = workoutPlan[dayIndex].firstIndex(where: { $0.id == exercise.id }){
                 workoutPlan[dayIndex][exerciseIndex].isComplete.toggle()
-                saveExerciseCompletionStatus(exercise: workoutPlan[dayIndex][exerciseIndex])
-                updateExerciseCompletionInDB(exercise: workoutPlan[dayIndex][exerciseIndex], dayIndex: dayIndex)
+                //saveExerciseCompletionStatus(exercise: workoutPlan[dayIndex][exerciseIndex])
+             //   updateExerciseCompletionInDB(exercise: workoutPlan[dayIndex][exerciseIndex], dayIndex: dayIndex)
                 break
             }
         }

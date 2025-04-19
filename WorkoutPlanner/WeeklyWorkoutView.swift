@@ -122,7 +122,7 @@ struct WeeklyWorkoutView: View {
                 DispatchQueue.main.async {
                     
                     progressValues[dayIndex] = progress
-                    print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
+                    //print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
             }
         }
