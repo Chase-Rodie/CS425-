@@ -95,7 +95,7 @@ struct GetWorkoutPlanView: View {
                                         
                                         
                                     }
-                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
+//                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                                 }
                             }else if days == 1 {
                                 print("4 days")
