@@ -14,16 +14,20 @@ final class ProfileViewModel: ObservableObject {
     @Published var user: DBUser?
     @Published var dietaryPreferences: [String] = []
     @Published var allergies: [String] = []
+    @Published var hasLoaded = false
             
     func loadCurrentUser() async throws {
+        guard !hasLoaded else { return }
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
         let fetchedUser = try await UserManager.shared.getUserProfile(userId: authDataResult.uid)
         let prefs = try await UserManager.shared.getUserPreferences(userId: authDataResult.uid)
         
-
-        self.user = fetchedUser
-        self.dietaryPreferences = prefs.dietaryPreferences
-        self.allergies = prefs.allergies
+        await MainActor.run{
+            self.user = fetchedUser
+            self.dietaryPreferences = prefs.dietaryPreferences
+            self.allergies = prefs.allergies
+            self.hasLoaded = true
+        }
     }
 
     

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct EditPreferencesView: View {
     @ObservedObject var viewModel: ProfileViewModel
     @Environment(\.dismiss) var dismiss
@@ -30,6 +29,7 @@ struct EditPreferencesView: View {
                         dietaryPreferences.append(dietaryInput)
                         dietaryInput = ""
                     }
+                    .foregroundColor(Color("BackgroundColor")) // Change text color to BackgroundColor
                 }
             }
 
@@ -44,6 +44,7 @@ struct EditPreferencesView: View {
                         allergies.append(allergyInput)
                         allergyInput = ""
                     }
+                    .foregroundColor(Color("BackgroundColor")) // Change text color to BackgroundColor
                 }
             }
 
@@ -52,7 +53,7 @@ struct EditPreferencesView: View {
                     await savePreferences()
                 }
             }
-            .buttonStyle(.borderedProminent)
+            .foregroundColor(Color("BackgroundColor")) // Change text color to BackgroundColor
         }
         .navigationTitle("Edit Preferences")
         .onAppear {
