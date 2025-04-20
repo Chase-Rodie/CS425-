@@ -22,6 +22,7 @@ struct MealPlanView: View {
     @State private var selectedMealType: MealType = .breakfast
     @State private var inputQuantities: [UUID: String] = [:]
     @State private var quantityErrors: [UUID: String] = [:]
+    @EnvironmentObject var userManager: UserManager
     
     @State private var showMealGen = false
 
@@ -97,12 +98,26 @@ struct MealPlanView: View {
                             ForEach(filteredMeals) { meal in
                                 HStack {
                                     NavigationLink(destination: MealDetailView(meal: meal.name, foodID: meal.foodID)) {
+//                                        VStack(alignment: .leading) {
+//                                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
+//                                                .font(.title3)
+//                                            Text("Tap to view details")
+//                                                .font(.subheadline)
+//                                                .foregroundColor(.gray)
+//                                        }
                                         VStack(alignment: .leading) {
                                             Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
                                                 .font(.title3)
+                                            
                                             Text("Tap to view details")
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
+                                            
+                                            if MealFilter.flaggedForGoal(meal: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
+                                                Text("⚠️ This meal doesn't match your current goal.")
+                                                    .font(.caption)
+                                                    .foregroundColor(.red)
+                                            }
                                         }
                                     }
 
@@ -345,16 +360,6 @@ struct MealPlanView: View {
                         } else {
                             print("Could not find category for foodID \(foodID), defaulting to .prepared")
                         }
-
-//                        let meal = MealPlanner(
-//                            pantryDocID: doc.documentID,
-//                            name: name,
-//                            foodID: String(foodID),
-//                            imageURL: nil,
-//                            category: mealCategory,
-//                            quantity: quantity
-//                        )
-//                        fetchedMeals.append(meal)
                         
                         let calories = foodSnapshot?.data()?["calories"] as? Int ?? 0
                         let protein = foodSnapshot?.data()?["protein"] as? Int ?? 0
@@ -377,7 +382,23 @@ struct MealPlanView: View {
                     }
                 }
 
+//                group.notify(queue: .main) {
+//                    self.mealPlan = fetchedMeals
+//                    isLoading = false
+//                    continuation.resume()
+//                }
                 group.notify(queue: .main) {
+                    guard let goal = userManager.currentUser?.profile.goal,
+                          let preferences = userManager.currentUser?.profile.dietaryPreferences else {
+                        print("Missing user goal or preferences")
+                        self.mealPlan = fetchedMeals // fallback
+                        isLoading = false
+                        continuation.resume()
+                        return
+                    }
+                    print("🎯 Goal: \(goal)")
+                    print("🥦 Preferences: \(preferences)")
+                    print("📦 Meals before filtering: \(fetchedMeals.map { $0.name })")
                     self.mealPlan = fetchedMeals
                     isLoading = false
                     continuation.resume()

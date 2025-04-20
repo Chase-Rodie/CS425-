@@ -7,7 +7,6 @@
 
 import XCTest
 
-// Mock replacements for app models
 enum Goal {
     case loseWeight
     case gainWeight

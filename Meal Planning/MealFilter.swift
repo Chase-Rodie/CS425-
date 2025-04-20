@@ -31,3 +31,16 @@ struct MealFilter {
         }
     }
 }
+
+extension MealFilter {
+    static func flaggedForGoal(meal: MealPlanner, goal: Goal) -> Bool {
+        switch goal {
+        case .loseWeight:
+            return meal.calories > 500 || meal.fat > 20
+        case .gainWeight:
+            return meal.calories < 600 || meal.protein < 20
+        case .maintainWeight:
+            return !(450...650).contains(meal.calories)
+        }
+    }
+}
