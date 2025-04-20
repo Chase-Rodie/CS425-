@@ -101,6 +101,8 @@
 		F825DAC92D759F2900F4345D /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DAC82D759F2200F4345D /* MealDetailView.swift */; };
 		F825DACB2D759F5700F4345D /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DACA2D759F5200F4345D /* ShoppingListView.swift */; };
 		F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F825DACF2D75A88100F4345D /* FirestoreManager.swift */; };
+		F88E7B402DB47AEC00D37AB0 /* MealFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E7B3F2DB47AE700D37AB0 /* MealFilter.swift */; };
+		F88E7B532DB4878A00D37AB0 /* MealFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E7B4F2DB4866700D37AB0 /* MealFilterTests.swift */; };
 		F8A7CDC92D9F66B4009F5907 /* MealPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */; };
 		F8A7CDCB2D9F66F0009F5907 /* TodayMealManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */; };
 		F8A7CDCD2D9F6702009F5907 /* TodayMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */; };
@@ -256,6 +258,8 @@
 		F825DAC82D759F2200F4345D /* MealDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailView.swift; sourceTree = "<group>"; };
 		F825DACA2D759F5200F4345D /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		F825DACF2D75A88100F4345D /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		F88E7B3F2DB47AE700D37AB0 /* MealFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealFilter.swift; sourceTree = "<group>"; };
+		F88E7B4F2DB4866700D37AB0 /* MealFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealFilterTests.swift; sourceTree = "<group>"; };
 		F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanner.swift; sourceTree = "<group>"; };
 		F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealManager.swift; sourceTree = "<group>"; };
 		F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealView.swift; sourceTree = "<group>"; };
@@ -443,6 +447,7 @@
 		9A3FB8952CD3E5720019266C /* Meal Planning */ = {
 			isa = PBXGroup;
 			children = (
+				F88E7B3F2DB47AE700D37AB0 /* MealFilter.swift */,
 				F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */,
 				F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */,
 				F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */,
@@ -495,6 +500,7 @@
 		9A3FB8992CD3E6220019266C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F88E7B4D2DB4864B00D37AB0 /* MealFIlterTests */,
 				9AC81DE02CA57BD000A0472C /* Fit PantryTests */,
 				9AC81DEA2CA57BD000A0472C /* Fit PantryUITests */,
 				F80C28C22CFD2BC30070B172 /* MealSuggestionsTest */,
@@ -663,6 +669,14 @@
 				5E65CBD52D01A60600FB4B26 /* DailyWorkoutView.swift */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		F88E7B4D2DB4864B00D37AB0 /* MealFIlterTests */ = {
+			isa = PBXGroup;
+			children = (
+				F88E7B4F2DB4866700D37AB0 /* MealFilterTests.swift */,
+			);
+			path = MealFIlterTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1066,6 +1080,7 @@
 				F8A7CDCF2D9F6733009F5907 /* Meal.swift in Sources */,
 				5E74B7022D62C2CA00E5912B /* FoodJournalItemView.swift in Sources */,
 				9A26AD032D7B914D0039DA58 /* FavoriteMealView.swift in Sources */,
+				F88E7B402DB47AEC00D37AB0 /* MealFilter.swift in Sources */,
 				F825DAD02D75A88800F4345D /* FirestoreManager.swift in Sources */,
 				9A3FB8A12CD3F68F0019266C /* MealView.swift in Sources */,
 				097FB5242CFAD0E300F58B67 /* SearchManager.swift in Sources */,
@@ -1127,6 +1142,7 @@
 				F8A7CDD02D9F6733009F5907 /* Meal.swift in Sources */,
 				F80591552CFFA28F00A900FC /* MealView.swift in Sources */,
 				F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */,
+				F88E7B532DB4878A00D37AB0 /* MealFilterTests.swift in Sources */,
 				5EEDA2C32D7CEED500D3645A /* WeeklyWorkoutView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1396,11 +1412,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "name.chaserodie.Capstone-ProjectTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mycompany.Capstone-ProjectTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -1415,11 +1431,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "name.chaserodie.Capstone-ProjectTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mycompany.Capstone-ProjectTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -1433,10 +1449,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "name.chaserodie.Capstone-ProjectUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mycompany.Capstone-ProjectUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -1450,10 +1466,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "name.chaserodie.Capstone-ProjectUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mycompany.Capstone-ProjectUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -1467,6 +1483,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1484,6 +1501,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1501,6 +1519,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1518,6 +1537,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1535,6 +1555,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1552,6 +1573,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1569,6 +1591,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1586,6 +1609,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1603,6 +1627,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1620,6 +1645,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1637,6 +1663,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
@@ -1654,6 +1681,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;

@@ -30,6 +30,10 @@ struct MealPlanner: Identifiable, Hashable {
     let category: MealCategory
     var quantity: Double
     var consumedAmount: Double? = nil
+    var dietaryTags: [String] = []
+    var calories: Int = 0
+    var protein: Int = 0
+    var fat: Int = 0
 }
 
 struct FoodAlias: Identifiable {

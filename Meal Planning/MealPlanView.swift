@@ -346,15 +346,33 @@ struct MealPlanView: View {
                             print("Could not find category for foodID \(foodID), defaulting to .prepared")
                         }
 
+//                        let meal = MealPlanner(
+//                            pantryDocID: doc.documentID,
+//                            name: name,
+//                            foodID: String(foodID),
+//                            imageURL: nil,
+//                            category: mealCategory,
+//                            quantity: quantity
+//                        )
+//                        fetchedMeals.append(meal)
+                        
+                        let calories = foodSnapshot?.data()?["calories"] as? Int ?? 0
+                        let protein = foodSnapshot?.data()?["protein"] as? Int ?? 0
+                        let fat = foodSnapshot?.data()?["fat"] as? Int ?? 0
+                        let dietaryTags = foodSnapshot?.data()?["tags"] as? [String] ?? []
+
                         let meal = MealPlanner(
                             pantryDocID: doc.documentID,
                             name: name,
                             foodID: String(foodID),
                             imageURL: nil,
                             category: mealCategory,
-                            quantity: quantity
+                            quantity: quantity,
+                            dietaryTags: dietaryTags,
+                            calories: calories,
+                            protein: protein,
+                            fat: fat
                         )
-
                         fetchedMeals.append(meal)
                     }
                 }
@@ -367,7 +385,6 @@ struct MealPlanView: View {
             }
         }
     }
-
 }
 
 struct MealGenerationView: View {
