@@ -114,7 +114,7 @@ struct MealPlanView: View {
                                                 .foregroundColor(.gray)
                                             
                                             if MealFilter.flaggedForGoal(meal: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
-                                                Text("⚠️ This meal doesn't match your current goal.")
+                                                Text("⚠️ This ingredient may not align with your current goal. Check the details for nutritional information.")
                                                     .font(.caption)
                                                     .foregroundColor(.red)
                                             }
@@ -396,9 +396,6 @@ struct MealPlanView: View {
                         continuation.resume()
                         return
                     }
-                    print("🎯 Goal: \(goal)")
-                    print("🥦 Preferences: \(preferences)")
-                    print("📦 Meals before filtering: \(fetchedMeals.map { $0.name })")
                     self.mealPlan = fetchedMeals
                     isLoading = false
                     continuation.resume()
