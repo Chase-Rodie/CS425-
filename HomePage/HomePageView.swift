@@ -99,15 +99,11 @@ struct HomePageView: View {
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 150, height: 150)
                                             Text(type.rawValue)
-                                                .font(.headline)
-                                        }
+                                                .foregroundColor(.black)                                        }
                                     }
                                 }
                             }.padding(.horizontal)
                         }
-                        
-                        NavigationLink("Progress Calendar", destination: ProgressTrackerView())
-                            .font(.largeTitle)
                     }
                     .navigationBarBackButtonHidden(true)
                     .onAppear {

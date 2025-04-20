@@ -136,7 +136,7 @@ struct MealPlanView: View {
                     VStack{
                         if selectedCategory == .ingredient {
                             HStack {
-                                Button("Generate Recipie") {
+                                Button("Generate Recipe") {
                                     showMealGen = true
                                 }
                                 .padding(6)
@@ -389,7 +389,7 @@ struct MealGenerationView: View {
                             Text("⚠️ Disclaimer ⚠️")
                                 .font(.headline)
                                 .padding(.top)
-                            Text("These recipes are generated using AI and are for informational purposes only. Please use your best judgment when preparing and consuming meals. Always ensure ingredients are safe to eat, properly cooked, and that any allergies or dietary restrictions are considered. Fit Pantry is not responsible for any adverse effects resulting from the use of AI-generated content.")
+                            Text("These recipes are generated using AI and are for informational purposes only. Please use your best judgment when preparing and consuming meals. Always ensure ingredients are safe to eat, properly cooked, and that any allergies or dietary restrictions are considered. FitPantry is not responsible for any adverse effects resulting from the use of AI-generated content.")
                             // Makes space above the fixed button
                             Spacer(minLength: 80)
                         }
