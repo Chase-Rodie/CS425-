@@ -148,16 +148,35 @@ final class AuthenticationManager {
 
         let userID = user.uid
         let db = Firestore.firestore()
+        let batch = db.batch()
 
         do {
-            try await db.collection("users").document(userID).delete()
-            print("User document deleted from Firestore")
+            // 1. Delete profile doc
+            let profileRef = db.collection("users").document(userID).collection("UserInformation").document("profile")
+            batch.deleteDocument(profileRef)
 
+            // 2. Delete root user doc
+            let userRef = db.collection("users").document(userID)
+            batch.deleteDocument(userRef)
+
+            // 3. Commit batch
+            try await batch.commit()
+            print("User document and profile deleted from Firestore")
+
+            // 4. Delete Firebase Auth user
             try await user.delete()
             print("User deleted from Firebase Authentication")
-            
-           try await resetUserDefaults()
+
+            // 5. Reset UserDefaults
+            try await resetUserDefaults()
             print("User defaults reset")
+
+            // 6. Clear currentUser on main thread
+            await MainActor.run {
+                UserManager.shared.currentUser = nil
+            }
+            print("UserManager currentUser cleared")
+
         } catch {
             if let errorCode = (error as NSError?)?.code,
                errorCode == AuthErrorCode.requiresRecentLogin.rawValue {
@@ -167,6 +186,9 @@ final class AuthenticationManager {
             }
         }
     }
+
+
+
 
     
     
