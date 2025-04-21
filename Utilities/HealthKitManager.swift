@@ -25,15 +25,15 @@ class HealthKitManager {
             let energy = HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed),
             let protein = HKObjectType.quantityType(forIdentifier: .dietaryProtein),
             let fat = HKObjectType.quantityType(forIdentifier: .dietaryFatTotal),
-            let carbs = HKObjectType.quantityType(forIdentifier: .dietaryCarbohydrates)
+            let carbs = HKObjectType.quantityType(forIdentifier: .dietaryCarbohydrates),
+            let steps = HKObjectType.quantityType(forIdentifier: .stepCount)
         else {
             print("One or more HealthKit data types are unavailable.")
             completion(false)
             return
         }
-        let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount)
 
-        let typesToShare: Set = [energy, protein, fat, carbs]
+        let typesToShare: Set = [energy, protein, fat, carbs, steps]
         let typesToRead: Set = [energy, protein, fat, carbs]
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
@@ -102,6 +102,6 @@ class HealthKitManager {
             completion(steps)
         }
 
-        healthStore.execute(query)
+        HKHealthStore().execute(query)
     }
 }
