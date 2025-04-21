@@ -31,6 +31,7 @@ class HealthKitManager {
             completion(false)
             return
         }
+        let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount)
 
         let typesToShare: Set = [energy, protein, fat, carbs]
         let typesToRead: Set = [energy, protein, fat, carbs]
@@ -76,5 +77,31 @@ class HealthKitManager {
                 print("Error saving to HealthKit: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
+    }
+    
+    func fetchStepCount(for date: Date, completion: @escaping (Double?) -> Void) {
+        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            print("Step count type is unavailable.")
+            completion(nil)
+            return
+        }
+
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
+
+        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result = result, let quantity = result.sumQuantity() else {
+                completion(nil)
+                return
+            }
+
+            let steps = quantity.doubleValue(for: HKUnit.count())
+            completion(steps)
+        }
+
+        healthStore.execute(query)
     }
 }

@@ -104,6 +104,7 @@
 		F88E7B402DB47AEC00D37AB0 /* MealFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E7B3F2DB47AE700D37AB0 /* MealFilter.swift */; };
 		F88E7B532DB4878A00D37AB0 /* MealFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E7B4F2DB4866700D37AB0 /* MealFilterTests.swift */; };
 		F88E7B572DB5E62D00D37AB0 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E7B562DB5E62600D37AB0 /* Units.swift */; };
+		F88E7B812DB6088700D37AB0 /* StepCountBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E7B802DB6088100D37AB0 /* StepCountBar.swift */; };
 		F8A7CDC92D9F66B4009F5907 /* MealPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */; };
 		F8A7CDCB2D9F66F0009F5907 /* TodayMealManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */; };
 		F8A7CDCD2D9F6702009F5907 /* TodayMealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */; };
@@ -262,6 +263,7 @@
 		F88E7B3F2DB47AE700D37AB0 /* MealFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealFilter.swift; sourceTree = "<group>"; };
 		F88E7B4F2DB4866700D37AB0 /* MealFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealFilterTests.swift; sourceTree = "<group>"; };
 		F88E7B562DB5E62600D37AB0 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
+		F88E7B802DB6088100D37AB0 /* StepCountBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCountBar.swift; sourceTree = "<group>"; };
 		F8A7CDC82D9F66AF009F5907 /* MealPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanner.swift; sourceTree = "<group>"; };
 		F8A7CDCA2D9F66E8009F5907 /* TodayMealManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealManager.swift; sourceTree = "<group>"; };
 		F8A7CDCC2D9F66FE009F5907 /* TodayMealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMealView.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 		5EB2C7602CFABFB300EA8E8D /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				F88E7B802DB6088100D37AB0 /* StepCountBar.swift */,
 				9A26ACFF2D7B911E0039DA58 /* Subviews */,
 				5EB2C7612CFABFD700EA8E8D /* HomePageView.swift */,
 				5EFA1F302CFD6F1800308814 /* HamburgerMenuView.swift */,
@@ -1066,6 +1069,7 @@
 				9AF888F22CF2921F00E83A3A /* SignInAppleHelper.swift in Sources */,
 				9A26AD012D7B91360039DA58 /* GoalsView.swift in Sources */,
 				9A1708C82CF2E51200746B91 /* SignInEmailView.swift in Sources */,
+				F88E7B812DB6088700D37AB0 /* StepCountBar.swift in Sources */,
 				5EFA1F352CFD6F9D00308814 /* ProgressTrackerView.swift in Sources */,
 				9A66243B2CFEB95F00A5CB90 /* SettingsViewModel.swift in Sources */,
 				5EB437752CF9A99900C8B75F /* ExerciseModel.swift in Sources */,
