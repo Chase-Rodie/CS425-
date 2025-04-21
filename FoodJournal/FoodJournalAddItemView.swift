@@ -31,7 +31,6 @@ struct FoodJournalAddItemView: View {
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
     
-    // Remove this line:
     // let now = Date()
     
     var body: some View {
