@@ -151,27 +151,35 @@ final class AuthenticationManager {
         let batch = db.batch()
 
         do {
-            // 1. Delete profile doc
+            //Steps:
+            // Delete profile doc
             let profileRef = db.collection("users").document(userID).collection("UserInformation").document("profile")
             batch.deleteDocument(profileRef)
 
-            // 2. Delete root user doc
+            // Delete root user doc
             let userRef = db.collection("users").document(userID)
             batch.deleteDocument(userRef)
+            
+            let workoutPlanRef = db.collection("users").document(userID).collection("workoutplan")
+            let workoutDocs = try await workoutPlanRef.getDocuments()
+            
+            for document in workoutDocs.documents {
+                batch.deleteDocument(document.reference)
+            }
 
-            // 3. Commit batch
+            // Commit batch
             try await batch.commit()
             print("User document and profile deleted from Firestore")
 
-            // 4. Delete Firebase Auth user
+            // Delete Firebase Auth user
             try await user.delete()
             print("User deleted from Firebase Authentication")
 
-            // 5. Reset UserDefaults
+            // Reset UserDefaults
             try await resetUserDefaults()
             print("User defaults reset")
 
-            // 6. Clear currentUser on main thread
+            // Clear currentUser on main thread
             await MainActor.run {
                 UserManager.shared.currentUser = nil
             }
