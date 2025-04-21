@@ -34,6 +34,7 @@ struct MealPlanner: Identifiable, Hashable, Equatable {
     var calories: Int = 0
     var protein: Int = 0
     var fat: Int = 0
+    var unit: String?
     
     static func == (lhs: MealPlanner, rhs: MealPlanner) -> Bool {
         return lhs.id == rhs.id

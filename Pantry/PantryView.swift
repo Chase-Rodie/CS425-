@@ -11,6 +11,8 @@ struct PantryView: View {
     @State private var selectedItem: PantryItem?
     @State private var newQuantity: String = ""
     @State private var newQuantityDbl: Double = 0.0
+    @State private var selectedUnits: [String: String] = [:]
+
 
     // Function to fetch pantry items
     private func fetchPantryItems() {
@@ -44,8 +46,10 @@ struct PantryView: View {
                 let food_id = data["id"] as? Int ?? 0
                 let name = data["name"] as? String ?? "Unknown Item"
                 let quantity = data["quantity"] as? Double ?? 0.0
+                let unit = data["unit"] as? String ?? "g"
                 
-                return PantryItem(id: id, food_id: food_id, name: name, quantity: quantity)
+                return PantryItem(id: id, food_id: food_id, name: name, quantity: quantity, unit: unit)
+                //return PantryItem(id: id, food_id: food_id, name: name, quantity: quantity)
             }
             
             self.errorMessage = nil
@@ -73,7 +77,7 @@ struct PantryView: View {
                                 HStack {
                                     Text(item.name)
                                     Spacer()
-                                    Text("\(item.quantity, specifier: "%.1f")")
+                                    Text("\(item.quantity, specifier: "%.1f") \(item.unit)")
                                         .foregroundColor(Color("BackgroundColor"))
                                 }
                             }
@@ -110,10 +114,28 @@ struct PantryView: View {
                         .font(.headline)
                         .padding()
                     
-                    TextField("Quantity", text: $newQuantity)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.decimalPad)
-                        .padding()
+//                    TextField("Quantity", text: $newQuantity)
+//                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                        .keyboardType(.decimalPad)
+//                        .padding()
+                    
+                    HStack {
+                        TextField("Quantity", text: $newQuantity)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .keyboardType(.decimalPad)
+
+                        Picker("Unit", selection: Binding(
+                            get: { selectedUnits[selectedItem?.id ?? ""] ?? "g" },
+                            set: { selectedUnits[selectedItem?.id ?? ""] = $0 }
+                        )) {
+                            ForEach(Array(Units.keys), id: \.self) { unit in
+                                Text(unit).tag(unit)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .frame(width: 80)
+                    }
+                    .padding()
                     
                     if let errorMessage = errorMessage {
                         Text(errorMessage)
@@ -174,12 +196,26 @@ struct PantryView: View {
     }
 
     private func submitAmount() {
-        guard let selectedItem = selectedItem, let value = Double(newQuantity) else {
+//        guard let selectedItem = selectedItem, let value = Double(newQuantity) else {
+//            errorMessage = "Please enter a valid number"
+//            return
+//        }
+//        
+//        updatePantryItem(item: selectedItem, value: value)
+        guard let selectedItem = selectedItem,
+              let rawValue = Double(newQuantity) else {
             errorMessage = "Please enter a valid number"
             return
         }
+
+        let selectedUnit = selectedUnits[selectedItem.id] ?? "g"
+
+        guard let factor = Units[selectedUnit] else {
+            errorMessage = "Invalid unit"
+            return
+        }
         
-        updatePantryItem(item: selectedItem, value: value)
+        updatePantryItem(item: selectedItem, value: rawValue)
         fetchPantryItems()
         showEditSheet = false
     }
@@ -196,10 +232,16 @@ struct PantryView: View {
             .collection("pantry")
             .document(item.id)
         
+//        let data: [String: Any] = [
+//            "id": item.food_id,
+//            "name": item.name,
+//            "quantity": value
+//        ]
         let data: [String: Any] = [
             "id": item.food_id,
             "name": item.name,
-            "quantity": value
+            "quantity": value,
+            "unit": selectedUnits[item.id] ?? "g"  // Store selected unit (like "oz", "cup", etc.)
         ]
         
         db.setData(data, merge: true) { error in
