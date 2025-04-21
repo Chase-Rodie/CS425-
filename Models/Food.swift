@@ -34,7 +34,7 @@ struct FoodJournalItem: Identifiable, Decodable, Encodable {
     var id: String
     var name: String
     var foodGroup: String
-    var food_id: Int32
+    var food_id: String
     var calories: Int32
     var fat: Float32
     var carbohydrates: Float32
