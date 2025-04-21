@@ -35,6 +35,7 @@ struct MealPlanner: Identifiable, Hashable, Equatable {
     var protein: Int = 0
     var fat: Int = 0
     var unit: String?
+    var consumedUnit: String? = nil
     
     static func == (lhs: MealPlanner, rhs: MealPlanner) -> Bool {
         return lhs.id == rhs.id

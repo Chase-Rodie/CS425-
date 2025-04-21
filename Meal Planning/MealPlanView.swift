@@ -65,9 +65,25 @@ struct MealPlanView: View {
                                 set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                             ),
                             onRemove: { removedMeal in
-                                let amountToRestore = removedMeal.consumedAmount ?? 0
-                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amountToRestore)
+                                guard let amount = removedMeal.consumedAmount else { return }
+
+                                let eatenUnit = removedMeal.consumedUnit ?? "g"
+                                let eatenFactor = Units[eatenUnit] ?? 1.0
+
+                                let eatenGrams = amount * eatenFactor
+
+                                let pantryUnit = removedMeal.unit ?? "g"
+                                let pantryFactor = Units[pantryUnit] ?? 1.0
+
+                                let restoredAmount = eatenGrams / pantryFactor
+
+                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+
+                                Task {
+                                    await fetchMealsAsync()
+                                }
                             }
+
                         )){
                             VStack {
                                 Image(systemName: "fork.knife")
@@ -324,6 +340,7 @@ struct MealPlanView: View {
 
                                 var updatedMeal = meal
                                 updatedMeal.consumedAmount = eaten
+                                updatedMeal.consumedUnit = selectedUnit
                                 updatedMeal.quantity -= amountToSubtract
                                 mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
 
