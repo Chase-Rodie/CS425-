@@ -26,6 +26,7 @@ struct PantryItem: Identifiable, Decodable {
     let food_id: Int
     let name: String
     let quantity: Double
+    let unit: String
 }
 
 

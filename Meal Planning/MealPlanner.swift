@@ -21,7 +21,7 @@ enum MealType: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-struct MealPlanner: Identifiable, Hashable {
+struct MealPlanner: Identifiable, Hashable, Equatable {
     let id = UUID()
     let pantryDocID: String
     let name: String
@@ -30,6 +30,20 @@ struct MealPlanner: Identifiable, Hashable {
     let category: MealCategory
     var quantity: Double
     var consumedAmount: Double? = nil
+    var dietaryTags: [String] = []
+    var calories: Int = 0
+    var protein: Int = 0
+    var fat: Int = 0
+    var unit: String?
+    var consumedUnit: String? = nil
+    
+    static func == (lhs: MealPlanner, rhs: MealPlanner) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 struct FoodAlias: Identifiable {

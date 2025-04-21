@@ -29,7 +29,7 @@ struct TodayMealView: View {
                 List {
                     ForEach(meals) { meal in
                         HStack {
-                            Text("\(meal.name) (\(meal.consumedAmount ?? 0, specifier: "%.1f"))")
+                            Text("\(meal.name) (\(meal.consumedAmount ?? 0, specifier: "%.1f") \(meal.consumedUnit ?? "g"))")
                             Spacer()
                             Button(action: {
                                 onRemove(meal)
