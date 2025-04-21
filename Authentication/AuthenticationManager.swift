@@ -151,7 +151,7 @@ final class AuthenticationManager {
         let batch = db.batch()
 
         do {
-            //Steps:
+            //Steps to batch delete collections/subcollecitons
             // Delete profile doc
             let profileRef = db.collection("users").document(userID).collection("UserInformation").document("profile")
             batch.deleteDocument(profileRef)
@@ -159,17 +159,33 @@ final class AuthenticationManager {
             // Delete root user doc
             let userRef = db.collection("users").document(userID)
             batch.deleteDocument(userRef)
-            
+
+            // Delete workout plan collection (delete each document inside the collection)
             let workoutPlanRef = db.collection("users").document(userID).collection("workoutplan")
-            let workoutDocs = try await workoutPlanRef.getDocuments()
             
+            // Fetch all workout plan documents
+            let workoutDocs = try await workoutPlanRef.getDocuments()
+
+            // Add delete operations for each workout plan document
             for document in workoutDocs.documents {
-                batch.deleteDocument(document.reference)
+                let workoutPlanDocumentRef = document.reference
+                batch.deleteDocument(workoutPlanDocumentRef)
+
+                // Delete sub-collections (Day1, Day2, etc.)
+                for dayIndex in 1...7 {
+                    let dayCollectionRef = workoutPlanDocumentRef.collection("Day\(dayIndex)")
+                    let exercises = try await dayCollectionRef.getDocuments()
+
+                    // Delete each exercise in the day collection
+                    for exerciseDoc in exercises.documents {
+                        batch.deleteDocument(exerciseDoc.reference)
+                    }
+                }
             }
 
-            // Commit batch
+            // Commit the batch of delete operations
             try await batch.commit()
-            print("User document and profile deleted from Firestore")
+            print("User document, profile, and workoutplan deleted from Firestore")
 
             // Delete Firebase Auth user
             try await user.delete()
@@ -194,6 +210,7 @@ final class AuthenticationManager {
             }
         }
     }
+
 
 
 
