@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct FoodJournalAddItemView: View {
     let mealName: String
+    let selectedDate: Date
     @ObservedObject var viewModel: FoodJournalViewModel
     
     // Search bar text
@@ -30,7 +31,8 @@ struct FoodJournalAddItemView: View {
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
     
-    let now = Date()
+    // Remove this line:
+    // let now = Date()
     
     var body: some View {
             VStack{
@@ -165,6 +167,7 @@ struct FoodJournalAddItemView: View {
             showSheet = true
         }
         
+    
         // Get amount and validate for entry into database
         private func submitAmount() {
             
@@ -196,55 +199,59 @@ struct FoodJournalAddItemView: View {
             showSheet = false
         }
         
-        // Add food to a users pantry
+    
     private func addFood(item: Food, value: Double, mealName: String) {
-           
-            guard let userID = Auth.auth().currentUser?.uid else {
-                return
+    
+        guard let userID = Auth.auth().currentUser?.uid else {
+            self.errorMessage = "User not authenticated"
+            return
+        }
+
+        // Format current date for document ID
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formattedDate = dateFormatter.string(from: selectedDate)
+
+        // Reference to the meal document
+        let db = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("mealLogs")
+            .document(formattedDate)
+
+        // Create the new food entry
+        let newEntry: [String: Any] = [
+            "foodID": String(item.food_id),
+            "amount": value,
+            "name": item.name
+        ]
+
+        // Read current entries, append the new one, and update the field
+        db.getDocument { snapshot, error in
+            var mealArray = [[String: Any]]()
+
+            if let data = snapshot?.data(), let existingArray = data[mealName] as? [[String: Any]] {
+                mealArray = existingArray
             }
-            
-            
-            //get current date in correct format for document naming purposes
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM-dd-yyyy"
-            let formattedDate = dateFormatter.string(from: now)
-            
-            // Create a refrence to the database
-            let db = Firestore.firestore()
-                .collection("users")
-                .document(userID)
-                .collection("foodjournal")
-                .document(formattedDate)
-                .collection(mealName)
-                .document(item.id)
-            
-            
-            let data: [String: Any] = [
-                "id": item.food_id,
-                "name": item.name,
-                "foodGroup": item.foodGroup,
-                "calories": item.calories,
-                "fat": item.fat,
-                "carbohydrates": item.carbohydrates,
-                "protein": item.protein,
-                "suitableFor": item.suitableFor,
-                "quantity": value
-            ]
-            
-            // Update the document in Firestore
-            db.setData(data, merge: true) { error in
-                if error != nil {
-                    print("Error updating document")
+
+            mealArray.append(newEntry)
+
+            db.updateData([
+                mealName: mealArray
+            ]) { error in
+                if let error = error {
+                    print("Error updating document: \(error.localizedDescription)")
                 } else {
                     DispatchQueue.main.async {
-                                    viewModel.fetchFoodEntries(mealName: mealName) // Refresh after update
-                                }
-
-                    print("Document updated!")
+                        viewModel.fetchFoodEntries(mealName: mealName, for: selectedDate)
+                    }
+                    print("Food item added successfully!")
                 }
             }
         }
     }
+}
+    
 
 
 //#Preview {
