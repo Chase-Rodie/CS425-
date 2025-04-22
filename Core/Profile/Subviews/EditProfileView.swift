@@ -17,6 +17,12 @@ struct EditProfileView: View {
         Form {
             if let _ = editedUser {
                 Section(header: Text("Personal Information")) {
+                    
+                    TextField("Name", text: Binding(
+                        get: { editedUser?.profile.name ?? "" },
+                        set: { editedUser?.profile.name = $0 }
+                    ))
+                    
                     TextField("Age", text: Binding(
                         get: { editedUser?.profile.age.map { "\($0)" } ?? "" },
                         set: { editedUser?.profile.age = Int($0) }
