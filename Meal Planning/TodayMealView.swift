@@ -10,11 +10,13 @@ import SwiftUI
 struct TodayMealView: View {
     @EnvironmentObject var todayMealManager: TodayMealManager
     @Environment(\.dismiss) var dismiss
+    @StateObject private var goalsVM = GoalsViewModel()
 
     let selectedDate: Date
     let mealType: MealType
     @Binding var meals: [MealPlanner]
     var onRemove: (MealPlanner) -> Void
+    var dailyGoal: DailyTargets?
 
     var body: some View {
         VStack {
@@ -122,6 +124,29 @@ struct TodayMealView: View {
         }
 
         return (totalCalories, totalProtein, totalCarbs, totalFat)
+    }
+    
+    var goalProgressMessage: String {
+        guard let targets = goalsVM.dailyTargets else { return "" }
+        var message = ""
+
+        if mealTotals.calories < targets.calories {
+            message += "You're \(targets.calories - mealTotals.calories) kcal under your goal.\n"
+        } else {
+            message += "You've exceeded your calorie goal by \(mealTotals.calories - targets.calories) kcal.\n"
+        }
+
+        if mealTotals.protein < Double(targets.protein) {
+            message += "Try adding more protein.\n"
+        }
+        if mealTotals.carbs < Double(targets.carbs) {
+            message += "Consider adding more carbs.\n"
+        }
+        if mealTotals.fat < Double(targets.fats) {
+            message += "You're still under your fat goal."
+        }
+
+        return message.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     private func getConversionRatio(unit: String) -> Double {

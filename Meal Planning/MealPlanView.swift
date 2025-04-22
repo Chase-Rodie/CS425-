@@ -139,8 +139,8 @@ struct MealPlanView: View {
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
                                             
-                                            if MealFilter.flaggedForGoal(meal: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
-                                                Text("⚠️ This ingredient may not align with your current goal. Check the details for nutritional information.")
+                                            if let reason = MealFilter.flaggedReason(for: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
+                                                Text("\(reason)")
                                                     .font(.caption)
                                                     .foregroundColor(.red)
                                             }
@@ -237,47 +237,6 @@ struct MealPlanView: View {
                             )
                         }
                     }
-
-//                    Button("Submit") {
-//                        quantityErrors = [:]
-//                        var isValid = true
-//
-//                        for meal in selectedMeals {
-//                            guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
-//                                quantityErrors[meal.id] = "Enter a valid number"
-//                                isValid = false
-//                                continue
-//                            }
-//
-//                            if eaten > meal.quantity {
-//                                let formatted = String(format: "%.1f", meal.quantity)
-//                                quantityErrors[meal.id] = "You only have \(formatted)"
-//                                isValid = false
-//                            }
-//                        }
-//
-//                        guard isValid else { return }
-//
-//                        for meal in selectedMeals {
-//                            if let input = inputQuantities[meal.id], let eaten = Double(input) {
-//                                updatePantryQuantity(docID: meal.pantryDocID, amount: -eaten)
-//                                logMeal(for: meal, amount: eaten, type: selectedMealType)
-//
-//                                var updatedMeal = meal
-//                                updatedMeal.consumedAmount = eaten
-//                                updatedMeal.quantity -= eaten
-//                                mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
-//
-//                                if let index = mealPlan.firstIndex(where: { $0.id == meal.id }) {
-//                                    mealPlan[index].quantity -= eaten
-//                                }
-//                            }
-//                        }
-//
-//                        selectedMeals.removeAll()
-//                        inputQuantities.removeAll()
-//                        showQuantityInput = false
-//                    }
                     Button(action: {
                         quantityErrors = [:]
                         var isValid = true
@@ -487,12 +446,6 @@ struct MealPlanView: View {
                         fetchedMeals.append(meal)
                     }
                 }
-
-//                group.notify(queue: .main) {
-//                    self.mealPlan = fetchedMeals
-//                    isLoading = false
-//                    continuation.resume()
-//                }
                 group.notify(queue: .main) {
                     guard let goal = userManager.currentUser?.profile.goal,
                           let preferences = userManager.currentUser?.profile.dietaryPreferences else {

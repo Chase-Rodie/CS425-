@@ -111,16 +111,38 @@ struct HomePageView: View {
                         }
                     }
                     .navigationBarBackButtonHidden(true)
+//                    .onAppear {
+//                        fetchAllDaysProgress()
+//                        HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
+//                            if let steps = steps {
+//                                DispatchQueue.main.async {
+//                                    self.stepCount = Int(steps)
+//                                }
+//                            }
+//                        }
+//                    }
                     .onAppear {
                         fetchAllDaysProgress()
-                        HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
-                            if let steps = steps {
-                                DispatchQueue.main.async {
-                                    self.stepCount = Int(steps)
+
+                        HealthKitManager.shared.requestAuthorization { success in
+                            if success {
+                                print("HealthKit authorized")
+                                HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
+                                    if let steps = steps {
+                                        DispatchQueue.main.async {
+                                            self.stepCount = Int(steps)
+                                            print("Step count fetched: \(steps)")
+                                        }
+                                    } else {
+                                        print("Failed to fetch step count")
+                                    }
                                 }
+                            } else {
+                                print("Failed to authorize HealthKit")
                             }
                         }
                     }
+
                 }
             }
             .accentColor(.background)
