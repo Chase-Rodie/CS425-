@@ -77,9 +77,11 @@ import FirebaseFirestore
                     print("Failed to parse item: \(item)")
                     continue
                 }
+                
+                let unit = item["consumed_unit"] as? String ?? "g"
 
                 group.enter()
-
+                
                 Firestore.firestore()
                     .collection("Food")
                     .document(foodID)
@@ -95,22 +97,30 @@ import FirebaseFirestore
                             print("No data for food ID \(foodID)")
                             return
                         }
-
-                        let entry = FoodJournalItem(
+                        
+                        let ratio = self.getConversionRatio(unit: unit)
+                        
+                        var entry = FoodJournalItem(
                             id: UUID().uuidString,
                             name: name,
                             foodGroup: data["foodGroup"] as? String ?? "Unknown",
                             food_id: foodID,
-                            calories: Int32(data["calories"] as? Double ?? 0),
-                            fat: Float32(data["fat"] as? Double ?? 0),
-                            carbohydrates: Float32(data["carbohydrates"] as? Double ?? 0),
-                            protein: Float32(data["protein"] as? Double ?? 0),
+                            calories: Int32(data["calories"] as? Int32 ?? 0),
+                            fat: Double(data["fat"] as? Double ?? 0),
+                            carbohydrates: Double(data["carbohydrates"] as? Double ?? 0),
+                            protein: Double(data["protein"] as? Double ?? 0),
                             suitableFor: data["suitableFor"] as? [String] ?? [],
-                            quantity: amount
+                            quantity: amount,
+                            unit: unit
                         )
+                        
+                        entry.calories = Int32(Double(entry.calories) * ratio * amount / 100)
+                        entry.fat = entry.fat * ratio * amount / 100
+                        entry.carbohydrates = entry.carbohydrates * ratio * amount / 100
+                        entry.protein = entry.protein * ratio * amount / 100
 
                         entries.append(entry)
-                    }
+                }
             }
 
             // Wait for all lookups to complete
@@ -234,6 +244,43 @@ import FirebaseFirestore
         let dinnerCalories = dinnerFoodEntries.reduce(0) { $0 + Int($1.calories) }
         
         return breakfastCalories + lunchCalories + dinnerCalories
+    }
+    
+    func getConversionRatio(unit: String) -> Double {
+        var ratio = 1.0
+
+        switch unit {
+            case "g":
+                ratio = 1.0
+            case "oz":
+                ratio = 28.35
+            case "cup":
+                ratio = 340.00
+            case "tbsp":
+                ratio = 14.175
+            case "tsp":
+                ratio = 5.69
+            case "slice":
+                ratio = 35.00
+            case "can":
+                ratio = 340.2
+            case "loaf":
+                ratio = 800.0
+            case "lbs":
+                ratio = 453.59
+            case "kg":
+                ratio = 1000.0
+            case "ml":
+                ratio = 1.0
+            case "L":
+                ratio = 1000.0
+            case "gal":
+                ratio = 3785.411
+            default:
+                ratio = 100.0 // default is 'one serving' in grams
+        }
+
+        return ratio
     }
 }
 

@@ -100,7 +100,7 @@ struct FoodJournalView: View {
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
                                             }
-                                            Text("Quantity: \(food.quantity.description)    •    Calories: \(food.calories.description)")
+                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -144,8 +144,7 @@ struct FoodJournalView: View {
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
                                             }
-                                            
-                                            Text("Quantity: \(food.quantity.description)    •    Calories: \(food.calories.description)")
+                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -188,8 +187,7 @@ struct FoodJournalView: View {
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
                                             }
-                                            
-                                            Text("Quantity: \(food.quantity.description)    •    Calories: \(food.calories.description)")
+                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{

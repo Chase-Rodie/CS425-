@@ -336,13 +336,15 @@ struct MealPlanView: View {
                                 let amountToSubtract = eatenInGrams / pantryFactor
 
                                 updatePantryQuantity(docID: meal.pantryDocID, amount: -amountToSubtract)
-                                logMeal(for: meal, amount: eaten, type: selectedMealType)
+                                //logMeal(for: meal, amount: eaten, type: selectedMealType)
 
                                 var updatedMeal = meal
                                 updatedMeal.consumedAmount = eaten
                                 updatedMeal.consumedUnit = selectedUnit
                                 updatedMeal.quantity -= amountToSubtract
                                 mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
+                                
+                                logMeal(for: updatedMeal, amount: eaten, type: selectedMealType)
 
                                 if let index = mealPlan.firstIndex(where: { $0.id == meal.id }) {
                                     mealPlan[index].quantity -= amountToSubtract
@@ -408,7 +410,8 @@ struct MealPlanView: View {
         let mealData: [String: Any] = [
             "name": meal.name,
             "foodID": meal.foodID,
-            "amount": amount
+            "amount": amount,
+            "consumed_unit": meal.consumedUnit ?? "g"
         ]
 
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
