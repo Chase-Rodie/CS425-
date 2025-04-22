@@ -23,6 +23,7 @@ struct Exercise: Decodable,Encodable,Identifiable{
     var weightUsed: Double?
     var sets: Int
     var reps: Int
+    var recordedSets: [[String: Int]] = []
 }
 
 

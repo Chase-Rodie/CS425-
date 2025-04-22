@@ -301,30 +301,81 @@ class RetrieveWorkoutData : ObservableObject {
     }
     
     
-    //Updates user's recorded weight for the exercise.
-    func updateWeight(for exercise: Exercise, weight: Double) {
+    //Updates user's recorded reps and weight for the exercise.
+    func updateRecordedSets(for exercise: Exercise, reps: Int, weight: Double, day: Int, setIndex: Int) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy-'W'W"
         let formattedDate = dateFormatter.string(from: now)
         
+        let day = "Day\(day+1)"
         let db = Firestore.firestore()
         let exerciseRef = db.collection("users")
             .document(userID)
             .collection("workoutplan")
             .document(formattedDate)
-            .collection("Day1")
+            .collection(day)
             .document(exercise.name)
         
-        exerciseRef.updateData(["weightUsed": weight]) { error in
-            if let error = error {
-                print("Error updating weight: \(error.localizedDescription)")
+        exerciseRef.getDocument { documentSnapshot, error in
+                if let document = documentSnapshot, document.exists {
+                    var sets = document.data()?["recordedSets"] as? [[String: Any]] ?? []
+
+                    let newSet: [String: Any] = ["reps": reps, "weight": weight]
+
+                    if sets.count > setIndex {
+                        sets[setIndex] = newSet
+                    } else {
+                        while sets.count < setIndex {
+                            sets.append(["reps": 0, "weight": 0])
+                        }
+                        //add newSet
+                        sets.append(newSet)
+                    }
+
+                    exerciseRef.updateData(["recordedSets": sets]) { error in
+                        if let error = error {
+                            print("Error updating set: \(error.localizedDescription)")
+                        } else {
+                            print("Set \(setIndex + 1) updated successfully!")
+                        }
+                    }
+                } else {
+                    print("Exercise document does not exist or failed to fetch")
+                }
+            }
+        }
+    
+    
+    func fetchRecordedSets(for exercise: Exercise, day: Int, completion: @escaping ([[String: Any]]) -> Void) {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
+        let formattedDate = dateFormatter.string(from: now)
+
+        let dayKey = "Day\(day + 1)"
+        let db = Firestore.firestore()
+        let exerciseRef = db.collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(formattedDate)
+            .collection(dayKey)
+            .document(exercise.name)
+
+        exerciseRef.getDocument { document, error in
+            if let document = document, document.exists {
+                let data = document.data()
+                let recordedSets = data?["recordedSets"] as? [[String: Any]] ?? []
+                completion(recordedSets)
             } else {
-                print("Weight updated successfully!")
+                print("No recorded sets found: \(error?.localizedDescription ?? "Unknown error")")
+                completion([])
             }
         }
     }
+
     
     //Function to check if workoutplan exists in UserDefaults
     func workoutPlanExists(completion: @escaping (Bool) -> Void) {
