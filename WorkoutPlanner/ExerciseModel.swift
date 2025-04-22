@@ -57,6 +57,7 @@ struct Exercise: Decodable,Encodable,Identifiable{
         self.sets = sets
         self.reps = reps
     }
+    var recordedSets: [[String: Int]] = []
 }
 
 
