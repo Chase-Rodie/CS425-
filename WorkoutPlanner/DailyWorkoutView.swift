@@ -47,8 +47,8 @@ struct DailyWorkoutView: View {
                     AddWorkoutForm(day: dayIndex+1 , workoutPlanModel: workoutPlanModel, manualWorkoutFormShowing: $manualWorkoutFormShowing)
                 }
                 VStack(alignment: .leading){
-                    Text("Found \(workoutPlanModel.manualWorkoutsToday.count) workouts")
-                        .padding()
+//                    Text("Found \(workoutPlanModel.manualWorkoutsToday.count) workouts")
+//                        .padding()
 
                     ForEach(dayWorkoutPlan){exercise in
                         ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel, dayIndex: dayIndex)
