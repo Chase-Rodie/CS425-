@@ -78,30 +78,30 @@ struct TempContentView: View {
                 .tabItem { Label("Favorite Meals", systemImage: "star") }
                 .tag(9)
                 
-                NavigationStack {
-                    ProgressionView()
-                }
-                .tabItem { Label("Progress", systemImage: "progress.indicator") }
-                .tag(10)
+//                NavigationStack {
+//                    ProgressionView()
+//                }
+//                .tabItem { Label("Progress", systemImage: "progress.indicator") }
+//                .tag(10)
                 
                 
-                NavigationStack {
-                    FriendsView()
-                }
-                .tabItem { Label("Friends", systemImage: "person.3") }
-                .tag(11)
+//                NavigationStack {
+//                    FriendsView()
+//                }
+//                .tabItem { Label("Friends", systemImage: "person.3") }
+//                .tag(11)
                
-                NavigationStack {
-                    AppsDevicesView()
-                }
-                .tabItem { Label("Apps/Devices", systemImage: "square.stack.3d.up") }
-                .tag(12)
+//                NavigationStack {
+//                    AppsDevicesView()
+//                }
+//                .tabItem { Label("Apps/Devices", systemImage: "square.stack.3d.up") }
+//                .tag(12)
                 
-                NavigationStack {
-                    PrivacyInfoView()
-                }
-                .tabItem { Label("Privacy Center", systemImage: "hand.raised") }
-                .tag(13)
+//                NavigationStack {
+//                    PrivacyInfoView()
+//                }
+//                .tabItem { Label("Privacy Center", systemImage: "hand.raised") }
+//                .tag(13)
             }
             .accentColor(Color("BackgroundColor"))
             .frame(maxWidth: .infinity, alignment: .leading)

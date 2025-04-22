@@ -31,28 +31,28 @@ struct ProfileView: View {
                         }
                     }
 
-                    Section {
-                        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                            Text("Select a photo")
-                        }
-
-                        if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
-                            AsyncImage(url: url) { image in
-                                image.resizable()
-                                    .scaledToFill()
-                                    .frame(width: 150, height: 150)
-                                    .cornerRadius(10)
-                            } placeholder: {
-                                ProgressView().frame(width: 150, height: 150)
-                            }
-                        }
-
-                        if user.profile.profileImagePath != nil {
-                            Button("Delete image") {
-                                viewModel.deleteProfileImage()
-                            }
-                        }
-                    }
+//                    Section {
+//                        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+//                            Text("Select a photo")
+//                        }
+//
+//                        if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+//                            AsyncImage(url: url) { image in
+//                                image.resizable()
+//                                    .scaledToFill()
+//                                    .frame(width: 150, height: 150)
+//                                    .cornerRadius(10)
+//                            } placeholder: {
+//                                ProgressView().frame(width: 150, height: 150)
+//                            }
+//                        }
+//
+//                        if user.profile.profileImagePath != nil {
+//                            Button("Delete image") {
+//                                viewModel.deleteProfileImage()
+//                            }
+//                        }
+//                    }
                 } else {
                     ProgressView("Loading profile...")
                         .frame(maxWidth: .infinity, alignment: .center)
