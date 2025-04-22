@@ -48,6 +48,10 @@ struct ShoppingListView: View {
                                     .keyboardType(.decimalPad)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                                     .frame(width: 60)
+                                    
+                                    Text(item.unit)
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
                                 }
                             }
                             Spacer()
