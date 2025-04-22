@@ -139,11 +139,11 @@ struct MealPlanView: View {
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
                                             
-                                            if let reason = MealFilter.flaggedReason(for: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
-                                                Text("\(reason)")
-                                                    .font(.caption)
-                                                    .foregroundColor(.red)
-                                            }
+//                                            if let reason = MealFilter.flaggedReason(for: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
+//                                                Text("\(reason)")
+//                                                    .font(.caption)
+//                                                    .foregroundColor(.red)
+//                                            }
                                         }
                                     }
 
@@ -220,7 +220,27 @@ struct MealPlanView: View {
                     Text("How much of each selected item was eaten?")
                         .font(.headline)
                         .padding()
-                    
+                    if let goal = userManager.currentUser?.profile.goal {
+                                let flaggedMessages = selectedMeals.compactMap { MealFilter.flaggedReason(for: $0, goal: goal) }
+
+                                if !flaggedMessages.isEmpty {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text("⚠️ Nutrition Considerations:")
+                                            .font(.headline)
+                                            .foregroundColor(.orange)
+
+                                        ForEach(flaggedMessages, id: \.self) { message in
+                                            Text("• \(message)")
+                                                .font(.footnote)
+                                                .foregroundColor(.secondary)
+                                        }
+                                    }
+                                    .padding()
+                                    .background(Color.yellow.opacity(0.1))
+                                    .cornerRadius(10)
+                                    .padding(.horizontal)
+                                }
+                            }
                     ScrollView {
                         ForEach(Array(selectedMeals), id: \.self) { meal in
                             QuantityInputRow(

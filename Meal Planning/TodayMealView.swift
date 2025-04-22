@@ -74,6 +74,37 @@ struct TodayMealView: View {
                         }
                         .font(.subheadline)
                         .foregroundColor(.primary)
+//                        if !goalProgressMessage.isEmpty {
+//                            Text(goalProgressMessage)
+//                                .font(.footnote)
+//                                .foregroundColor(.orange)
+//                                .padding()
+//                                .background(Color.yellow.opacity(0.1))
+//                                .cornerRadius(8)
+//                                .padding(.horizontal, -10)
+//                        }
+                        if let targets = goalsVM.dailyTargets {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Your Goals:")
+                                    .font(.caption)
+                                    .bold()
+                                Text("• Calories: \(targets.calories) kcal")
+                                Text("• Protein: \(targets.protein)g  • Carbs: \(targets.carbs)g  • Fat: \(targets.fats)g")
+                            }
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal)
+                        }
+
+                        if !goalProgressMessage.isEmpty {
+                            Text(goalProgressMessage)
+                                .font(.footnote)
+                                .foregroundColor(.orange)
+                                .padding()
+                                .background(Color.yellow.opacity(0.1))
+                                .cornerRadius(8)
+                                .padding(.horizontal, -10)
+                        }
                     }
                     .padding()
                     .background(
@@ -103,7 +134,6 @@ struct TodayMealView: View {
                 }
             }
         }
-
     }
     
     var mealTotals: (calories: Int, protein: Double, carbs: Double, fat: Double) {

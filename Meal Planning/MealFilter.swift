@@ -47,26 +47,25 @@ extension MealFilter {
         switch goal {
         case .loseWeight:
             if meal.calories > 500 {
-                return "⚠️ High in calories for a weight loss goal. (Note: This depends on how much you eat.)"
+                return "High in calories for a weight loss goal. (Note: This depends on how much you eat.)"
             }
             if meal.fat > 20 {
-                return "⚠️ High in fat for a weight loss goal. (Actual impact varies based on portion size.)"
+                return "High in fat for a weight loss goal. (Actual impact varies based on portion size.)"
             }
 
         case .gainWeight:
             if meal.calories < 600 {
-                return "⚠️ May not provide enough calories for weight gain. (Depending on portion consumed.)"
+                return "May not provide enough calories for weight gain. (Depending on portion consumed.)"
             }
             if meal.protein < 20 {
-                return "⚠️ Protein content may be too low for muscle growth unless consumed in large amounts."
+                return "Protein content may be too low for muscle growth unless consumed in large amounts."
             }
 
         case .maintainWeight:
             if !(450...650).contains(meal.calories) {
-                return "⚠️ Calorie content is outside the ideal range for maintenance. (Depends on serving size.)"
+                return "Calorie content is outside the ideal range for maintenance. (Depends on serving size.)"
             }
         }
-
         return nil
     }
 }

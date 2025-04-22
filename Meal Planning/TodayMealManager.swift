@@ -49,17 +49,6 @@ extension TodayMealManager {
         var totalCarbs = 0.0
         var totalFat = 0.0
 
-//        for mealList in dayMeals.values {
-//            for meal in mealList {
-//                let ratio = getConversionRatio(unit: meal.consumedUnit ?? "g")
-//                let amount = meal.consumedAmount ?? 0
-//
-//                totalCalories += Int(Double(meal.calories) * ratio * amount / 100)
-//                totalProtein += meal.protein * ratio * amount / 100
-//                totalCarbs += meal.carbs * ratio * amount / 100
-//                totalFat += meal.fat * ratio * amount / 100
-//            }
-//        }
         for mealList in dayMeals.values {
             for meal in mealList {
                 let ratio = getConversionRatio(unit: meal.consumedUnit ?? "g")
