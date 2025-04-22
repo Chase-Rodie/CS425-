@@ -28,6 +28,10 @@ struct FoodJournalAddItemView: View {
     @State private var showSheet = false
     @State private var showError = false
     
+    @State private var selectedUnit: String = "g"
+    let unitTypes = ["g", "oz", "cup", "tbsp", "tsp", "slice", "can", "loaf", "lbs", "kg", "ml", "L", "gal"]
+
+    
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
     
@@ -89,16 +93,28 @@ struct FoodJournalAddItemView: View {
             // when item is selected
             .sheet(isPresented: $showSheet) {
                 VStack {
-                    // Text to display
                     Text("Amount eaten?")
-                        .font(.headline)
-                        .padding()
-                    
-                    TextField("Quantity", text: $amountStr)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        // Displays keypad
-                        .keyboardType(.decimalPad)
-                        .padding()
+                            .font(.headline)
+                            .padding(.bottom)
+
+                        HStack {
+                            // Quantity Input
+                            TextField("Quantity", text: $amountStr)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .keyboardType(.decimalPad)
+                                .frame(maxWidth: .infinity)
+
+                            // Unit Picker
+                            Picker("Unit", selection: $selectedUnit) {
+                                ForEach(unitTypes, id: \.self) { unit in
+                                    Text(unit).tag(unit)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .frame(width: 100) // You can adjust this width as needed
+                        }
+                        .padding(.horizontal)
+
                     
                     if let errorMessage = errorMessage {
                         Text(errorMessage)
@@ -222,7 +238,8 @@ struct FoodJournalAddItemView: View {
         let newEntry: [String: Any] = [
             "foodID": String(item.food_id),
             "amount": value,
-            "name": item.name
+            "name": item.name,
+            "consumed_unit": selectedUnit
         ]
 
         // Read current entries, append the new one, and update the field
