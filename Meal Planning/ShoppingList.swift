@@ -12,6 +12,7 @@ struct ShoppingListItem: Identifiable, Hashable {
     var id = UUID()
     var name: String
     var quantity: Double
+    var unit: String
 }
 
 class ShoppingList: ObservableObject {
@@ -22,8 +23,13 @@ class ShoppingList: ObservableObject {
         Auth.auth().currentUser?.uid
     }
 
-    func addItem(name: String, quantity: Double) {
-        let newItem = ShoppingListItem(name: name, quantity: quantity)
+//    func addItem(name: String, quantity: Double) {
+//        let newItem = ShoppingListItem(name: name, quantity: quantity)
+//        items.append(newItem)
+//        saveToFirestore()
+//    }
+    func addItem(name: String, quantity: Double, unit: String) {
+        let newItem = ShoppingListItem(name: name, quantity: quantity, unit: unit)
         items.append(newItem)
         saveToFirestore()
     }
@@ -35,7 +41,7 @@ class ShoppingList: ObservableObject {
 
     func saveToFirestore() {
         guard let userID = userID else { return }
-        let encodedItems = items.map { ["name": $0.name, "quantity": $0.quantity] }
+        let encodedItems = items.map { ["name": $0.name, "quantity": $0.quantity, "unit": $0.unit] }
         db.collection("users")
             .document(userID)
             .collection("shoppingList")
@@ -65,8 +71,9 @@ class ShoppingList: ObservableObject {
                    let rawItems = data["items"] as? [[String: Any]] {
                     let loadedItems = rawItems.compactMap { dict -> ShoppingListItem? in
                         guard let name = dict["name"] as? String,
-                              let quantity = dict["quantity"] as? Double else { return nil }
-                        return ShoppingListItem(name: name, quantity: quantity)
+                              let quantity = dict["quantity"] as? Double,
+                              let unit = dict["unit"] as? String else { return nil }
+                        return ShoppingListItem(name: name, quantity: quantity, unit: unit)
                     }
 
                     DispatchQueue.main.async {
@@ -74,5 +81,11 @@ class ShoppingList: ObservableObject {
                     }
                 }
             }
+    }
+    func updateQuantity(for itemID: UUID, newQuantity: Double) {
+        if let index = items.firstIndex(where: { $0.id == itemID }) {
+            items[index].quantity = newQuantity
+            saveToFirestore()
+        }
     }
 }

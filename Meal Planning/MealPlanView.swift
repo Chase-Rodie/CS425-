@@ -124,13 +124,6 @@ struct MealPlanView: View {
                             ForEach(filteredMeals) { meal in
                                 HStack {
                                     NavigationLink(destination: MealDetailView(meal: meal.name, foodID: meal.foodID)) {
-//                                        VStack(alignment: .leading) {
-//                                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
-//                                                .font(.title3)
-//                                            Text("Tap to view details")
-//                                                .font(.subheadline)
-//                                                .foregroundColor(.gray)
-//                                        }
                                         VStack(alignment: .leading) {
                                             Text("\(meal.name) (\(meal.quantity, specifier: "%.1f") \(meal.unit ?? "g"))")
                                                 .font(.title3)
@@ -138,12 +131,6 @@ struct MealPlanView: View {
                                             Text("Tap to view details")
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
-                                            
-//                                            if let reason = MealFilter.flaggedReason(for: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
-//                                                Text("\(reason)")
-//                                                    .font(.caption)
-//                                                    .foregroundColor(.red)
-//                                            }
                                         }
                                     }
 
@@ -331,7 +318,6 @@ struct MealPlanView: View {
                     .padding()
                 }
             }
-            //.sheet(isPresented: $showMealGen){}
             .sheet(isPresented: $showMealGen) {
                 MealGenerationView(selectedMeals: selectedMeals)
             }
@@ -442,8 +428,6 @@ struct MealPlanView: View {
                         }
                         
                         let calories = foodSnapshot?.data()?["calories"] as? Int ?? 0
-//                        let protein = foodSnapshot?.data()?["protein"] as? Int ?? 0
-//                        let fat = foodSnapshot?.data()?["fat"] as? Int ?? 0
                         let protein = foodSnapshot?.data()?["protein"] as? Double ?? 0.0
                         let carbs = foodSnapshot?.data()?["carbohydrates"] as? Double ?? 0
                         let fat = foodSnapshot?.data()?["fat"] as? Double ?? 0.0

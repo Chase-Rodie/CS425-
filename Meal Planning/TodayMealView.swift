@@ -74,15 +74,6 @@ struct TodayMealView: View {
                         }
                         .font(.subheadline)
                         .foregroundColor(.primary)
-//                        if !goalProgressMessage.isEmpty {
-//                            Text(goalProgressMessage)
-//                                .font(.footnote)
-//                                .foregroundColor(.orange)
-//                                .padding()
-//                                .background(Color.yellow.opacity(0.1))
-//                                .cornerRadius(8)
-//                                .padding(.horizontal, -10)
-//                        }
                         if let targets = goalsVM.dailyTargets {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Your Goals:")
