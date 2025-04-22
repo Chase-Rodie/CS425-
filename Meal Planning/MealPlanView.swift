@@ -69,22 +69,27 @@ struct MealPlanView: View {
 
                                 let eatenUnit = removedMeal.consumedUnit ?? "g"
                                 let eatenFactor = Units[eatenUnit] ?? 1.0
-
                                 let eatenGrams = amount * eatenFactor
 
                                 let pantryUnit = removedMeal.unit ?? "g"
                                 let pantryFactor = Units[pantryUnit] ?? 1.0
-
                                 let restoredAmount = eatenGrams / pantryFactor
 
-                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+                                if !removedMeal.pantryDocID.isEmpty {
+                                    updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+                                } else {
+                                    print("⚠️ pantryDocID is empty for meal: \(removedMeal.name)")
+                                }
+                                removeMealFromFirestore(removedMeal, for: selectedDate, type: selectedMealType)
 
                                 Task {
                                     await fetchMealsAsync()
                                 }
                             }
 
-                        )){
+                        )
+                            .environmentObject(mealManager)
+                        ){
                             VStack {
                                 Image(systemName: "fork.knife")
                                     .foregroundColor(Color("Navy"))
@@ -203,8 +208,11 @@ struct MealPlanView: View {
                 Spacer()
             }
             .onAppear {
-                Task {
-                    await fetchMealsAsync()
+                mealManager.restoreMeals(for: selectedDate) {
+                    print("Meals restored!")
+                    Task {
+                        await fetchMealsAsync()
+                    }
                 }
             }
             .sheet(isPresented: $showQuantityInput) {
@@ -212,30 +220,6 @@ struct MealPlanView: View {
                     Text("How much of each selected item was eaten?")
                         .font(.headline)
                         .padding()
-
-//                    ScrollView {
-//                        ForEach(Array(selectedMeals), id: \..self) { meal in
-//                            VStack(alignment: .leading, spacing: 4) {
-//                                Text(meal.name)
-//                                    .font(.subheadline)
-//
-//                                TextField("Amount", text: Binding(
-//                                    get: { inputQuantities[meal.id] ?? "" },
-//                                    set: { inputQuantities[meal.id] = $0 }
-//                                ))
-//                                .keyboardType(.decimalPad)
-//                                .textFieldStyle(RoundedBorderTextFieldStyle())
-//
-//                                if let error = quantityErrors[meal.id] {
-//                                    Text(error)
-//                                        .foregroundColor(.red)
-//                                        .font(.caption)
-//                                }
-//                            }
-//                            .padding(.horizontal)
-//                            .padding(.bottom, 5)
-//                        }
-//                    }
                     
                     ScrollView {
                         ForEach(Array(selectedMeals), id: \.self) { meal in
@@ -316,7 +300,7 @@ struct MealPlanView: View {
                             let eatenInGrams = eaten * eatenFactor
                             let pantryQuantityInGrams = meal.quantity * pantryFactor
 
-                            if eatenInGrams > pantryQuantityInGrams {
+                            if eatenInGrams > pantryQuantityInGrams + 0.01 {
                                 let formatted = String(format: "%.1f", meal.quantity)
                                 quantityErrors[meal.id] = "You only have \(formatted) \(pantryUnit)"
                                 isValid = false
@@ -411,7 +395,12 @@ struct MealPlanView: View {
             "name": meal.name,
             "foodID": meal.foodID,
             "amount": amount,
-            "consumed_unit": meal.consumedUnit ?? "g"
+            "consumed_unit": meal.consumedUnit ?? "g",
+            "calories": meal.calories,
+            "protein": meal.protein,
+            "carbs": meal.carbs,
+            "fat": meal.fat,
+            "pantryDocID": meal.pantryDocID
         ]
 
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
@@ -474,8 +463,11 @@ struct MealPlanView: View {
                         }
                         
                         let calories = foodSnapshot?.data()?["calories"] as? Int ?? 0
-                        let protein = foodSnapshot?.data()?["protein"] as? Int ?? 0
-                        let fat = foodSnapshot?.data()?["fat"] as? Int ?? 0
+//                        let protein = foodSnapshot?.data()?["protein"] as? Int ?? 0
+//                        let fat = foodSnapshot?.data()?["fat"] as? Int ?? 0
+                        let protein = foodSnapshot?.data()?["protein"] as? Double ?? 0.0
+                        let carbs = foodSnapshot?.data()?["carbohydrates"] as? Double ?? 0
+                        let fat = foodSnapshot?.data()?["fat"] as? Double ?? 0.0
                         let dietaryTags = foodSnapshot?.data()?["tags"] as? [String] ?? []
 
                         let meal = MealPlanner(
@@ -488,6 +480,7 @@ struct MealPlanView: View {
                             dietaryTags: dietaryTags,
                             calories: calories,
                             protein: protein,
+                            carbs: carbs,
                             fat: fat,
                             unit: unit
                         )
@@ -516,6 +509,46 @@ struct MealPlanView: View {
             }
         }
     }
+    
+    func removeMealFromFirestore(_ meal: MealPlanner, for date: Date, type: MealType) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: date)
+
+        let logRef = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("mealLogs")
+            .document(dateString)
+        logRef.getDocument { snapshot, error in
+            guard let data = snapshot?.data(),
+                  var array = data[type.rawValue.lowercased()] as? [[String: Any]] else {
+                print("Could not get array to update or data is missing")
+                return
+            }
+
+            array.removeAll {
+                ($0["foodID"] as? String == meal.foodID) &&
+                ($0["name"] as? String == meal.name)
+            }
+
+            logRef.updateData([
+                type.rawValue.lowercased(): array
+            ]) { error in
+                if let error = error {
+                    print("Error updating Firestore: \(error.localizedDescription)")
+                } else {
+                    print("Removed from Firestore successfully")
+                }
+            }
+        }
+    }
+
 }
 
 struct MealGenerationView: View {
