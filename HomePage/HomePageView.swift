@@ -106,8 +106,6 @@ struct HomePageView: View {
                             }.padding(.horizontal)
                         }
                         
-                        NavigationLink("Progress Calendar", destination: ProgressTrackerView())
-                            .font(.largeTitle)
                     }
                     .navigationBarBackButtonHidden(true)
                     .onAppear {
