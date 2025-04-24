@@ -26,6 +26,9 @@ import FirebaseFirestore
     
     
     func fetchFoodEntries(mealName: String, for date: Date) {
+        self.breakfastFoodEntries = []
+        self.lunchFoodEntries = []
+        self.dinnerFoodEntries = []
         
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
