@@ -214,9 +214,7 @@ struct FoodJournalAddItemView: View {
             showSheet = false
         }
         
-    
     private func addFood(item: Food, value: Double, mealName: String) {
-    
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
             return
@@ -228,7 +226,7 @@ struct FoodJournalAddItemView: View {
         let formattedDate = dateFormatter.string(from: selectedDate)
 
         // Reference to the meal document
-        let db = Firestore.firestore()
+        let docRef = Firestore.firestore()
             .collection("users")
             .document(userID)
             .collection("mealLogs")
@@ -242,21 +240,23 @@ struct FoodJournalAddItemView: View {
             "consumed_unit": selectedUnit
         ]
 
-        // Read current entries, append the new one, and update the field
-        db.getDocument { snapshot, error in
+        docRef.getDocument { snapshot, error in
             var mealArray = [[String: Any]]()
 
-            if let data = snapshot?.data(), let existingArray = data[mealName] as? [[String: Any]] {
-                mealArray = existingArray
+            if let snapshot = snapshot, snapshot.exists {
+                // If the document exists, read current meal array if it exists
+                if let data = snapshot.data(), let existingArray = data[mealName] as? [[String: Any]] {
+                    mealArray = existingArray
+                }
             }
 
+            // Append the new entry
             mealArray.append(newEntry)
 
-            db.updateData([
-                mealName: mealArray
-            ]) { error in
+            // Use setData with merge to create or update the mealName field
+            docRef.setData([mealName: mealArray], merge: true) { error in
                 if let error = error {
-                    print("Error updating document: \(error.localizedDescription)")
+                    print("Error writing document: \(error.localizedDescription)")
                 } else {
                     DispatchQueue.main.async {
                         viewModel.fetchFoodEntries(mealName: mealName, for: selectedDate)
