@@ -10,12 +10,16 @@ import FirebaseAuth
 
 struct RootView: View {
     
+    @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var mealManager: TodayMealManager
     @State private var showSignInView: Bool = false
     
     var body: some View {
         ZStack {
             if !showSignInView {
                 TempContentView(showSignInView: $showSignInView)
+                    .environmentObject(userManager)
+                    .environmentObject(mealManager)
             }
         }
         .onAppear {

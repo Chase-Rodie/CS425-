@@ -94,10 +94,34 @@ struct HomePageView: View {
                                             set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                                         ),
                                         onRemove: { removedMeal in
-                                            let amount = removedMeal.consumedAmount ?? 0
-                                            updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amount)
+                                            guard let amount = removedMeal.consumedAmount else { return }
+
+                                            let eatenUnit = removedMeal.consumedUnit ?? "g"
+                                            let eatenFactor = Units[eatenUnit] ?? 1.0
+                                            let eatenGrams = amount * eatenFactor
+
+                                            let pantryUnit = removedMeal.unit ?? "g"
+                                            let pantryFactor = Units[pantryUnit] ?? 1.0
+                                            let restoredAmount = eatenGrams / pantryFactor
+
+                                            if !removedMeal.pantryDocID.isEmpty {
+                                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+                                            } else {
+                                                print("⚠️ pantryDocID is empty for meal: \(removedMeal.name)")
+                                            }
+
+                                            removeMealFromFirestore(removedMeal, for: selectedDate, type: type) {
+                                                
+                                                Task {
+                                                    await mealManager.restoreMeals(for: selectedDate) {
+                                                        print("Meals refreshed after deletion")
+                                                    }
+                                                }
+                                            }
                                         }
-                                    )) {
+                                    )
+                                        .environmentObject(mealManager)
+                                    ) {
                                         VStack {
                                             Image(type.rawValue)
                                                 .resizable()
@@ -173,6 +197,47 @@ struct HomePageView: View {
                     progressValues[dayIndex] = progress
                    // print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
+            }
+        }
+    }
+    
+    private func removeMealFromFirestore(_ meal: MealPlanner, for date: Date, type: MealType, completion: @escaping () -> Void){
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: date)
+
+        let logRef = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("mealLogs")
+            .document(dateString)
+
+        logRef.getDocument { snapshot, error in
+            guard let data = snapshot?.data(),
+                  var array = data[type.rawValue.lowercased()] as? [[String: Any]] else {
+                print("Could not get array to update or data is missing")
+                return
+            }
+
+            array.removeAll {
+                ($0["foodID"] as? String == meal.foodID) &&
+                ($0["name"] as? String == meal.name)
+            }
+
+            logRef.updateData([
+                type.rawValue.lowercased(): array
+            ]) { error in
+                if let error = error {
+                    print("Error updating Firestore: \(error.localizedDescription)")
+                } else {
+                    print("Removed from Firestore successfully")
+                }
+                completion()
             }
         }
     }
