@@ -180,8 +180,18 @@ struct GenderStep: View {
     var body: some View {
         VStack {
             Text("Enter your gender")
+            Picker("Gender", selection: $gender) {
+                Text("Female").tag("Female")
+                Text("Male").tag("Male")
+                Text("Non-binary").tag("Non-binary")
+                Text("Other").tag("Other")
+                Text("Prefer not to say").tag("Prefer not to say")
+            }
+            .pickerStyle(.menu)
+            /*
             TextField("Gender", text: $gender)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+            */
         }
         .padding()
     }
@@ -211,7 +221,7 @@ struct GoalStep: View {
             Picker("Fitness Goal", selection: $goal) {
                 Text("Lose Weight").tag("LoseWeight")
                 Text("Gain Weight").tag("GainWeight")
-                Text("Maintain Weight").tag("MaintainWeight")
+                Text("Maintain Weight").tag("Maintain")
             }
             .pickerStyle(SegmentedPickerStyle())
         }
@@ -219,6 +229,7 @@ struct GoalStep: View {
     }
 }
 
+/*
 struct HeightStep: View {
     @Binding var height: String
     var body: some View {
@@ -230,7 +241,50 @@ struct HeightStep: View {
         .padding()
     }
 }
+ */
+struct HeightStep: View {
+    @Binding var height: String
+    
+    @State private var selectedFeet = 5
+    @State private var selectedInches = 6
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Enter your height")
+                .font(.headline)
+            
+            HStack {
+                Picker("Feet", selection: $selectedFeet) {
+                    ForEach(3...8, id: \.self) { feet in
+                        Text("\(feet) ft").tag(feet)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .frame(width: 100)
+                
+                Picker("Inches", selection: $selectedInches) {
+                    ForEach(0...11, id: \.self) { inch in
+                        Text("\(inch) in").tag(inch)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .frame(width: 100)
+            }
+            .onChange(of: selectedFeet) { _ in updateHeight() }
+            .onChange(of: selectedInches) { _ in updateHeight() }
+        }
+        .onAppear {
+            updateHeight()
+        }
+        .padding()
+    }
+    
+    private func updateHeight() {
+        height = "\(selectedFeet), \(selectedInches)"
+    }
+}
 
+/*
 struct WeightStep: View {
     @Binding var weight: String
     var body: some View {
@@ -242,6 +296,46 @@ struct WeightStep: View {
         .padding()
     }
 }
+ */
+struct WeightStep: View {
+    @Binding var weight: String
+    @State private var internalWeight = ""
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Enter your weight (in pounds)")
+                .font(.headline)
+            
+            TextField("Weight (lbs)", text: $internalWeight)
+                .keyboardType(.decimalPad)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .onChange(of: internalWeight) { newValue in
+                    validateWeightInput(newValue)
+                }
+        }
+        .padding()
+        .onAppear {
+            internalWeight = weight
+        }
+    }
+    
+    private func validateWeightInput(_ input: String) {
+        // Only allow numbers and at most one decimal point
+        let filtered = input.filter { "0123456789.".contains($0) }
+        let decimalParts = filtered.split(separator: ".")
+        
+        if decimalParts.count > 2 {
+            // If more than one decimal point, remove extras
+            internalWeight = String(decimalParts[0]) + "." + String(decimalParts[1])
+        } else {
+            internalWeight = filtered
+        }
+        
+        // Update the binding with the validated input
+        weight = internalWeight
+    }
+}
+
 
 struct CompletionStep: View {
     var body: some View {
