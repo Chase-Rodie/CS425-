@@ -15,6 +15,7 @@ struct SignUpEmailView: View {
     @State private var showConfirmPassword: Bool = false
     @State private var emailErrorMessage: String? = nil
     @State private var passwordErrorMessage: String? = nil
+    @State private var confirmPasswordErrorMessage: String? = nil
     @State private var showEmailVerificationView = false
 
     var body: some View {
@@ -77,13 +78,29 @@ struct SignUpEmailView: View {
                     .foregroundColor(.red)
                     .font(.caption)
             }
+            
+            // Confirm Password Error Message
+            if let confirmPasswordErrorMessage = confirmPasswordErrorMessage {
+                Text(confirmPasswordErrorMessage)
+                    .foregroundColor(.red)
+                    .font(.caption)
+            }
 
             // Sign Up Button
             Button {
                 passwordErrorMessage = nil  // Reset previous error
+                confirmPasswordErrorMessage = nil  // Reset previous confirm password error
                 
+                // Check if password is too simple
                 if isPasswordTooSimple(viewModel.password) {
                     passwordErrorMessage = "Password must be at least 6 characters long and include at least one number and one special character."
+                }
+                // Check if password and confirm password match
+                else if viewModel.password.isEmpty || viewModel.confirmPassword.isEmpty {
+                    confirmPasswordErrorMessage = "Please fill out both password fields."
+                }
+                else if viewModel.password != viewModel.confirmPassword {
+                    confirmPasswordErrorMessage = "Passwords do not match."
                 } else {
                     Task {
                         do {
