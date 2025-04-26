@@ -18,8 +18,7 @@ class RetrieveWorkoutData : ObservableObject {
     @Published var completedExercisesCounts: [Int] = []
     var workoutDays: [(String, [String])] = []
     @Published var workoutMetadata: [String: Any] = [:]
-    @Published var manualWorkoutsToday: [[String: Any]] = []
-
+    @Published var manualWorkoutsToday: [ManualWorkout] = []
     
     
     let now = Date()
@@ -731,20 +730,21 @@ class RetrieveWorkoutData : ObservableObject {
                     .collection("manualWorkouts")
                     .document("\(formattedDate)-manual")
                     .collection(dayID)
-                    .document(name)
 
                 var workoutData: [String: Any] = [
                     "name": name,
-                    "type": type,
-                    "duration": duration,
-                    "distance": distance
+                    "type": type
                 ]
                 
                 if type == "Strength" {
-                    workoutData["exercises"] = exercises
-                }
+                        workoutData["exercises"] = exercises
+                    } else {
+                        workoutData["duration"] = duration
+                        workoutData["distance"] = distance
+                    }
+                    
                 
-                workoutRef.setData(workoutData) { error in
+                workoutRef.addDocument(data:workoutData) { error in
                     if let error = error {
                         print("Error saving manual workout: \(error.localizedDescription)")
                     } else {
@@ -753,7 +753,7 @@ class RetrieveWorkoutData : ObservableObject {
                 }
             }
     
-    
+
     func fetchManuallyEnteredWorkoutsForDay(day: Int) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No user ID")
@@ -768,17 +768,15 @@ class RetrieveWorkoutData : ObservableObject {
         let dayID = "Day\(day)"
         let db = Firestore.firestore()
         
-        let dayCollectionRef = db
+        let workoutRef = db
             .collection("users")
             .document(userID)
             .collection("manualWorkouts")
             .document("\(formattedDate)-manual")
             .collection(dayID)
         
-        dayCollectionRef.getDocuments { [weak self] snapshot, error in
-            guard let self = self else { return }
-            
-            if let error = error {
+            workoutRef.getDocuments { snapshot, error in
+                if let error = error {
                 print("Error fetching workouts for day: \(error.localizedDescription)")
                 self.manualWorkoutsToday = []
                 return
@@ -790,10 +788,30 @@ class RetrieveWorkoutData : ObservableObject {
                 return
             }
             
-            self.manualWorkoutsToday = documents.map { $0.data() }
+            self.manualWorkoutsToday = documents.map { doc in
+                let data = doc.data()
+                
+                print("Workout data: \(data)")
+
+                
+                let name = data["name"] as? String ?? "Unnamed Workout"
+                let type = data["type"] as? String ?? "Unknown"
+                let duration = data["duration"] as? Int ?? 0
+                let distance = data["distance"] as? Int ?? 0
+                let exercises = data["exercises"] as? [[String: Any]] ?? []
+                
+                return ManualWorkout(
+                    id: doc.documentID,
+                    name: name,
+                    type: type,
+                    duration: duration,
+                    distance: distance,
+                    exercises: exercises
+                )
+            }
         }
     }
-    
+
     
     private func getSetsAndReps(for goal: String) -> (Int, Int) {
         switch goal.lowercased() {
@@ -808,7 +826,36 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
 
-    
+    func deleteManualWorkout(day: Int, workout: ManualWorkout) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user ID")
+            return
+        }
+        
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
+        let formattedDate = dateFormatter.string(from: now)
+        
+        let db = Firestore.firestore()
+        let dayID = "Day\(day)"
+        
+        let dayCollectionRef = db
+            .collection("users")
+            .document(userID)
+            .collection("manualWorkouts")
+            .document("\(formattedDate)-manual")
+            .collection(dayID)
+        
+        dayCollectionRef.document(workout.id).delete { error in
+            if let error = error {
+                print("Error deleting workout: \(error.localizedDescription)")
+            } else {
+                print("Workout successfully deleted!")
+                self.fetchManuallyEnteredWorkoutsForDay(day: day)
+            }
+        }
+    }
     
 }
 

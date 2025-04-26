@@ -47,9 +47,72 @@ struct DailyWorkoutView: View {
                     AddWorkoutForm(day: dayIndex+1 , workoutPlanModel: workoutPlanModel, manualWorkoutFormShowing: $manualWorkoutFormShowing)
                 }
                 VStack(alignment: .leading){
-//                    Text("Found \(workoutPlanModel.manualWorkoutsToday.count) workouts")
-//                        .padding()
+                    VStack {
+                        Text("Manually Logged Workouts")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
 
+                        if !workoutPlanModel.manualWorkoutsToday.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(workoutPlanModel.manualWorkoutsToday) { workout in
+                                        VStack(alignment: .leading, spacing: 8) {
+                                            HStack{
+                                                Text(workout.name)
+                                                    .font(.headline)
+                                                
+                                                Button(action: {
+                                                    workoutPlanModel.deleteManualWorkout(day: dayIndex+1, workout: workout)
+                                                }) {
+                                                    Image(systemName: "trash")
+                                                        .foregroundColor(.red)
+                                                        .padding(8)
+                                                        .background(Color.white)
+                                                        .clipShape(Circle())
+                                                }
+                                            }
+
+                                            if workout.type.lowercased() == "cardio" {
+                                                                            Text("Duration: \(workout.duration) min")
+                                                                                .font(.subheadline)
+                                                                            if workout.distance > 0 {
+                                                                                Text("Distance: \(workout.distance) meters")
+                                                                                    .font(.subheadline)
+                                                                            }
+                                                                        } else if workout.type.lowercased() == "flexibility" {
+                                                                            Text("Duration: \(workout.duration) min")
+                                                                                .font(.subheadline)
+                                                                        } else if workout.type.lowercased() == "strength" {
+                                                                            if !workout.exercises.isEmpty {
+                                                                                Text("Exercises:")
+                                                                                    .font(.subheadline)
+                                                                                    .bold()
+                                                                                
+                                                                                ForEach(workout.exercises.indices, id: \.self) { index in
+                                                                                    let exercise = workout.exercises[index]
+                                                                                    Text("- \(exercise["name"] as? String ?? "Unnamed Exercise")")
+                                                                                        .font(.caption)
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                        .padding()
+                                        .background(Color.gray.opacity(0.1))
+                                        .cornerRadius(8)
+                                        .padding(.vertical, 5)
+                                    }
+                                }
+                                .padding(.horizontal)
+                            }
+                        } else {
+                            Text("No manual entered workouts today.")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                    }
+                    .padding()
+
+                    
                     ForEach(dayWorkoutPlan){exercise in
                         ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel, dayIndex: dayIndex)
                     }
