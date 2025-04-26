@@ -27,7 +27,7 @@ enum FitnessLevel: String, Codable, CaseIterable {
 enum Goal: String, Codable, CaseIterable {
     case loseWeight = "LoseWeight"
     case gainWeight = "GainWeight"
-    case maintainWeight = "Maintain"
+    case maintainWeight = "MaintainWeight"
 }
 
 struct UserProfile: Codable, Equatable {
