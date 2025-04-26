@@ -22,6 +22,9 @@ struct MealPlanView: View {
     @State private var selectedMealType: MealType = .breakfast
     @State private var inputQuantities: [UUID: String] = [:]
     @State private var quantityErrors: [UUID: String] = [:]
+    @EnvironmentObject var userManager: UserManager
+    @State private var selectedUnits: [UUID: String] = [:]
+
     
     @State private var showMealGen = false
 
@@ -48,6 +51,9 @@ struct MealPlanView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal)
+                .onChange(of: selectedCategory) { newValue in
+                    selectedMeals.removeAll()
+                }
 
                 HStack {
                     ForEach(MealType.allCases) { type in
@@ -59,9 +65,25 @@ struct MealPlanView: View {
                                 set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                             ),
                             onRemove: { removedMeal in
-                                let amountToRestore = removedMeal.consumedAmount ?? 0
-                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amountToRestore)
+                                guard let amount = removedMeal.consumedAmount else { return }
+
+                                let eatenUnit = removedMeal.consumedUnit ?? "g"
+                                let eatenFactor = Units[eatenUnit] ?? 1.0
+
+                                let eatenGrams = amount * eatenFactor
+
+                                let pantryUnit = removedMeal.unit ?? "g"
+                                let pantryFactor = Units[pantryUnit] ?? 1.0
+
+                                let restoredAmount = eatenGrams / pantryFactor
+
+                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+
+                                Task {
+                                    await fetchMealsAsync()
+                                }
                             }
+
                         )){
                             VStack {
                                 Image(systemName: "fork.knife")
@@ -97,12 +119,26 @@ struct MealPlanView: View {
                             ForEach(filteredMeals) { meal in
                                 HStack {
                                     NavigationLink(destination: MealDetailView(meal: meal.name, foodID: meal.foodID)) {
+//                                        VStack(alignment: .leading) {
+//                                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
+//                                                .font(.title3)
+//                                            Text("Tap to view details")
+//                                                .font(.subheadline)
+//                                                .foregroundColor(.gray)
+//                                        }
                                         VStack(alignment: .leading) {
-                                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f"))")
+                                            Text("\(meal.name) (\(meal.quantity, specifier: "%.1f") \(meal.unit ?? "g"))")
                                                 .font(.title3)
+                                            
                                             Text("Tap to view details")
                                                 .font(.subheadline)
                                                 .foregroundColor(.gray)
+                                            
+                                            if MealFilter.flaggedForGoal(meal: meal, goal: userManager.currentUser?.profile.goal ?? .maintainWeight) {
+                                                Text("⚠️ This ingredient may not align with your current goal. Check the details for nutritional information.")
+                                                    .font(.caption)
+                                                    .foregroundColor(.red)
+                                            }
                                         }
                                     }
 
@@ -136,7 +172,7 @@ struct MealPlanView: View {
                     VStack{
                         if selectedCategory == .ingredient {
                             HStack {
-                                Button("Generate Recipie") {
+                                Button("Generate Recipe") {
                                     showMealGen = true
                                 }
                                 .padding(6)
@@ -177,31 +213,88 @@ struct MealPlanView: View {
                         .font(.headline)
                         .padding()
 
+//                    ScrollView {
+//                        ForEach(Array(selectedMeals), id: \..self) { meal in
+//                            VStack(alignment: .leading, spacing: 4) {
+//                                Text(meal.name)
+//                                    .font(.subheadline)
+//
+//                                TextField("Amount", text: Binding(
+//                                    get: { inputQuantities[meal.id] ?? "" },
+//                                    set: { inputQuantities[meal.id] = $0 }
+//                                ))
+//                                .keyboardType(.decimalPad)
+//                                .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                if let error = quantityErrors[meal.id] {
+//                                    Text(error)
+//                                        .foregroundColor(.red)
+//                                        .font(.caption)
+//                                }
+//                            }
+//                            .padding(.horizontal)
+//                            .padding(.bottom, 5)
+//                        }
+//                    }
+                    
                     ScrollView {
-                        ForEach(Array(selectedMeals), id: \..self) { meal in
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(meal.name)
-                                    .font(.subheadline)
-
-                                TextField("Amount", text: Binding(
+                        ForEach(Array(selectedMeals), id: \.self) { meal in
+                            QuantityInputRow(
+                                meal: meal,
+                                amount: Binding(
                                     get: { inputQuantities[meal.id] ?? "" },
                                     set: { inputQuantities[meal.id] = $0 }
-                                ))
-                                .keyboardType(.decimalPad)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                                if let error = quantityErrors[meal.id] {
-                                    Text(error)
-                                        .foregroundColor(.red)
-                                        .font(.caption)
-                                }
-                            }
-                            .padding(.horizontal)
-                            .padding(.bottom, 5)
+                                ),
+                                selectedUnit: Binding(
+                                    get: { selectedUnits[meal.id] ?? "g" },
+                                    set: { selectedUnits[meal.id] = $0 }
+                                ),
+                                error: quantityErrors[meal.id]
+                            )
                         }
                     }
 
-                    Button("Submit") {
+//                    Button("Submit") {
+//                        quantityErrors = [:]
+//                        var isValid = true
+//
+//                        for meal in selectedMeals {
+//                            guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
+//                                quantityErrors[meal.id] = "Enter a valid number"
+//                                isValid = false
+//                                continue
+//                            }
+//
+//                            if eaten > meal.quantity {
+//                                let formatted = String(format: "%.1f", meal.quantity)
+//                                quantityErrors[meal.id] = "You only have \(formatted)"
+//                                isValid = false
+//                            }
+//                        }
+//
+//                        guard isValid else { return }
+//
+//                        for meal in selectedMeals {
+//                            if let input = inputQuantities[meal.id], let eaten = Double(input) {
+//                                updatePantryQuantity(docID: meal.pantryDocID, amount: -eaten)
+//                                logMeal(for: meal, amount: eaten, type: selectedMealType)
+//
+//                                var updatedMeal = meal
+//                                updatedMeal.consumedAmount = eaten
+//                                updatedMeal.quantity -= eaten
+//                                mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
+//
+//                                if let index = mealPlan.firstIndex(where: { $0.id == meal.id }) {
+//                                    mealPlan[index].quantity -= eaten
+//                                }
+//                            }
+//                        }
+//
+//                        selectedMeals.removeAll()
+//                        inputQuantities.removeAll()
+//                        showQuantityInput = false
+//                    }
+                    Button(action: {
                         quantityErrors = [:]
                         var isValid = true
 
@@ -212,9 +305,20 @@ struct MealPlanView: View {
                                 continue
                             }
 
-                            if eaten > meal.quantity {
+                            let selectedUnit = selectedUnits[meal.id] ?? "g"
+                            let pantryUnit = meal.unit ?? "g"
+                            guard let eatenFactor = Units[selectedUnit], let pantryFactor = Units[pantryUnit] else {
+                                quantityErrors[meal.id] = "Invalid unit selected"
+                                isValid = false
+                                continue
+                            }
+
+                            let eatenInGrams = eaten * eatenFactor
+                            let pantryQuantityInGrams = meal.quantity * pantryFactor
+
+                            if eatenInGrams > pantryQuantityInGrams {
                                 let formatted = String(format: "%.1f", meal.quantity)
-                                quantityErrors[meal.id] = "You only have \(formatted)"
+                                quantityErrors[meal.id] = "You only have \(formatted) \(pantryUnit)"
                                 isValid = false
                             }
                         }
@@ -222,17 +326,28 @@ struct MealPlanView: View {
                         guard isValid else { return }
 
                         for meal in selectedMeals {
-                            if let input = inputQuantities[meal.id], let eaten = Double(input) {
-                                updatePantryQuantity(docID: meal.pantryDocID, amount: -eaten)
-                                logMeal(for: meal, amount: eaten, type: selectedMealType)
+                            if let input = inputQuantities[meal.id], let eaten = parseFraction(from: input) {
+                                let selectedUnit = selectedUnits[meal.id] ?? "g"
+                                let pantryUnit = meal.unit ?? "g"
+                                let eatenFactor = Units[selectedUnit] ?? 1.0
+                                let pantryFactor = Units[pantryUnit] ?? 1.0
+
+                                let eatenInGrams = eaten * eatenFactor
+                                let amountToSubtract = eatenInGrams / pantryFactor
+
+                                updatePantryQuantity(docID: meal.pantryDocID, amount: -amountToSubtract)
+                                //logMeal(for: meal, amount: eaten, type: selectedMealType)
 
                                 var updatedMeal = meal
                                 updatedMeal.consumedAmount = eaten
-                                updatedMeal.quantity -= eaten
+                                updatedMeal.consumedUnit = selectedUnit
+                                updatedMeal.quantity -= amountToSubtract
                                 mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
+                                
+                                logMeal(for: updatedMeal, amount: eaten, type: selectedMealType)
 
                                 if let index = mealPlan.firstIndex(where: { $0.id == meal.id }) {
-                                    mealPlan[index].quantity -= eaten
+                                    mealPlan[index].quantity -= amountToSubtract
                                 }
                             }
                         }
@@ -240,7 +355,16 @@ struct MealPlanView: View {
                         selectedMeals.removeAll()
                         inputQuantities.removeAll()
                         showQuantityInput = false
+                    }) {
+                        Text("Submit")
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color("Navy"))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                     }
+
                     .padding()
                 }
             }
@@ -286,7 +410,8 @@ struct MealPlanView: View {
         let mealData: [String: Any] = [
             "name": meal.name,
             "foodID": meal.foodID,
-            "amount": amount
+            "amount": amount,
+            "consumed_unit": meal.consumedUnit ?? "g"
         ]
 
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
@@ -331,6 +456,8 @@ struct MealPlanView: View {
                           quantity > 0 else {
                         continue
                     }
+                    
+                    let unit = data["unit"] as? String ?? "g"
 
                     group.enter()
                     Firestore.firestore().collection("Food").document(String(foodID)).getDocument { foodSnapshot, error in
@@ -345,6 +472,11 @@ struct MealPlanView: View {
                         } else {
                             print("Could not find category for foodID \(foodID), defaulting to .prepared")
                         }
+                        
+                        let calories = foodSnapshot?.data()?["calories"] as? Int ?? 0
+                        let protein = foodSnapshot?.data()?["protein"] as? Int ?? 0
+                        let fat = foodSnapshot?.data()?["fat"] as? Int ?? 0
+                        let dietaryTags = foodSnapshot?.data()?["tags"] as? [String] ?? []
 
                         let meal = MealPlanner(
                             pantryDocID: doc.documentID,
@@ -352,14 +484,31 @@ struct MealPlanView: View {
                             foodID: String(foodID),
                             imageURL: nil,
                             category: mealCategory,
-                            quantity: quantity
+                            quantity: quantity,
+                            dietaryTags: dietaryTags,
+                            calories: calories,
+                            protein: protein,
+                            fat: fat,
+                            unit: unit
                         )
-
                         fetchedMeals.append(meal)
                     }
                 }
 
+//                group.notify(queue: .main) {
+//                    self.mealPlan = fetchedMeals
+//                    isLoading = false
+//                    continuation.resume()
+//                }
                 group.notify(queue: .main) {
+                    guard let goal = userManager.currentUser?.profile.goal,
+                          let preferences = userManager.currentUser?.profile.dietaryPreferences else {
+                        print("Missing user goal or preferences")
+                        self.mealPlan = fetchedMeals // fallback
+                        isLoading = false
+                        continuation.resume()
+                        return
+                    }
                     self.mealPlan = fetchedMeals
                     isLoading = false
                     continuation.resume()
@@ -367,7 +516,6 @@ struct MealPlanView: View {
             }
         }
     }
-
 }
 
 struct MealGenerationView: View {
@@ -382,40 +530,14 @@ struct MealGenerationView: View {
                     // Background scrollable content
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
+                            
+                            // Recipe currently displayed as plain text from AI
                             Text(recipe)
-                            /*
-                            if recipe == "Generating your recipe..." {
-                                Text(recipe)
-                            }
-                            else{
-                                //print(recipe)
-                                let parsed = parseRecipe(recipe)
-                                
-                                if !parsed.ingredients.isEmpty {
-                                    Text("🧂 Ingredients:")
-                                        .font(.headline)
-                                    ForEach(parsed.ingredients, id: \.self) { item in
-                                        Text("• \(item)")
-                                            .padding(.leading, 8)
-                                    }
-                                }
-                                
-                                if !parsed.instructions.isEmpty {
-                                    Text("👨‍🍳 Instructions:")
-                                        .font(.headline)
-                                        .padding(.top)
-                                    
-                                    ForEach(parsed.instructions.indices, id: \.self) { index in
-                                        Text("\(index + 1). \(parsed.instructions[index])")
-                                            .padding(.leading, 8)
-                                    }
-                                }
-                            }
-                             */
+ 
                             Text("⚠️ Disclaimer ⚠️")
                                 .font(.headline)
                                 .padding(.top)
-                            Text("These recipes are generated using AI and are for informational purposes only. Please use your best judgment when preparing and consuming meals. Always ensure ingredients are safe to eat, properly cooked, and that any allergies or dietary restrictions are considered. Fit Pantry is not responsible for any adverse effects resulting from the use of AI-generated content.")
+                            Text("These recipes are generated using AI and are for informational purposes only. Please use your best judgment when preparing and consuming meals. Always ensure ingredients are safe to eat, properly cooked, and that any allergies or dietary restrictions are considered. FitPantry is not responsible for any adverse effects resulting from the use of AI-generated content.")
                             // Makes space above the fixed button
                             Spacer(minLength: 80)
                         }
@@ -423,23 +545,49 @@ struct MealGenerationView: View {
                         .padding()
                     }
 
-                    // Fixed bottom button
-                    VStack {
+                    // Fixed bottom buttons with solid background
+                    VStack(spacing: 0) {
                         Spacer()
-                        Button(action: {
-                            generate()
-                        }) {
-                            Text("Regenerate Recipe")
-                                .font(.headline)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color("BackgroundColor"))
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .padding(.horizontal)
+
+                        ZStack {
+                            // Background layer (solid white)
+                            Rectangle()
+                                .fill(Color.white)
+                                .frame(height: 80)
+                                .shadow(radius: 5)
+
+                            // Button row
+                            HStack(spacing: 16) {
+                                Button(action: {
+                                    saveRecipe()
+                                }) {
+                                    Text("Save Recipe")
+                                        .font(.headline)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.navy)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
+
+                                Button(action: {
+                                    generate()
+                                }) {
+                                    Text("Regenerate")
+                                        .font(.headline)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color("BackgroundColor"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
+                            }
+                            .padding(.horizontal)
                         }
                     }
+
                 }
+            
             .navigationTitle("Generated Recipe")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -501,7 +649,106 @@ struct MealGenerationView: View {
             }
         }
     }
+    
+    
+    func saveRecipe() {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let docRef = db.collection("users")
+            .document(userID)
+            .collection("SavedRecipes")
+            .document()
+        
+        // Get title from recipe
+        let title = recipe.components(separatedBy: .newlines).first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "Untitled Recipe"
+        
+        // Remove the title line and trim whitespace/newlines
+        let lines = recipe.components(separatedBy: .newlines)
+        let cleanedRecipeText = lines
+            .dropFirst() // drops the first line regardless
+            .joined(separator: "\n")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let recipeData: [String: Any] = [
+            "title": title,
+            "recipeText": cleanedRecipeText,
+            "ingredients": foodAliases.map { $0.name },
+            "timestamp": Timestamp(date: Date())
+        ]
+
+        docRef.setData(recipeData) { error in
+            if let error = error {
+                print("Error saving recipe: \(error.localizedDescription)")
+            } else {
+                print("Recipe saved successfully!")
+            }
+        }
+    }
 }
+
+struct QuantityInputRow: View {
+    let meal: MealPlanner
+    @Binding var amount: String
+    @Binding var selectedUnit: String
+    let error: String?
+
+    let units = ["g", "oz", "cup", "tbsp", "tsp", "slice", "can", "loaf", "lbs", "kg", "ml", "L", "gal"]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(meal.name)
+                .font(.subheadline)
+
+            HStack {
+                TextField("Amount", text: $amount)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                Picker("Unit", selection: $selectedUnit) {
+                    ForEach(units, id: \.self) { unit in
+                        Text(unit).tag(unit)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .frame(width: 80)
+            }
+
+            if let error = error {
+                Text(error)
+                    .foregroundColor(.red)
+                    .font(.caption)
+            }
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 5)
+    }
+}
+
+func parseFraction(from string: String) -> Double? {
+    let trimmed = string.trimmingCharacters(in: .whitespaces)
+    
+    if let value = Double(trimmed) {
+        return value
+    }
+    
+    if trimmed.contains("/") {
+        let parts = trimmed.split(separator: "/")
+        if parts.count == 2,
+           let numerator = Double(parts[0]),
+           let denominator = Double(parts[1]),
+           denominator != 0 {
+            return numerator / denominator
+        }
+    }
+    
+    return nil
+}
+
+
 
 struct MealPlanView_Previews: PreviewProvider {
     static var previews: some View {

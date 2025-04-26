@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct FoodJournalAddItemView: View {
     let mealName: String
+    let selectedDate: Date
     @ObservedObject var viewModel: FoodJournalViewModel
     
     // Search bar text
@@ -27,10 +28,14 @@ struct FoodJournalAddItemView: View {
     @State private var showSheet = false
     @State private var showError = false
     
+    @State private var selectedUnit: String = "g"
+    let unitTypes = ["g", "oz", "cup", "tbsp", "tsp", "slice", "can", "loaf", "lbs", "kg", "ml", "L", "gal"]
+
+    
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
     
-    let now = Date()
+    // let now = Date()
     
     var body: some View {
             VStack{
@@ -88,16 +93,28 @@ struct FoodJournalAddItemView: View {
             // when item is selected
             .sheet(isPresented: $showSheet) {
                 VStack {
-                    // Text to display
                     Text("Amount eaten?")
-                        .font(.headline)
-                        .padding()
-                    
-                    TextField("Quantity", text: $amountStr)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        // Displays keypad
-                        .keyboardType(.decimalPad)
-                        .padding()
+                            .font(.headline)
+                            .padding(.bottom)
+
+                        HStack {
+                            // Quantity Input
+                            TextField("Quantity", text: $amountStr)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .keyboardType(.decimalPad)
+                                .frame(maxWidth: .infinity)
+
+                            // Unit Picker
+                            Picker("Unit", selection: $selectedUnit) {
+                                ForEach(unitTypes, id: \.self) { unit in
+                                    Text(unit).tag(unit)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .frame(width: 100) // You can adjust this width as needed
+                        }
+                        .padding(.horizontal)
+
                     
                     if let errorMessage = errorMessage {
                         Text(errorMessage)
@@ -165,6 +182,7 @@ struct FoodJournalAddItemView: View {
             showSheet = true
         }
         
+    
         // Get amount and validate for entry into database
         private func submitAmount() {
             
@@ -196,55 +214,60 @@ struct FoodJournalAddItemView: View {
             showSheet = false
         }
         
-        // Add food to a users pantry
     private func addFood(item: Food, value: Double, mealName: String) {
-           
-            guard let userID = Auth.auth().currentUser?.uid else {
-                return
+        guard let userID = Auth.auth().currentUser?.uid else {
+            self.errorMessage = "User not authenticated"
+            return
+        }
+
+        // Format current date for document ID
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formattedDate = dateFormatter.string(from: selectedDate)
+
+        // Reference to the meal document
+        let docRef = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("mealLogs")
+            .document(formattedDate)
+
+        // Create the new food entry
+        let newEntry: [String: Any] = [
+            "foodID": String(item.food_id),
+            "amount": value,
+            "name": item.name,
+            "consumed_unit": selectedUnit
+        ]
+
+        docRef.getDocument { snapshot, error in
+            var mealArray = [[String: Any]]()
+
+            if let snapshot = snapshot, snapshot.exists {
+                // If the document exists, read current meal array if it exists
+                if let data = snapshot.data(), let existingArray = data[mealName] as? [[String: Any]] {
+                    mealArray = existingArray
+                }
             }
-            
-            
-            //get current date in correct format for document naming purposes
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM-dd-yyyy"
-            let formattedDate = dateFormatter.string(from: now)
-            
-            // Create a refrence to the database
-            let db = Firestore.firestore()
-                .collection("users")
-                .document(userID)
-                .collection("foodjournal")
-                .document(formattedDate)
-                .collection(mealName)
-                .document(item.id)
-            
-            
-            let data: [String: Any] = [
-                "id": item.food_id,
-                "name": item.name,
-                "foodGroup": item.foodGroup,
-                "calories": item.calories,
-                "fat": item.fat,
-                "carbohydrates": item.carbohydrates,
-                "protein": item.protein,
-                "suitableFor": item.suitableFor,
-                "quantity": value
-            ]
-            
-            // Update the document in Firestore
-            db.setData(data, merge: true) { error in
-                if error != nil {
-                    print("Error updating document")
+
+            // Append the new entry
+            mealArray.append(newEntry)
+
+            // Use setData with merge to create or update the mealName field
+            docRef.setData([mealName: mealArray], merge: true) { error in
+                if let error = error {
+                    print("Error writing document: \(error.localizedDescription)")
                 } else {
                     DispatchQueue.main.async {
-                                    viewModel.fetchFoodEntries(mealName: mealName) // Refresh after update
-                                }
-
-                    print("Document updated!")
+                        viewModel.fetchFoodEntries(mealName: mealName, for: selectedDate)
+                    }
+                    print("Food item added successfully!")
                 }
             }
         }
     }
+}
+    
 
 
 //#Preview {

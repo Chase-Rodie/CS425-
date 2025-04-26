@@ -37,6 +37,8 @@ struct FoodJournalItemView: View {
     }
 }
 
+/*
 #Preview {
-    FoodJournalItemView(item: FoodJournalItem(id: "1", name: "Banana", foodGroup: "Fruits", food_id: 101, calories: 100, fat: 0.3, carbohydrates: 27, protein: 1.3, suitableFor: ["Vegan", "Gluten-Free"], quantity: 2.4), mealName: "breakfast", viewModel: FoodJournalViewModel())
+    FoodJournalItemView(item: FoodJournalItem(id: "1", name: "Banana", foodGroup: "Fruits", food_id: "101", calories: 100, fat: 0.3, carbohydrates: 27, protein: 1.3, suitableFor: ["Vegan", "Gluten-Free"], quantity: 2.4), mealName: "breakfast", viewModel: FoodJournalViewModel())
 }
+*/

@@ -25,14 +25,15 @@ class HealthKitManager {
             let energy = HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed),
             let protein = HKObjectType.quantityType(forIdentifier: .dietaryProtein),
             let fat = HKObjectType.quantityType(forIdentifier: .dietaryFatTotal),
-            let carbs = HKObjectType.quantityType(forIdentifier: .dietaryCarbohydrates)
+            let carbs = HKObjectType.quantityType(forIdentifier: .dietaryCarbohydrates),
+            let steps = HKObjectType.quantityType(forIdentifier: .stepCount)
         else {
             print("One or more HealthKit data types are unavailable.")
             completion(false)
             return
         }
 
-        let typesToShare: Set = [energy, protein, fat, carbs]
+        let typesToShare: Set = [energy, protein, fat, carbs, steps]
         let typesToRead: Set = [energy, protein, fat, carbs]
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
@@ -76,5 +77,31 @@ class HealthKitManager {
                 print("Error saving to HealthKit: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
+    }
+    
+    func fetchStepCount(for date: Date, completion: @escaping (Double?) -> Void) {
+        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            print("Step count type is unavailable.")
+            completion(nil)
+            return
+        }
+
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
+
+        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result = result, let quantity = result.sumQuantity() else {
+                completion(nil)
+                return
+            }
+
+            let steps = quantity.doubleValue(for: HKUnit.count())
+            completion(steps)
+        }
+
+        HKHealthStore().execute(query)
     }
 }

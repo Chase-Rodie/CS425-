@@ -19,6 +19,9 @@ struct MealDetailView: View {
             Text(foodDetails?["name"] as? String ?? meal)
                 .font(.largeTitle)
                 .fontWeight(.bold)
+            Text("Nutrition facts are based on a 100g serving, which is approximately 6 ¾ tablespoons.")
+                .font(.subheadline)
+                .foregroundColor(.gray)
 
             if let details = foodDetails {
                 Text("Calories: \(details["calories"] as? Double ?? 0)")

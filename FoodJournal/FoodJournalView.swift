@@ -13,6 +13,7 @@ import FirebaseFirestore
 struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
     @State private var selectedMeal: Meal?
+    @State private var now = Date()
     //@FirestoreQuery var items: [Food]
     
   //  private let userId: String
@@ -30,7 +31,7 @@ struct FoodJournalView: View {
     
     let calorieGoal: Double = 1600
    
-    let now = Date()
+    
     
     var body: some View{
         
@@ -41,31 +42,40 @@ struct FoodJournalView: View {
             
             ScrollView{
                 VStack{
-                    VStack{
-                            Text("Today's Food Journal")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                            Text(now.formatted(date: .long, time: .omitted))
-                                .fontWeight(.semibold)
-                        }
+                    VStack(spacing: 8) {
+        
+                        Text("Food Journal For")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+
+                        DatePicker("", selection: $now, displayedComponents: .date)
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                            .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.top)
+                    
                     Spacer(minLength: 30)
                    
                     VStack{
                         let totalCalories = viewModel.totalCaloriesForDay()
                         let progress = min(Double(totalCalories) / Double(calorieGoal), 1.0)
                         VStack(spacing: 5){
-                            Text("Totals for today:")
+                            //Text("Totals for today:")
                             Text("Calories: \(totalCalories)/\(calorieGoal.formatted())")
                         }
                       
                         ProgressView(value: progress, total: 1.0)
                             .progressViewStyle(LinearProgressViewStyle())
                             .frame(width: 200, height: 20) // Adjust width and height
+                            .tint(.navy)
                         HStack{
                             VStack(alignment: .leading){
                                 HStack{
                                     Text("Breakfast:")
-                                        .bold(true)
+                                        .font(.system(size: 20, weight: .bold))
                                     Spacer()
                                     Button {
                                         selectedMeal = Meal(name: "breakfast")
@@ -73,7 +83,11 @@ struct FoodJournalView: View {
                                         Image(systemName: "plus")
                                             .font(.system(size: 20))
                                     }.sheet(item: $selectedMeal) { meal in
-                                        FoodJournalAddItemView(mealName: meal.name, viewModel: viewModel)
+                                        FoodJournalAddItemView(
+                                            mealName: meal.name,
+                                            selectedDate: viewModel.now,
+                                            viewModel: viewModel
+                                        )
                                     }
                                 }
                                 Divider()
@@ -84,11 +98,9 @@ struct FoodJournalView: View {
                                         VStack(alignment: .leading){
                                             NavigationLink(destination:FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)){
                                                 Text(food.name)
-                                                    .bold()
+                                                    .font(.system(size: 18, weight: .semibold))
                                             }
-                                            Text("Quantity: "+food.quantity.description)
-                                            Text("Calories: "+food.calories.description)
-                                                .font(.body)
+                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -96,19 +108,18 @@ struct FoodJournalView: View {
                                         } label: {
                                             Image(systemName: "trash")
                                         }
+                                        .padding(.vertical, 15)
                                     }
                                 }
 
                             }
-                            Spacer()
-                            
                         }
                         .padding()
                         HStack{
                             VStack(alignment: .trailing){
                                 HStack{
                                     Text("Lunch:")
-                                        .bold(true)
+                                        .font(.system(size: 20, weight: .bold))
                                     Spacer()
                                     Button {
                                         selectedMeal = Meal(name: "lunch")
@@ -116,7 +127,11 @@ struct FoodJournalView: View {
                                         Image(systemName: "plus")
                                             .font(.system(size: 20))
                                     }.sheet(item: $selectedMeal) { meal in
-                                        FoodJournalAddItemView(mealName: meal.name, viewModel: viewModel)
+                                        FoodJournalAddItemView(
+                                            mealName: meal.name,
+                                            selectedDate: viewModel.now,
+                                            viewModel: viewModel
+                                        )
                                     }
 
                                 }
@@ -127,11 +142,9 @@ struct FoodJournalView: View {
                                         VStack(alignment: .leading){
                                             NavigationLink(destination:FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)){
                                                 Text(food.name)
-                                                    .bold()
+                                                    .font(.system(size: 18, weight: .semibold))
                                             }
-                                            Text("Quantity: "+food.quantity.description)
-                                            Text("Calories: "+food.calories.description)
-                                                .font(.body)
+                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -139,17 +152,17 @@ struct FoodJournalView: View {
                                         } label: {
                                             Image(systemName: "trash")
                                         }
+                                        .padding(.vertical, 15)
                                     }
                                 }
                             }
-                            Spacer()
                         }
                         .padding()
                         HStack{
                             VStack(alignment: .trailing){
                                 HStack{
                                     Text("Dinner:")
-                                        .bold(true)
+                                        .font(.system(size: 20, weight: .bold))
                                     Spacer()
                                     Button {
                                         selectedMeal = Meal(name: "dinner")
@@ -157,7 +170,11 @@ struct FoodJournalView: View {
                                         Image(systemName: "plus")
                                             .font(.system(size: 20))
                                     }.sheet(item: $selectedMeal) { meal in
-                                        FoodJournalAddItemView(mealName: meal.name, viewModel: viewModel)
+                                        FoodJournalAddItemView(
+                                            mealName: meal.name,
+                                            selectedDate: viewModel.now,
+                                            viewModel: viewModel
+                                        )
                                     }
 
                                 }
@@ -168,11 +185,9 @@ struct FoodJournalView: View {
                                         VStack(alignment: .leading){
                                             NavigationLink(destination:FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)){
                                                 Text(food.name)
-                                                    .bold()
+                                                    .font(.system(size: 18, weight: .semibold))
                                             }
-                                            Text("Quantity: "+food.quantity.description)
-                                            Text("Calories: "+food.calories.description)
-                                                .font(.body)
+                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -180,11 +195,11 @@ struct FoodJournalView: View {
                                         } label: {
                                             Image(systemName: "trash")
                                         }
+                                        .padding(.vertical, 15)
                                     }
                                 }
 
                             }
-                            Spacer()
                         }
                         .padding()
                         
@@ -193,15 +208,18 @@ struct FoodJournalView: View {
                 }
             }
         }.foregroundColor(.white)
-            .onAppear {
-                viewModel.fetchFoodEntries(mealName:"breakfast")
-                viewModel.fetchFoodEntries(mealName:"lunch")
-                viewModel.fetchFoodEntries(mealName:"dinner")
+            .onChange(of: now) { newDate in
+                viewModel.fetchFoodEntries(mealName: "breakfast", for: newDate)
+                viewModel.fetchFoodEntries(mealName: "lunch", for: newDate)
+                viewModel.fetchFoodEntries(mealName: "dinner", for: newDate)
             }
-            
+            .onAppear {
+                viewModel.fetchFoodEntries(mealName: "breakfast", for: now)
+                viewModel.fetchFoodEntries(mealName: "lunch", for: now)
+                viewModel.fetchFoodEntries(mealName: "dinner", for: now)
+            }
     }
-    
-    }
+}
 
 
 struct Meal: Identifiable {

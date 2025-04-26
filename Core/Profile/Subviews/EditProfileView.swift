@@ -57,13 +57,19 @@ struct EditProfileView: View {
                     ))
                 }
 
-                Button("Save Changes") {
+                Button(action: {
                     Task {
                         await saveProfile()
                     }
+                }) {
+                    Text("Save Changes")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color("BackgroundColor"))
+                        .cornerRadius(10)
                 }
-                .buttonStyle(.borderedProminent)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity)
             } else {
                 Text("Loading profile...").foregroundColor(.gray)
             }

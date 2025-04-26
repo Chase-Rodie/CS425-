@@ -12,40 +12,50 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     @State private var selectedItem: PhotosPickerItem? = nil
-    
+
     var body: some View {
         NavigationStack {
             List {
                 if let user = viewModel.user {
-                    NavigationLink {
-                        EditProfileView(viewModel: viewModel)
-                    } label: {
-                        Text("Edit Profile")
-                    }
+                    Section {
+                        NavigationLink {
+                            EditProfileView(viewModel: viewModel)
+                        } label: {
+                            Text("Edit Profile")
+                        }
 
-                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                        Text("Select a photo")
-                    }
-
-                    if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .scaledToFill()
-                                .frame(width: 150, height: 150)
-                                .cornerRadius(10)
-                        } placeholder: {
-                            ProgressView().frame(width: 150, height: 150)
+                        NavigationLink {
+                            EditPreferencesView(viewModel: viewModel)
+                        } label: {
+                            Text("Edit Dietary Preferences & Allergies")
                         }
                     }
 
-                    if user.profile.profileImagePath != nil {
-                        Button("Delete image") {
-                            viewModel.deleteProfileImage()
+                    Section {
+                        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                            Text("Select a photo")
+                        }
+
+                        if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+                            AsyncImage(url: url) { image in
+                                image.resizable()
+                                    .scaledToFill()
+                                    .frame(width: 150, height: 150)
+                                    .cornerRadius(10)
+                            } placeholder: {
+                                ProgressView().frame(width: 150, height: 150)
+                            }
+                        }
+
+                        if user.profile.profileImagePath != nil {
+                            Button("Delete image") {
+                                viewModel.deleteProfileImage()
+                            }
                         }
                     }
                 } else {
-                    Text("Loading profile...")
-                        .foregroundColor(.gray)
+                    ProgressView("Loading profile...")
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
             .onAppear {
@@ -57,7 +67,6 @@ struct ProfileView: View {
                     }
                 }
             }
-
             .onChange(of: selectedItem) { newValue in
                 if let newValue {
                     viewModel.saveProfileImage(item: newValue)
@@ -67,6 +76,7 @@ struct ProfileView: View {
         }
     }
 }
+
 
 
 struct ProfileView_Previews: PreviewProvider {

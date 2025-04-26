@@ -22,6 +22,8 @@ struct HomePageView: View {
     @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
     @State private var progressValues: [Double] = Array(repeating: 1, count: 7)
     @State private var selectedDate: Date = Date()
+    @State private var stepCount: Int = 0
+    @State private var stepGoal: Int = 10000
     @Binding var showSignInView: Bool
     let dayIndex: Int = 1
 
@@ -47,9 +49,12 @@ struct HomePageView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 15) {
                     VStack(alignment: .leading, spacing: 10) {
+                        StepCountBar(steps: stepCount, goal: stepGoal)
+                            .padding(.top, 20)
                         DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
                             .datePickerStyle(.compact)
                             .padding(.horizontal)
+                            .padding(.top, 20)
                         
                         Text("Workout Progress")
                             .font(.largeTitle)
@@ -99,19 +104,22 @@ struct HomePageView: View {
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 150, height: 150)
                                             Text(type.rawValue)
-                                                .font(.headline)
-                                        }
+                                                .foregroundColor(.black)                                        }
                                     }
                                 }
                             }.padding(.horizontal)
                         }
-                        
-                        NavigationLink("Progress Calendar", destination: ProgressTrackerView())
-                            .font(.largeTitle)
                     }
                     .navigationBarBackButtonHidden(true)
                     .onAppear {
                         fetchAllDaysProgress()
+                        HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
+                            if let steps = steps {
+                                DispatchQueue.main.async {
+                                    self.stepCount = Int(steps)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -145,12 +153,5 @@ struct HomePageView: View {
                 }
             }
         }
-    }
-}
-
-struct HomePageView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomePageView(showSignInView: .constant(false))
-            .environmentObject(TodayMealManager())
     }
 }

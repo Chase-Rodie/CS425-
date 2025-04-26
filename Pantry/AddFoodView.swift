@@ -27,6 +27,7 @@ struct AddFoodView: View {
     // Variables to control popups
     @State private var showSheet = false
     @State private var showError = false
+    @State private var selectedUnit: String = "g"
     
     // Search Mangager Object to handle queries
     @ObservedObject var searchManager = SearchManager()
@@ -94,11 +95,26 @@ struct AddFoodView: View {
                     .font(.headline)
                     .padding()
                 
-                TextField("Quantity", text: $amountStr)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    // Displays keypad
-                    .keyboardType(.decimalPad)
-                    .padding()
+//                TextField("Quantity", text: $amountStr)
+//                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                    // Displays keypad
+//                    .keyboardType(.decimalPad)
+//                    .padding()
+                
+                HStack {
+                    TextField("Quantity", text: $amountStr)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.decimalPad)
+
+                    Picker("Unit", selection: $selectedUnit) {
+                        ForEach(Array(Units.keys), id: \.self) { unit in
+                            Text(unit).tag(unit)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .frame(width: 80)
+                }
+                .padding()
                 
                 if let errorMessage = errorMessage {
                     Text(errorMessage)
@@ -228,7 +244,8 @@ struct AddFoodView: View {
             id: originalFood.id,
             food_id: Int(originalFood.food_id),
             name: originalFood.name,
-            quantity: value
+            quantity: value,
+            unit: selectedUnit
         )
         
         // Save the pantry item to Firestore
@@ -246,6 +263,7 @@ struct AddFoodView: View {
             "id": item.food_id,
             "name": item.name,
             "quantity": value,
+            "unit": selectedUnit,
             "calories": originalFood.calories,
             "fat": originalFood.fat,
             "carbohydrates": originalFood.carbohydrates,
