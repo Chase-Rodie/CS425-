@@ -21,7 +21,7 @@ struct EmailVerificationView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100, height: 100)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.background)
 
                 Text("Verify Your Email")
                     .font(.title)
@@ -43,7 +43,7 @@ struct EmailVerificationView: View {
                     }
                 }
                 .padding()
-                .background(Color.blue)
+                .background(Color.background)
                 .foregroundColor(.white)
                 .cornerRadius(10)
 
@@ -51,7 +51,7 @@ struct EmailVerificationView: View {
                     resendVerificationEmail()
                 }
                 .padding(.top, 10)
-                .foregroundColor(.blue)
+                .foregroundColor(.background)
 
                 NavigationLink(destination: OnboardingView(showSignInView: $showSignInView), isActive: $showOnboarding) {
                     EmptyView()
