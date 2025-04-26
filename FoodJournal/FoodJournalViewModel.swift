@@ -336,7 +336,7 @@ class macroCalculator {
     static func getMacros(completion: @escaping (macroNutrients) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")
-            completion(macroNutrients(cals: 42.47, fat: 42.47, carbs: 42.47, protein: 42.47))
+            completion(macroNutrients(cals: 2000, fat: 66.7, carbs: 250, protein: 100))
             return
         }
 
@@ -349,7 +349,7 @@ class macroCalculator {
         profileRef.getDocument { document, error in
             if let error = error {
                 print("Error fetching profile at getMacros(): \(error.localizedDescription)")
-                completion(macroNutrients(cals: 42.47, fat: 42.47, carbs: 42.47, protein: 42.47))
+                completion(macroNutrients(cals: 2000, fat: 66.7, carbs: 250, protein: 100))
                 return
             }
 
@@ -390,6 +390,11 @@ class macroCalculator {
             }
             else { // "Beginner" or not specified
                 calories = calories * 1.2
+            }
+            
+            // Adjust if calorie intake is too small
+            if calories < 1200 {
+                calories = 1200
             }
             
             // Macros
