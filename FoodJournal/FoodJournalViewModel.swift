@@ -24,11 +24,23 @@ import FirebaseFirestore
     private let collectionName = "foodEntries"
     @Published var now: Date = Date()
     
-    
-    func fetchFoodEntries(mealName: String, for date: Date) {
+    func clearFoodEntries() {
         self.breakfastFoodEntries = []
         self.lunchFoodEntries = []
         self.dinnerFoodEntries = []
+    }
+    
+    func fetchFoodEntries(mealName: String, for date: Date) {
+        /// NOTE:
+        /// Zach added this to fix a bug. Later he discovered it introduced a new bug
+        /// Old Bug is currently unkown. Uncommenting this will make it so when adding a
+        /// new food a mealType it will not show foods in other meal types. For example,
+        /// adding a new food to Breakfast will make it so foods in Lunch and Dinner do not show
+        /*
+        self.breakfastFoodEntries = []
+        self.lunchFoodEntries = []
+        self.dinnerFoodEntries = []
+        */
         
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
@@ -249,6 +261,30 @@ import FirebaseFirestore
         return breakfastCalories + lunchCalories + dinnerCalories
     }
     
+    func totalFatForDay() -> Double {
+        let breakfastFat = breakfastFoodEntries.reduce(0) { $0 + Double($1.fat)}
+        let lunchFat = lunchFoodEntries.reduce(0) { $0 + Double($1.fat)}
+        let dinnerFat = dinnerFoodEntries.reduce(0) { $0 + Double($1.fat)}
+        
+        return breakfastFat + lunchFat + dinnerFat
+    }
+    
+    func totalCarbsForDay() -> Double {
+        let breakfastCarbs = breakfastFoodEntries.reduce(0) { $0 + Double($1.carbohydrates)}
+        let lunchCarbs = lunchFoodEntries.reduce(0) { $0 + Double($1.carbohydrates)}
+        let dinnerCarbs = dinnerFoodEntries.reduce(0) { $0 + Double($1.carbohydrates)}
+        
+        return breakfastCarbs + lunchCarbs + dinnerCarbs
+    }
+    
+    func totalProteinForDay() -> Double {
+        let breakfastProtein = breakfastFoodEntries.reduce(0) { $0 + Double($1.protein)}
+        let lunchProtein = lunchFoodEntries.reduce(0) { $0 + Double($1.protein)}
+        let dinnerProtein = dinnerFoodEntries.reduce(0) { $0 + Double($1.protein)}
+        
+        return breakfastProtein + lunchProtein + dinnerProtein
+    }
+    
     func getConversionRatio(unit: String) -> Double {
         var ratio = 1.0
 
@@ -287,4 +323,145 @@ import FirebaseFirestore
     }
 }
 
+/// USED FOR CACLULATING MACROS
 
+struct macroNutrients: Codable, Equatable {
+    var cals: Double?
+    var fat: Double?
+    var carbs: Double?
+    var protein: Double?
+}
+
+class macroCalculator {
+    static func getMacros(completion: @escaping (macroNutrients) -> Void) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            completion(macroNutrients(cals: 2000, fat: 66.7, carbs: 250, protein: 100))
+            return
+        }
+
+        let profileRef = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("UserInformation")
+            .document("profile")
+
+        profileRef.getDocument { document, error in
+            if let error = error {
+                print("Error fetching profile at getMacros(): \(error.localizedDescription)")
+                completion(macroNutrients(cals: 2000, fat: 66.7, carbs: 250, protein: 100))
+                return
+            }
+
+            let data = document?.data() ?? [:]
+            let gender = data["gender"] as? String ?? "Other"
+            let age = data["age"] as? Int32 ?? 25
+            let weight = data["weight"] as? String ?? "170"
+            let height = data["height"] as? String ?? "5, 9"
+            let fitnessLevel = data["fitnessLevel"] as? String ?? "Beginner"
+            let goal = data["goal"] as? String ?? "Maintain"
+            
+            // Parse height and convert into cm
+            let parsedHeight = parseHeight(from: height)
+            let height_cm = (parsedHeight.feet * 30.48) + (parsedHeight.inches * 2.54)
+            
+            // Parse weight and convert into kg
+            let weight_kg = Double(parseWeight(from: weight) / 2.205)
+            
+            // Set base calories
+            var calories = 10 * weight_kg
+            calories = calories + (6.25 * height_cm)
+            calories = calories - (5.0 * Double(age))
+            
+            // Adjust base calories based on gender
+            if gender == "Male" {
+                calories = calories + 5
+            }
+            else if gender == "Female" {
+                calories = calories - 161
+            }
+            
+            // Adjust base calories based on activity level
+            if fitnessLevel == "Intermediate" {
+                calories = calories * 1.55
+            }
+            else if fitnessLevel == "Advanced" {
+                calories = calories * 1.9
+            }
+            else { // "Beginner" or not specified
+                calories = calories * 1.2
+            }
+            
+            // Adjust if calorie intake is too small
+            if calories < 1200 {
+                calories = 1200
+            }
+            
+            // Macros
+            var fat: Double = 0.0
+            var carbs: Double = 0.0
+            var protein: Double = 0.0
+            
+            // Adjust base calories based on goal
+            if goal == "LoseWeight" {
+                calories = calories - 400
+                fat = calories * (1 / 30)
+                carbs = calories * (9 / 80)
+                protein = calories * (1 / 16)
+            }
+            else if goal == "GainWeight" {
+                calories = calories + 400
+                fat = calories * (1 / 45)
+                carbs = calories * (1 / 8)
+                protein = calories * (3 / 40)
+            }
+            else {
+                fat = calories * (1 / 30)
+                carbs = calories * (1 / 8)
+                protein = calories * (1 / 20)
+            }
+            
+            // Get macros
+            
+            // Re-adjust calories
+            
+            // Debugging code
+            //let age2: Double = Double(age)
+
+            //print("Profile Data: gender=\(gender), age=\(age), weight=\(weight), height=\(height), fitnessLevel=\(fitnessLevel), goal=\(goal)")
+            //print("Age = \(age), height = \(height_cm), weight = \(weight_kg)")
+            print("Calories= \(calories), Fat= \(fat), Carbs= \(carbs), Protein= \(protein)")
+
+            completion(macroNutrients(cals: calories, fat: fat, carbs: carbs, protein: protein))
+        }
+    }
+    
+    static func parseHeight(from heightString: String) -> (feet: Double, inches: Double) {
+        let components = heightString
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+
+        if components.count == 2,
+           let feet = Double(components[0]),
+           let inches = Double(components[1]) {
+            return (feet, inches)
+        } else {
+            return (5, 6) // default if parsing fails
+        }
+    }
+    
+    static func parseWeight(from weightString: String) -> Double {
+        let pattern = #"(\d+(\.\d+)?)"#
+        
+        if let regex = try? NSRegularExpression(pattern: pattern),
+           let match = regex.firstMatch(in: weightString, range: NSRange(weightString.startIndex..., in: weightString)),
+           let range = Range(match.range(at: 1), in: weightString) {
+            
+            let numberString = String(weightString[range])
+            return Double(numberString) ?? 175.0
+        }
+        
+        return 175.0 // default fallback
+    }
+
+}

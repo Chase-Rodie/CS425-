@@ -14,25 +14,26 @@ struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
     @State private var selectedMeal: Meal?
     @State private var now = Date()
-    //@FirestoreQuery var items: [Food]
-    
-  //  private let userId: String
-    
-    
-//    init(userId: String){
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "MM-dd-yyyy"
-//        let formattedDate = dateFormatter.string(from: now)
-//        
-//        //self.userId = userId
-//        self._items = FirestoreQuery(collectionPath: "users/\(userId)/foodjournal/\(formattedDate)/breakfast")
-//    }
-    //calorie goal will need to be passed into this view or fetched from database at some point
-    
-    let calorieGoal: Double = 1600
+    // This will hold your fetched macro goals
+    @State private var macroTotals = macroNutrients()
+    @State private var showMacros = false // Macro menu
+
+    var calorieGoal: Double {
+        macroTotals.cals ?? 0
+    }
+
+    var fatGoal: Double {
+        macroTotals.fat ?? 0
+    }
+
+    var carbGoal: Double {
+        macroTotals.carbs ?? 0
+    }
+
+    var protGoal: Double {
+        macroTotals.protein ?? 0
+    }
    
-    
-    
     var body: some View{
         
         ZStack{
@@ -58,19 +59,81 @@ struct FoodJournalView: View {
                     .padding(.top)
                     
                     Spacer(minLength: 30)
-                   
-                    VStack{
+                        
+                    VStack {
+                        // Always-visible calories section
                         let totalCalories = viewModel.totalCaloriesForDay()
-                        let progress = min(Double(totalCalories) / Double(calorieGoal), 1.0)
-                        VStack(spacing: 5){
-                            //Text("Totals for today:")
-                            Text("Calories: \(totalCalories)/\(calorieGoal.formatted())")
+                        let calProgress = min(Double(totalCalories) / Double(calorieGoal), 1.0)
+
+                        VStack(spacing: 5) {
+                            Text("Calories: \(totalCalories) / \(calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                            ProgressView(value: calProgress, total: 1.0)
+                                .progressViewStyle(LinearProgressViewStyle())
+                                .frame(width: 300, height: 30)
+                                .tint(.navy)
                         }
-                      
-                        ProgressView(value: progress, total: 1.0)
-                            .progressViewStyle(LinearProgressViewStyle())
-                            .frame(width: 200, height: 20) // Adjust width and height
-                            .tint(.navy)
+                        .padding(.horizontal, 16)
+
+                        // Toggle button
+                        Button(action: {
+                            withAnimation {
+                                showMacros.toggle()
+                            }
+                        }) {
+                            Text(showMacros ? "Hide Macros" : "Show Macros")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                                .padding(.top, 8)
+                        }
+
+                        // Collapsible macro section
+                        if showMacros {
+                            VStack(spacing: 8) {
+                                // Fat
+                                let totalFat = viewModel.totalFatForDay()
+                                let fatProgress = min(Double(totalFat) / Double(fatGoal), 1.0)
+
+                                HStack {
+                                    Text("Fat: \(String(format: "%.1f", totalFat))g / \(String(format: "%.1f", fatGoal))g")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    ProgressView(value: fatProgress, total: 1.0)
+                                        .progressViewStyle(LinearProgressViewStyle())
+                                        .frame(width: 150, height: 20)
+                                        .tint(.navy)
+                                }
+
+                                // Carbs
+                                let totalCarbs = viewModel.totalCarbsForDay()
+                                let carbProgress = min(Double(totalCarbs) / Double(carbGoal), 1.0)
+
+                                HStack {
+                                    Text("Carbs: \(String(format: "%.1f", totalCarbs))g / \(String(format: "%.1f", carbGoal))g")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    ProgressView(value: carbProgress, total: 1.0)
+                                        .progressViewStyle(LinearProgressViewStyle())
+                                        .frame(width: 150, height: 20)
+                                        .tint(.navy)
+                                }
+
+                                // Protein
+                                let totalProtein = viewModel.totalProteinForDay()
+                                let proteinProgress = min(Double(totalProtein) / Double(protGoal), 1.0)
+
+                                HStack {
+                                    Text("Protein: \(String(format: "%.1f", totalProtein))g / \(String(format: "%.1f", protGoal))g")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    ProgressView(value: proteinProgress, total: 1.0)
+                                        .progressViewStyle(LinearProgressViewStyle())
+                                        .frame(width: 150, height: 20)
+                                        .tint(.navy)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .transition(.opacity.combined(with: .slide))
+                        }
+                    
+
+                    
                         HStack{
                             VStack(alignment: .leading){
                                 HStack{
@@ -94,13 +157,14 @@ struct FoodJournalView: View {
                                     .background(Color.black)
                                
                                 ForEach(viewModel.breakfastFoodEntries){ food in
-                                    HStack{
-                                        VStack(alignment: .leading){
-                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)){
+                                    NavigationLink(destination:FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)){
+                                        HStack{
+                                            VStack(alignment: .leading){
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
+                                                
+                                                Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                             }
-                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -138,13 +202,14 @@ struct FoodJournalView: View {
                                 Divider()
                                     .background(Color.black)
                                 ForEach(viewModel.lunchFoodEntries){ food in
-                                    HStack{
-                                        VStack(alignment: .leading){
-                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)){
+                                    NavigationLink(destination:FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)){
+                                        HStack{
+                                            VStack(alignment: .leading){
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
+                                                
+                                                Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                             }
-                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -181,13 +246,14 @@ struct FoodJournalView: View {
                                 Divider()
                                     .background(Color.black)
                                 ForEach(viewModel.dinnerFoodEntries){ food in
+                                    NavigationLink(destination:FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)){
                                     HStack{
                                         VStack(alignment: .leading){
-                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)){
-                                                Text(food.name)
-                                                    .font(.system(size: 18, weight: .semibold))
-                                            }
+                                            Text(food.name)
+                                                .font(.system(size: 18, weight: .semibold))
+                                            
                                             Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
+                                        }
                                         }
                                         Spacer()
                                         Button{
@@ -209,6 +275,7 @@ struct FoodJournalView: View {
             }
         }.foregroundColor(.white)
             .onChange(of: now) { newDate in
+                viewModel.clearFoodEntries()
                 viewModel.fetchFoodEntries(mealName: "breakfast", for: newDate)
                 viewModel.fetchFoodEntries(mealName: "lunch", for: newDate)
                 viewModel.fetchFoodEntries(mealName: "dinner", for: newDate)
@@ -217,6 +284,13 @@ struct FoodJournalView: View {
                 viewModel.fetchFoodEntries(mealName: "breakfast", for: now)
                 viewModel.fetchFoodEntries(mealName: "lunch", for: now)
                 viewModel.fetchFoodEntries(mealName: "dinner", for: now)
+                
+                //Get macro nutrients for user
+                macroCalculator.getMacros { macros in
+                    DispatchQueue.main.async {
+                        macroTotals = macros
+                    }
+                }
             }
     }
 }
