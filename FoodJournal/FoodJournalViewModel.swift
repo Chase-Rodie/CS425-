@@ -24,11 +24,23 @@ import FirebaseFirestore
     private let collectionName = "foodEntries"
     @Published var now: Date = Date()
     
-    
-    func fetchFoodEntries(mealName: String, for date: Date) {
+    func clearFoodEntries() {
         self.breakfastFoodEntries = []
         self.lunchFoodEntries = []
         self.dinnerFoodEntries = []
+    }
+    
+    func fetchFoodEntries(mealName: String, for date: Date) {
+        /// NOTE:
+        /// Zach added this to fix a bug. Later he discovered it introduced a new bug
+        /// Old Bug is currently unkown. Uncommenting this will make it so when adding a
+        /// new food a mealType it will not show foods in other meal types. For example,
+        /// adding a new food to Breakfast will make it so foods in Lunch and Dinner do not show
+        /*
+        self.breakfastFoodEntries = []
+        self.lunchFoodEntries = []
+        self.dinnerFoodEntries = []
+        */
         
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
