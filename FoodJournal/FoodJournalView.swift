@@ -59,62 +59,6 @@ struct FoodJournalView: View {
                     .padding(.top)
                     
                     Spacer(minLength: 30)
-                    
-                    /*
-                    VStack{
-                        // calories
-                        let totalCalories = viewModel.totalCaloriesForDay()
-                        let calProgress = min(Double(totalCalories) / Double(calorieGoal), 1.0)
-                        VStack(spacing: 5){
-                            //Text("Totals for today:")
-                            Text("Calories: \(totalCalories) / \(String(format: "%.0f", calorieGoal))")
-                        }
-                      
-                        ProgressView(value: calProgress, total: 1.0)
-                            .progressViewStyle(LinearProgressViewStyle())
-                            .frame(width: 300, height: 30) // Adjust width and height
-                            .tint(.navy)
-                        
-                        // fat
-                        let totalFat = viewModel.totalFatForDay()
-                        let fatProgress = min(Double(totalFat) / Double(fatGoal), 1.0)
-                        HStack {
-                            Text("Fat: \(String(format: "%.1f", totalFat))g / \(String(format: "%.1f", fatGoal))g")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            ProgressView(value: fatProgress, total: 1.0)
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .frame(width: 150, height: 20)
-                                .tint(.navy)
-                        }
-                        .padding(.horizontal, 24)
-                        
-                        // carbs
-                        let totalCarbs = viewModel.totalCarbsForDay()
-                        let carbProgress = min(Double(totalCarbs) / Double(carbGoal), 1.0)
-                        HStack {
-                            Text("Carbs: \(String(format: "%.1f", totalCarbs))g / \(String(format: "%.1f", carbGoal))g")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            ProgressView(value: carbProgress, total: 1.0)
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .frame(width: 150, height: 20)
-                                .tint(.navy)
-                        }
-                        .padding(.horizontal, 24)
-                        
-                        // protein
-                        let totalProtein = viewModel.totalProteinForDay()
-                        let proteinProgress = min(Double(totalProtein) / Double(protGoal), 1.0)
-                        HStack {
-                            Text("Protein: \(String(format: "%.1f", totalProtein))g / \(String(format: "%.1f", protGoal))g")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            ProgressView(value: proteinProgress, total: 1.0)
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .frame(width: 150, height: 20)
-                                .tint(.navy)
-                        }
-                        .padding(.horizontal, 24)
-                        */
-                        
                         
                     VStack {
                         // Always-visible calories section
