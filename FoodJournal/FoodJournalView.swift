@@ -157,13 +157,14 @@ struct FoodJournalView: View {
                                     .background(Color.black)
                                
                                 ForEach(viewModel.breakfastFoodEntries){ food in
-                                    HStack{
-                                        VStack(alignment: .leading){
-                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)){
+                                    NavigationLink(destination:FoodJournalItemView(item: food, mealName: "breakfast", viewModel: viewModel)){
+                                        HStack{
+                                            VStack(alignment: .leading){
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
+                                                
+                                                Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                             }
-                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -201,13 +202,14 @@ struct FoodJournalView: View {
                                 Divider()
                                     .background(Color.black)
                                 ForEach(viewModel.lunchFoodEntries){ food in
-                                    HStack{
-                                        VStack(alignment: .leading){
-                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)){
+                                    NavigationLink(destination:FoodJournalItemView(item: food, mealName: "lunch", viewModel: viewModel)){
+                                        HStack{
+                                            VStack(alignment: .leading){
                                                 Text(food.name)
                                                     .font(.system(size: 18, weight: .semibold))
+                                                
+                                                Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                             }
-                                            Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
                                         }
                                         Spacer()
                                         Button{
@@ -244,13 +246,14 @@ struct FoodJournalView: View {
                                 Divider()
                                     .background(Color.black)
                                 ForEach(viewModel.dinnerFoodEntries){ food in
+                                    NavigationLink(destination:FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)){
                                     HStack{
                                         VStack(alignment: .leading){
-                                            NavigationLink(destination:FoodJournalItemView(item: food, mealName: "dinner", viewModel: viewModel)){
-                                                Text(food.name)
-                                                    .font(.system(size: 18, weight: .semibold))
-                                            }
+                                            Text(food.name)
+                                                .font(.system(size: 18, weight: .semibold))
+                                            
                                             Text("Quantity: \(food.quantity.description) \(food.unit.description)   •    Calories: \(food.calories.description)")
+                                        }
                                         }
                                         Spacer()
                                         Button{

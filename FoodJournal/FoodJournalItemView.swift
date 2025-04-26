@@ -24,12 +24,12 @@ struct FoodJournalItemView: View {
                     Text(item.name)
                         .bold()
                         .font(.system(size: 30))
-                    Text("Quantity: "+item.quantity.description)
+                    Text("Quantity: "+item.quantity.description + " " + item.unit.description)
                     Text("Calories: "+item.calories.description)
-                    Text("Carbohydrates: " + item.carbohydrates.description)
-                    Text("Protein: " + item.protein.description)
-                    Text("Fats: " + item.fat.description)
-                    Text("Show More")
+                    Text("Fats: \(String(format: "%.1f", item.fat)) g")
+                    Text("Carbohydrates: \(String(format: "%.1f", item.carbohydrates)) g")
+                    Text("Protein: \(String(format: "%.1f", item.protein)) g")
+                    //Text("Show More")
                 }
                 .padding()
             }
