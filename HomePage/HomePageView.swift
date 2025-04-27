@@ -94,24 +94,17 @@ struct HomePageView: View {
                                             set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                                         ),
                                         onRemove: { removedMeal in
-                                            guard let amount = removedMeal.consumedAmount else { return }
+                                            let restoredAmountInPantryUnits = removedMeal.actualConsumedPantryAmount ?? 0.0
 
-                                            let eatenUnit = removedMeal.consumedUnit ?? "g"
-                                            let eatenFactor = Units[eatenUnit] ?? 1.0
-                                            let eatenGrams = amount * eatenFactor
-
-                                            let pantryUnit = removedMeal.unit ?? "g"
-                                            let pantryFactor = Units[pantryUnit] ?? 1.0
-                                            let restoredAmount = eatenGrams / pantryFactor
+                                            print("Restoring \(restoredAmountInPantryUnits) \(removedMeal.unit ?? "g") for \(removedMeal.name) (saved consumed pantry amount)")
 
                                             if !removedMeal.pantryDocID.isEmpty {
-                                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+                                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmountInPantryUnits)
                                             } else {
                                                 print("⚠️ pantryDocID is empty for meal: \(removedMeal.name)")
                                             }
 
                                             removeMealFromFirestore(removedMeal, for: selectedDate, type: type) {
-                                                
                                                 Task {
                                                     await mealManager.restoreMeals(for: selectedDate) {
                                                         print("Meals refreshed after deletion")

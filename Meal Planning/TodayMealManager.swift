@@ -139,7 +139,8 @@ extension TodayMealManager {
                         carbs: item["carbs"] as? Double ?? 0.0,
                         fat: item["fat"] as? Double ?? 0.0,
                         unit: unit,
-                        consumedUnit: unit
+                        consumedUnit: unit,
+                        actualConsumedPantryAmount: item["actual_consumed_pantry_amount"] as? Double ?? nil
                     )
 
                     restoredMeals.append(restoredMeal)

@@ -65,28 +65,22 @@ struct MealPlanView: View {
                                 set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                             ),
                             onRemove: { removedMeal in
-                                guard let amount = removedMeal.consumedAmount else { return }
+                                let restoredAmountInPantryUnits = removedMeal.actualConsumedPantryAmount ?? 0.0
 
-                                let eatenUnit = removedMeal.consumedUnit ?? "g"
-                                let eatenFactor = Units[eatenUnit] ?? 1.0
-                                let eatenGrams = amount * eatenFactor
-
-                                let pantryUnit = removedMeal.unit ?? "g"
-                                let pantryFactor = Units[pantryUnit] ?? 1.0
-                                let restoredAmount = eatenGrams / pantryFactor
+                                print("Restoring \(restoredAmountInPantryUnits) \(removedMeal.unit ?? "g") for \(removedMeal.name) (saved consumed pantry amount)")
 
                                 if !removedMeal.pantryDocID.isEmpty {
-                                    updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmount)
+                                    updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmountInPantryUnits)
                                 } else {
                                     print("⚠️ pantryDocID is empty for meal: \(removedMeal.name)")
                                 }
+
                                 removeMealFromFirestore(removedMeal, for: selectedDate, type: selectedMealType)
 
                                 Task {
                                     await fetchMealsAsync()
                                 }
                             }
-
                         )
                             .environmentObject(mealManager)
                         ){
@@ -291,6 +285,7 @@ struct MealPlanView: View {
                                 var updatedMeal = meal
                                 updatedMeal.consumedAmount = eaten
                                 updatedMeal.consumedUnit = selectedUnit
+                                updatedMeal.actualConsumedPantryAmount = amountToSubtract
                                 updatedMeal.quantity -= amountToSubtract
                                 mealManager.appendMeal(for: selectedDate, type: selectedMealType, meal: updatedMeal)
                                 
@@ -331,13 +326,34 @@ struct MealPlanView: View {
             return
         }
 
-        let docRef = Firestore.firestore()
-            .collection("users")
+        let db = Firestore.firestore()
+        let pantryDoc = db.collection("users")
             .document(userID)
             .collection("pantry")
             .document(docID)
 
-        docRef.updateData(["quantity": FieldValue.increment(amount)])
+        pantryDoc.getDocument { documentSnapshot, error in
+            if let error = error {
+                print("Error fetching pantry document: \(error.localizedDescription)")
+                return
+            }
+
+            guard let data = documentSnapshot?.data(),
+                  let currentQuantity = data["quantity"] as? Double else {
+                print("Pantry document missing or missing quantity field")
+                return
+            }
+
+            let newQuantity = currentQuantity + amount
+
+            pantryDoc.updateData(["quantity": newQuantity]) { error in
+                if let error = error {
+                    print("Error updating quantity: \(error.localizedDescription)")
+                } else {
+                    print("✅ Pantry \(docID) quantity updated: \(currentQuantity) + \(amount) = \(newQuantity)")
+                }
+            }
+        }
     }
     
     func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
@@ -365,7 +381,8 @@ struct MealPlanView: View {
             "protein": meal.protein,
             "carbs": meal.carbs,
             "fat": meal.fat,
-            "pantryDocID": meal.pantryDocID
+            "pantryDocID": meal.pantryDocID,
+            "actual_consumed_pantry_amount": meal.actualConsumedPantryAmount ?? 0.0
         ]
 
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
