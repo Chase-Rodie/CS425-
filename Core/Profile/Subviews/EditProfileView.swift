@@ -73,7 +73,7 @@ struct EditProfileView: View {
                     )) {
                         Text("Lose Weight").tag("LoseWeight")
                         Text("Gain Weight").tag("GainWeight")
-                        Text("Maintain Weight").tag("Maintain")
+                        Text("Maintain Weight").tag("MaintainWeight")
                     }
 
                     //VStack(alignment: .leading, spacing: 10) {
