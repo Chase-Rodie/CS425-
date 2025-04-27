@@ -19,7 +19,7 @@ struct ProfileView: View {
                 if let user = viewModel.user {
                     Section {
                         NavigationLink {
-                            EditProfileView(viewModel: viewModel)
+                            EditProfileView(viewModel: viewModel, showProfilePopup: .constant(false))
                         } label: {
                             Text("Edit Profile")
                         }

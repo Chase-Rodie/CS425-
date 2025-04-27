@@ -11,11 +11,12 @@ import FirebaseAuth
 struct RootView: View {
     
     @State private var showSignInView: Bool = false
+    @StateObject private var viewModel = ProfileViewModel()
     
     var body: some View {
         ZStack {
             if !showSignInView {
-                TempContentView(showSignInView: $showSignInView)
+                TempContentView(showSignInView: $showSignInView, viewModel: viewModel)
             }
         }
         .onAppear {

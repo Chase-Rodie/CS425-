@@ -13,7 +13,7 @@ struct AuthenticationView: View {
     
     @StateObject private var viewModel = AuthenticationViewModel()
     @Binding var showSignInView: Bool
-    @State private var isReturningUser: Bool = true  // Toggle between Sign In & Sign Up
+    @State private var isReturningUser: Bool = true  
     
     var body: some View {
         VStack {
@@ -59,6 +59,7 @@ struct AuthenticationView: View {
                     do {
                         try await viewModel.signInGoogle()
                         showSignInView = false
+                        UserDefaults.standard.set("google", forKey: "loginMethod")
                     } catch {
                         print(error)
                     }
@@ -93,6 +94,7 @@ struct AuthenticationView: View {
                     do {
                         try await viewModel.signInApple()
                         showSignInView = false
+                        UserDefaults.standard.set("apple", forKey: "loginMethod")
                     } catch {
                         print(error)
                     }
