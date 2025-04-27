@@ -76,7 +76,7 @@ struct DailyWorkoutView: View {
                                                                             Text("Duration: \(workout.duration) min")
                                                                                 .font(.subheadline)
                                                                             if workout.distance > 0 {
-                                                                                Text("Distance: \(workout.distance) meters")
+                                                                                Text("Distance: \(workout.distance) miles")
                                                                                     .font(.subheadline)
                                                                             }
                                                                         } else if workout.type.lowercased() == "flexibility" {
