@@ -47,7 +47,7 @@ struct OnboardingView: View {
             Button(action: nextStep) {
                 Text(currentStep < 8 ? "Next" : "Finish")
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.background)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }

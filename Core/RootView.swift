@@ -13,13 +13,12 @@ struct RootView: View {
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var mealManager: TodayMealManager
     @State private var showSignInView: Bool = false
+    @StateObject private var viewModel = ProfileViewModel()
     
     var body: some View {
         ZStack {
             if !showSignInView {
-                TempContentView(showSignInView: $showSignInView)
-                    .environmentObject(userManager)
-                    .environmentObject(mealManager)
+                TempContentView(showSignInView: $showSignInView, viewModel: viewModel)
             }
         }
         .onAppear {

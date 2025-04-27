@@ -148,16 +148,59 @@ final class AuthenticationManager {
 
         let userID = user.uid
         let db = Firestore.firestore()
+        let batch = db.batch()
 
         do {
-            try await db.collection("users").document(userID).delete()
-            print("User document deleted from Firestore")
+            //Steps to batch delete collections/subcollecitons
+            // Delete profile doc
+            let profileRef = db.collection("users").document(userID).collection("UserInformation").document("profile")
+            batch.deleteDocument(profileRef)
 
+            // Delete root user doc
+            let userRef = db.collection("users").document(userID)
+            batch.deleteDocument(userRef)
+
+            // Delete workout plan collection (delete each document inside the collection)
+            let workoutPlanRef = db.collection("users").document(userID).collection("workoutplan")
+            
+            // Fetch all workout plan documents
+            let workoutDocs = try await workoutPlanRef.getDocuments()
+
+            // Add delete operations for each workout plan document
+            for document in workoutDocs.documents {
+                let workoutPlanDocumentRef = document.reference
+                batch.deleteDocument(workoutPlanDocumentRef)
+
+                // Delete sub-collections (Day1, Day2, etc.)
+                for dayIndex in 1...7 {
+                    let dayCollectionRef = workoutPlanDocumentRef.collection("Day\(dayIndex)")
+                    let exercises = try await dayCollectionRef.getDocuments()
+
+                    // Delete each exercise in the day collection
+                    for exerciseDoc in exercises.documents {
+                        batch.deleteDocument(exerciseDoc.reference)
+                    }
+                }
+            }
+
+            // Commit the batch of delete operations
+            try await batch.commit()
+            print("User document, profile, and workoutplan deleted from Firestore")
+
+            // Delete Firebase Auth user
             try await user.delete()
             print("User deleted from Firebase Authentication")
-            
-           try await resetUserDefaults()
+
+            // Reset UserDefaults
+            try await resetUserDefaults()
             print("User defaults reset")
+
+            // Clear currentUser on main thread
+            await MainActor.run {
+                UserManager.shared.currentUser = nil
+            }
+            print("UserManager currentUser cleared")
+
         } catch {
             if let errorCode = (error as NSError?)?.code,
                errorCode == AuthErrorCode.requiresRecentLogin.rawValue {
@@ -167,6 +210,10 @@ final class AuthenticationManager {
             }
         }
     }
+
+
+
+
 
     
     

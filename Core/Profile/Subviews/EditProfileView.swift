@@ -5,13 +5,17 @@
 //  Created by Chase Rodie on 2/11/25.
 //
 
+import FirebaseFirestore
+import FirebaseAuth
 import SwiftUI
 
 struct EditProfileView: View {
     @ObservedObject var viewModel: ProfileViewModel
     @Environment(\.dismiss) var dismiss
-    
+    @Binding var showProfilePopup: Bool
     @State private var editedUser: DBUser?
+    @State private var showSavedMessage = false
+
     
     // New States for Height
     @State private var feet = 5
@@ -24,13 +28,16 @@ struct EditProfileView: View {
         Form {
             if let _ = editedUser {
                 Section(header: Text("Personal Information")) {
-                    HStack {
-                        Text("Age")
-                        TextField("Age", text: Binding(
-                            get: { editedUser?.profile.age.map { "\($0)" } ?? "" },
-                            set: { editedUser?.profile.age = Int($0) }
-                        ))
-                    }
+                    
+                    TextField("Name", text: Binding(
+                        get: { editedUser?.profile.name ?? "" },
+                        set: { editedUser?.profile.name = $0 }
+                    ))
+                    
+                    TextField("Age", text: Binding(
+                        get: { editedUser?.profile.age.map { "\($0)" } ?? "" },
+                        set: { editedUser?.profile.age = Int($0) }
+                    ))
                     .keyboardType(.numberPad)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     /*
@@ -106,6 +113,13 @@ struct EditProfileView: View {
                 Button(action: {
                     Task {
                         await saveProfile()
+                        setProfileCompleted()
+                        showProfilePopup = false
+                        showSavedMessage = true
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            showSavedMessage = false
+                        }
                     }
                 }) {
                     Text("Save Changes")
@@ -115,6 +129,21 @@ struct EditProfileView: View {
                         .background(Color("BackgroundColor"))
                         .cornerRadius(10)
                 }
+                .frame(maxWidth: .infinity)
+                
+                if showSavedMessage {
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                        Text("Profile saved!")
+                            .foregroundColor(.green)
+                            .font(.headline)
+                    }
+                    .padding(.top, 8)
+                    .transition(.opacity)
+                }
+
+
             } else {
                 Text("Loading profile...").foregroundColor(.gray)
             }
@@ -172,14 +201,10 @@ struct EditProfileView: View {
         
         do {
             try await viewModel.updateUserProfile(user: updatedUser)
-
             print("Successfully updated profile: \(updatedUser)")
-
             await loadUser()
-
             DispatchQueue.main.async {
                 viewModel.user = updatedUser
-                dismiss()
             }
         } catch {
             print("Error updating profile: \(error)")
@@ -196,4 +221,21 @@ struct EditProfileView: View {
             weightInput = filtered
         }
     }
+    
+    func setProfileCompleted() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        db.collection("users").document(userId).updateData([
+            "profileCompleted": true
+        ]) { error in
+            if let error = error {
+                print("Error updating profileCompleted: \(error)")
+            } else {
+                print("Profile marked as completed after edit!")
+            }
+        }
+    }
+
+
+
 }

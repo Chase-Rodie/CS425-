@@ -126,6 +126,7 @@ struct HomePageView: View {
                                 }
                             }.padding(.horizontal)
                         }
+                        
                     }
                     .navigationBarBackButtonHidden(true)
 //                    .onAppear {

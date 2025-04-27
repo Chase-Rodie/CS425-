@@ -100,7 +100,7 @@ struct WeeklyWorkoutView: View {
                         Text("You cannot undo this action. All current progress in this workout plan will be lost.")
                     }
                     .padding(.vertical)
-                    Text("Don't like this plan? You can generate a new one! This plan will be permanetly deleted and all progress for it will be lost.")
+                    Text("Don't like this plan? You can generate a new one! This plan will be permanently deleted and all progress for it will be lost.")
                                 .font(.footnote)
                 }
                 } .padding()
