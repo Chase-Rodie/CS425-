@@ -10,7 +10,6 @@ import SwiftUI
 struct MainWorkoutView: View {
     @StateObject private var viewModel = RetrieveWorkoutData()
     @State private var hasAppeared = false
-    @State private var userGoal: Goal? = nil
 
     
     var body: some View {
@@ -28,9 +27,6 @@ struct MainWorkoutView: View {
             viewModel.workoutPlanExists { exists in
                 DispatchQueue.main.async {
                     viewModel.isWorkoutPlanAvailable = exists
-                    if let goal = UserManager.shared.currentUser?.profile.goal {
-                        self.userGoal = goal
-                    }
                     if exists {
                         viewModel.fetchWorkoutPlan()
              
@@ -44,6 +40,7 @@ struct MainWorkoutView: View {
 
 struct GetWorkoutPlanView: View {
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+    //@Binding  var isLoading: Bool
     @State var days = 0
     let numDays = ["3", "4", "5"]
     @State var dur = 0
@@ -51,117 +48,106 @@ struct GetWorkoutPlanView: View {
     @State var diff = 0
     let difficulty = ["Beginner", "Intermediate", "Expert"]
     
-    var userAge: Int {
-        return UserManager.shared.currentUser?.profile.age ?? 25
-    }
-
     var body: some View {
-        ZStack {
-            LinearGradient(colors: [.background, .lighter], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
+        ZStack{
             
-            VStack {
+            LinearGradient(colors:[.background, .lighter], startPoint:  .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            VStack{
                 Text("You do not currently have a workout plan.")
                     .fontWeight(.semibold)
                 Text("Please fill out the form below to get one!")
                     .fontWeight(.semibold)
-
-                VStack {
-                    Picker("Minutes", selection: $dur) {
-                        ForEach(duration.indices, id: \.self) { i in
-                            Text(self.duration[i])
-                        }
-                    }.pickerStyle(.segmented)
-
-                    Picker("Days", selection: $days) {
-                        ForEach(numDays.indices, id: \.self) { i in
-                            Text(self.numDays[i])
-                        }
-                    }.pickerStyle(.segmented)
-
-                    Picker("Difficulty", selection: $diff) {
-                        ForEach(difficulty.indices, id: \.self) { i in
-                            Text(self.difficulty[i])
-                        }
-                    }.pickerStyle(.segmented)
-
-                    ZStack {
+             
+                VStack{
+                        Picker("Minutes", selection: $dur){
+                            ForEach(duration.indices, id:\.self){i in                        Text(self.duration[i])
+                            }
+                        }.pickerStyle(.segmented)
+    
+                        Picker("Days", selection: $days){
+                                ForEach(numDays.indices, id:\.self){i in                        Text(self.numDays[i])
+                                }
+                        }.pickerStyle(.segmented)
+                        Picker("Difficulty", selection: $diff){
+                            ForEach(difficulty.indices, id:\.self){i in                        Text(self.difficulty[i])
+                            }
+                        }.pickerStyle(.segmented)
+                
+                    ZStack{
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white)
-                            .frame(width: 200, height: 25)
-                        
-                        Button("Get Workout Plan") {
+                            .fill(Color.white).frame(width: 200, height: 25)
+                        Button("Get Workout Plan"){
                             print("Generating Workout Plan")
                             
-                            let goalString = workoutPlanModel.userGoal?.rawValue.lowercased() ?? "lose"
                             var passMax: Int = 0
                             
-                            if dur == 0 {
-                                passMax = (goalString == "gain") ? 5 : 3
-                            } else {
-                                passMax = (goalString == "gain") ? 7 : 5
+                            if dur == 0{
+                                passMax = 3
+                            }else{
+                                passMax = 5
                             }
-
+                            
+                            
                             if days == 0 {
                                 print("3 days")
-                                workoutPlanModel.queryExercises(
-                                    days: [
-                                        ("push", ["chest", "shoulders", "triceps"]),
-                                        ("pull", ["back", "biceps", "abdominals"]),
-                                        ("pull", ["glutes", "quadriceps", "calves", "hamstrings"])
-                                    ],
-                                    maxExercises: passMax,
-                                    level: "beginner",
-                                    goal: goalString,
-                                    age: userAge 
-                                ) {
-                                    // Completion block if needed
+                                workoutPlanModel.queryExercises(days: [
+                                    ("push", ["chest", "shoulders", "triceps"]),
+                                    ("pull", ["back", "biceps", "abdominals"]),
+                                    ("pull", ["glutes", "quadriceps", "calves", "hamstrings"])
+                                ], maxExercises: passMax, level: "beginner", goal: "lose"){
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                        
+                                    }
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                                 }
-                            } else if days == 1 {
+                            }else if days == 1 {
                                 print("4 days")
-                                workoutPlanModel.queryExercises(
-                                    days: [
-                                        ("push", ["chest", "triceps"]),
-                                        ("pull", ["back", "biceps"]),
-                                        ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
-                                        ("pull", ["shoulders", "abdominals"])
-                                    ],
-                                    maxExercises: passMax,
-                                    level: "beginner",
-                                    goal: goalString,
-                                    age: userAge
-                                ) {
-                                    // Completion block if needed
+                                
+                                workoutPlanModel.queryExercises(days: [
+                                    ("push", ["chest", "triceps"]),
+                                    ("pull", ["back", "biceps"]),
+                                    ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
+                                    ("pull", ["shoulders", "abdominals"])
+                                ], maxExercises: passMax, level: "beginner",goal: "lose"){
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                    }
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                                 }
-                            } else if days == 2 {
+                            }else if days == 2 {
                                 print("5 days")
-                                workoutPlanModel.queryExercises(
-                                    days: [
-                                        ("push", ["chest", "shoulders", "triceps"]),
-                                        ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
-                                        ("pull", ["back", "biceps", "abdominals"]),
-                                        ("pull", ["calves", "hamstrings"]),
-                                        ("pull", ["quadriceps", "shoulders", "hamstrings"])
-                                    ],
-                                    maxExercises: passMax,
-                                    level: "beginner",
-                                    goal: goalString,
-                                    age: userAge
-                                ) {
-                                    workoutPlanModel.isWorkoutPlanAvailable = true
+                                
+                                workoutPlanModel.queryExercises(days: [
+                                    ("push", ["chest", "shoulders", "triceps"]),
+                                    ("pull", ["glutes", "quadriceps", "calves", "hamstrings"]),
+                                    ("pull", ["back", "biceps", "abdominals"]),
+                                    ("pull", ["calves", "hamstrings"]),
+                                    //full body
+                                    ("pull", ["quadriceps","shoulders", "hamstrings"])
+                                ], maxExercises: passMax, level: "beginner", goal: "lose"){
+                                    
+                                    DispatchQueue.main.async {
+                                        
+                                        workoutPlanModel.isWorkoutPlanAvailable = true
+                                    }
+                                    print("Generated Workout Plan: \(workoutPlanModel.workoutPlan)")
                                 }
                             }
                         }
                         .foregroundColor(.black)
-
                     }
-                }
-                .padding()
+                    
+                } .padding()
+                
             }
+            
         }
     }
 }
-
 
 
 #Preview {

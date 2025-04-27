@@ -134,175 +134,146 @@ class RetrieveWorkoutData : ObservableObject {
         
     }
     
-    func filterExercisesForAge(exercises: [Exercise], userAge: Int) -> [Exercise] {
-        return exercises.filter { exercise in
-            // Age Filtering Logic
-
-            if userAge <= 30 {
-                // Young adults - no restriction
-                return true
-            } else if userAge <= 45 {
-                // Adults - avoid highly strenuous or explosive exercises
-                let strenuousExercises = ["Deadlift", "Power Clean", "Snatch"] // Intense exercises
-                return !strenuousExercises.contains { exercise.name.localizedCaseInsensitiveContains($0) }
-            } else {
-                // Older adults - focus on joint-friendly exercises
-                let jointFriendlyCategories = ["stretching", "mobility", "yoga", "low impact", "rehab"]
-                return jointFriendlyCategories.contains { exercise.category.localizedCaseInsensitiveContains($0) }
-            }
-        }
-    }
-
-
-    
     //Makes Query to firestore to build user's requested workout plan. Saves to Firebase and UserDefaults with separate function calls.
-    func queryExercises(days: [(String, [String])], maxExercises: Int = 4, level: String, goal: String, age: Int, completion: @escaping () -> Void) {
+    func queryExercises(days: [(String, [String])], maxExercises: Int = 4, level: String, goal: String, completion: @escaping () -> Void)  {
         let db = Firestore.firestore()
         self.workoutDays = days
-
+        
         var tempExercises: [[Exercise]] = Array(repeating: [], count: days.count)
         let (customSets, customReps) = self.getSetsAndReps(for: goal)
-
+        
         let group = DispatchGroup()
-
-        for (index, (type, primaryMuscle)) in days.enumerated() {
+        
+        for(index,(type, primaryMuscle)) in days.enumerated(){
             group.enter()
-            db.collection("exercises")
-                .whereField("force", isEqualTo: type)
-                .whereField("level", isEqualTo: level)
-                .whereField("primaryMuscles", arrayContainsAny: primaryMuscle)
-                .limit(to: maxExercises * 2)
-                .getDocuments(completion: { snapshot, error in
-                    if error == nil {
-                        print("No errors")
-                        if let snapshot = snapshot {
-                            let allExercises = snapshot.documents.compactMap { document -> Exercise? in
-                                return Exercise(
-                                    category: document["category"] as? String ?? "",
-                                    equipment: document["equipment"] as? String ?? "",
-                                    force: document["force"] as? String ?? "",
-                                    id: document.documentID,
-                                    imageURLs: (document["imageURLs"] as? [String]) ?? [],
-                                    instructions: (document["instructions"] as? [String]) ?? [],
-                                    level: document["level"] as? String ?? "",
-                                    mechanic: document["mechanic"] as? String ?? "",
-                                    name: document["name"] as? String ?? "",
-                                    primaryMuscles: (document["primaryMuscles"] as? [String]) ?? [],
-                                    secondaryMuscles: (document["secondaryMuscles"] as? [String]) ?? [],
-                                    isComplete: false, 
-                                    sets: customSets,
-                                    reps: customReps
-                                )
-                            }
+            db.collection("exercises").whereField("force", isEqualTo: type).whereField("level", isEqualTo: level ).whereField("primaryMuscles", arrayContainsAny: primaryMuscle).limit(to: maxExercises*2).getDocuments{ snapshot, error in
+                
+                if error == nil{
+                    print("No errors")
+                    if let snapshot = snapshot{
+                        let allExercises = snapshot.documents.compactMap{document -> Exercise? in
+                            return Exercise(
+                                category: document["category"] as? String ?? "",
+                                equipment: document["equipment"] as? String ?? "",
+                                force: document["force"] as? String ?? "",
+                                id: document.documentID,
+                                imageURLs: (document["imageURLs"] as? [String]) ?? [],
+                                instructions: (document["instructions"] as? [String]) ?? [],
+                                level: document["level"] as? String ?? "",
+                                mechanic: document["mechanic"] as? String ?? "",
+                                name: document["name"] as? String ?? "",
+                                primaryMuscles: (document["primaryMuscles"] as? [String]) ?? [],
+                                secondaryMuscles: (document["secondaryMuscles"] as? [String]) ?? [],
+                                isComplete: document["isComplete"] as? Bool ?? false,
+                                sets: customSets,
+                                reps: customReps
 
-                            // Apply age-based filtering here
-                            let filteredExercises = self.filterExercisesForAge(exercises: allExercises, userAge: age)
-
-                            // Shuffle and limit to the maxExercises count
-                            let randomizedExercises = filteredExercises.shuffled().prefix(maxExercises)
-                            tempExercises[index] = Array(randomizedExercises)
+                            )
                         }
+                        
+                        let randomizedExercises = allExercises.shuffled().prefix(maxExercises)
+                        tempExercises[index] = Array(randomizedExercises)
                     }
-                    group.leave()
-                })
+                }
+                group.leave()
+            }
         }
-
-        group.notify(queue: .main) {
-            DispatchQueue.main.async {
+        group.notify(queue: .main){
+            DispatchQueue.main.async{
                 self.workoutPlan = tempExercises
+                
                 self.saveWorkoutPlanDB()
+                
                 self.saveWorkoutPlanLocally()
                 self.isWorkoutPlanAvailable = true
                 completion()
+                
             }
         }
     }
-
-
-
     
     //Saves the workoutplan to Firebase.
-        func saveWorkoutPlanDB(){
-            
-            guard let userID = Auth.auth().currentUser?.uid else {
-                return
+    func saveWorkoutPlanDB(){
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy-'W'W"
+        let formattedDate = dateFormatter.string(from: now)
+        let docID = "\(formattedDate)"
+        
+        let db = Firestore.firestore()
+        
+        let workoutPlanDoc = db
+            .collection("users")
+            .document(userID)
+            .collection("workoutplan")
+            .document(docID)
+        
+        
+        var workoutData: [String: Any] = [
+            "numberOfDays" : workoutDays.count
+        ]
+        
+        for (index, day) in workoutDays.enumerated() {
+            let key = "muscleGroupDay\(index + 1)"
+            let muscleGroups = day.1.joined(separator: ", ")
+            workoutData[key] = muscleGroups
+        }
+        
+        
+        workoutPlanDoc.setData(workoutData, merge: true) { error in
+            if let error = error {
+                print("Error saving workout metadata: \(error.localizedDescription)")
+            } else {
+                print("Workout metadata saved successfully.")
             }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM-yyyy-'W'W"
-            let formattedDate = dateFormatter.string(from: now)
-            let docID = "\(formattedDate)"
-            
-            let db = Firestore.firestore()
-            
-            let workoutPlanDoc = db
+        }
+        
+        
+        self.workoutMetadata = workoutData
+        
+        //iterate through every exercise in the weekly plan
+        for(dayIndex, exercises) in workoutPlan.enumerated(){
+            let dayCollection = db
                 .collection("users")
                 .document(userID)
                 .collection("workoutplan")
-                .document(docID)
+                .document(formattedDate)
+                .collection("Day\(dayIndex + 1)")
             
-            
-            var workoutData: [String: Any] = [
-                "numberOfDays" : workoutDays.count
-            ]
-            
-            for (index, day) in workoutDays.enumerated() {
-                let key = "muscleGroupDay\(index + 1)"
-                let muscleGroups = day.1.joined(separator: ", ")
-                workoutData[key] = muscleGroups
-            }
-            
-            
-            workoutPlanDoc.setData(workoutData, merge: true) { error in
-                if let error = error {
-                    print("Error saving workout metadata: \(error.localizedDescription)")
-                } else {
-                    print("Workout metadata saved successfully.")
-                }
-            }
-            
-            
-            self.workoutMetadata = workoutData
-            
-            //iterate through every exercise in the weekly plan
-            for(dayIndex, exercises) in workoutPlan.enumerated(){
-                let dayCollection = db
-                    .collection("users")
-                    .document(userID)
-                    .collection("workoutplan")
-                    .document(formattedDate)
-                    .collection("Day\(dayIndex + 1)")
+            for exercise in exercises{
+                let exerciseDocument = dayCollection.document(exercise.name)
                 
-                for exercise in exercises{
-                    let exerciseDocument = dayCollection.document(exercise.name)
-                    
-                    let data: [String: Any] = [
-                        "category": exercise.category,
-                        "equipment": exercise.equipment,
-                        "force": exercise.force,
-                        "id": exercise.id,
-                        "imageURLs": exercise.imageURLs,
-                        "instructions": exercise.instructions,
-                        "level": exercise.level,
-                        "mechanic": exercise.mechanic,
-                        "name": exercise.name,
-                        "primaryMuscles": exercise.primaryMuscles,
-                        "secondaryMuscles": exercise.secondaryMuscles,
-                        "isComplete": exercise.isComplete,
-                        "sets": exercise.sets,
-                        "reps": exercise.reps
-                    ]
-                    exerciseDocument.setData(data, merge: true) { error in
-                        if error != nil{
-                            print("Error updating Workout Document \(exercise.name).")
-                        } else{
-                            print("Updated Workout Document\(exercise.name).")
-                        }
+                let data: [String: Any] = [
+                    "category": exercise.category,
+                    "equipment": exercise.equipment,
+                    "force": exercise.force,
+                    "id": exercise.id,
+                    "imageURLs": exercise.imageURLs,
+                    "instructions": exercise.instructions,
+                    "level": exercise.level,
+                    "mechanic": exercise.mechanic,
+                    "name": exercise.name,
+                    "primaryMuscles": exercise.primaryMuscles,
+                    "secondaryMuscles": exercise.secondaryMuscles,
+                    "isComplete": exercise.isComplete,
+                    "sets": exercise.sets,
+                    "reps": exercise.reps
+                ]
+                exerciseDocument.setData(data, merge: true) { error in
+                    if error != nil{
+                        print("Error updating Workout Document \(exercise.name).")
+                    } else{
+                        print("Updated Workout Document\(exercise.name).")
                     }
                 }
-                
             }
+            
         }
+    }
     
     
     //Loads workoutplan from UserDefaults
@@ -888,7 +859,6 @@ class RetrieveWorkoutData : ObservableObject {
     }
     
 }
-
 
 
 
