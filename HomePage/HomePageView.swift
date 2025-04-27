@@ -94,10 +94,27 @@ struct HomePageView: View {
                                             set: { mealManager.setMeals(for: selectedDate, type: type, meals: $0) }
                                         ),
                                         onRemove: { removedMeal in
-                                            let amount = removedMeal.consumedAmount ?? 0
-                                            updatePantryQuantity(docID: removedMeal.pantryDocID, amount: amount)
+                                            let restoredAmountInPantryUnits = removedMeal.actualConsumedPantryAmount ?? 0.0
+
+                                            print("Restoring \(restoredAmountInPantryUnits) \(removedMeal.unit ?? "g") for \(removedMeal.name) (saved consumed pantry amount)")
+
+                                            if !removedMeal.pantryDocID.isEmpty {
+                                                updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmountInPantryUnits)
+                                            } else {
+                                                print("⚠️ pantryDocID is empty for meal: \(removedMeal.name)")
+                                            }
+
+                                            removeMealFromFirestore(removedMeal, for: selectedDate, type: type) {
+                                                Task {
+                                                    await mealManager.restoreMeals(for: selectedDate) {
+                                                        print("Meals refreshed after deletion")
+                                                    }
+                                                }
+                                            }
                                         }
-                                    )) {
+                                    )
+                                        .environmentObject(mealManager)
+                                    ) {
                                         VStack {
                                             Image(type.rawValue)
                                                 .resizable()
@@ -111,16 +128,38 @@ struct HomePageView: View {
                         }
                     }
                     .navigationBarBackButtonHidden(true)
+//                    .onAppear {
+//                        fetchAllDaysProgress()
+//                        HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
+//                            if let steps = steps {
+//                                DispatchQueue.main.async {
+//                                    self.stepCount = Int(steps)
+//                                }
+//                            }
+//                        }
+//                    }
                     .onAppear {
                         fetchAllDaysProgress()
-                        HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
-                            if let steps = steps {
-                                DispatchQueue.main.async {
-                                    self.stepCount = Int(steps)
+
+                        HealthKitManager.shared.requestAuthorization { success in
+                            if success {
+                                print("HealthKit authorized")
+                                HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
+                                    if let steps = steps {
+                                        DispatchQueue.main.async {
+                                            self.stepCount = Int(steps)
+                                            print("Step count fetched: \(steps)")
+                                        }
+                                    } else {
+                                        print("Failed to fetch step count")
+                                    }
                                 }
+                            } else {
+                                print("Failed to authorize HealthKit")
                             }
                         }
                     }
+
                 }
             }
             .accentColor(.background)
@@ -151,6 +190,47 @@ struct HomePageView: View {
                     progressValues[dayIndex] = progress
                    // print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
+            }
+        }
+    }
+    
+    private func removeMealFromFirestore(_ meal: MealPlanner, for date: Date, type: MealType, completion: @escaping () -> Void){
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("User not authenticated")
+            return
+        }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: date)
+
+        let logRef = Firestore.firestore()
+            .collection("users")
+            .document(userID)
+            .collection("mealLogs")
+            .document(dateString)
+
+        logRef.getDocument { snapshot, error in
+            guard let data = snapshot?.data(),
+                  var array = data[type.rawValue.lowercased()] as? [[String: Any]] else {
+                print("Could not get array to update or data is missing")
+                return
+            }
+
+            array.removeAll {
+                ($0["foodID"] as? String == meal.foodID) &&
+                ($0["name"] as? String == meal.name)
+            }
+
+            logRef.updateData([
+                type.rawValue.lowercased(): array
+            ]) { error in
+                if let error = error {
+                    print("Error updating Firestore: \(error.localizedDescription)")
+                } else {
+                    print("Removed from Firestore successfully")
+                }
+                completion()
             }
         }
     }

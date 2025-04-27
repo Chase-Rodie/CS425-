@@ -13,6 +13,16 @@ struct ShoppingListView: View {
     @State private var newQuantity: String = ""
     @State private var showQuantityPrompt = false
     @State private var pendingItemName: String = ""
+    @State private var selectedUnit: String = "g"
+    
+    let units = ["g", "oz", "cup", "tbsp", "tsp", "slice", "can", "loaf", "lbs", "kg", "ml", "L", "gal"]
+
+    
+    private static let decimal: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 
     var body: some View {
         NavigationView {
@@ -20,7 +30,30 @@ struct ShoppingListView: View {
                 List {
                     ForEach(Array(shoppingList.items.enumerated()), id: \.1.id) { index, item in
                         HStack {
-                            Text("\(item.name) (\(item.quantity, specifier: "%.1f"))")
+//                            Text("\(item.name) (\(item.quantity, specifier: "%.1f"))")
+                            VStack(alignment: .leading) {
+                                Text(item.name)
+                                    .font(.headline)
+                                
+                                HStack {
+                                    Text("Qty:")
+                                        .font(.subheadline)
+
+                                    TextField("0", value: Binding(
+                                        get: { item.quantity },
+                                        set: { newValue in
+                                            shoppingList.updateQuantity(for: item.id, newQuantity: newValue)
+                                        }
+                                    ), formatter: ShoppingListView.decimal)
+                                    .keyboardType(.decimalPad)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 60)
+                                    
+                                    Text(item.unit)
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
                             Spacer()
                             Button(action: {
                                 shoppingList.removeItem(at: index)
@@ -66,6 +99,13 @@ struct ShoppingListView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .keyboardType(.decimalPad)
 
+                Picker("Unit", selection: $selectedUnit) {
+                    ForEach(units, id: \.self) { unit in
+                        Text(unit).tag(unit)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .frame(maxWidth: .infinity)
                 HStack {
                     Button("Cancel") {
                         newQuantity = ""
@@ -77,10 +117,11 @@ struct ShoppingListView: View {
 
                     Button("Add") {
                         if let quantity = Double(newQuantity) {
-                            shoppingList.addItem(name: pendingItemName, quantity: quantity)
+                            shoppingList.addItem(name: pendingItemName, quantity: quantity, unit: selectedUnit)
                         }
                         newQuantity = ""
                         pendingItemName = ""
+                        selectedUnit = "g"
                         showQuantityPrompt = false
                     }
                     .foregroundColor(Color("Navy"))

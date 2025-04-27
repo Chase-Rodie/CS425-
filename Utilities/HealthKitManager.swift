@@ -34,7 +34,7 @@ class HealthKitManager {
         }
 
         let typesToShare: Set = [energy, protein, fat, carbs, steps]
-        let typesToRead: Set = [energy, protein, fat, carbs]
+        let typesToRead: Set = [energy, protein, fat, carbs, steps]
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
             if success {
@@ -101,7 +101,6 @@ class HealthKitManager {
             let steps = quantity.doubleValue(for: HKUnit.count())
             completion(steps)
         }
-
-        HKHealthStore().execute(query)
+        healthStore.execute(query)
     }
 }
