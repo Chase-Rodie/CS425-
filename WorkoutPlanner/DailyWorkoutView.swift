@@ -47,11 +47,74 @@ struct DailyWorkoutView: View {
                     AddWorkoutForm(day: dayIndex+1 , workoutPlanModel: workoutPlanModel, manualWorkoutFormShowing: $manualWorkoutFormShowing)
                 }
                 VStack(alignment: .leading){
-                    Text("Found \(workoutPlanModel.manualWorkoutsToday.count) workouts")
-                        .padding()
+                    VStack {
+                        Text("Manually Logged Workouts")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
 
+                        if !workoutPlanModel.manualWorkoutsToday.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(workoutPlanModel.manualWorkoutsToday) { workout in
+                                        VStack(alignment: .leading, spacing: 8) {
+                                            HStack{
+                                                Text(workout.name)
+                                                    .font(.headline)
+                                                
+                                                Button(action: {
+                                                    workoutPlanModel.deleteManualWorkout(day: dayIndex+1, workout: workout)
+                                                }) {
+                                                    Image(systemName: "trash")
+                                                        .foregroundColor(.red)
+                                                        .padding(8)
+                                                        .background(Color.white)
+                                                        .clipShape(Circle())
+                                                }
+                                            }
+
+                                            if workout.type.lowercased() == "cardio" {
+                                                                            Text("Duration: \(workout.duration) min")
+                                                                                .font(.subheadline)
+                                                                            if workout.distance > 0 {
+                                                                                Text("Distance: \(workout.distance) meters")
+                                                                                    .font(.subheadline)
+                                                                            }
+                                                                        } else if workout.type.lowercased() == "flexibility" {
+                                                                            Text("Duration: \(workout.duration) min")
+                                                                                .font(.subheadline)
+                                                                        } else if workout.type.lowercased() == "strength" {
+                                                                            if !workout.exercises.isEmpty {
+                                                                                Text("Exercises:")
+                                                                                    .font(.subheadline)
+                                                                                    .bold()
+                                                                                
+                                                                                ForEach(workout.exercises.indices, id: \.self) { index in
+                                                                                    let exercise = workout.exercises[index]
+                                                                                    Text("- \(exercise["name"] as? String ?? "Unnamed Exercise")")
+                                                                                        .font(.caption)
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                        .padding()
+                                        .background(Color.gray.opacity(0.1))
+                                        .cornerRadius(8)
+                                        .padding(.vertical, 5)
+                                    }
+                                }
+                                .padding(.horizontal)
+                            }
+                        } else {
+                            Text("No manual entered workouts today.")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                    }
+                    .padding()
+
+                    
                     ForEach(dayWorkoutPlan){exercise in
-                        ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel)
+                        ExerciseRowView(exercise: exercise, workoutPlanModel: workoutPlanModel, dayIndex: dayIndex)
                     }
                 }.padding()
                
@@ -69,6 +132,7 @@ struct DailyWorkoutView: View {
 struct ExerciseRowView: View {
     @State var exercise: Exercise
     let workoutPlanModel: RetrieveWorkoutData
+    var dayIndex: Int
 
     var body: some View {
         
@@ -84,7 +148,7 @@ struct ExerciseRowView: View {
                 }
             }
             VStack(alignment: .leading) {
-                NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel))
+                NavigationLink(exercise.name, destination: DetailedExercise(exercise: exercise, workoutPlanModel: workoutPlanModel, dayIndex: dayIndex))
                 Text("Sets: \(exercise.sets)")
                 Text("Reps: \(exercise.reps)")
             }
@@ -102,6 +166,7 @@ struct DetailedExercise: View {
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
     @State private var isStarFilled = false
     @State private var isFavorited: Bool = false
+    var dayIndex: Int
 
 
     var body: some View{
@@ -136,16 +201,17 @@ struct DetailedExercise: View {
                                 self.isFavorited.toggle()
                                     }) {
                                         Image(systemName: self.isFavorited ? "star.fill" : "star")
-                                            .foregroundColor(.yellow)
+                                            .foregroundColor(.navy)
                                             .font(.system(size: 30))
 
                                     }
                         }
+                        Text("Reccomended \(exercise.sets) sets of \(exercise.reps) reps")
+                        
                         ForEach(0..<exercise.sets, id:\.self){ setIndex in
-                            weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel, setIndex: setIndex + 1)
+                            weightEntryView(exercise: exercise, workoutPlanModel: workoutPlanModel, setIndex: setIndex, dayIndex: dayIndex)
                             
                         }
-                        
                         HStack{
                                 Text("Exercise done: ")
                                 Image(systemName: workoutPlanModel.isExerciseCompleted(exercise: exercise) ? "checkmark.square" : "square")
@@ -192,6 +258,7 @@ struct DetailedExercise: View {
                 self.isFavorited = isFavorited
             }
         }
+        .hideKeyboardOnTap()
     }
 }
 
@@ -200,35 +267,61 @@ struct DetailedExercise: View {
 struct weightEntryView: View{
     @State private var reps: Int?
     @State private var weight: Int?
+    
     var exercise: Exercise
     var workoutPlanModel: RetrieveWorkoutData
     var setIndex: Int
+    var dayIndex: Int
+    
     var body: some View {
         HStack{
-            Text("\(setIndex)")
+            Text("\(setIndex+1)")
                 .font(.headline)
                 .foregroundColor(.white)
                 .frame(width: 32, height: 32)
                 .background(Color.green)
                 .clipShape(Circle())
+                
             
             TextField("Reps", value: $reps, formatter: NumberFormatter())
                 .keyboardType(.numberPad)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-            
+                .onChange(of: reps) { newReps in
+                       // Automatically save when the value changes
+                       if let reps = newReps, let weight = weight {
+                           workoutPlanModel.updateRecordedSets(for: exercise, reps: reps, weight: Double(weight), day: dayIndex, setIndex: setIndex)
+                       }
+                   }
             
             TextField("Weight in lbs", value: $weight, formatter: NumberFormatter())
                 .keyboardType(.numberPad)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-            
+                .onChange(of: weight) { newValue in
+                       if let reps = reps, let weight = newValue {
+                           workoutPlanModel.updateRecordedSets(for: exercise, reps: reps, weight: Double(weight), day: dayIndex, setIndex: setIndex)
+                       }
+                   }
+          
             Spacer()
         }
                 .padding()
-                
+                .onAppear{
+                    workoutPlanModel.fetchRecordedSets(for: exercise, day: dayIndex){ sets in
+                        if setIndex < sets.count {
+                            if let fetchedReps = sets[setIndex]["reps"] as? Int {
+                                reps = fetchedReps
+                            }
+                            if let fetchedWeight = sets[setIndex]["weight"] as? Double{
+                                weight = Int(fetchedWeight)
+                            }
+                        }
+                        
+                    }
+                }
             }
 }
 
@@ -353,4 +446,12 @@ struct AddWorkoutForm: View{
     }
     
     
+}
+extension View {
+    func hideKeyboardOnTap() -> some View {
+        self.onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        
+    }
 }
