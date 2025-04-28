@@ -21,6 +21,7 @@ class RetrieveWorkoutData : ObservableObject {
     @Published var manualWorkoutsToday: [ManualWorkout] = []
     
     
+    
     let now = Date()
     
     //Saves workoutplan locally to userdefaults.
@@ -68,7 +69,7 @@ class RetrieveWorkoutData : ObservableObject {
             self.workoutMetadata = workoutData
 
         }
-        for i in 1...7 {
+        for i in 1...5 {
             db.collection("Day\(i)").getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error fetching documents: \(error.localizedDescription)")
@@ -659,7 +660,7 @@ class RetrieveWorkoutData : ObservableObject {
             .document(formattedDate)
         
         let group = DispatchGroup()
-        for i in 1...7 {
+        for i in 1...5 {
             group.enter()
             workoutPlanDocRef.collection("Day\(i)").getDocuments { (snapshot, error) in
                 if let error = error {
@@ -688,6 +689,8 @@ class RetrieveWorkoutData : ObservableObject {
                     print("Error deleting workout plan document: \(error.localizedDescription)")
                 } else {
                     print("Workout plan document deleted successfully.")
+                    
+                    self.clearAllExerciseCompletionData()
                     
                     UserDefaults.standard.removeObject(forKey: "workoutPlan")
                     UserDefaults.standard.removeObject(forKey: "workoutMetadata")

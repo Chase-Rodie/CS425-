@@ -109,7 +109,7 @@ struct MealPlanView: View {
                 } else {
                     let filteredMeals = mealPlan.filter { $0.category == selectedCategory && $0.quantity > 0 }
                     if filteredMeals.isEmpty {
-                        Text("No \(selectedCategory.rawValue.lowercased()) meals available.")
+                        Text("No \(selectedCategory.rawValue.lowercased()) meals available. Add food to your pantry to use your meal plan!")
                             .font(.headline)
                             .foregroundColor(.gray)
                             .padding()
