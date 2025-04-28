@@ -17,6 +17,7 @@ struct TempContentView: View {
     @State private var navigateToEditProfile = false
     @State private var showProfilePopup = false
     @ObservedObject var viewModel: ProfileViewModel
+    @State private var profileCompleted = false
 
     var body: some View {
         NavigationStack {
@@ -35,7 +36,7 @@ struct TempContentView: View {
                         .tabItem { Label("Workout", systemImage: "figure.run") }
                         .tag(1)
 
-                    NavigationStack { HomePageView(showSignInView: $showSignInView) }
+                    NavigationStack { HomePageView(viewModel: viewModel, showSignInView: $showSignInView) }
                         .tabItem { Label("Home", systemImage: "house.fill") }
                         .tag(0)
 
@@ -90,8 +91,9 @@ struct TempContentView: View {
                         .tag(9)
                 }
                 .accentColor(Color("BackgroundColor"))
+                
                 // Profile completion popup
-                if showProfilePopup {
+                if showProfilePopup && !profileCompleted {
                     VStack {
                         Text("Would you like to complete your profile?")
                             .font(.headline)
@@ -106,7 +108,7 @@ struct TempContentView: View {
 
                             Button("No") {
                                 setProfileCompleted()
-                                showProfilePopup = false
+                                showProfilePopup = false  
                             }
                             .padding()
                         }
@@ -129,15 +131,16 @@ struct TempContentView: View {
                 }
             }
 
+            // Navigation link to edit profile view
             NavigationLink(
                 "",
                 destination: EditProfileView(viewModel: viewModel, showProfilePopup: $showProfilePopup),
                 isActive: $navigateToEditProfile
             )
             .hidden()
-
         }
     }
+
     func checkProfileCompletion() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let db = Firestore.firestore()
@@ -147,6 +150,8 @@ struct TempContentView: View {
                 let profileCompleted = data?["profileCompleted"] as? Bool ?? false
                 if !profileCompleted {
                     self.showProfilePopup = true
+                } else {
+                    self.profileCompleted = true  // Set as completed
                 }
             } else {
                 print("No user document found or error: \(error?.localizedDescription ?? "Unknown error")")
@@ -155,7 +160,6 @@ struct TempContentView: View {
         }
     }
 
-    
     func setProfileCompleted() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let db = Firestore.firestore()
@@ -169,7 +173,6 @@ struct TempContentView: View {
             }
         }
     }
-
 }
 
 struct TempContentView_Previews: PreviewProvider {
