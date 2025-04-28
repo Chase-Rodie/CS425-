@@ -19,18 +19,19 @@ struct TempContentView: View {
     @ObservedObject var viewModel: ProfileViewModel
     @State private var profileCompleted = false
 
-    var body: some View {
-        NavigationStack {
-            ZStack(alignment: .leading) {
-                
-                Color("BackgroundColor")
-                    .ignoresSafeArea()
-                    .zIndex(-1)
 
-                TabView(selection: $selectedTab) {
-                    NavigationStack { FoodJournalView() }
-                        .tabItem { Label("Food Journal", systemImage: "book.fill") }
-                        .tag(2)
+    var body: some View {
+        ZStack(alignment: .leading) {
+            LinearGradient(
+                gradient: Gradient(colors: [Color.blue, Color.purple]),
+                startPoint: .top, endPoint: .bottom
+            )
+            .ignoresSafeArea()
+
+            TabView(selection: $selectedTab) {
+                NavigationStack { FoodJournalView() }
+                    .tabItem { Label("Food Journal", systemImage: "book.fill") }
+                    .tag(2)
 
                     NavigationStack { MainWorkoutView() }
                         .tabItem { Label("Workout", systemImage: "figure.run") }
@@ -91,6 +92,8 @@ struct TempContentView: View {
                         .tag(9)
                 }
                 .accentColor(Color("BackgroundColor"))
+                .ignoresSafeArea(edges: .bottom)
+
                 
                 // Profile completion popup
                 if showProfilePopup {
@@ -150,7 +153,6 @@ struct TempContentView: View {
             )
             .hidden()
         }
-    }
 
     func checkProfileCompletion() {
         guard let userId = Auth.auth().currentUser?.uid else {
