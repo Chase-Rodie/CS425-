@@ -130,7 +130,7 @@ struct DailyWorkoutView: View {
 
 
 struct ExerciseRowView: View {
-    @State var exercise: Exercise
+    let exercise: Exercise
     let workoutPlanModel: RetrieveWorkoutData
     var dayIndex: Int
 

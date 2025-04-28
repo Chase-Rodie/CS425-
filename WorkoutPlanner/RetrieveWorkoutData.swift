@@ -102,6 +102,9 @@ class RetrieveWorkoutData : ObservableObject {
                         sets: data["sets"] as? Int ?? 3,
                         reps: data["reps"] as? Int ?? 10
                     )
+                    self.saveExerciseCompletionStatus(exercise: exercise)
+
+                    
                     exercisesForDay.append(exercise)
                     
                 }
