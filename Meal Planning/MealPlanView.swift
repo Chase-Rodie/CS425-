@@ -530,6 +530,8 @@ struct MealGenerationView: View {
     @Environment(\.dismiss) var dismiss
     @State private var foodAliases: [FoodAlias] = []
     @State private var recipe: String = "Generating your recipe..."
+    
+    @State private var showSaveConfirmation = false
 
     var body: some View {
         NavigationView {
@@ -576,6 +578,13 @@ struct MealGenerationView: View {
                                         .foregroundColor(.white)
                                         .cornerRadius(10)
                                 }
+                                .alert(isPresented: $showSaveConfirmation) {
+                                    Alert(
+                                        title: Text("Recipe Saved!"),
+                                        dismissButton: .default(Text("OK"))
+                                    )
+                                }
+
 
                                 Button(action: {
                                     generate()
@@ -692,6 +701,7 @@ struct MealGenerationView: View {
                 print("Error saving recipe: \(error.localizedDescription)")
             } else {
                 print("Recipe saved successfully!")
+                showSaveConfirmation = true
             }
         }
     }
