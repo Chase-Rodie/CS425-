@@ -1154,13 +1154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F80591542CFFA28800A900FC /* Food.swift in Sources */,
-				F80591532CFFA28100A900FC /* HelperFunctions.swift in Sources */,
-				F8A7CDD02D9F6733009F5907 /* Meal.swift in Sources */,
-				F80591552CFFA28F00A900FC /* MealView.swift in Sources */,
-				F80591582CFFA2E800A900FC /* UserMeal.swift in Sources */,
 				F88E7B532DB4878A00D37AB0 /* MealFilterTests.swift in Sources */,
-				5EEDA2C32D7CEED500D3645A /* WeeklyWorkoutView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1360,7 +1354,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fit-Pantry-Info.plist";
@@ -1379,7 +1373,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chaserodie.FitPantry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.n8vearthling.fitpantry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1396,7 +1390,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Shared/Preview Content\"";
-				DEVELOPMENT_TEAM = 4UH375AT7K;
+				DEVELOPMENT_TEAM = 4Z6G5PKN6W;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Fit-Pantry-Info.plist";
@@ -1415,7 +1409,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chaserodie.FitPantry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.n8vearthling.fitpantry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -20,7 +20,7 @@ struct HomePageView: View {
     @EnvironmentObject var mealManager: TodayMealManager
     @StateObject var viewModel = ProfileViewModel()
     @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
-    @State private var progressValues: [Double] = Array(repeating: 1, count: 7)
+    @State private var progressValues: [Double] = Array(repeating: 1, count: 5)
     @State private var selectedDate: Date = Date()
     @State private var stepCount: Int = 0
     @State private var stepGoal: Int = 10000
@@ -51,10 +51,10 @@ struct HomePageView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         StepCountBar(steps: stepCount, goal: stepGoal)
                             .padding(.top, 20)
-                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
-                            .datePickerStyle(.compact)
-                            .padding(.horizontal)
-                            .padding(.top, 20)
+//                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
+//                            .datePickerStyle(.compact)
+//                            .padding(.horizontal)
+//                            .padding(.top, 20)
                         
                         Text("Workout Progress")
                             .font(.largeTitle)
@@ -63,16 +63,31 @@ struct HomePageView: View {
                         
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(1..<7, id: \ .self) { dayIndex in
+//                                ForEach(1..<7, id: \ .self) { dayIndex in
+//                                    VStack(spacing: 20) {
+//                                        NavigationLink(destination: ProgressView()) {
+//                                            ProgressRingView(progress: progressValues[dayIndex], ringWidth: 15)
+//                                                .padding()
+//                                                .background(Color("BackgroundColor"))
+//                                                .foregroundColor(.white)
+//                                                .cornerRadius(10)
+//                                        }
+//                                        Text("Day \(dayIndex)")
+//                                    }
+//                                }
+                                ForEach(0..<5, id: \.self) { index in
                                     VStack(spacing: 20) {
-                                        NavigationLink(destination: ProgressView()) {
-                                            ProgressRingView(progress: progressValues[dayIndex], ringWidth: 15)
+                                        NavigationLink(destination: CompletedWorkoutsView(
+                                            dayIndex: index,
+                                            workoutPlanModel: retrieveworkoutdata
+                                        )) {
+                                            ProgressRingView(progress: progressValues.indices.contains(index) ? progressValues[index] : 0.0, ringWidth: 15)
                                                 .padding()
                                                 .background(Color("BackgroundColor"))
                                                 .foregroundColor(.white)
                                                 .cornerRadius(10)
                                         }
-                                        Text("Day \(dayIndex)")
+                                        Text("Day \(index + 1)")
                                     }
                                 }
                             }.padding(.leading, 20)
@@ -159,6 +174,16 @@ struct HomePageView: View {
                                 print("Failed to authorize HealthKit")
                             }
                         }
+                        retrieveworkoutdata.workoutPlanExists { exists in
+                            DispatchQueue.main.async {
+                                if exists {
+                                    retrieveworkoutdata.fetchWorkoutPlan()
+                                } else {
+                                    retrieveworkoutdata.workoutPlan = []
+                                    resetProgressValues()
+                                }
+                            }
+                        }
                     }
 
                 }
@@ -180,16 +205,32 @@ struct HomePageView: View {
 
         docRef.updateData(["quantity": FieldValue.increment(amount)])
     }
+    
+    private func resetProgressValues() {
+        progressValues = Array(repeating: 0.0, count: 5)
+    }
 
+//    private func fetchAllDaysProgress() {
+//        for dayIndex in 0..<7 {
+//            retrieveworkoutdata.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
+//                let progress = total > 0 ? Double(completed) / Double(total) : 0.0
+//                
+//                DispatchQueue.main.async {
+//                    
+//                    progressValues[dayIndex] = progress
+//                   // print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
+//                }
+//            }
+//        }
+//    }
+    
     private func fetchAllDaysProgress() {
-        for dayIndex in 0..<7 {
-            retrieveworkoutdata.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
+        for dayIndex in 0..<5 {
+            retrieveworkoutdata.countCompletedAndTotalExercises(dayIndex: dayIndex + 1) { completed, total in
                 let progress = total > 0 ? Double(completed) / Double(total) : 0.0
                 
                 DispatchQueue.main.async {
-                    
                     progressValues[dayIndex] = progress
-                   // print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
             }
         }
@@ -236,3 +277,67 @@ struct HomePageView: View {
         }
     }
 }
+
+struct CompletedWorkoutsView: View {
+    var dayIndex: Int
+    @ObservedObject var workoutPlanModel: RetrieveWorkoutData
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Completed Workouts for Day \(dayIndex + 1)")
+                .font(.largeTitle)
+                .foregroundColor(Color("BackgroundColor"))
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+                .padding(.top)
+                .padding(.horizontal)
+            Divider()
+                .padding(.horizontal)
+            
+            let completedExercises = workoutPlanModel.workoutPlan.indices.contains(dayIndex) ?
+            workoutPlanModel.workoutPlan[dayIndex].filter { workoutPlanModel.isExerciseCompleted(exercise: $0) } : []
+            
+            if completedExercises.isEmpty {
+                VStack {
+                    Text("No completed exercises yet!")
+                        .foregroundColor(.gray)
+                        .font(.title3)
+                        .padding()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 15) {
+                        ForEach(completedExercises) { exercise in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(exercise.name)
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                    Text("\(exercise.sets) Sets · \(exercise.reps) Reps")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white)
+                                }
+                                Spacer()
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.white)
+                                    .font(.title2)
+                            }
+                            .padding()
+                            .background(Color("Navy"))
+                            .cornerRadius(12)
+                            .shadow(radius: 2)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
+        .onAppear {
+            workoutPlanModel.loadCompletionStatuses()
+        }
+    }
+}
+
