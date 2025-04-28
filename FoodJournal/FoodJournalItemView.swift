@@ -34,6 +34,10 @@ struct FoodJournalItemView: View {
                 .padding()
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.background, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.light, for: .navigationBar)
     }
 }
 
