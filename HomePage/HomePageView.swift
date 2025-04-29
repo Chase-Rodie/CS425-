@@ -18,7 +18,7 @@ import FirebaseAuth
 
 struct HomePageView: View {
     @EnvironmentObject var mealManager: TodayMealManager
-    @StateObject var viewModel = ProfileViewModel()
+    @ObservedObject var viewModel: ProfileViewModel
     @ObservedObject var retrieveworkoutdata = RetrieveWorkoutData()
     @State private var progressValues: [Double] = Array(repeating: 1, count: 5)
     @State private var selectedDate: Date = Date()
@@ -338,6 +338,13 @@ struct CompletedWorkoutsView: View {
         .onAppear {
             workoutPlanModel.loadCompletionStatuses()
         }
+struct HomePageView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomePageView(
+            viewModel: ProfileViewModel(),
+            showSignInView: .constant(false)
+        )
+        .environmentObject(TodayMealManager())
     }
 }
 
