@@ -60,15 +60,25 @@ struct GetWorkoutPlanView: View {
                     .fontWeight(.semibold)
              
                 VStack{
+                        Text("Workout Duration in Minutes")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
                         Picker("Minutes", selection: $dur){
                             ForEach(duration.indices, id:\.self){i in                        Text(self.duration[i])
                             }
                         }.pickerStyle(.segmented)
-    
+                        
+                        Text("Number of Days")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
                         Picker("Days", selection: $days){
                                 ForEach(numDays.indices, id:\.self){i in                        Text(self.numDays[i])
                                 }
                         }.pickerStyle(.segmented)
+                    
+                        Text("Diffculty Level")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
                         Picker("Difficulty", selection: $diff){
                             ForEach(difficulty.indices, id:\.self){i in                        Text(self.difficulty[i])
                             }
@@ -77,6 +87,7 @@ struct GetWorkoutPlanView: View {
                     ZStack{
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color.white).frame(width: 200, height: 25)
+                        
                         Button("Get Workout Plan"){
                             print("Generating Workout Plan")
                             
@@ -140,6 +151,7 @@ struct GetWorkoutPlanView: View {
                         }
                         .foregroundColor(.black)
                     }
+                    .padding(.top, 30)
                     
                 } .padding()
                 
