@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GoalsView: View {
     @StateObject private var viewModel = GoalsViewModel()
+    @State private var macroTotals = macroNutrients()
     var user: UserMeal
     
     var body: some View {
@@ -17,21 +18,19 @@ struct GoalsView: View {
                 .font(.title)
                 .bold()
             
-            if let targets = viewModel.dailyTargets {
-                goalRow(title: "Calories", value: "\(targets.calories) kcal")
-                goalRow(title: "Protein", value: "\(targets.protein) g")
-                goalRow(title: "Fats", value: "\(targets.fats) g")
-                goalRow(title: "Carbs", value: "\(targets.carbs) g")
-            } else {
-                Text("Loading your targets...")
-                    .foregroundColor(.gray)
-            }
-            
+            goalRow(title: "Calories", value: "\(Int(macroTotals.cals ?? 0)) kcal")
+            goalRow(title: "Protein", value: "\(Int(macroTotals.protein ?? 0)) g")
+            goalRow(title: "Fats", value: "\(Int(macroTotals.fat ?? 0)) g")
+            goalRow(title: "Carbs", value: "\(Int(macroTotals.carbs ?? 0)) g")
             Spacer()
         }
         .padding()
         .onAppear {
-            viewModel.updateDailyTargets(for: user)
+            macroCalculator.getMacros { macros in
+                DispatchQueue.main.async {
+                    macroTotals = macros
+                }
+            }
     }
 }
     
