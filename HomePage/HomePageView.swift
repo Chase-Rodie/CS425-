@@ -338,6 +338,9 @@ struct CompletedWorkoutsView: View {
         .onAppear {
             workoutPlanModel.loadCompletionStatuses()
         }
+    }
+}
+
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
         HomePageView(
@@ -347,4 +350,3 @@ struct HomePageView_Previews: PreviewProvider {
         .environmentObject(TodayMealManager())
     }
 }
-
