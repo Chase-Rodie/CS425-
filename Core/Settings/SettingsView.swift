@@ -138,6 +138,7 @@ extension SettingsView {
                     }
                 }
             }
+
             
             Button("Update password") {
                 Task {
