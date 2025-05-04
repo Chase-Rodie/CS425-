@@ -135,7 +135,7 @@ final class SettingsViewModel: ObservableObject {
         content.sound = .default
 
         var dateComponents = DateComponents()
-        dateComponents.hour = 19    
+        dateComponents.hour = 1730
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: "dailyReminder", content: content, trigger: trigger)
