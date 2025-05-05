@@ -3,7 +3,7 @@
 //  Fit Pantry
 //
 //  Created by Lexie Reddon on 3/16/25.
-//
+//  This is the entry view for the workout tab. If user has a workout plan already, then it displays the workout plan. If the user does not have a workout plan yet, it prompts them to create one.
 
 import SwiftUI
 

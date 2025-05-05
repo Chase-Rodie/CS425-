@@ -761,6 +761,7 @@ class RetrieveWorkoutData : ObservableObject {
             }
     
 
+    //Fetches the manually entered workouts from Firebase.
     func fetchManuallyEnteredWorkoutsForDay(day: Int) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No user ID")
@@ -819,7 +820,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
 
-    
+    //Fetches the saved sets and reps.
     private func getSetsAndReps(for goal: String) -> (Int, Int) {
         switch goal.lowercased() {
         case "lose":
@@ -833,6 +834,7 @@ class RetrieveWorkoutData : ObservableObject {
         }
     }
 
+    //Delete the manual workout that was logged.
     func deleteManualWorkout(day: Int, workout: ManualWorkout) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No user ID")

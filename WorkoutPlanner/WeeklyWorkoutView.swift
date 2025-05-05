@@ -3,7 +3,7 @@
 //  Fit Pantry
 //
 //  Created by Lexie Reddon on 3/8/25.
-//
+//  WeeklyWorkoutView provides the UI for the weekly summary of workouts. A custom progress ring is used to display the workout progress for each day.
 
 import SwiftUI
 
@@ -114,6 +114,7 @@ struct WeeklyWorkoutView: View {
         
     }
     
+    //Fetch the progress of completed workouts for all days. This utilizes a method from retrieveWorkout to do this.
     private func fetchAllDaysProgress() {
         for dayIndex in 0..<7 {
             workoutPlanModel.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
@@ -122,7 +123,6 @@ struct WeeklyWorkoutView: View {
                 DispatchQueue.main.async {
                     
                     progressValues[dayIndex] = progress
-                    //print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
                 }
             }
         }

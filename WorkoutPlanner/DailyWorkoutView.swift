@@ -3,13 +3,11 @@
 //  Fit Pantry
 //
 //  Created by Lexie Reddon on 4/1/25.
-//
+//  DailyWorkoutView provides the UI for when an individual day is selected on the user's plan.
 
 import SwiftUI
 
 struct DailyWorkoutView: View {
-    //var for day
-    //@State var exercise: Exercise
     let dayIndex: Int
     let dayWorkoutPlan: [Exercise]
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
