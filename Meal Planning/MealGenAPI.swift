@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+// Structures to process API requests
 struct ChatMessage: Codable {
     let role: String
     let content: String
@@ -27,6 +27,7 @@ struct ChatResponse: Codable {
     let choices: [ChatChoice]
 }
 
+// Get Recpie with OpenAI API request
 func generateRecipeWithOpenAI(ingredients: [String], completion: @escaping (String?) -> Void) {
     print(ingredients)
     guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
@@ -34,9 +35,9 @@ func generateRecipeWithOpenAI(ingredients: [String], completion: @escaping (Stri
         return
     }
     
+    // Obscure the OpenAI API key
     let p1 = "Bearer sk-proj-j7UgsHc-wC2ubXG1HpFR7XRSHM0R"
     let p2 = "_kOc5StGoNjUypEa27WoZxfabi_rf-wSW_KOjx_JBBzCboT3BlbkFJ8SVSywj"
-
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")

@@ -627,7 +627,8 @@ struct MealGenerationView: View {
             }
         }
     }
-
+    
+    // Used with Legacy AI and is no longer implemented
     func fetchAliasesAndGenerate() {
         let db = Firestore.firestore()
         let foodIDs = selectedMeals.map { $0.foodID }
@@ -658,7 +659,8 @@ struct MealGenerationView: View {
             generate()
         }
     }
-
+    
+    // Makes API call to generate recipe
     func generate() {
         recipe = "Generating your recipe..."
         //let ingredients = foodAliases.map { $0.alias }
@@ -676,7 +678,7 @@ struct MealGenerationView: View {
         }
     }
     
-    
+    // Save's recipe to users saved recipes in Firestore
     func saveRecipe() {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")

@@ -14,7 +14,6 @@ struct FoodJournalView: View {
     @StateObject private var viewModel = FoodJournalViewModel()
     @State private var selectedMeal: Meal?
     @State private var now = Date()
-    // This will hold your fetched macro goals
     @State private var macroTotals = macroNutrients()
     @State private var showMacros = false // Macro menu
 

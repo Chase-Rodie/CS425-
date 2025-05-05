@@ -30,18 +30,8 @@ import FirebaseFirestore
         self.dinnerFoodEntries = []
     }
     
+    // Get all the foods a person has eaten for a specfic day
     func fetchFoodEntries(mealName: String, for date: Date) {
-        /// NOTE:
-        /// Zach added this to fix a bug. Later he discovered it introduced a new bug
-        /// Old Bug is currently unkown. Uncommenting this will make it so when adding a
-        /// new food a mealType it will not show foods in other meal types. For example,
-        /// adding a new food to Breakfast will make it so foods in Lunch and Dinner do not show
-        /*
-        self.breakfastFoodEntries = []
-        self.lunchFoodEntries = []
-        self.dinnerFoodEntries = []
-        */
-        
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
             return
@@ -285,6 +275,7 @@ import FirebaseFirestore
         return breakfastProtein + lunchProtein + dinnerProtein
     }
     
+    // Switch for units to get proper nutrition from Firestore
     func getConversionRatio(unit: String) -> Double {
         var ratio = 1.0
 
@@ -324,7 +315,6 @@ import FirebaseFirestore
 }
 
 /// USED FOR CACLULATING MACROS
-
 struct macroNutrients: Codable, Equatable {
     var cals: Double?
     var fat: Double?
@@ -332,6 +322,7 @@ struct macroNutrients: Codable, Equatable {
     var protein: Double?
 }
 
+// Calculate user desired macros
 class macroCalculator {
     static func getMacros(completion: @escaping (macroNutrients) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -420,10 +411,6 @@ class macroCalculator {
                 carbs = calories * (1 / 8)
                 protein = calories * (1 / 20)
             }
-            
-            // Get macros
-            
-            // Re-adjust calories
             
             // Debugging code
             //let age2: Double = Double(age)
