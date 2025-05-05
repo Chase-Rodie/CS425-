@@ -17,6 +17,7 @@ struct ProfileView: View {
         NavigationStack {
             List {
                 if let user = viewModel.user {
+                    // Profile management section if user is loaded
                     Section {
                         NavigationLink {
                             EditProfileView(viewModel: viewModel, showProfilePopup: .constant(false))
@@ -30,35 +31,14 @@ struct ProfileView: View {
                             Text("Edit Dietary Preferences & Allergies")
                         }
                     }
-
-//                    Section {
-//                        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-//                            Text("Select a photo")
-//                        }
-//
-//                        if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
-//                            AsyncImage(url: url) { image in
-//                                image.resizable()
-//                                    .scaledToFill()
-//                                    .frame(width: 150, height: 150)
-//                                    .cornerRadius(10)
-//                            } placeholder: {
-//                                ProgressView().frame(width: 150, height: 150)
-//                            }
-//                        }
-//
-//                        if user.profile.profileImagePath != nil {
-//                            Button("Delete image") {
-//                                viewModel.deleteProfileImage()
-//                            }
-//                        }
-//                    }
                 } else {
+                    // Show loading indicator while fetching user
                     ProgressView("Loading profile...")
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
             .onAppear {
+                // Load user data when the view appears
                 Task {
                     do {
                         try await viewModel.loadCurrentUser()
@@ -68,6 +48,7 @@ struct ProfileView: View {
                 }
             }
             .onChange(of: selectedItem) { newValue in
+                // If a new photo is selected, save it to the profile
                 if let newValue {
                     viewModel.saveProfileImage(item: newValue)
                 }
@@ -76,8 +57,6 @@ struct ProfileView: View {
         }
     }
 }
-
-
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {

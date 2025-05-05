@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 3/7/25.
 //
 
+
+//not used
 import SwiftUI
 
 struct PrivacyInfoView: View {

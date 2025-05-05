@@ -11,6 +11,7 @@ import SwiftUI
 import Firebase
 import FirebaseCore
 
+// Main entry point of the SwiftUI application
 @main
 struct Fit_PantryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
@@ -21,17 +22,20 @@ struct Fit_PantryApp: App {
         WindowGroup {
             NavigationStack {
                 RootView()
+                // Inject shared userManager into the environment so it's accessible in all views
                     .environmentObject(userManager)
+                // Inject shared mealManager into the environment for global access
                     .environmentObject(mealManager)
             }
         }
     }
 }
 
-
+// AppDelegate class handles application-level configurations
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // Initializes Firebase services
         FirebaseApp.configure()
         
         return true

@@ -10,6 +10,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
 
+//Users gender options
 enum Gender: String, Codable, CaseIterable {
     case male = "Male"
     case female = "Female"
@@ -18,18 +19,21 @@ enum Gender: String, Codable, CaseIterable {
     case preferNotToSay = "Prefer not to say"
 }
 
+//Users fitness level
 enum FitnessLevel: String, Codable, CaseIterable {
     case beginner = "Beginner"
     case intermediate = "Intermediate"
     case advanced = "Advanced"
 }
 
+//Users fitness goals
 enum Goal: String, Codable, CaseIterable {
     case loseWeight = "LoseWeight"
     case gainWeight = "GainWeight"
     case maintainWeight = "MaintainWeight"
 }
 
+//Stores user profile details
 struct UserProfile: Codable, Equatable {
     var name: String?
     var age: Int?
@@ -44,6 +48,7 @@ struct UserProfile: Codable, Equatable {
     var allergies: [String]?
 }
 
+//Firebase metadata
 struct UserMetadata: Codable, Equatable {
     var userId: String
     var email: String?
@@ -52,6 +57,7 @@ struct UserMetadata: Codable, Equatable {
     var dateCreated: Date?
 }
 
+//Main user object stored in Firebase
 struct DBUser: Decodable, Equatable {
     var metadata: UserMetadata
     var profile: UserProfile
@@ -88,7 +94,8 @@ struct DBUser: Decodable, Equatable {
         case dietaryPreferences
         case allergies
     }
-
+    
+    //Initialize DBUser
     init(auth: AuthDataResultModel) {
         self.metadata = UserMetadata(
             userId: auth.uid,
@@ -117,6 +124,7 @@ struct DBUser: Decodable, Equatable {
         self.profile = profile
     }
     
+    //Decode DBUser using containers
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -170,6 +178,7 @@ struct DBUser: Decodable, Equatable {
 
 
 extension DBUser {
+    //Convets DBUser into dictionary
     func encodeToFirestore() -> [String: Any] {
         var data: [String: Any?] = [
             "userId": metadata.userId,
@@ -207,10 +216,12 @@ final class UserManager: ObservableObject {
 
     private let userCollection: CollectionReference = Firestore.firestore().collection("users")
 
+    //Returns reference to user's profile doc
     private func userDocument(userId: String) -> DocumentReference {
         return userCollection.document(userId).collection("UserInformation").document("profile")
     }
     
+    //Returns reference to user's favorite products collection
     private func userPreferencesDocument(userId: String) -> DocumentReference {
         userCollection.document(userId).collection("UserInformation").document("preferences")
     }
@@ -225,6 +236,7 @@ final class UserManager: ObservableObject {
         return user
     }
     
+    //Creates metadata entry for new user
     func createUserMetadata(user: DBUser) async throws {
         let data: [String: Any] = [
             "user_id": user.metadata.userId,
@@ -235,7 +247,8 @@ final class UserManager: ObservableObject {
         ]
         try await Firestore.firestore().collection("users").document(user.metadata.userId).setData(data, merge: true)
     }
-
+    
+    //Full user document
     func createNewUser(user: DBUser) async throws {
         try await createUserMetadata(user: user)
 
@@ -254,7 +267,7 @@ final class UserManager: ObservableObject {
         try await userDocument(userId: user.metadata.userId).setData(profileData)
     }
 
-
+    //Both metadata and profile data
     func getFullUser(userId: String) async throws -> (meta: [String: Any], profile: DBUser?) {
         let db = Firestore.firestore()
 
@@ -275,6 +288,7 @@ final class UserManager: ObservableObject {
         return (meta: metadata, profile: profile)
     }
 
+    //Reference to a single favorite product doc
     private func userFavoriteProductDocument(userId: String, favoriteProductId: String) -> DocumentReference {
         userFavoriteProductCollection(userId: userId).document(favoriteProductId)
     }
@@ -282,6 +296,7 @@ final class UserManager: ObservableObject {
     private let encoder: Firestore.Encoder = Firestore.Encoder()
     private let decoder: Firestore.Decoder = Firestore.Decoder()
     
+    //Full user profile from firbebase
     func getUserProfile(userId: String) async throws -> DBUser {
          let db = Firestore.firestore()
 
@@ -311,7 +326,8 @@ final class UserManager: ObservableObject {
              throw NSError(domain: "UserManager", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to decode user profile data"])
          }
      }
-
+    
+    //not used
     func updateUserProfileImagePath(userId: String, path: String?, url: String?) async throws {
         let data: [String: Any] = [
             DBUser.CodingKeys.profileImagePath.rawValue: path,
@@ -321,6 +337,7 @@ final class UserManager: ObservableObject {
         try await userDocument(userId: userId).updateData(data)
     }
     
+    //Merges profile updates into Firestore
     func updateUserProfile(user: DBUser) async throws {
         let profileData: [String: Any] = [
             "name": user.profile.name ?? "",
@@ -339,7 +356,7 @@ final class UserManager: ObservableObject {
         try await userDocument(userId: user.metadata.userId).setData(profileData, merge: true)
     }
 
-
+    //not used
     func fetchProfileImageUrl(userId: String) async throws -> String? {
         guard let user = currentUser else {
             throw NSError(domain: "UserManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "User not found"])
@@ -348,6 +365,7 @@ final class UserManager: ObservableObject {
         return user.profileImagePathUrl
     }
     
+    //updates user's dietary preferences and allergies
     func getUserPreferences(userId: String) async throws -> (dietaryPreferences: [String], allergies: [String]) {
         let snapshot = try await userPreferencesDocument(userId: userId).getDocument()
         let data = snapshot.data() ?? [:]
@@ -358,6 +376,7 @@ final class UserManager: ObservableObject {
         return (dietaryPreferences, allergies)
     }
 
+    //loads currently autenticated user's profile into memory
     func updateUserPreferences(userId: String, dietaryPreferences: [String], allergies: [String]) async throws {
         let data: [String: Any] = [
             "dietaryPreferences": dietaryPreferences,

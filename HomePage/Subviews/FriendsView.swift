@@ -5,6 +5,8 @@
 //  Created by Chase Rodie on 4/17/25.
 //
 
+
+//not used
 import SwiftUI
 
 struct FriendsView: View {

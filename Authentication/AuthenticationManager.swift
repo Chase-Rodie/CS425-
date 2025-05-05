@@ -12,6 +12,7 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
+// Maps Firebase `User` object into a simpler model for use throughout the app
 struct AuthDataResultModel {
     let uid: String
     let email: String?
@@ -28,6 +29,7 @@ struct AuthDataResultModel {
     }
 }
 
+// Unlinks a specified provider (e.g. Google, Apple) from the current authenticated user
 func unlinkProvider(_ provider: AuthProviderOption) async throws {
     guard let user = Auth.auth().currentUser else {
         throw CustomAuthenticationErrors.userNotFound
@@ -39,6 +41,7 @@ func unlinkProvider(_ provider: AuthProviderOption) async throws {
     }
 }
 
+// Updates the current user's display name and/or photo URL
 func updateUserProfile(displayName: String?, photoUrl: URL?) async throws {
     guard let user = Auth.auth().currentUser else {
         throw CustomAuthenticationErrors.userNotFound
@@ -53,6 +56,7 @@ func updateUserProfile(displayName: String?, photoUrl: URL?) async throws {
     }
 }
 
+// Retrieves the current user's Firebase ID token, useful for custom backend auth
 func getUserToken() async throws -> String {
     guard let user = Auth.auth().currentUser else {
         throw CustomAuthenticationErrors.userNotFound
@@ -65,6 +69,7 @@ func getUserToken() async throws -> String {
     }
 }
 
+// Custom errors for various authentication-related issues
 enum CustomAuthenticationErrors: LocalizedError {
     case userNotFound
     case emailVerificationFailed
@@ -97,6 +102,7 @@ enum CustomAuthenticationErrors: LocalizedError {
         }
     }
 
+// Enum for supported authentication providers
 enum AuthProviderOption: String {
     case email = "password"
     case google = "google.com"
@@ -108,6 +114,7 @@ final class AuthenticationManager {
     static let shared = AuthenticationManager()
     private init() {}
     
+    // Retrieves the currently authenticated user and maps them to a custom model
     func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
             throw CustomAuthenticationErrors.userNotFound
@@ -116,6 +123,7 @@ final class AuthenticationManager {
         return AuthDataResultModel(user: user)
     }
     
+    // Returns the list of email-based providers associated with the user (e.g., email, google, apple)
     func getcurrentEmailProvider() throws -> [AuthProviderOption] {
         guard let providerData = Auth.auth().currentUser?.providerData else{
             throw CustomAuthenticationErrors.userNotFound
@@ -133,6 +141,7 @@ final class AuthenticationManager {
         return providers
     }
     
+    // Signs out the user, clears session data, and resets user defaults
     func signOut() async throws {
         try Auth.auth().signOut()
         UserDefaults.standard.removeObject(forKey: "userSession")
@@ -141,6 +150,7 @@ final class AuthenticationManager {
         print("User signed out successfully")
     }
     
+    // Deletes the user's authentication credentials and associated Firestore data
     func deleteUser() async throws {
         guard let user = Auth.auth().currentUser else {
             throw CustomAuthenticationErrors.userNotFound
@@ -210,13 +220,8 @@ final class AuthenticationManager {
             }
         }
     }
-
-
-
-
-
     
-    
+    // Sends an email verification message to the current user's email
     func sendEmailVerification() throws {
         guard let user = Auth.auth().currentUser else {
             throw CustomAuthenticationErrors.userNotFound
@@ -231,6 +236,7 @@ final class AuthenticationManager {
         }
     }
     
+    // Removes specific user default keys, verifying that deletion was successful
     func resetUserDefaults()async throws{
         let keysToRemove = ["workoutPlan", "workoutMetadata"]
         let defaults = UserDefaults.standard
@@ -255,7 +261,7 @@ final class AuthenticationManager {
 
 extension AuthenticationManager {
     
-    //Discarable meaning we don't need the result (added to avoid warnings)
+    // Creates a new user with email and password, sends a verification email, and stores user in Firestore
     @discardableResult
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -271,7 +277,8 @@ extension AuthenticationManager {
         
         return authDataModel
     }
-
+    
+    // Signs in a user with email and password, ensuring email is verified before proceeding
     @discardableResult
     func signInUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -284,10 +291,12 @@ extension AuthenticationManager {
         return AuthDataResultModel(user: user)
     }
     
+    // Sends a password reset email to the given email address
     func resetPassword(email: String) async throws {
         try await Auth.auth().sendPasswordReset(withEmail: email)
     }
     
+    // Updates the current user's password
     func updatePassword(password: String) async throws {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
@@ -296,6 +305,7 @@ extension AuthenticationManager {
         try await user.updatePassword(to: password)
     }
     
+    // Resends email verification to the current user
     func resendEmailVerification() throws {
         guard let user = Auth.auth().currentUser else {
             throw CustomAuthenticationErrors.userNotFound
@@ -310,6 +320,7 @@ extension AuthenticationManager {
         }
     }
     
+    // Sends a verification email and then updates the user's email address
     func updateEmail(email: String) async throws {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
@@ -331,19 +342,21 @@ extension AuthenticationManager {
 
 extension AuthenticationManager {
     
-    
+    // Signs in a user with Google credentials
     @discardableResult
     func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         return try await signIn(credential: credential)
     }
     
+    // Signs in a user with Apple credentials
     @discardableResult
     func signInWithApple(tokens: SignInWithAppleResult) async throws -> AuthDataResultModel {
         let credential = OAuthProvider.credential(withProviderID: AuthProviderOption.apple.rawValue, idToken: tokens.token, rawNonce: tokens.nonce)
         return try await signIn(credential: credential)
     }
     
+    // Signs in a user with the provided Firebase AuthCredential
     func signIn(credential: AuthCredential) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().signIn(with: credential)
         return AuthDataResultModel(user: authDataResult.user)
@@ -352,6 +365,7 @@ extension AuthenticationManager {
 
 extension AuthenticationManager {
     
+    // Reauthenticates the user using email and password
     func reauthenticateUser(email:String, password: String) async throws {
         guard let user = Auth.auth().currentUser else {
             throw CustomAuthenticationErrors.userNotFound
@@ -364,28 +378,32 @@ extension AuthenticationManager {
         }
     }
     
+    // Signs in the user anonymously
     @discardableResult
     func signInAnonymous() async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().signInAnonymously()
         return AuthDataResultModel(user: authDataResult.user)
     }
     
-    
+    // Links an email/password credential to the current user
     func linkEmail(email: String, password: String) async throws -> AuthDataResultModel {
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         return try await linkCredential(credential: credential)
     }
     
+    // Links Apple credentials to the current user
     func linkApple(tokens: SignInWithAppleResult) async throws -> AuthDataResultModel {
         let credential = OAuthProvider.credential(withProviderID: AuthProviderOption.apple.rawValue, idToken: tokens.token, rawNonce: tokens.nonce)
         return try await linkCredential(credential: credential)
     }
     
+    // Links Google credentials to the current user
     func linkGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         return try await linkCredential(credential: credential)
     }
     
+    // Links a generic credential to the current user
     private func linkCredential(credential: AuthCredential) async throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badURL)

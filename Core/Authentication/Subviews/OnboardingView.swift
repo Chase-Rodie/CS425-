@@ -24,6 +24,7 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack {
+            // Render step-specific view
             if currentStep == 0 {
                 WelcomeStep()
             } else if currentStep == 1 {
@@ -43,7 +44,8 @@ struct OnboardingView: View {
             } else {
                 CompletionStep()
             }
-            
+
+            // Navigation button
             Button(action: nextStep) {
                 Text(currentStep < 8 ? "Next" : "Finish")
                     .padding()
@@ -56,9 +58,9 @@ struct OnboardingView: View {
             loadUserData()
         }
     }
-    
-    private func nextStep() {
 
+    //advances to next step or finishes
+    private func nextStep() {
         if currentStep < 7 {
             currentStep += 1
         } else if currentStep == 7 {
@@ -73,6 +75,7 @@ struct OnboardingView: View {
         }
     }
 
+    //preloads existing data
     private func loadUserData() {
         if let user = userManager.currentUser {
             name = user.profile.name ?? ""
@@ -85,9 +88,9 @@ struct OnboardingView: View {
         }
     }
     
+    //saves users info to firebase
     @MainActor
     func saveUserData() async {
-
         guard let authUser = Auth.auth().currentUser else {
             print("No Firebase user found")
             return
@@ -123,7 +126,7 @@ struct OnboardingView: View {
         )
 
         let newUser = DBUser(metadata: metadata, profile: profile)
-                
+
         do {
             try await userManager.createNewUser(user: newUser)
             await userManager.fetchCurrentUser()
@@ -136,10 +139,6 @@ struct OnboardingView: View {
             onboardingComplete = true
         }
     }
-
-
-
-
 }
 
 struct WelcomeStep: View {
@@ -188,10 +187,6 @@ struct GenderStep: View {
                 Text("Prefer not to say").tag("Prefer not to say")
             }
             .pickerStyle(.menu)
-            /*
-            TextField("Gender", text: $gender)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            */
         }
         .padding()
     }
@@ -214,7 +209,7 @@ struct FitnessLevelStep: View {
 }
 
 struct GoalStep: View {
-    @Binding var goal: String 
+    @Binding var goal: String
     var body: some View {
         VStack {
             Text("Enter your fitness goal")
@@ -229,30 +224,16 @@ struct GoalStep: View {
     }
 }
 
-/*
 struct HeightStep: View {
     @Binding var height: String
-    var body: some View {
-        VStack {
-            Text("Enter your height")
-            TextField("Height", text: $height)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-        }
-        .padding()
-    }
-}
- */
-struct HeightStep: View {
-    @Binding var height: String
-    
     @State private var selectedFeet = 5
     @State private var selectedInches = 6
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Enter your height")
                 .font(.headline)
-            
+
             HStack {
                 Picker("Feet", selection: $selectedFeet) {
                     ForEach(3...8, id: \.self) { feet in
@@ -261,7 +242,7 @@ struct HeightStep: View {
                 }
                 .pickerStyle(WheelPickerStyle())
                 .frame(width: 100)
-                
+
                 Picker("Inches", selection: $selectedInches) {
                     ForEach(0...11, id: \.self) { inch in
                         Text("\(inch) in").tag(inch)
@@ -279,33 +260,21 @@ struct HeightStep: View {
         .padding()
     }
     
+    //updates height string
     private func updateHeight() {
         height = "\(selectedFeet), \(selectedInches)"
     }
 }
 
-/*
-struct WeightStep: View {
-    @Binding var weight: String
-    var body: some View {
-        VStack {
-            Text("Enter your weight")
-            TextField("Weight", text: $weight)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-        }
-        .padding()
-    }
-}
- */
 struct WeightStep: View {
     @Binding var weight: String
     @State private var internalWeight = ""
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Enter your weight (in pounds)")
                 .font(.headline)
-            
+
             TextField("Weight (lbs)", text: $internalWeight)
                 .keyboardType(.decimalPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -319,23 +288,20 @@ struct WeightStep: View {
         }
     }
     
+    //filters and updates weight input
     private func validateWeightInput(_ input: String) {
-        // Only allow numbers and at most one decimal point
         let filtered = input.filter { "0123456789.".contains($0) }
         let decimalParts = filtered.split(separator: ".")
-        
+
         if decimalParts.count > 2 {
-            // If more than one decimal point, remove extras
             internalWeight = String(decimalParts[0]) + "." + String(decimalParts[1])
         } else {
             internalWeight = filtered
         }
-        
-        // Update the binding with the validated input
+
         weight = internalWeight
     }
 }
-
 
 struct CompletionStep: View {
     var body: some View {
@@ -344,4 +310,3 @@ struct CompletionStep: View {
             .multilineTextAlignment(.center)
     }
 }
-

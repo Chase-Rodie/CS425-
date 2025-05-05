@@ -15,7 +15,8 @@ final class ProfileViewModel: ObservableObject {
     @Published var dietaryPreferences: [String] = []
     @Published var allergies: [String] = []
     @Published var hasLoaded = false
-            
+           
+    //checks to see if a current user can be found
     func loadCurrentUser() async throws {
         guard !hasLoaded else { return }
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
@@ -30,7 +31,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
 
-    
+    //updates users profile
     func updateUserProfile(user: DBUser) async throws {
         try? await UserManager.shared.updateUserProfile(user: user)
         DispatchQueue.main.async {
@@ -38,6 +39,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    //not used
     func saveProfileImage(item: PhotosPickerItem) {
         guard let user else { return }
 
@@ -49,6 +51,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    //not used
     func deleteProfileImage() {
         guard let user, let path = user.profile.profileImagePath else { return }
 
@@ -58,6 +61,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    //updates dietary preferences
     func updatePreferences(dietary: [String], allergies: [String]) async throws {
         guard let userId = user?.metadata.userId else { return }
         try await UserManager.shared.updateUserPreferences(userId: userId, dietaryPreferences: dietary, allergies: allergies)
