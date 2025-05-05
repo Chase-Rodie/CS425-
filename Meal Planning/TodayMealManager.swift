@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 
+// Manages and tracks meals by date and type, including storing, retrieving, and calculating nutrition totals
 class TodayMealManager: ObservableObject {
     @Published var mealsByDate: [String: [MealType: [MealPlanner]]] = [:]
 
@@ -18,11 +19,13 @@ class TodayMealManager: ObservableObject {
         return formatter
     }()
 
+// Returns meals of a given type for a specific date
     func getMeals(for date: Date, type: MealType) -> [MealPlanner] {
         let dateString = dateFormatter.string(from: date)
         return mealsByDate[dateString]?[type] ?? []
     }
 
+// Stores the list of meals for a specific date and meal type.
     func setMeals(for date: Date, type: MealType, meals: [MealPlanner]) {
         let dateString = dateFormatter.string(from: date)
         if mealsByDate[dateString] == nil {
@@ -31,6 +34,7 @@ class TodayMealManager: ObservableObject {
         mealsByDate[dateString]?[type] = meals
     }
 
+// Appends a single meal to the specified date and type
     func appendMeal(for date: Date, type: MealType, meal: MealPlanner) {
         let dateString = dateFormatter.string(from: date)
         if mealsByDate[dateString] == nil {
@@ -41,6 +45,7 @@ class TodayMealManager: ObservableObject {
 }
 
 extension TodayMealManager {
+// Calculates total calories, protein, carbs, and fat for all meals on a specific date
     func totalNutrition(for date: Date) -> (calories: Int, protein: Double, carbs: Double, fat: Double) {
         let dateString = dateFormatter.string(from: date)
         let dayMeals = mealsByDate[dateString] ?? [:]
@@ -64,6 +69,7 @@ extension TodayMealManager {
         return (totalCalories, totalProtein, totalCarbs, totalFat)
     }
 
+// Converts a given unit to its equivalent gram-based ratio for nutritional scaling
     private func getConversionRatio(unit: String) -> Double {
         switch unit {
             case "g": return 1.0
@@ -83,6 +89,7 @@ extension TodayMealManager {
         }
     }
     
+// Restores meals from Firestore for a given date and updates the local meal log
     func restoreMeals(for date: Date, completion: @escaping () -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")

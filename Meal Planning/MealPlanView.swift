@@ -11,6 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import Foundation
 
+// Displays the user's meal plan, allows selection of foods, meal logging, and recipe generation
 struct MealPlanView: View {
     @EnvironmentObject var mealManager: TodayMealManager
     @State private var selectedDate = Date()
@@ -39,11 +40,13 @@ struct MealPlanView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.leading)
-
+                
+                // Header and date picker
                 DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
                     .datePickerStyle(.compact)
                     .padding(.horizontal)
 
+                // Allows switching between 'prepared' and 'ingredient' meals
                 Picker("Meal Category", selection: $selectedCategory) {
                     ForEach(MealCategory.allCases) { category in
                         Text(category.rawValue).tag(category)
@@ -242,6 +245,7 @@ struct MealPlanView: View {
                         quantityErrors = [:]
                         var isValid = true
 
+                        // Validate input amounts and check against available pantry quantity
                         for meal in selectedMeals {
                             guard let input = inputQuantities[meal.id], let eaten = Double(input) else {
                                 quantityErrors[meal.id] = "Enter a valid number"
@@ -268,7 +272,8 @@ struct MealPlanView: View {
                         }
 
                         guard isValid else { return }
-
+                        
+                        // Log valid meals, update pantry quantities, and save meal info to Firestore
                         for meal in selectedMeals {
                             if let input = inputQuantities[meal.id], let eaten = parseFraction(from: input) {
                                 let selectedUnit = selectedUnits[meal.id] ?? "g"
@@ -320,6 +325,7 @@ struct MealPlanView: View {
         }
     }
     
+// Updates the pantry quantity in Firestore based on user input
     func updatePantryQuantity(docID: String, amount: Double) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")
@@ -356,6 +362,7 @@ struct MealPlanView: View {
         }
     }
     
+// Logs a meal to Firestore under the selected date and meal type
     func logMeal(for meal: MealPlanner, amount: Double, type: MealType) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")
@@ -388,6 +395,7 @@ struct MealPlanView: View {
         logRef.setData([type.rawValue.lowercased(): FieldValue.arrayUnion([mealData])], merge: true)
     }
     
+// Fetches pantry items from Firestore and filters them based on user preferences
     func fetchMealsAsync() async {
         await withCheckedContinuation { continuation in
             guard let userID = Auth.auth().currentUser?.uid else {
@@ -484,6 +492,7 @@ struct MealPlanView: View {
         }
     }
     
+// Removes a meal from Firestore log for a specific date and type
     func removeMealFromFirestore(_ meal: MealPlanner, for date: Date, type: MealType) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")
@@ -525,6 +534,7 @@ struct MealPlanView: View {
 
 }
 
+// View for showing AI-generated recipe based on selected ingredients
 struct MealGenerationView: View {
     var selectedMeals: Set<MealPlanner>
     @Environment(\.dismiss) var dismiss
@@ -745,6 +755,7 @@ struct QuantityInputRow: View {
     }
 }
 
+// Parses string input like "0.5" into a Double value
 func parseFraction(from string: String) -> Double? {
     let trimmed = string.trimmingCharacters(in: .whitespaces)
     

@@ -8,19 +8,23 @@
 import Foundation
 import HealthKit
 
+// Manages HealthKit interactions
 class HealthKitManager {
     static let shared = HealthKitManager()
     private let healthStore = HKHealthStore()
 
     private init() {}
 
+    // Requests HealthKit permission to read and write nutritional and step data
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        // Check if HealthKit is available on this device
         guard HKHealthStore.isHealthDataAvailable() else {
             print("Health data not available on this device")
             completion(false)
             return
         }
-
+        
+        // Define all the data types we want to read/write
         guard
             let energy = HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed),
             let protein = HKObjectType.quantityType(forIdentifier: .dietaryProtein),
@@ -36,6 +40,7 @@ class HealthKitManager {
         let typesToShare: Set = [energy, protein, fat, carbs, steps]
         let typesToRead: Set = [energy, protein, fat, carbs, steps]
 
+        // Request authorization for reading and writing the defined types
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
             if success {
                 print("HealthKit authorization successful")
@@ -46,6 +51,7 @@ class HealthKitManager {
         }
     }
 
+    // Logs a meal's nutritional data to HealthKit
     func logMealToHealthKit(calories: Double, protein: Double, carbs: Double, fat: Double) {
         let now = Date()
 
@@ -79,6 +85,7 @@ class HealthKitManager {
         }
     }
     
+    // Fetches step count for a given day
     func fetchStepCount(for date: Date, completion: @escaping (Double?) -> Void) {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
             print("Step count type is unavailable.")

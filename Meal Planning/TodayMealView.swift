@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Displays and manages meals for a selected date and type, with nutrition summaries and goal feedback
 struct TodayMealView: View {
     @EnvironmentObject var todayMealManager: TodayMealManager
     @Environment(\.dismiss) var dismiss
@@ -127,6 +128,7 @@ struct TodayMealView: View {
         }
     }
     
+// Calculates total nutritional values for the current meal list
     var mealTotals: (calories: Int, protein: Double, carbs: Double, fat: Double) {
         let filteredMeals = meals
         var totalCalories = 0
@@ -147,6 +149,7 @@ struct TodayMealView: View {
         return (totalCalories, totalProtein, totalCarbs, totalFat)
     }
     
+// Generates a message comparing current meal totals to user goals
     var goalProgressMessage: String {
         guard let targets = goalsVM.dailyTargets else { return "" }
         var message = ""
@@ -170,6 +173,7 @@ struct TodayMealView: View {
         return message.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
+// Converts units (e.g., oz, tbsp) into grams for nutritional scaling
     private func getConversionRatio(unit: String) -> Double {
         switch unit {
             case "g": return 1.0

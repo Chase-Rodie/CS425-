@@ -8,6 +8,7 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
+// Represents an individual item in the shopping list
 struct ShoppingListItem: Identifiable, Hashable {
     var id = UUID()
     var name: String
@@ -15,32 +16,33 @@ struct ShoppingListItem: Identifiable, Hashable {
     var unit: String
 }
 
+// Manages the user's shopping list and synchronizes with Firestore
 class ShoppingList: ObservableObject {
     @Published var items: [ShoppingListItem] = []
     private let db = Firestore.firestore()
 
+    // Retrieves the current user's Firebase Auth ID
     private var userID: String? {
         Auth.auth().currentUser?.uid
     }
 
-//    func addItem(name: String, quantity: Double) {
-//        let newItem = ShoppingListItem(name: name, quantity: quantity)
-//        items.append(newItem)
-//        saveToFirestore()
-//    }
+    // Adds a new item to the shopping list and saves it to Firestore
     func addItem(name: String, quantity: Double, unit: String) {
         let newItem = ShoppingListItem(name: name, quantity: quantity, unit: unit)
         items.append(newItem)
         saveToFirestore()
     }
 
+    // Removes an item by index and updates Firestore
     func removeItem(at index: Int) {
         items.remove(at: index)
         saveToFirestore()
     }
-
+    
+    // Saves the current shopping list to Firestore
     func saveToFirestore() {
         guard let userID = userID else { return }
+        // Convert items into Firestore-friendly dictionary
         let encodedItems = items.map { ["name": $0.name, "quantity": $0.quantity, "unit": $0.unit] }
         db.collection("users")
             .document(userID)
@@ -55,6 +57,7 @@ class ShoppingList: ObservableObject {
             }
     }
 
+    // Loads the shopping list from Firestore and updates the local list
     func loadFromFirestore() {
         guard let userID = userID else { return }
         db.collection("users")
@@ -82,6 +85,8 @@ class ShoppingList: ObservableObject {
                 }
             }
     }
+    
+    // Updates the quantity of a specific item by its UUID and saves the list
     func updateQuantity(for itemID: UUID, newQuantity: Double) {
         if let index = items.firstIndex(where: { $0.id == itemID }) {
             items[index].quantity = newQuantity

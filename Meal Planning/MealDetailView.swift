@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 
+// Displays detailed nutrition facts and food metadata for a specific food item
 struct MealDetailView: View {
     let meal: String
     let foodID: String
@@ -24,12 +25,14 @@ struct MealDetailView: View {
                 .foregroundColor(.gray)
 
             if let details = foodDetails {
+                // Nutritional information
                 Text("Calories: \(details["calories"] as? Double ?? 0)")
                 Text("Protein: \(details["protein"] as? Double ?? 0)g")
                 Text("Carbs: \(details["carbohydrates"] as? Double ?? 0)g")
                 Text("Fat: \(details["fat"] as? Double ?? 0)g")
                 Text("Sugar: \(details["sugars"] as? Double ?? 0)g")
 
+                // Additional metadata
                 if let name = details["name"] as? String {
                     Text("Name: \(name)")
                         .font(.headline)
@@ -46,6 +49,7 @@ struct MealDetailView: View {
         }
         .padding()
         .onAppear {
+            // Fetch food details from Firestore when view loads
             FirestoreManager().fetchFoodDetails(for: foodID) { details in
                 self.foodDetails = details
             }

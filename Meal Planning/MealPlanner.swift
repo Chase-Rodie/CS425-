@@ -8,12 +8,14 @@
 
 import Foundation
 
+// Represents the category of a meal item (prepared or ingredient)
 enum MealCategory: String, CaseIterable, Identifiable {
     case prepared = "prepared"
     case ingredient = "ingredient"
     var id: String { rawValue }
 }
 
+// Represents the type of meal (breakfast, lunch, or dinner)
 enum MealType: String, CaseIterable, Identifiable {
     case breakfast = "Breakfast"
     case lunch = "Lunch"
@@ -21,6 +23,7 @@ enum MealType: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+// Stores all relevant data for a meal item, including nutrition, category, and consumption info
 struct MealPlanner: Identifiable, Hashable, Equatable {
     let id = UUID()
     let pantryDocID: String
@@ -48,18 +51,20 @@ struct MealPlanner: Identifiable, Hashable, Equatable {
     }
 }
 
+// Maps alternate names (aliases) for a food item to its original name and ID
 struct FoodAlias: Identifiable {
     var id: String  // foodID
     var alias: String
     var name: String
 }
 
+// Holds structured ingredients and instructions extracted from a recipe string
 struct ParsedRecipe {
     let ingredients: [String]
     let instructions: [String]
 }
 
-
+// Parses a raw recipe string into separate ingredients and instructions
 func parseRecipe(_ recipe: String) -> ParsedRecipe {
     var ingredients = [String]()
     var instructions = [String]()

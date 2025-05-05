@@ -8,8 +8,10 @@ import FirebaseFirestore
 import FirebaseAuth
 import Foundation
 
+// Handles saving pantry items to Firestore for the authenticated user
 class PantryManager {
     static let shared = PantryManager()
+    // Saves a pantry item to Firestore, merging with existing data if necessary
     func saveFoodToFirestore(pantryItem: PantryItem, foodData: Food) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return

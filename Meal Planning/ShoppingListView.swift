@@ -7,6 +7,7 @@
 import SwiftUI
 import Firebase
 
+// View for displaying and managing the user's shopping list
 struct ShoppingListView: View {
     @StateObject private var shoppingList = ShoppingList()
     @State private var newItem: String = ""
@@ -15,9 +16,10 @@ struct ShoppingListView: View {
     @State private var pendingItemName: String = ""
     @State private var selectedUnit: String = "g"
     
+    // Supported units for quantity
     let units = ["g", "oz", "cup", "tbsp", "tsp", "slice", "can", "loaf", "lbs", "kg", "ml", "L", "gal"]
 
-    
+    // Formatter for decimal number input in quantity fields
     private static let decimal: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -27,10 +29,11 @@ struct ShoppingListView: View {
     var body: some View {
         NavigationView {
             VStack {
+                // List of current shopping list items
                 List {
                     ForEach(Array(shoppingList.items.enumerated()), id: \.1.id) { index, item in
                         HStack {
-//                            Text("\(item.name) (\(item.quantity, specifier: "%.1f"))")
+                            // Item name and quantity editor
                             VStack(alignment: .leading) {
                                 Text(item.name)
                                     .font(.headline)
@@ -38,7 +41,8 @@ struct ShoppingListView: View {
                                 HStack {
                                     Text("Qty:")
                                         .font(.subheadline)
-
+                                    
+                                    // Editable quantity field
                                     TextField("0", value: Binding(
                                         get: { item.quantity },
                                         set: { newValue in
@@ -67,7 +71,8 @@ struct ShoppingListView: View {
                 .onAppear {
                     shoppingList.loadFromFirestore()
                 }
-
+                
+                // Add new item row (opens quantity picker sheet)
                 HStack {
                     TextField("Add new item", text: $newItem)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -90,6 +95,7 @@ struct ShoppingListView: View {
             }
             .navigationTitle("Shopping List")
         }
+        // Prompt sheet for entering quantity and unit
         .sheet(isPresented: $showQuantityPrompt) {
             VStack(spacing: 20) {
                 Text("Enter quantity for \(pendingItemName)")
@@ -106,6 +112,8 @@ struct ShoppingListView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .frame(maxWidth: .infinity)
+                
+                // Cancel and Add buttons
                 HStack {
                     Button("Cancel") {
                         newQuantity = ""

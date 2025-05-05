@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Returns a list of meals that match the user's dietary preferences and fitness goal
 struct MealFilter {
     static func filterMeals(
         meals: [MealPlanner],
@@ -33,6 +34,7 @@ struct MealFilter {
 }
 
 extension MealFilter {
+// Returns true if the meal does not align with the specified fitness goal
     static func flaggedForGoal(meal: MealPlanner, goal: Goal) -> Bool {
         switch goal {
         case .loseWeight:
@@ -43,6 +45,8 @@ extension MealFilter {
             return !(450...650).contains(meal.calories)
         }
     }
+    
+// Provides a reason why the meal doesn't meet the user's fitness goal
     static func flaggedReason(for meal: MealPlanner, goal: Goal) -> String? {
         switch goal {
         case .loseWeight:

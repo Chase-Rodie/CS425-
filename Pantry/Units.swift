@@ -7,23 +7,7 @@
 
 import Foundation
 
-//let Units: [String: Double] = [
-//    "g": 1.0,
-//    "mg": 0.001,
-//    "oz": 28.35,
-//    "cup": 240,
-//    "tbsp": 15,
-//    "tsp": 5,
-//    "slice": 35,
-//    "can": 340,
-//    "loaf": 800,
-//    "lbs": 453.59,
-//    "kg": 1000,
-//    "ml": 1.0,
-//    "L": 1000,
-//    "gal": 3785.41
-//]
-
+// Conversion factors to a base reference unit
 let Units: [String: Double] = [
     "g": 1.0,
     "mg": 0.001,
@@ -41,7 +25,7 @@ let Units: [String: Double] = [
     "gal": 128.0
 ]
 
-
+// Provides unit-to-unit conversions using the Units map above
 struct UnitConverter {
     static func convert(amount: Double, from fromUnit: String, to toUnit: String) -> Double? {
         guard let fromFactor = Units[fromUnit], let toFactor = Units[toUnit] else {

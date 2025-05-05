@@ -93,11 +93,13 @@ struct HomePageView: View {
                             }.padding(.leading, 20)
                         }
                         
+                        // Today's meals section title
                         Text("Today's Meals")
                             .font(.largeTitle)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         
+                        // Horizontal scroll view of meal types (breakfast, lunch, dinner)
                         ScrollView(.horizontal) {
                             HStack(spacing: 20) {
                                 ForEach(MealType.allCases, id: \.self) { type in
@@ -112,13 +114,15 @@ struct HomePageView: View {
                                             let restoredAmountInPantryUnits = removedMeal.actualConsumedPantryAmount ?? 0.0
 
                                             print("Restoring \(restoredAmountInPantryUnits) \(removedMeal.unit ?? "g") for \(removedMeal.name) (saved consumed pantry amount)")
-
+                                            
+                                            // Restore pantry quantity for removed meal
                                             if !removedMeal.pantryDocID.isEmpty {
                                                 updatePantryQuantity(docID: removedMeal.pantryDocID, amount: restoredAmountInPantryUnits)
                                             } else {
                                                 print("⚠️ pantryDocID is empty for meal: \(removedMeal.name)")
                                             }
-
+                                            
+                                            // Remove the meal from Firestore log
                                             removeMealFromFirestore(removedMeal, for: selectedDate, type: type) {
                                                 Task {
                                                     await mealManager.restoreMeals(for: selectedDate) {
@@ -144,22 +148,15 @@ struct HomePageView: View {
                         
                     }
                     .navigationBarBackButtonHidden(true)
-//                    .onAppear {
-//                        fetchAllDaysProgress()
-//                        HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
-//                            if let steps = steps {
-//                                DispatchQueue.main.async {
-//                                    self.stepCount = Int(steps)
-//                                }
-//                            }
-//                        }
-//                    }
+
+                    // On appear: fetch workout progress and HealthKit step count
                     .onAppear {
                         fetchAllDaysProgress()
 
                         HealthKitManager.shared.requestAuthorization { success in
                             if success {
                                 print("HealthKit authorized")
+                                // Request HealthKit permissions and fetch today's step count
                                 HealthKitManager.shared.fetchStepCount(for: Date()) { steps in
                                     if let steps = steps {
                                         DispatchQueue.main.async {
@@ -174,6 +171,7 @@ struct HomePageView: View {
                                 print("Failed to authorize HealthKit")
                             }
                         }
+                        // Load or reset workout plan
                         retrieveworkoutdata.workoutPlanExists { exists in
                             DispatchQueue.main.async {
                                 if exists {
@@ -192,6 +190,7 @@ struct HomePageView: View {
         }
     }
 
+    // Firestore helper to update pantry quantities
     private func updatePantryQuantity(docID: String, amount: Double) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No auth user found.")
@@ -206,24 +205,12 @@ struct HomePageView: View {
         docRef.updateData(["quantity": FieldValue.increment(amount)])
     }
     
+    // Reset all progress ring values to 0.0
     private func resetProgressValues() {
         progressValues = Array(repeating: 0.0, count: 5)
     }
-
-//    private func fetchAllDaysProgress() {
-//        for dayIndex in 0..<7 {
-//            retrieveworkoutdata.countCompletedAndTotalExercises(dayIndex: dayIndex) { completed, total in
-//                let progress = total > 0 ? Double(completed) / Double(total) : 0.0
-//                
-//                DispatchQueue.main.async {
-//                    
-//                    progressValues[dayIndex] = progress
-//                   // print("Updated Progress for Day \(dayIndex): \(progress * 100)%")
-//                }
-//            }
-//        }
-//    }
     
+    // Fetch workout progress for each of 5 days
     private func fetchAllDaysProgress() {
         for dayIndex in 0..<5 {
             retrieveworkoutdata.countCompletedAndTotalExercises(dayIndex: dayIndex + 1) { completed, total in
@@ -236,6 +223,7 @@ struct HomePageView: View {
         }
     }
     
+    // Remove a meal from Firestore's mealLogs for the given day and type
     private func removeMealFromFirestore(_ meal: MealPlanner, for date: Date, type: MealType, completion: @escaping () -> Void){
         guard let userID = Auth.auth().currentUser?.uid else {
             print("User not authenticated")
@@ -278,6 +266,7 @@ struct HomePageView: View {
     }
 }
 
+// View that displays all completed workouts for a specific day
 struct CompletedWorkoutsView: View {
     var dayIndex: Int
     @ObservedObject var workoutPlanModel: RetrieveWorkoutData
@@ -294,6 +283,7 @@ struct CompletedWorkoutsView: View {
             Divider()
                 .padding(.horizontal)
             
+            // Extract only completed exercises for the selected day
             let completedExercises = workoutPlanModel.workoutPlan.indices.contains(dayIndex) ?
             workoutPlanModel.workoutPlan[dayIndex].filter { workoutPlanModel.isExerciseCompleted(exercise: $0) } : []
             
@@ -306,6 +296,7 @@ struct CompletedWorkoutsView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
+                // If there are completed exercises, display them in a scrollable list
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 15) {
                         ForEach(completedExercises) { exercise in

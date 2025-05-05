@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// A horizontal progress bar that visually displays the user's current step count relative to their goal
 struct StepCountBar: View {
     var steps: Int
     var goal: Int
@@ -41,6 +42,7 @@ struct StepCountBar: View {
         .padding(.horizontal)
     }
 
+    // Calculates the width of the progress bar relative to the screen and step goal
     private var progressWidth: CGFloat {
         let ratio = min(Double(steps) / Double(goal), 1.0)
         return CGFloat(ratio * UIScreen.main.bounds.width * 0.8)
