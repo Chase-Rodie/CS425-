@@ -213,7 +213,8 @@ struct FoodJournalAddItemView: View {
             showError = false
             showSheet = false
         }
-        
+    
+    // Add Food to the food Log and have it displayed in the Journal
     private func addFood(item: Food, value: Double, mealName: String) {
         guard let userID = Auth.auth().currentUser?.uid else {
             self.errorMessage = "User not authenticated"
